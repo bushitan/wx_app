@@ -1,0 +1,58 @@
+<!--hotest.wxml-->
+<view class="container">
+    <view style="flex-direction:row;">
+        <input placeholder="表情专栏搜索" focus="{{focus}}" maxlength="30"  />
+        <button class="meun-btn-search">搜索</button>
+    </view>
+    <view style="flex-direction:row;">
+        <label class="meun-label">热门</label>
+        <label class="meun-label">金馆长</label>
+        <label class="meun-label">好污</label>
+        <label class="meun-label">小清清</label>
+        <label class="meun-label">我想静静</label>
+    </view>
+  <view class="topic-main">
+      <!--<block wx:for="{{hotest}}">
+        <view class="topic-item" index="{{index}}" id="{{item.id}}" catchtap="redictDetail">
+            <image class="member-avatar" src="{{item.member.avatar_normal}}" background-size="cover"></image>
+            <view class="topic-info">
+                <view class="topic-inner">
+                    <view class="topic-left">
+                        <view class="topic-title"><text>{{item.title}}</text></view>
+                        <view >
+                            <text class="node-name">{{item.node.name}}</text>
+                            <text class="member-nickname">{{item.member.username}}</text>
+                        </view>
+                    </view>
+                    <view class="reply-num">{{item.replies}}</view>
+                </view>
+            </view>
+        </view>
+      </block>-->
+      <view class="ex-container">
+        <block wx:for="{{hotest}}">
+            <view class="ex-item" index="{{index}}" id="{{item.id}}" catchtap="redictEditor">
+                <image class="ex-box" src="{{item.member.avatar_normal}}" background-size="cover"></image>
+            </view>
+        </block>
+      </view>
+  </view>
+  <view class="ex-preview"  style="left:{{menu_left}};top:{{menu_top}};" wx:if="{{isPreDisplay}}">
+    <!--<view class="topic-item" index="{{index}}" id="{{item.id}}" >   -->
+
+            <view class="topic-info">
+                <view class="topic-inner">
+                    <view class="topic-left">
+                        <view >
+                           <text class="ex-preview-btn-word">分享</text>  <text class="ex-preview-btn-word">收藏</text> <text class="ex-preview-btn-word">编辑</text>
+                        </view>
+                    </view>
+                    <!--<view class="reply-num">{{item.replies}}</view>-->
+                </view>
+            </view>
+        </view>
+    <!--</view>-->
+  <loading hidden="{{hidden}}">
+    加载中...
+  </loading>
+</view>

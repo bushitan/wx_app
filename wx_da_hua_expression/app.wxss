@@ -1,0 +1,139 @@
+/**app.wxss**/
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  box-sizing: border-box;
+  background-color: #ebebeb;
+}
+
+.header {
+    height: 80rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36rpx;
+    background-color: #56abe4;
+    border-bottom: 1px solid #eee;
+}
+
+.topic-item {
+    padding:30rpx;
+    border-bottom: 1px solid #eee;
+}
+
+.topic-item {
+  display: flex;
+  flex-direction: row;
+}
+
+.member-avatar {
+  width: 128rpx;
+  height: 128rpx;
+  margin-right: 20rpx;
+  border-radius: 5%;
+}
+
+.topic-info {
+    flex:1;
+    font-size: 12rpx;
+}
+
+.topic-inner {
+    display: flex;
+    align-items: center;
+    color:#777;
+}
+
+.topic-title {
+    height:120rpx;
+    line-height: 1.4;
+    box-sizing: border-box;
+    padding-top: 5rpx;
+    overflow:hidden;
+}
+
+.topic-left {
+    flex:1;
+}
+
+.node-name {
+    display: inline-block;
+    margin-right: 20rpx;
+    padding:5rpx 10rpx;
+    border-radius: 5rpx;
+    background-color: #eee;
+}
+
+.reply-num {
+    display: inline-block;
+    margin-left: 50rpx;
+    padding:10rpx;
+    height:22rpx;
+    background-color: #ddd;
+    border-radius: 5rpx;   
+    color:#777; 
+}
+
+.member-nickname {
+  color: #aaa;
+}
+
+
+/*表情show*/
+.ex-container{
+    display:flex;
+    flex-wrap: wrap;
+    width:100%;
+}
+.ex-item {
+    padding:10rpx;
+    /*border-bottom: 1px solid #eee;*/
+}
+
+.ex-box {
+  width: 120rpx;
+  height: 120rpx;
+  /*margin-right: 0rpx;*/
+  border-radius: 5%;
+  border: 1px solid #eee;
+}
+
+.ex-preview {
+    position: absolute;
+    width: 120px;
+    /*height: 48px;*/
+     /*margin:0 auto;*/
+    /*left:50px ;
+    right:0px;*/
+    background-color: #ddd;
+}
+
+.ex-preview-img {
+  width: 240rpx;
+    height: 240rpx;
+  margin-right: 20rpx;
+  border-radius: 5%;
+}
+.ex-preview-btn-show {
+    width: 64rpx;
+    height: 64rpx;
+    margin-right: 5rpx;
+    border-radius: 5%;
+    /*marg*/
+}
+.ex-preview-btn-word {
+    /*display: inline-block;*/
+    margin: 10rpx;
+    padding:2rpx 5rpx;
+    border-radius: 5rpx;
+    background-color: #eee;
+}
+/*.ex-preview-img {
+    width: 240rpx;
+    height: 240rpx;
+  
+    border-radius: 5%;
+    border: 1px solid #eee;
+}*/
