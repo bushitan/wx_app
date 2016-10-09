@@ -31,7 +31,7 @@
       </block>-->
       <view class="ex-container">
         <block wx:for="{{hotest}}">
-            <view class="ex-item" index="{{index}}" id="{{item.id}}" catchtap="redictEditor">
+            <view class="ex-item" index="{{index}}" id="{{item.id}}" catchtap="redict1Editor">
                 <image class="ex-box" src="{{item.member.avatar_normal}}" background-size="cover"></image>
             </view>
         </block>

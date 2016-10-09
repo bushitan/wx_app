@@ -13,8 +13,8 @@ Page({
     png:"http://120.27.97.33:91/static/mix/c.png",
     gif:"http://img0.imgtn.bdimg.com/it/u=288514605,1240644921&fm=21&gp=0.jpg",
     word_mix:"这次是踩死的节奏",
-    offsetLeft: "64px",
-    offsetTop: "203px",
+    offsetLeft: "64rpx",
+    offsetTop: "53rpx",
 
   },
 
@@ -22,15 +22,16 @@ Page({
 
   },
   x_sliderchange: function(e) {
-    offsetValue = e.detail.value + 44
+    // console.log(e.detail.value)
+    offsetValue = e.detail.value + 128
     globle_page.setData({
-      offsetLeft:offsetValue + "px",
+      offsetLeft:offsetValue + "rpx",
     })
   },
   y_sliderchange: function(e) {
-    offsetValue = e.detail.value + 163
+    offsetValue = e.detail.value 
     globle_page.setData({
-      offsetTop:offsetValue + "px",
+      offsetTop:offsetValue + "rpx",
     })
   },
 
@@ -102,8 +103,8 @@ Page({
 
     globle_page.setData({
     // isTrue : !this.data.isTrue,
-    offsetLeft:event.touches[0].clientX + "px",
-    offsetTop:event.touches[0].clientY + "px",
+    offsetLeft:event.touches[0].clientX + "rpx",
+    offsetTop:event.touches[0].clientY + "rpx",
     })
     // console.log("m:"+event.touches[0].clientX)
     // console.log("m:"+event.touches[0].clientY)

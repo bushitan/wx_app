@@ -22,7 +22,7 @@ Page({
       url: url
     })
   },
-  redictEditor: function(e) {
+  redict1Editor: function(e) {
     // var url = '../editor/editor';
     // console.log(url)
     // wx.navigateTo({
@@ -36,6 +36,7 @@ Page({
     var _isPreDisplay = true;
     if(global_page.data.menu_left == _left && global_page.data.menu_top == _top)
       _isPreDisplay = !global_page.data.isPreDisplay
+    console.log(_isPreDisplay)
     global_page.setData({
       isPreDisplay:_isPreDisplay,
       menu_left: e.currentTarget.offsetLeft-7 + "px",
