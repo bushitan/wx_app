@@ -1,5 +1,13 @@
 <!--latest.wxml-->
 <view class="container">
+
+  <view class="ex-item" index="" id="" >
+      <image class="ex-box" src="../../images/node_on.png" background-size="cover" style="border: 1px solid;   "></image>
+      <!--<view class="ex-box" src="../../images/node_on.png" background-size="cover" style="border: 1px solid;   ">拼接</view>-->
+  </view>
+  <view class="ex-item" index="" id="" >
+      
+  </view>
   <view class="topic-main">
       <!--<block wx:for="{{latest}}">
         <view class="topic-item" index="{{index}}" id="{{item.id}}" catchtap="redictDetail">

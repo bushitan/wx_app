@@ -1,7 +1,7 @@
 {
   "pages":[
-    "pages/hotest/hotest",
     "pages/latest/latest",
+    "pages/hotest/hotest",
     "pages/node/node",
     "pages/topicList/topicList",
     "pages/detail/detail",
@@ -22,7 +22,7 @@
     "borderStyle":"black",
     "list": [{
       "pagePath": "pages/hotest/hotest",
-      "text": "最新最热",
+      "text": "热图",
       "iconPath":"images/hotest.png",
       "selectedIconPath":"images/hotest_on.png"
     },{
