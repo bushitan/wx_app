@@ -28,3 +28,15 @@ App({
     userInfo:null
   }
 })
+
+// , {
+//       "pagePath": "pages/editor/editor",
+//       "text": "创作",
+//       "iconPath":"images/node.png",
+//       "selectedIconPath":"images/node_on.png"
+//     }, {
+//       "pagePath": "pages/manage/manage",
+//       "text": "审核",
+//       "iconPath":"images/board.png",
+//       "selectedIconPath":"images/board_on.png"
+//     }

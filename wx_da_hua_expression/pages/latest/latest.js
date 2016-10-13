@@ -7,17 +7,99 @@ Page({
     title: '最新话题',
     latest: [],
     hidden: false,
+    miniHidden:true,
+    treeHidden:true,
+    new_image:"../../images/node_on.png",
+    new_video:"http://wxsnsdy.tc.qq.com/105/20210/snsdyvideodownload?filekey=30280201010421301f0201690402534804102ca905ce620b1241b726bc41dcff44e00204012882540400&bizid=1023&hy=SH&fileparam=302c020101042530230204136ffd93020457e3c4ff02024ef202031e8d7f02030f42400204045a320a0201000400",
+
+    editorUrl:"", //预备编辑的图片
+  },
+
+  NavigateTo:function (e){
+    // url = '../search/search';
+    global_page.setData({
+      miniHidden: true
+    })
+    var _page = e.currentTarget .dataset.navigate;
+    var _url = '../' + _page + '/' + _page
+    wx.navigateTo({
+      url: _url
+    })
+  },
+
+  ShowTree : function() {
+    global_page.setData({
+      treeHidden: !global_page.data.treeHidden
+    })
+  },
+  ShowMiniBar:function() {
+    global_page.setData({
+      miniHidden: !global_page.data.miniHidden
+    })
+  },
+
+  ChooseImage:function() {
+    wx.chooseImage({
+      count: 1, // 默认9
+      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+      success: function (res) {
+        // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
+        var tempFilePaths = res.tempFilePaths
+        global_page.setData({
+          new_image: tempFilePaths
+        })
+      }
+    })
+  },
+  ChooseVideo : function() {
+      wx.chooseVideo({
+          sourceType: ['album','camera'],
+          maxDuration: 60,
+          camera: ['front','back'],
+          success: function(res) {
+              global_page.setData({
+                  new_video: res.tempFilePaths[0]
+              })
+          }
+      })
   },
   onPullDownRefresh: function () {
     this.fetchData();
     console.log('onPullDownRefresh', new Date())
   },
+
+  redict1Editor: function(e) {
+
+    //准备当前预备编辑的图片地址
+    global_page.setData({
+      editorUrl:e.currentTarget.dataset.imgurl
+    })
+
+    console.log(e)  
+    console.log(e.currentTarget.offsetLeft)  
+    console.log(e.currentTarget.offsetTop)  
+    var _left = e.currentTarget.offsetLeft-7 + "px";
+    var _top = e.currentTarget.offsetTop-12 + "px";
+    var _isPreDisplay = true;
+    if(global_page.data.menu_left == _left && global_page.data.menu_top == _top) //如果click在同一target，消失
+      _isPreDisplay = !global_page.data.isPreDisplay
+    console.log(_isPreDisplay)
+    
+    global_page.setData({
+      isPreDisplay:_isPreDisplay,
+      menu_left: e.currentTarget.offsetLeft-7 + "px",
+      menu_top: e.currentTarget.offsetTop-12 + "px",
+    })
+     
+
+  },
   // 事件处理函数
-  redictDetail: function(e) {
+  ToEditor: function(e) {
     // var id = e.currentTarget.id,
     //   url = '../detail/detail?id=' + id;
-   
-    var url = '../editor/editor';
+    
+    var url = '../editor/editor?imgurl=' + global_page.data.editorUrl;
     wx.navigateTo({
       url: url
     })

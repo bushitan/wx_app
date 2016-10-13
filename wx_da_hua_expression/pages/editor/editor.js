@@ -135,9 +135,12 @@ Page({
       }
     })
   },
-   onLoad: function () {
+   onLoad: function (options) {
+     
+    console.log(options.imgurl)
     this.setData({
-      hidden: false
+      hidden: false,
+      background:options.imgurl //更改背景图
     })
     globle_page = this
     // this.fetchData();

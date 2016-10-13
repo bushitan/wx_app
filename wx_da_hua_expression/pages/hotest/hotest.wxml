@@ -40,20 +40,20 @@
   <view class="ex-preview"  style="left:{{menu_left}};top:{{menu_top}};" wx:if="{{isPreDisplay}}">
     <!--<view class="topic-item" index="{{index}}" id="{{item.id}}" >   -->
 
-            <view class="topic-info">
-                <view class="topic-inner">
-                    <view class="topic-left">
-                        <view >
-                           <text class="ex-preview-btn-word">分享</text>  
-                           <text class="ex-preview-btn-word">收藏</text>
-                            <text class="ex-preview-btn-word">编辑</text>
-                            <text class="ex-preview-btn-word">拼接</text>
-                        </view>
+        <view class="topic-info">
+            <view class="topic-inner">
+                <view class="topic-left">
+                    <view >
+                    <text class="ex-preview-btn-word">分享</text>  
+                    <text class="ex-preview-btn-word">收藏</text>
+                        <text class="ex-preview-btn-word">编辑</text>
+                        <text class="ex-preview-btn-word">拼接</text>
                     </view>
-                    <!--<view class="reply-num">{{item.replies}}</view>-->
                 </view>
+                <!--<view class="reply-num">{{item.replies}}</view>-->
             </view>
         </view>
+    </view>
     <!--</view>-->
   <loading hidden="{{hidden}}">
     加载中...

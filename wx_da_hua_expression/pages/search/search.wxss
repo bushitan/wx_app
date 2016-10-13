@@ -1,0 +1,20 @@
+.bar {
+     height: 64rpx;
+    background-color: #373b3e;
+}
+.btn-content{
+    /*float:right ;*/
+}
+.btn-add {
+    width: 48rpx;
+    height: 48rpx;
+    margin-left: 120rpx;
+    margin-right: 32rpx;
+    float:left ;
+    /*background-color: #fa3;*/
+}
+.btn-input {
+    width:400rpx;
+    background-color: #fff;
+    float:left ;
+}

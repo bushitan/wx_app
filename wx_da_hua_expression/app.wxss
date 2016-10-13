@@ -6,6 +6,9 @@
   padding: 0;
   box-sizing: border-box;
   background-color: #ebebeb;
+
+  /*font: 14px/1.5em "Microsoft YaHei";*/
+  font: 13px "Microsoft YaHei";
 }
 
 .header {

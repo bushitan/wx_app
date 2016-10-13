@@ -1,24 +1,26 @@
 {
   "pages":[
     "pages/latest/latest",
+    "pages/search/search",
     "pages/hotest/hotest",
     "pages/node/node",
     "pages/topicList/topicList",
     "pages/detail/detail",
     "pages/manage/manage",
+    "pages/paint/paint",
     "pages/editor/editor"
   ],
   "window":{
     "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "#fff",
+    "navigationBarBackgroundColor": "#373b3e",
     "navigationBarTitleText": "大画表情",
-    "navigationBarTextStyle":"black",
+    "navigationBarTextStyle":"white",
     "enablePullDownRefresh":"true"
   },
   "tabBar": {
+    "backgroundColor":"#fcfcfc",
     "color":"#000",
     "selectedColor":"#56abe4",
-    "backgroundColor":"#fff",
     "borderStyle":"black",
     "list": [{
       "pagePath": "pages/hotest/hotest",
@@ -30,16 +32,8 @@
       "text": "私人图库",
       "iconPath":"images/latest.png",
       "selectedIconPath":"images/lastest_on.png"
-    }, {
-      "pagePath": "pages/editor/editor",
-      "text": "创作",
-      "iconPath":"images/node.png",
-      "selectedIconPath":"images/node_on.png"
-    }, {
-      "pagePath": "pages/manage/manage",
-      "text": "审核",
-      "iconPath":"images/board.png",
-      "selectedIconPath":"images/board_on.png"
     }]
   }
 }
+
+
