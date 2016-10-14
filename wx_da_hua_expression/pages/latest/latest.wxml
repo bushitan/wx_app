@@ -7,8 +7,12 @@
             <view class="leaf" style="border-bottom: 1px solid #1b1d20;">
                 <label class="a">全部</label>
             </view>
-            <view class="leaf">
+            <view class="leaf" style="border-bottom: 1px solid #1b1d20;">
                 <label>实打有的啊大师实</label>
+            </view>
+
+            <view class="leaf">
+                <label>+</label>
             </view>
         </view>
 
@@ -57,7 +61,7 @@
     <view class="menu"  style="left:{{menu_left}};top:{{menu_top}};" wx:if="{{isPreDisplay}}"  >
             <view class="top">分享</view>
             <view class="left" catchtap="ToEditor" >编辑</view>
-            <view class="right">拼接</view>
+            <view class="right" catchtap="ToGifJoin">拼接</view>
     </view>
   <loading hidden="{{hidden}}">
     加载中...

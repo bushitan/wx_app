@@ -7,5 +7,25 @@
         </view>
         
     </view>
+
+    <view >
+        <view class="type">
+            <label>作者热图：</label>
+            <label>描述</label>
+        <view>
+        <view class="type">
+            <label>作者热图：</label>
+            <label>描述</label>
+        <view>
+        <view class="type">
+            <label>作者热图：</label>
+            <label>描述</label>
+        <view>
+        <view class="type">
+            <label>作者热图：</label>
+            <label>描述</label>
+        <view>
+    </view>
+
 </view>
     

@@ -80,7 +80,7 @@ Page({
     console.log(e.currentTarget.offsetLeft)  
     console.log(e.currentTarget.offsetTop)  
     var _left = e.currentTarget.offsetLeft-7 + "px";
-    var _top = e.currentTarget.offsetTop-12 + "px";
+    var _top = e.currentTarget.offsetTop-7 + "px";
     var _isPreDisplay = true;
     if(global_page.data.menu_left == _left && global_page.data.menu_top == _top) //如果click在同一target，消失
       _isPreDisplay = !global_page.data.isPreDisplay
@@ -89,7 +89,7 @@ Page({
     global_page.setData({
       isPreDisplay:_isPreDisplay,
       menu_left: e.currentTarget.offsetLeft-7 + "px",
-      menu_top: e.currentTarget.offsetTop-12 + "px",
+      menu_top: e.currentTarget.offsetTop-7 + "px",
     })
      
 
@@ -104,6 +104,16 @@ Page({
       url: url
     })
   },
+  ToGifJoin: function(e) {
+    // var id = e.currentTarget.id,
+    //   url = '../detail/detail?id=' + id;
+    
+    var url = '../gif/gif?imgurl=' + global_page.data.editorUrl;
+    wx.navigateTo({
+      url: url
+    })
+  },
+
   fetchData: function() {
     var that = this;
     that.setData({

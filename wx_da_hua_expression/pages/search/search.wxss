@@ -18,3 +18,7 @@
     background-color: #fff;
     float:left ;
 }
+
+.type {
+    margin-top:12rpx; 
+}

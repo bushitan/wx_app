@@ -1,21 +1,22 @@
 {
   "pages":[
+    "pages/editor/editor",
     "pages/latest/latest",
+    "pages/gif/gif",
     "pages/search/search",
     "pages/hotest/hotest",
-    "pages/node/node",
     "pages/topicList/topicList",
     "pages/detail/detail",
     "pages/manage/manage",
     "pages/paint/paint",
-    "pages/editor/editor"
+    "pages/node/node"
   ],
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#373b3e",
     "navigationBarTitleText": "大画表情",
     "navigationBarTextStyle":"white",
-    "enablePullDownRefresh":"true"
+    "enablePullDownRefresh":"false"
   },
   "tabBar": {
     "backgroundColor":"#fcfcfc",
