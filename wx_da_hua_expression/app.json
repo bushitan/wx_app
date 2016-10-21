@@ -1,8 +1,8 @@
 {
   "pages":[
-    "pages/editor/editor",
     "pages/latest/latest",
     "pages/gif/gif",
+    "pages/editor/editor",
     "pages/search/search",
     "pages/hotest/hotest",
     "pages/topicList/topicList",

@@ -21,10 +21,10 @@
             <image class="btn-add" src="../../images/ic_action_add.png" background-size="cover" catchtap="ShowMiniBar"></image>
         </view>
         <view class="mini-bar" hidden="{{miniHidden}}">
-            <view class="mini-bar-content" style="border-bottom: 1px solid #1b1d20;"  catchtap="NavigateTo" data-navigate="paint">
+            <!--<view class="mini-bar-content" style="border-bottom: 1px solid #1b1d20;"  catchtap="NavigateTo" data-navigate="paint">
                 <image class="mini-btn" src="../../images/ic_action_edit.png" background-size="cover" ></image>
                 <label class="mini-text">手绘板</label>
-            </view>
+            </view>-->
             <view class="mini-bar-content" style="border-bottom: 1px solid #1b1d20;"  catchtap="ChooseImage">
                 <image class="mini-btn" src="../../images/ic_action_picture.png" background-size="cover" ></image>
                 <text class="mini-text">上传图片</text>

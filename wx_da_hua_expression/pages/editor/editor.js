@@ -143,6 +143,12 @@ Page({
       background:options.imgurl //更改背景图
     })
     globle_page = this
+
+    var appInstance = getApp()
+    console.log(appInstance.globalData)
+    // appInstance.setData({aa:321})
+    appInstance.globalData.aa = 1
+    console.log(appInstance.globalData)
     // this.fetchData();
     // this.fetchExpress()
   },
