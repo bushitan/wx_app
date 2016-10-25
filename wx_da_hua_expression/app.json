@@ -1,10 +1,10 @@
 {
   "pages":[
+    "pages/hotest/hotest",
     "pages/latest/latest",
     "pages/gif/gif",
     "pages/editor/editor",
     "pages/search/search",
-    "pages/hotest/hotest",
     "pages/topicList/topicList",
     "pages/detail/detail",
     "pages/manage/manage",
