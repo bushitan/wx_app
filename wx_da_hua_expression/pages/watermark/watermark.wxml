@@ -5,68 +5,45 @@
             <image class="bg-img" src="{{background}}" mode="aspectFit" ></image>
         </view>
     </view>
-    
-    <view>
-        <view>
-            <label class="layer-img" >第一行字</label>
-            <label class="layer-img" >double kill</label>
-            <image class="layer-img" src="{{png}}" mode="aspectFit" ></image>
-            <image class="layer-img" src="{{gif}}" mode="aspectFit" ></image>
-            
-        </view>
-        <view>
-            <switch class="layer-switch-input" checked bindchange="switch1Change" type="checkbox"/>
-            <switch class="layer-switch-input" checked bindchange="switch1Change" type="checkbox"/>
-            <switch class="layer-switch-input" checked bindchange="switch1Change" type="checkbox"/>
-            <switch class="layer-switch-input" checked bindchange="switch1Change" type="checkbox"/>
-        </view>
-    </view>
-    <button>一键编辑 </button>
-
     <view class="tool">
         <view class="tool-left">
+            <!--<view class="layer-content-input">-->
+                <input class="layer-input-input" value="{{word_mix}}"   />
+            <!--</view>-->
+                
+        </view>
+        <view>
+            <label>文字颜色</label><label class="color">#ffffff</label>
+            <label>背景颜色</label><label class="color">#ffffff</label>
+            <label>背景透明度</label><label class="color">60%</label>
             
-            <view class="layer-content-input">
-                <switch class="layer-switch-input" checked bindchange="switch1Change" type="checkbox"/>
-                <input class="layer-input-input" value="{{word_mix}}"   />
-            </view>
-
-            <view class="layer-content-input">
-                <switch class="layer-switch-input" checked bindchange="switch1Change" type="checkbox"/>
-                <input class="layer-input-input" value="{{word_mix}}"   />
-            </view>
-            <view class="layer-content">
-                <switch class="layer-switch" checked bindchange="switch1Change" type="checkbox"/>
-                <image class="layer-img" src="{{png}}" mode="aspectFit" ></image>
-            </view>
-            <view class="layer-content">
-                <switch class="layer-switch" checked bindchange="switch1Change" type="checkbox"/>
-                <image class="layer-img" src="{{gif}}" mode="aspectFit" ></image>
-            </view>
         </view>
         <view class="tool-right">
             <view class="section section_gap">
-                <text class="section_title">设置大小</text>
+                <text class="section_title">文字大小</text>
                 <view class="body-view">
                     <slider bindchange="size_sliderchange" show-value/>
                 </view>
                 </view>
 
                 <view class="section section_gap">
-                <text class="section_title">设置X坐标</text>
+                <text class="section_title">X坐标</text>
                 <view class="body-view">
                     <slider bindchange="x_sliderchange" min="0" max="500"  show-value/>
                 </view>
                 </view>
                 <view class="section section_gap">
-                <text class="section_title">设置Y坐标</text>
+                <text class="section_title">Y坐标</text>
                 <view class="body-view">
                     <slider bindchange="y_sliderchange" min="0" max="500" show-value/>
                 </view>
             </view>
         </view>
     </view>
+     
+    
     <view class="editor-btn">
+    <!--<button catchtap="editorSuccess">一键编辑 </button>-->
         <button class="" bindtap="editorCreate"> 一键生成 </button>
     </view>
 

@@ -45,6 +45,7 @@ App({
     userInfo:null,
     aa:"aa",
     url:"uuuuuuu",
+    editorSuccess:"",
   }
 })
 

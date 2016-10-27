@@ -1,5 +1,10 @@
 'use strict';
-var HOST_URI = 'https://www.v2ex.com/api/';
+// var HOST_URI = 'https://www.v2ex.com/api/';
+var HOST_URI = 'https://localhost/';
+var GET_TREE = 'picture/query/';
+function _getTree(){
+	return HOST_URI+GET_TREE;
+}
 
 // 获取节点
 // 所有的节点
@@ -55,6 +60,7 @@ function _getReplies(o){
 }
 
 module.exports = {
+	getTree:_getTree,
 	getAllNode: _getAllNode,
 	getNodeInfo: _getNodeInfo,
 	getLatestTopic: _getLatestTopic,

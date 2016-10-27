@@ -1,5 +1,6 @@
 // hotest.js
 var Api = require('../../utils/api.js');
+var View = require('../../utils/view.js');
 
 var global_page
 Page({
@@ -9,7 +10,7 @@ Page({
     hidden: false,
     menu_left: "0px",
     menu_top: "50px",
-    isPreDisplay:false,
+    isPreDisplay:true,
   },
   // 事件处理函数
   redictDetail: function(e) {
@@ -221,7 +222,21 @@ Page({
   },
 
   onLoad: function () {
-    
+
+    //  hidden: false,
+    // menu_left: "0px",
+    // menu_top: "50px",
+    // isPreDisplay:false,
+    var _view = {
+      hidden:true,
+      isPreDisplay:false
+    }
+    View.Switch.Init(this,_view)
+    // Switch.View.DisplayAll()
+    View.Switch.On("hidden","isPreDisplay")
+    View.Switch.Work()
+
+    console.log(this.data.isPreDisplay)
     global_page = this
     this.setData({
       hidden: false

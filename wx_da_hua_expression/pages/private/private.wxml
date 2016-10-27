@@ -1,9 +1,9 @@
 <!--latest.wxml-->
 <view class="container">
     <view class="bar" >
-        <view class="bar-tree" catchtap="ShowTree">目录</view>
+        <!--<view class="bar-tree" catchtap="switchTree">目录</view>
 
-        <view class="tree" hidden="{{treeHidden}}">
+        <view class="tree" wx:if="{{treeHidden}}">
             <view class="leaf" style="border-bottom: 1px solid #1b1d20;">
                 <label class="a">全部</label>
             </view>
@@ -14,22 +14,22 @@
             <view class="leaf">
                 <label>+</label>
             </view>
-        </view>
+        </view>-->
 
         <view class="btn-content">
-            <image class="btn-add" src="../../images/ic_action_search.png" background-size="cover" catchtap="NavigateTo" data-navigate="search"></image>
-            <image class="btn-add" src="../../images/ic_action_add.png" background-size="cover" catchtap="ShowMiniBar"></image>
+            <!--<image class="btn-add" src="../../images/ic_action_search.png" background-size="cover" catchtap="NavigateTo" data-navigate="search"></image>-->
+            <image class="btn-add" src="../../images/ic_action_add.png" background-size="cover" catchtap="switchMiniBar"></image>
         </view>
-        <view class="mini-bar" hidden="{{miniHidden}}">
+        <view class="mini-bar" wx:if="{{miniHidden}}">
             <!--<view class="mini-bar-content" style="border-bottom: 1px solid #1b1d20;"  catchtap="NavigateTo" data-navigate="paint">
                 <image class="mini-btn" src="../../images/ic_action_edit.png" background-size="cover" ></image>
                 <label class="mini-text">手绘板</label>
             </view>-->
-            <view class="mini-bar-content" style="border-bottom: 1px solid #1b1d20;"  catchtap="ChooseImage">
+            <view class="mini-bar-content" style="border-bottom: 1px solid #1b1d20;"  catchtap="chooseImage">
                 <image class="mini-btn" src="../../images/ic_action_picture.png" background-size="cover" ></image>
                 <text class="mini-text">上传图片</text>
             </view>
-            <view class="mini-bar-content" catchtap="ChooseVideo">
+            <view class="mini-bar-content" catchtap="chooseVideo">
                 <image class="mini-btn" src="../../images/ic_action_video.png" background-size="cover" ></image>
                 <text class="mini-text">小视频->GIF</text>
             </view>
@@ -39,11 +39,11 @@
     </view>
     
 
-    <view class="ex-item" index="" id="" >
+    <!--<view class="ex-item" index="" id="" >
         <image class="ex-box" src="{{new_image}}" background-size="cover" style="border: 1px solid;   "></image>
         
         <video  src="{{new_video}}" background-size="cover" style="border: 1px solid;  margin-left:20rpx; width:500rpx; height:200rpx;"></video>
-    </view>
+    </view>-->
   <!--<view class="ex-item" index="" id="" >-->
   <!--</view>-->
 
@@ -52,7 +52,7 @@
         <block wx:for="{{latest}}">
             <view class="ex-item" index="{{index}}" id="{{item.id}}">
                     <image class="ex-box" src="{{item.member.avatar_normal}}" background-size="cover"  
-                    catchtap="redict1Editor" data-imgurl="{{item.member.avatar_normal}}"></image>
+                    catchtap="switchFirstMenu" data-imgurl="{{item.member.avatar_normal}}"></image>
             </view>
         </block>
         </view>
@@ -60,8 +60,8 @@
   
     <view class="menu"  style="left:{{menu_left}};top:{{menu_top}};" wx:if="{{isPreDisplay}}"  >
             <view class="top">分享</view>
-            <view class="left" catchtap="ToEditor" >编辑</view>
-            <view class="right" catchtap="ToGifJoin">拼接</view>
+            <view class="left" catchtap="navigateToEditor" >编辑</view>
+            <view class="right" catchtap="navigateToJoin">拼接</view>
     </view>
   <loading hidden="{{hidden}}">
     加载中...

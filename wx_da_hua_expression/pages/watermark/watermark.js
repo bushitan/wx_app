@@ -1,6 +1,6 @@
 // editor.js
 var Api = require('../../utils/api.js');
-
+var app = getApp()
 var globle_page
 Page({
   data: {
@@ -17,7 +17,14 @@ Page({
     offsetTop: "53rpx",
 
   },
-
+  editorSuccess:function (){
+    var _url = '../private/private?editorSucess=http://alinode-assets.oss-cn-hangzhou.aliyuncs.com/4be39e00-c83b-4f8e-b4e2-76f70b009b1a.jpeg';
+    // wx.redirectTo({
+    //   url: _url
+    // })
+    app.globalData['editorSuccess']="http://alinode-assets.oss-cn-hangzhou.aliyuncs.com/4be39e00-c83b-4f8e-b4e2-76f70b009b1a.jpeg"
+    wx.navigateBack( )
+  },
   size_sliderchange: function(e) {
 
   },

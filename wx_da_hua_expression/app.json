@@ -1,15 +1,9 @@
 {
   "pages":[
-    "pages/hotest/hotest",
-    "pages/latest/latest",
-    "pages/gif/gif",
-    "pages/editor/editor",
-    "pages/search/search",
-    "pages/topicList/topicList",
-    "pages/detail/detail",
-    "pages/manage/manage",
-    "pages/paint/paint",
-    "pages/node/node"
+    "pages/private/private",
+    "pages/watermark/watermark",
+    "pages/public/public",
+    "pages/join/join"
   ],
   "window":{
     "backgroundTextStyle":"light",
@@ -24,12 +18,12 @@
     "selectedColor":"#56abe4",
     "borderStyle":"black",
     "list": [{
-      "pagePath": "pages/hotest/hotest",
+      "pagePath": "pages/public/public",
       "text": "热图",
       "iconPath":"images/hotest.png",
       "selectedIconPath":"images/hotest_on.png"
     },{
-      "pagePath": "pages/latest/latest",
+      "pagePath": "pages/private/private",
       "text": "私人图库",
       "iconPath":"images/latest.png",
       "selectedIconPath":"images/lastest_on.png"
