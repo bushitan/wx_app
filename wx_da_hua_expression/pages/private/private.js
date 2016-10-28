@@ -14,6 +14,20 @@ Page({
     treeHidden:false,
     
     editorUrl:"", //预备编辑的图片
+
+    joinStep:1,
+    joinFirstImg:"../../images/gif_in_1.gif",
+    joinSecondeImg:"../../images/gif_in_2.gif",
+
+    resize_success:[
+      {img:"../../images/gif_in_1.gif",text:"大图"},
+      {img:"../../images/gif_in_2.gif",text:"小图"},
+      {img:"../../images/gif_in_1.gif",text:"大图"},
+      {img:"../../images/gif_in_2.gif",text:"小图"},
+    ],
+
+    categoryTitle:"全部",
+    category:["类别1","类别2","类别3"],
     
   },
   
@@ -22,6 +36,12 @@ Page({
     global_page.setData({
       treeHidden: !global_page.data.treeHidden
     })
+  },
+  categoryChoose :function(e){
+    global_page.setData({
+      categoryTitle:e.currentTarget.dataset.category
+    })
+    
   },
   //点击“+”开关
   switchMiniBar:function() {
@@ -52,8 +72,6 @@ Page({
       menu_left: e.currentTarget.offsetLeft-7 + "px",
       menu_top: e.currentTarget.offsetTop-7 + "px",
     })
-     
-
   },
   //选择图片
   chooseImage:function() {
@@ -84,22 +102,95 @@ Page({
       })
   },
 
- 
+  //菜单 gif拼接
+  menuJoinAdd:function(){
+    console.log()
+    if(global_page.data.joinStep == 1)
+    {
+      global_page.setData({ 
+         joinFirstImg:global_page.data.editorUrl,
+         joinStep:2
+      }) 
+      return
+    }
+      
+    if(global_page.data.joinStep == 2)
+    {
+      global_page.setData({ 
+         joinSecondeImg:global_page.data.editorUrl,
+        joinStep:1 
+      }) 
+      return
+    }
+      
+   
+  },
 
- 
+  //拼接确认
+  menuJoinOK:function(){
+    if ( global_page.data.joinFirstImg == global_page.data.joinSecondeImg )
+    {
+      wx.showToast({
+        title: '不能拼接相同的表情',
+        icon: 'loading',
+        duration: 2000
+      })
 
+      return
+    }
+    var _tempList = this.data.latest
+      _tempList.unshift(
+        {
+          member:{
+            "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
+            "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
+            "avatar_normal":"../../images/gif_out.gif"
+          }
+        }
+      );
+      // console.log(_editorData)
+      this.setData({latest:_tempList})
+  },
+  
+  //裁剪
+  menuResize:function(){
+    var _tempList = this.data.resize_success
+    if (_tempList.length == 4) //大于4张，从第一格顶替
+      _tempList.pop()
+    _tempList.unshift(
+       {img:global_page.data.editorUrl , text:"大图"},
+    )
+    this.setData({resize_success:_tempList})
+  },
 
-  // onShow:function()
-  // {
-  //   var appInstance = getApp()
-  //   console.log(appInstance.globalData)
-  //   appInstance.test_fetch(global_page)
-  // },
-  // testCallBack:function(){
-  //   console.log(global_page.data.latest)
-  //   global_page.setData({latest:[]})
-  //   console.log(global_page.data.latest)
-  // },
+  //裁剪后，收藏
+  menuResizeAdd:function(e){
+    var img = e.currentTarget.dataset.imgurl
+    var _tempList = this.data.latest
+      _tempList.unshift({
+          member:{"avatar_normal":img
+          }
+      });
+      // console.log(_editorData)
+      this.setData({latest:_tempList})
+  },
+
+  //菜单，删除
+  menuDelete:function(){
+    wx.showModal({
+      title: '是否删除表情',
+      // content: '是否删除表情',
+      success: function(res) {
+        if (res.confirm) {
+          console.log('用户点击确定')
+        }
+      }
+    })
+  },
+
+  menuCategory:function(){
+
+  },
 
   onShow: function() {
     console.log(app.globalData.editorSuccess)

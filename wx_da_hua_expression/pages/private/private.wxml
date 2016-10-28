@@ -1,20 +1,23 @@
 <!--latest.wxml-->
 <view class="container">
     <view class="bar" >
-        <!--<view class="bar-tree" catchtap="switchTree">目录</view>
+        <view class="bar-tree" catchtap="switchTree">{{categoryTitle}}</view>
 
         <view class="tree" wx:if="{{treeHidden}}">
-            <view class="leaf" style="border-bottom: 1px solid #1b1d20;">
+             <view  class="leaf" style="border-bottom: 1px solid #1b1d20;"
+             catchtap="categoryChoose" data-category="全部">
                 <label class="a">全部</label>
             </view>
-            <view class="leaf" style="border-bottom: 1px solid #1b1d20;">
-                <label>实打有的啊大师实</label>
-            </view>
-
+            <block wx:for="{{category}}">
+                <view class="leaf" style="border-bottom: 1px solid #1b1d20;"
+                catchtap="categoryChoose" data-category="{{item}}">
+                    <label class="a">{{item}}</label>
+                </view>
+            </block>
             <view class="leaf">
                 <label>+</label>
             </view>
-        </view>-->
+        </view>
 
         <view class="btn-content">
             <!--<image class="btn-add" src="../../images/ic_action_search.png" background-size="cover" catchtap="NavigateTo" data-navigate="search"></image>-->
@@ -38,14 +41,32 @@
         </view>
     </view>
     
+    <view class="join">
+        <view class="content" >
+            <image class="img" src="{{joinFirstImg}}"></image>
+            <image class="mark" src="../../images/gif_jia.png"></image>
+            <image class="img"  src="{{joinSecondeImg}}"></image>
+        </view>
+        <button catchtap="menuJoinOK"> GIF拼接 </button>
+    </view>
 
-    <!--<view class="ex-item" index="" id="" >
-        <image class="ex-box" src="{{new_image}}" background-size="cover" style="border: 1px solid;   "></image>
-        
-        <video  src="{{new_video}}" background-size="cover" style="border: 1px solid;  margin-left:20rpx; width:500rpx; height:200rpx;"></video>
-    </view>-->
-  <!--<view class="ex-item" index="" id="" >-->
-  <!--</view>-->
+    <view class="resize">
+        <view class="content" >
+            <block wx:for="{{resize_success}}">
+                <view  index="{{index}}" id="{{item.id}}">
+                    <view><text>{{item.text}}</text></view>
+                    <view><image src="{{item.img}}"></image></view>
+                    <view>
+                        <button  size="mini" data-imgurl="{{item.img}}">分享</button>
+                    </view>
+                    <view>
+                        <button catchtap="menuResizeAdd" size="mini" data-imgurl="{{item.img}}">收藏</button>
+                    </view>
+                </view>
+            </block>
+        </view>
+    </view>
+    
 
     <view class="topic-main">
         <view class="ex-container">
@@ -61,8 +82,13 @@
     <view class="menu"  style="left:{{menu_left}};top:{{menu_top}};" wx:if="{{isPreDisplay}}"  >
             <view class="top">分享</view>
             <view class="left" catchtap="navigateToEditor" >编辑</view>
-            <view class="right" catchtap="navigateToJoin">拼接</view>
+            <view class="right" catchtap="menuJoinAdd">拼接</view>
+            <view class="bottom" catchtap="menuDelete">删除</view>
+            <view class="bottom-right" catchtap="menuJoinAdd">分类</view>
+            <view class="bottom-left" catchtap="menuResize">裁剪</view>
     </view>
+
+  
   <loading hidden="{{hidden}}">
     加载中...
   </loading>

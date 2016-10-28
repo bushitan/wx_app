@@ -1,8 +1,9 @@
 {
   "pages":[
     "pages/private/private",
-    "pages/watermark/watermark",
     "pages/public/public",
+    "pages/category/category",
+    "pages/watermark/watermark",
     "pages/join/join"
   ],
   "window":{

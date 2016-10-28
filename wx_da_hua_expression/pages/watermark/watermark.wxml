@@ -8,34 +8,34 @@
     <view class="tool">
         <view class="tool-left">
             <!--<view class="layer-content-input">-->
-                <input class="layer-input-input" value="{{word_mix}}"   />
+                <input class="layer-input-input"  value="{{word_mix}}" bindinput="inputChange"  />
             <!--</view>-->
                 
         </view>
-        <view>
+        <!--<view>
             <label>文字颜色</label><label class="color">#ffffff</label>
             <label>背景颜色</label><label class="color">#ffffff</label>
             <label>背景透明度</label><label class="color">60%</label>
             
-        </view>
+        </view>-->
         <view class="tool-right">
             <view class="section section_gap">
                 <text class="section_title">文字大小</text>
                 <view class="body-view">
-                    <slider bindchange="size_sliderchange" show-value/>
+                    <slider bindchange="size_sliderchange" value="47" min="8" max="96" show-value/>
                 </view>
                 </view>
 
                 <view class="section section_gap">
                 <text class="section_title">X坐标</text>
                 <view class="body-view">
-                    <slider bindchange="x_sliderchange" min="0" max="500"  show-value/>
+                    <slider bindchange="x_sliderchange" value="195" min="0" max="500"  show-value/>
                 </view>
                 </view>
                 <view class="section section_gap">
                 <text class="section_title">Y坐标</text>
                 <view class="body-view">
-                    <slider bindchange="y_sliderchange" min="0" max="500" show-value/>
+                    <slider bindchange="y_sliderchange" value="425"  min="0" max="500" show-value/>
                 </view>
             </view>
         </view>
@@ -47,12 +47,10 @@
         <button class="" bindtap="editorCreate"> 一键生成 </button>
     </view>
 
-    <view id="input_view" style="position:absolute;left:{{offsetLeft}};top:{{offsetTop}};" 
-    catchtouchstart="touchstart" 
-    catchtouchmove="touchmove"
-    catchtouchend="touchend">
+    <view id="input_view" style="position:absolute;left:{{offsetLeft}};top:{{offsetTop}};" >
     <!--输入的字-->
-        <input  id="myInput" bindchange="word_Change" value="{{word_mix}}"   />
+        <view style="font-size:{{font_size}};">{{word_mix}}</view>
+        <!--<input  id="myInput" bindchange="word_Change" value="{{word_mix}}"   />-->
     </view>
     <modal title="你的表情" class="modal" hidden="{{express_ModalHidden}}"
         confirm-text="一键分享" bindconfirm="modalShare"  

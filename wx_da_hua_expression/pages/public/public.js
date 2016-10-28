@@ -242,6 +242,10 @@ Page({
       hidden: false
     })
     // this.fetchData();
+    
+  },
+
+  onReady:function(){
     this.fetchExpress()
   }
 })
