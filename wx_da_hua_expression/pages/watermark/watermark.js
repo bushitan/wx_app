@@ -1,6 +1,7 @@
 // editor.js
-var Api = require('../../utils/api.js');
+// var Api = require('../../utils/api.js');
 var app = getApp()
+var Menu = require('../../utils/menu.js');
 var globle_page
 Page({
   data: {
@@ -55,71 +56,34 @@ Page({
     })
   },
 
-  //生成表情，打开模态框
+  /**
+   * 根据水印数据(watermarkData)，上传后台合成
+   * 成功，打开模态框，显示图片
+   * 收藏成功，跳转至private，显示
+   */
   editorCreate: function(e) {
-
     var _word = globle_page.data.word_mix
     var _x = parseInt(globle_page.data.offsetLeft.replace("px,","")) *3 ;
     var _y = parseInt(globle_page.data.offsetTop.replace("px,","")) * 3;
-    
-    wx.request({
-      url: 'http://120.27.97.33/grid/api/wx/image_mix',
-      // method:"POST",
-      data: {
+    var watermarkData =  {
         bg_img: 'img_word.jpg' ,
         word: _word,
         size: 100,
         x: _x,
         y:_y
-      },
-      header: {
-          // 'Content-Type': 'application/json'
-      },
-      success: function(res) {
-        console.log(res.data)
-        // that.data.bg_img = "http://192.168.200.100:8000/"+ res.data
-        globle_page.setData({
-          express_mix:"http://120.27.97.33/"+ res.data,
-          editorSuccess:"http://120.27.97.33/"+ res.data
-        })
+      }
+    Menu.Option.EditorWatermark(watermarkData,globle_page.editorSuccess)
+  },
 
-        // 显示模态框
-        globle_page.setData({
+  //编辑成功，显示模态框,显示图片
+  editorSuccess:function(imgUrl){
+    globle_page.setData({
+          express_mix:imgUrl,
+          editorSuccess:imgUrl,
           express_ModalHidden: false
         })
-        console.log("http://120.27.97.33/"+ res.data)
-      }
-    })
-
-
-      // let url = "http://120.27.97.33:91/grid/api/wx/image_mix"
-      // let formData = new FormData();
-      // formData.append("name","admin");
-      // formData.append("password","admin123");
-    
-      // fetch(url , {
-      //   method: 'POST',
-      //   headers: {},
-      //   body: formData,
-      // }).then((response) => {
-      //   if (response.ok) {
-      //       return response.json();
-      //   }
-      // }).then((json) => {
-      //   alert(JSON.stringify(json));
-        
-      // }).catch((error) => {
-      //   console.error(error);
-      //   //设置图片
-      //   globle_page.setData({
-      //     express_mix:"http://120.27.97.33:91/"+ res.data
-      //   })
-      //   // 显示模态框
-      //   globle_page.setData({
-      //     express_ModalHidden: false
-      //   })
-      // });
   },
+
   //模态框，分享链接
   modalShare: function(e) {
     app.globalData['editorSuccess']=globle_page.data.editorSuccess

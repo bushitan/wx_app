@@ -1,4 +1,7 @@
-// 页面隐藏开关
+/* view.js  公共类
+    页面显示/隐藏  
+ */ 
+
 var _switch = {
     page:"",
     view:{},

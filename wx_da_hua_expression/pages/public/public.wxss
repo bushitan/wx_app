@@ -1,55 +1,41 @@
+/*public.wxss*/
 
-.gooditem{
-    width:25%;
+.shortcut {
+    
+}
+
+.shortcut .content{
     display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    font-size:12px;
-    box-sizing:border-box;
-    border: 0.5px solid #e2e2e3;
-    padding-bottom:10px
+    flex-wrap: wrap;
+    width:100%;
+    padding: 10rpx;
+}
+.shortcut .phrase{
+    background-color: gainsboro;
+    margin: 10rpx;
+    padding: 2rpx;
+    border-radius: 5rpx;
+    -moz-box-shadow: 0px 0px 5px #000000;
+    -webkit-box-shadow: 0px 0px 5px #000000;
+    box-shadow: 0px 0px 5px #000000;
 }
 
-.meun-input-search{
-    width: 64px;
-    margin-left:4px; 
-    border: 1px solid;    
-}
-.meun-btn-search{
-    width: 128px;
-    /*margin-left:4px; */
-    border: 1px solid;    
-}
-.meun-label{
-    margin-left:4px; 
-    border: 1px solid;    
-}
-
-.bar {
+.search {
      height: 64rpx;
     background-color: #373b3e;
 }
 
-
-.btn-content{
-    /*float:right ;*/
-}
-.btn-add {
+.search .btn {
     width: 48rpx;
     height: 48rpx;
     
     float:left ;
     /*background-color: #fa3;*/
 }
-.btn-input {
+.search .input {
     width:400rpx;
     margin-left: 120rpx;
     margin-right: 32rpx;
     background-color: #fff;
     float:left ;
-}
-
-.type {
-    margin-top:12rpx; 
 }

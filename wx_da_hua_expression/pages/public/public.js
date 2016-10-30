@@ -1,69 +1,77 @@
 // hotest.js
 var Api = require('../../utils/api.js');
 var View = require('../../utils/view.js');
+var Menu = require('../../utils/menu.js');
 
 var global_page
 Page({
   data: {
     title: '最热话题',
-    hotest: [],
     hidden: false,
-    menu_left: "0px",
-    menu_top: "50px",
+    menu_left: "0rpx",
+    menu_top: "50rpx",
     isPreDisplay:true,
-  },
-  // 事件处理函数
-  redictDetail: function(e) {
-    var id = e.currentTarget.id,
-      // url = '../detail/detail?id=' + id;
-      url = '../detail/detail';
 
-      
-    wx.navigateTo({
-      url: url
-    })
+    keyword:"我擦", //搜索关键字
+
+    editorUrl:"",
+    
+    hotest: [],
+    hotLabel:["金馆长","我想静静","意外","疼！"],
   },
-  redict1Editor: function(e) {
-    // var url = '../editor/editor';
-    // console.log(url)
-    // wx.navigateTo({
-    //   url: url
-    // })
-    console.log(e)  
-    console.log(e.currentTarget.offsetLeft)  
-    console.log(e.currentTarget.offsetTop)  
+
+  //Page:public 的函数
+  callBack:function(imgUrl){
+    global_page.setData({hotest:imgUrl})
+  },
+
+  /**
+   * 根据keywordd ，搜索
+   */
+  searchBtn:function(){
+    //Todo 搜索信息
+    //  刷新 hotest  hotLabel  连个参数
+    var _keyword = global_page.data.keyword
+    Menu.Option.GetPictureHot(_keyword,global_page.callBack)
+
+  },
+
+  searchShortcut:function(e){
+    
+    global_page.setData({
+      keyword:e.currentTarget.dataset.keyword
+    })
+    global_page.searchBtn();
+
+  },
+  switchFirstMenu: function(e) {
+
+    //准备当前预备编辑的图片地址
+    global_page.setData({
+      editorUrl:e.currentTarget.dataset.imgurl
+    })
+    
+    console.log(e.currentTarget.dataset.imgurl)
+    console.log(global_page.data.editorUrl)
     var _left = e.currentTarget.offsetLeft-7 + "px";
-    var _top = e.currentTarget.offsetTop-12 + "px";
+    var _top = e.currentTarget.offsetTop-7 + "px";
     var _isPreDisplay = true;
-    if(global_page.data.menu_left == _left && global_page.data.menu_top == _top)
+    if(global_page.data.menu_left == _left && global_page.data.menu_top == _top) //如果click在同一target，消失
       _isPreDisplay = !global_page.data.isPreDisplay
-    console.log(_isPreDisplay)
+      
     global_page.setData({
       isPreDisplay:_isPreDisplay,
       menu_left: e.currentTarget.offsetLeft-7 + "px",
-      menu_top: e.currentTarget.offsetTop-12 + "px",
+      menu_top: e.currentTarget.offsetTop-7 + "px",
     })
-     
-
   },
-  fetchData: function() {
-    var that = this;
-    wx.request({
-      url: Api.getHotestTopic({
-        p: null
-      }),
-      success: function(res) {
-        console.log(res);
-        that.setData({
-          hotest: res.data
-        })
-        setTimeout(function() {
-          that.setData({
-            hidden: true
-          })
-        }, 300)
-      }
-    })
+
+  //图片分享
+  menuShare:function(){
+    Menu.Option.Share( global_page.data.editorUrl )
+  },
+  menuCollect:function(){
+    Menu.Option.Collect( global_page.data.editorUrl )
   },
 
   fetchExpress:function() {
@@ -223,17 +231,12 @@ Page({
 
   onLoad: function () {
 
-    //  hidden: false,
-    // menu_left: "0px",
-    // menu_top: "50px",
-    // isPreDisplay:false,
     var _view = {
       hidden:true,
       isPreDisplay:false
     }
     View.Switch.Init(this,_view)
-    // Switch.View.DisplayAll()
-    View.Switch.On("hidden","isPreDisplay")
+    View.Switch.Off("hidden","isPreDisplay")
     View.Switch.Work()
 
     console.log(this.data.isPreDisplay)
@@ -241,7 +244,6 @@ Page({
     this.setData({
       hidden: false
     })
-    // this.fetchData();
     
   },
 

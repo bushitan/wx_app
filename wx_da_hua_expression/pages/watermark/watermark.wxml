@@ -53,7 +53,7 @@
         <!--<input  id="myInput" bindchange="word_Change" value="{{word_mix}}"   />-->
     </view>
     <modal title="你的表情" class="modal" hidden="{{express_ModalHidden}}"
-        confirm-text="一键分享" bindconfirm="modalShare"  
+        confirm-text="收藏" bindconfirm="modalShare"  
         cancel-text="重新编辑"  bindcancel="modalReEditor"
         >
         <view >

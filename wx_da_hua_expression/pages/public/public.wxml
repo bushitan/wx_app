@@ -1,65 +1,43 @@
-<!--hotest.wxml-->
+<!--public.wxml-->
 <view class="container">
-    <!--<view style="flex-direction:row;">
-        <input placeholder="表情专栏搜索" focus="{{focus}}" maxlength="30"  />
-        <button class="meun-btn-search">搜索</button>
-    </view>-->
-     <view class="bar" >
-        <view class="btn-content">
-            <input class="btn-input" 	placeholder="热图、丰兄" />
-            <image class="btn-add" src="../../images/ic_action_search.png" background-size="cover" ></image>
+    <!--搜索栏-->
+     <view class="search" >
+        <view >
+            <input class="input" 	placeholder="热图、丰兄" value="{{keyword}}"/>
+            <image class="btn" src="../../images/ic_action_search.png" background-size="cover" catchtap="searchBtn" ></image>
         </view>
         
     </view>
-    <view style="flex-direction:row;">
-        <label class="meun-label">热门</label>
-        <label class="meun-label">金馆长</label>
-        <label class="meun-label">好污</label>
-        <label class="meun-label">小清清</label>
-        <label class="meun-label">我想静静</label>
-    </view>
-  <view class="topic-main">
-      <!--<block wx:for="{{hotest}}">
-        <view class="topic-item" index="{{index}}" id="{{item.id}}" catchtap="redictDetail">
-            <image class="member-avatar" src="{{item.member.avatar_normal}}" background-size="cover"></image>
-            <view class="topic-info">
-                <view class="topic-inner">
-                    <view class="topic-left">
-                        <view class="topic-title"><text>{{item.title}}</text></view>
-                        <view >
-                            <text class="node-name">{{item.node.name}}</text>
-                            <text class="member-nickname">{{item.member.username}}</text>
-                        </view>
-                    </view>
-                    <view class="reply-num">{{item.replies}}</view>
+    <!--短语快捷键-->
+    <view class="shortcut">
+        <view class="content" >
+            <block wx:for="{{hotLabel}}">
+                <view  index="{{index}}" id="{{item.id}}">
+                    <view><label class="phrase" catchtap="searchShortcut" data-keyword="{{item}}">{{item}}</label></view>
                 </view>
-            </view>
+            </block>
         </view>
-      </block>-->
-      <view class="ex-container">
+    </view>
+    <!--表情图-->
+  <view class="emoticon">
+      <view class="content">
         <block wx:for="{{hotest}}">
-            <view class="ex-item" index="{{index}}" id="{{item.id}}" catchtap="redict1Editor">
-                <image class="ex-box" src="{{item.member.avatar_normal}}" background-size="cover"></image>
+            <view class="member" >
+                <image class="image-5" src="{{item.member.avatar_normal}}" background-size="cover" 
+                catchtap="switchFirstMenu" data-imgurl="{{item.member.avatar_normal}}"></image>
             </view>
         </block>
       </view>
   </view>
-  <view class="ex-preview"  style="left:{{menu_left}};top:{{menu_top}};" wx:if="{{isPreDisplay}}">
-    <!--<view class="topic-item" index="{{index}}" id="{{item.id}}" >   -->
-
-        <view class="topic-info">
-            <view class="topic-inner">
-                <view class="topic-left">
-                    <view >
-                    <text class="ex-preview-btn-word">分享</text>  
-                    <text class="ex-preview-btn-word">收藏</text>
-                        <text class="ex-preview-btn-word">编辑</text>
-                        <text class="ex-preview-btn-word">拼接</text>
-                    </view>
-                </view>
-                <!--<view class="reply-num">{{item.replies}}</view>-->
-            </view>
-        </view>
+ 
+    <!--悬浮菜单-->
+    <view class="menu"  style="left:{{menu_left}};top:{{menu_top}};" wx:if="{{isPreDisplay}}"  >
+            <view class="top" catchtap="menuShare">分享</view>
+            <view class="left" catchtap="menuCollect" >收藏</view>
+            <!--<view class="right" catchtap="menuJoinAdd">拼接</view>
+            <view class="bottom" catchtap="menuDelete">删除</view>
+            <view class="bottom-right" catchtap="menuJoinAdd">分类</view>
+            <view class="bottom-left" catchtap="menuResize">裁剪</view>-->
     </view>
     <!--</view>-->
   <loading hidden="{{hidden}}">

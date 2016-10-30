@@ -3,6 +3,7 @@
     "pages/private/private",
     "pages/public/public",
     "pages/category/category",
+    "pages/category/category",
     "pages/watermark/watermark",
     "pages/join/join"
   ],

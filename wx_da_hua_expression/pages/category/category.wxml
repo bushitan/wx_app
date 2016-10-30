@@ -1,0 +1,17 @@
+<!--category.wxml-->
+
+<view class="container">
+    <view class="category"> 
+        <block wx:for="{{myCategory}}">
+        <view class="content"> 
+            <label><text>{{index+1}}:</text></label>   
+            <input placeholder="这是一个可以自动聚焦的input" auto-focus value="{{item.name}}" /> 
+            <icon type="cancel" size="28" catchtap="deleteCategory" data-index="{{index}}"/> 
+        </view>
+        </block>
+        
+        
+        <view><button catchtap="addCategory">增加目录</button></view>
+        <view><button catchtap="fixCategory">确认修改</button></view>
+    </view>
+</view>

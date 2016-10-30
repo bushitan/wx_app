@@ -1,6 +1,7 @@
 // latest.js
 var Api = require('../../utils/api.js');
 var View = require('../../utils/view.js');
+var Menu = require('../../utils/menu.js');
 
 var app = getApp()
 var global_page
@@ -14,6 +15,8 @@ Page({
     treeHidden:false,
     
     editorUrl:"", //预备编辑的图片
+    menu_left: "0rpx",
+    menu_top: "50rpx",
 
     joinStep:1,
     joinFirstImg:"../../images/gif_in_1.gif",
@@ -32,34 +35,105 @@ Page({
   },
   
   //点击“目录”开关
-  switchTree : function() {
+  categoryBtn : function() {
     global_page.setData({
       treeHidden: !global_page.data.treeHidden
     })
   },
-  categoryChoose :function(e){
+
+  categoryChange :function(e){
     global_page.setData({
       categoryTitle:e.currentTarget.dataset.category
     })
-    
   },
   //点击“+”开关
-  switchMiniBar:function() {
+  uploadBtn:function() {
     global_page.setData({
       miniHidden: !global_page.data.miniHidden
     })
   },
+  //上传图片
+  uploadImage:function() {
+    Menu.Option.ChooseImage(global_page.uploadSuccess)
+  },
+  
+  //选择视频
+  uploadVideo : function() {
+    Menu.Option.ChooseVideo(global_page.uploadSuccess)
+  },
+  //上传 图片/视频 成功，显示图片
+  uploadSuccess:function(imgUrl) {
+    console.log("uploadSuccess:" + imgUrl)
+    global_page.emoticonUpdate(imgUrl)
+    // Menu.Option.ChooseImage()
+  },
+
+  //status 1 ： 更新1张图片，
+  //status 2 ： 更新一串图片，
+  emoticonUpdate: function(img) {
+    //1张图片
+    if(img.constructor == String)
+    {
+        var _img = img
+        var _emoticonList = this.data.latest
+        _emoticonList.unshift
+        ({
+            member:
+            {
+              "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
+              "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
+              "avatar_normal":_img
+            }
+        });
+        console.log(_img)
+        this.setData({latest:_emoticonList})
+        return
+    }
+
+    //一串图片
+    if(img.constructor == Array)
+    {
+      var _imgList = img
+      var _emoticonList = this.data.latest
+      for (var i=0 ; i<_imgList.length ;i++)
+      {
+        _emoticonList.unshift
+        ({
+          member:
+          {
+            "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
+            "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
+            "avatar_normal":_imgList[i]
+          }
+        });
+      }
+      this.setData({latest:_emoticonList})
+    }
+    
+  },
+
+  emoticonDelete: function(imgUrl) {
+      var _imgUrl = imgUrl
+      var _emoticonList = this.data.latest
+      for (var i=0 ; i<_emoticonList.length ;i++)
+      {
+        if (_emoticonList[i]["member"]["avatar_normal"] == _imgUrl)
+        {
+          _emoticonList.splice(i,1)
+          break
+        }
+      }
+      this.setData({latest:_emoticonList})
+  },
+
    //点击表情，打开第一级menu
-  switchFirstMenu: function(e) {
+  emoticonFirstMenu: function(e) {
 
     //准备当前预备编辑的图片地址
     global_page.setData({
       editorUrl:e.currentTarget.dataset.imgurl
     })
-
-    console.log(e)  
-    console.log(e.currentTarget.offsetLeft)  
-    console.log(e.currentTarget.offsetTop)  
+ 
     var _left = e.currentTarget.offsetLeft-7 + "px";
     var _top = e.currentTarget.offsetTop-7 + "px";
     var _isPreDisplay = true;
@@ -73,38 +147,16 @@ Page({
       menu_top: e.currentTarget.offsetTop-7 + "px",
     })
   },
-  //选择图片
-  chooseImage:function() {
-    wx.chooseImage({
-      count: 1, // 默认9
-      sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
-      sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
-      success: function (res) {
-        // 返回选定照片的本地文件路径列表，tempFilePath可以作为img标签的src属性显示图片
-        var tempFilePaths = res.tempFilePaths
-        global_page.setData({
-          new_image: tempFilePaths
-        })
-      }
-    })
-  },
-  //选择视频
-  chooseVideo : function() {
-      wx.chooseVideo({
-          sourceType: ['album','camera'],
-          maxDuration: 60,
-          camera: ['front','back'],
-          success: function(res) {
-              global_page.setData({
-                  new_video: res.tempFilePaths[0]
-              })
-          }
-      })
-  },
 
+
+  menuShare:function(){
+    Menu.Option.Share( global_page.data.editorUrl )
+  },
+ 
   //菜单 gif拼接
   menuJoinAdd:function(){
     console.log()
+    //增加第一幅
     if(global_page.data.joinStep == 1)
     {
       global_page.setData({ 
@@ -113,7 +165,7 @@ Page({
       }) 
       return
     }
-      
+    //增加第二幅
     if(global_page.data.joinStep == 2)
     {
       global_page.setData({ 
@@ -122,12 +174,13 @@ Page({
       }) 
       return
     }
-      
-   
   },
 
   //拼接确认
   menuJoinOK:function(){
+    var _imgFirst = global_page.data.joinFirstImg
+    var _imgSeconde = global_page.data.joinSecondeImg
+    //两张图片相同，不做拼接
     if ( global_page.data.joinFirstImg == global_page.data.joinSecondeImg )
     {
       wx.showToast({
@@ -135,23 +188,25 @@ Page({
         icon: 'loading',
         duration: 2000
       })
-
       return
     }
-    var _tempList = this.data.latest
-      _tempList.unshift(
-        {
-          member:{
-            "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-            "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-            "avatar_normal":"../../images/gif_out.gif"
-          }
-        }
-      );
-      // console.log(_editorData)
-      this.setData({latest:_tempList})
+    
+    Menu.Option.EditorJoin(_imgFirst,_imgSeconde,global_page.callBack)
   },
+
+  /**
+   * Page:private 回调函数
+   */
+  callBack:function(imgUrl,isDelete){
+    if(imgUrl) 
+      global_page.emoticonUpdate(imgUrl)
+
+    if(isDelete)
+      global_page.emoticonDelete(global_page.data.editorUrl)
+  },
+
   
+
   //裁剪
   menuResize:function(){
     var _tempList = this.data.resize_success
@@ -163,57 +218,75 @@ Page({
     this.setData({resize_success:_tempList})
   },
 
-  //裁剪后，收藏
-  menuResizeAdd:function(e){
-    var img = e.currentTarget.dataset.imgurl
-    var _tempList = this.data.latest
-      _tempList.unshift({
-          member:{"avatar_normal":img
-          }
-      });
-      // console.log(_editorData)
-      this.setData({latest:_tempList})
+  //裁剪后，选择分享
+  menuResizeShare:function(e){
+    var _img_url = e.currentTarget.dataset.imgurl
+    Menu.Option.Share(_img_url)
   },
 
-  //菜单，删除
+  //裁剪后，选择增加
+  menuResizeAdd:function(e){
+    var img = e.currentTarget.dataset.imgurl
+    global_page.emoticonUpdate(img)
+  },
+
+  //表情删除
   menuDelete:function(){
-    wx.showModal({
-      title: '是否删除表情',
-      // content: '是否删除表情',
+    Menu.Option.Delete(global_page.callBack)
+    //删除后，menu框隐藏
+  },
+
+  menuMoveCategory:function(){
+    wx.showActionSheet({
+      itemList: global_page.data.category,
       success: function(res) {
-        if (res.confirm) {
-          console.log('用户点击确定')
+        if (!res.cancel) {
+          console.log(res.tapIndex)
         }
       }
     })
   },
 
-  menuCategory:function(){
-
-  },
+  // reset
 
   onShow: function() {
     console.log(app.globalData.editorSuccess)
     
+    /**
+     * 编辑->收藏，
+     * 进入private，在emotion列表中显示
+     *  */
     var _editorData = app.globalData['editorSuccess']
     if ( _editorData != null && _editorData != '' &&  _editorData != 'undefined')
     {
       console.log(_editorData )
-      var _tempList = this.data.latest
-      _tempList.unshift(
-        {
-          member:{
-            "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-            "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-            "avatar_normal":_editorData
-          }
-        }
-      );
-      console.log(_editorData)
-      this.setData({latest:_tempList})
+      global_page.emoticonUpdate(_editorData)
       app.globalData.editorSuccess = ''
     }
-    
+
+    /**
+     * 公共页面->收藏，由storage临时保存
+     * 进入private，在emotion列表中显示，
+     * 清除storage
+     *  */
+    var _list = wx.getStorageSync('pre_collect')
+    console.log(_list)
+    if ( _list )
+    {
+      global_page.emoticonUpdate(_list)
+      wx.removeStorageSync('pre_collect') //上传收藏信息后，清空存储
+    }
+  },
+
+  /**
+   * 加载完毕，更新图片
+   */
+  onReady:function(){
+    Menu.Option.GetPictureMy(global_page.init)
+  },
+
+  init:function(imgUrl){
+    global_page.setData({latest:imgUrl})
   },
 
   onLoad: function (param) {
@@ -231,11 +304,7 @@ Page({
     global_page = this
     this.fetchExpress();
 
-    console.log(param['editorSucess'])
-    
-
-    
-    
+    console.log(param['editorSuccess'])
   },
   fetchExpress:function() {
     var that = this;
@@ -406,29 +475,11 @@ Page({
       url: url
     })
   },
+
+  navigateToCategory: function(e) {
+    var url = '../category/category'
+    wx.navigateTo({
+      url: url
+    })
+  },
 })
-
-
-//load加载——结束
-  // fetchData: function() {
-  //   var that = this;
-  //   that.setData({
-  //     hidden: false
-  //   })
-  //   wx.request({
-  //     url: Api.getLatestTopic({
-  //       p: 1
-  //     }),
-  //     success: function(res) {
-  //       console.log(res);
-  //       that.setData({
-  //         "latest": res.data
-  //       })
-  //       setTimeout(function() {
-  //         that.setData({
-  //           hidden: true
-  //         })
-  //       }, 300)
-  //     }
-  //   })
-  // },

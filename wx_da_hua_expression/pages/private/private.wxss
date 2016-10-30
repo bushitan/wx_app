@@ -87,69 +87,6 @@
 }*/
 
 
-.menu {
-    position: absolute;
-    width: 150rpx;
-    height: 150rpx;
-     /*margin:0 auto;*/
-    /*left:50px ;
-    right:0px;*/
-    /*background-color: #ddd;*/
-    background-size:cover;
-    background-image: url('../../images/menu.png') ;
-    color : #ffffff;
-    
-}
-.menu .top{
-    position: absolute;
-    left:48rpx;
-    top:-15rpx;
-    z-index: 999;
-    /*margin-left:24rpx; */
-    background-color: rgba(86, 171, 228,1) ;
-    border-radius: 10rpx;   
-}
-.menu .left{
-    position: absolute;
-    top:50rpx;
-    left:-20rpx;
-    z-index: 999;
-    background-color: rgba(86, 171, 228,1) ;
-    border-radius: 10rpx;   
-}
-.menu .right{
-    position: absolute;
-    right:-20rpx;
-    top:50rpx;
-    z-index: 999;
-    background-color: rgba(86, 171, 228,1) ;
-    border-radius: 10rpx;   
-    }
-.menu .bottom{
-    position: absolute;
-    right:50rpx;
-    top:135rpx;
-    z-index: 999;
-    background-color: rgba(86, 171, 228,1) ;
-    border-radius: 10rpx;   
-}
-.menu .bottom-right{
-    position: absolute;
-    right:-20rpx;
-    top:135rpx;
-    z-index: 999;
-    background-color: rgba(86, 171, 228,1) ;
-    border-radius: 10rpx;   
-}
-.menu .bottom-left{
-    position: absolute;
-    left:-20rpx;
-    top:135rpx;
-    z-index: 999;
-    background-color: rgba(86, 171, 228,1) ;
-    border-radius: 10rpx;   
-}
-
 .ex-container{
     display:flex;
     flex-wrap: wrap;
@@ -228,3 +165,10 @@
 /*.resize button{
     font-size: 24rpx;
 }*/
+
+
+
+
+
+
+
