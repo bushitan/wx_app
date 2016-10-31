@@ -13,7 +13,9 @@
         <view class="content" >
             <block wx:for="{{hotLabel}}">
                 <view  index="{{index}}" id="{{item.id}}">
-                    <view><label class="phrase" catchtap="searchShortcut" data-keyword="{{item}}">{{item}}</label></view>
+                    <view class="btn"><label class="label" 
+                    catchtap="eventBase"  data-action="btnSearch"
+                    data-keyword="{{item}}">{{item}}</label></view>
                 </view>
             </block>
         </view>
@@ -23,8 +25,8 @@
       <view class="content">
         <block wx:for="{{hotest}}">
             <view class="member" >
-                <image class="image-5" src="{{item.member.avatar_normal}}" background-size="cover" 
-                catchtap="switchFirstMenu" data-imgurl="{{item.member.avatar_normal}}"></image>
+                <image class="image-5" src="{{item}}" background-size="cover" 
+                catchtap="eventBase" data-action="onMenu" data-imgurl="{{item}}"></image>
             </view>
         </block>
       </view>
@@ -32,8 +34,8 @@
  
     <!--悬浮菜单-->
     <view class="menu"  style="left:{{menu_left}};top:{{menu_top}};" wx:if="{{isPreDisplay}}"  >
-            <view class="top" catchtap="menuShare">分享</view>
-            <view class="left" catchtap="menuCollect" >收藏</view>
+            <view class="top" catchtap="eventBase"  data-action="btnShare">分享</view>
+            <view class="left" catchtap="eventBase"  data-action="btnCollect">收藏</view>
             <!--<view class="right" catchtap="menuJoinAdd">拼接</view>
             <view class="bottom" catchtap="menuDelete">删除</view>
             <view class="bottom-right" catchtap="menuJoinAdd">分类</view>

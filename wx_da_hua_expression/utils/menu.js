@@ -19,10 +19,10 @@ var _Option = {
     },
 
     //公共页面，收藏按钮
-    Collect:function(img_url){
+    Collect:function(img_url,list){
         try {
             var _img_url = img_url
-            var _list = wx.getStorageSync('pre_collect')
+            var _list = list
             console.log("list:" + _list)
             if (!_list || _list == null)
                 _list = []
@@ -38,23 +38,14 @@ var _Option = {
                         duration: 500
                     })
                     return
-                }
-                
-            
+                }                
             _list.push(_img_url)
-            wx.setStorageSync(
-                "pre_collect",
-                _list
-            )
-
-            var _list1 = wx.getStorageSync('pre_collect')
-            console.log("添加成功")
-            console.log(_list1)
             wx.showToast({
                 title: '收藏成功',
                 icon: 'success',
                 duration: 500
             })
+            return _list
         } catch (e) {    
 
         }

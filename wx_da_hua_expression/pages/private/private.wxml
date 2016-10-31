@@ -71,8 +71,8 @@
       <view class="content">
         <block wx:for="{{latest}}">
             <view class="member" >
-                <image class="image-5" src="{{item.member.avatar_normal}}" background-size="cover" 
-                catchtap="emoticonFirstMenu" data-imgurl="{{item.member.avatar_normal}}"></image>
+                <image class="image-5" src="{{item}}" background-size="cover" 
+                catchtap="emoticonFirstMenu" data-imgurl="{{item}}"></image>
             </view>
         </block>
       </view>

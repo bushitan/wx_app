@@ -19,14 +19,14 @@ Page({
 
     editorSuccess:"",
   },
-  editorSuccess:function (){
-    var _url = '../private/private?editorSucess=http://alinode-assets.oss-cn-hangzhou.aliyuncs.com/4be39e00-c83b-4f8e-b4e2-76f70b009b1a.jpeg';
-    // wx.redirectTo({
-    //   url: _url
-    // })
-    app.globalData['editorSuccess']="http://alinode-assets.oss-cn-hangzhou.aliyuncs.com/4be39e00-c83b-4f8e-b4e2-76f70b009b1a.jpeg"
-    wx.navigateBack( )
-  },
+  // editorSuccess:function (){
+  //   var _url = '../private/private?editorSucess=http://alinode-assets.oss-cn-hangzhou.aliyuncs.com/4be39e00-c83b-4f8e-b4e2-76f70b009b1a.jpeg';
+  //   // wx.redirectTo({
+  //   //   url: _url
+  //   // })
+  //   app.globalData['editorSuccess']="http://alinode-assets.oss-cn-hangzhou.aliyuncs.com/4be39e00-c83b-4f8e-b4e2-76f70b009b1a.jpeg"
+  //   wx.navigateBack( )
+  // },
 
   inputChange: function(e) {
     console.log(e.detail.value)
@@ -86,11 +86,13 @@ Page({
 
   //模态框，分享链接
   modalShare: function(e) {
-    app.globalData['editorSuccess']=globle_page.data.editorSuccess
+    // app.globalData['editorSuccess']=globle_page.data.editorSuccess
+   console.log("modalShare:" + globle_page.data.editorSuccess)
+    wx.setStorageSync(
+        "pre_editor",
+        globle_page.data.editorSuccess
+    )
     wx.navigateBack( )
-    // this.setData({
-    //   express_ModalHidden: true
-    // })
   },
   //模态框，返回编辑
   modalReEditor: function(e) {

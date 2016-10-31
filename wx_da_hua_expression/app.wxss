@@ -1,11 +1,17 @@
 /**app.wxss**/
+
+/*原标题颜色 background-color :#373b3e */
+/*新标题颜色 background-color :#24292c */
+/*图片范围背景  background-color ：#ededed*/
+
 .container {
   height: 100%;
   display: flex;
   flex-direction: column;
   padding: 0;
   box-sizing: border-box;
-  background-color: #ebebeb;
+  /*background-color: #ebebeb;*/
+  background-color: #ededed;
 
   /*font: 14px/1.5em "Microsoft YaHei";*/
   font: 13px "Microsoft YaHei";
@@ -20,6 +26,10 @@
     background-color: #56abe4;
     border-bottom: 1px solid #eee;
 }*/
+
+.bar , .search{
+    background-color: #24292c;
+}
 
 
 /*炫富菜单*/
@@ -90,7 +100,7 @@
 /*表情包渲染*/
 
 .emoticon{
-
+   
 }
 
 /*表情show*/
@@ -109,4 +119,10 @@
   margin:15rpx; 
   border-radius: 5%;
   /*border: 1px solid #eee;*/
+
+   /*-moz-box-shadow: 0px 0px 0px 7px #000000;
+    -webkit-box-shadow: 0px 0px 0px 7px #000000;
+    box-shadow: 0px 0px  7px #000000;*/
+
+    box-shadow: 0px 3px 6px -2px rgba(0,0,0,0.3);
 }

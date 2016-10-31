@@ -1,7 +1,6 @@
 
 .bar {
      height: 64rpx;
-    background-color: #373b3e;
 }
 .bar-tree {
     float:left ;

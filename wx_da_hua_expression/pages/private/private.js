@@ -23,17 +23,32 @@ Page({
     joinSecondeImg:"../../images/gif_in_2.gif",
 
     resize_success:[
-      {img:"../../images/gif_in_1.gif",text:"大图"},
-      {img:"../../images/gif_in_2.gif",text:"小图"},
-      {img:"../../images/gif_in_1.gif",text:"大图"},
-      {img:"../../images/gif_in_2.gif",text:"小图"},
+      {img:"../../images/gif_in_1.gif",text:"170x170"},
+      {img:"../../images/gif_in_2.gif",text:"128x128"},
+      {img:"../../images/gif_in_1.gif",text:"96x96"},
+      {img:"../../images/gif_in_2.gif",text:"48x48"},
     ],
 
     categoryTitle:"全部",
     category:["类别1","类别2","类别3"],
     
   },
-  
+
+  /**
+   * Page:private 回调函数
+   * 该页面唯一的回调函数
+   * imgUrl:按时间先手顺序加入， 逆转时间显示
+   * isDelete:确认删除图片
+   */
+  callBack:function(imgUrl,isDelete){
+    if(imgUrl) 
+      global_page.emoticonUpdate(imgUrl)
+
+    if(isDelete)
+      global_page.emoticonDelete(global_page.data.editorUrl)
+  },
+
+
   //点击“目录”开关
   categoryBtn : function() {
     global_page.setData({
@@ -54,70 +69,49 @@ Page({
   },
   //上传图片
   uploadImage:function() {
-    Menu.Option.ChooseImage(global_page.uploadSuccess)
+    Menu.Option.ChooseImage(global_page.callBack)
   },
   
   //选择视频
   uploadVideo : function() {
-    Menu.Option.ChooseVideo(global_page.uploadSuccess)
-  },
-  //上传 图片/视频 成功，显示图片
-  uploadSuccess:function(imgUrl) {
-    console.log("uploadSuccess:" + imgUrl)
-    global_page.emoticonUpdate(imgUrl)
-    // Menu.Option.ChooseImage()
+    Menu.Option.ChooseVideo(global_page.callBack)
   },
 
-  //status 1 ： 更新1张图片，
-  //status 2 ： 更新一串图片，
+  /** 页面更新表情
+   * status 1 ： 更新1张图片，
+   * status 2 ： 更新一串图片，
+   */
   emoticonUpdate: function(img) {
     //1张图片
     if(img.constructor == String)
     {
         var _img = img
         var _emoticonList = this.data.latest
-        _emoticonList.unshift
-        ({
-            member:
-            {
-              "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-              "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-              "avatar_normal":_img
-            }
-        });
-        console.log(_img)
+        _emoticonList.unshift(_img)
         this.setData({latest:_emoticonList})
         return
     }
-
     //一串图片
     if(img.constructor == Array)
     {
       var _imgList = img
       var _emoticonList = this.data.latest
-      for (var i=0 ; i<_imgList.length ;i++)
-      {
-        _emoticonList.unshift
-        ({
-          member:
-          {
-            "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-            "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-            "avatar_normal":_imgList[i]
-          }
-        });
-      }
+      for (var i=0 ; i<_imgList.length ;i++) //按时间插入图片
+        _emoticonList.unshift(_imgList[i])
       this.setData({latest:_emoticonList})
     }
     
   },
-
+  
+  /** 页面删除表情
+   * Todo deletePicture 删除表情
+   */
   emoticonDelete: function(imgUrl) {
       var _imgUrl = imgUrl
       var _emoticonList = this.data.latest
       for (var i=0 ; i<_emoticonList.length ;i++)
       {
-        if (_emoticonList[i]["member"]["avatar_normal"] == _imgUrl)
+        if (_emoticonList[i] == _imgUrl)
         {
           _emoticonList.splice(i,1)
           break
@@ -133,14 +127,13 @@ Page({
     global_page.setData({
       editorUrl:e.currentTarget.dataset.imgurl
     })
- 
+    //menu显示位置修正
     var _left = e.currentTarget.offsetLeft-7 + "px";
     var _top = e.currentTarget.offsetTop-7 + "px";
     var _isPreDisplay = true;
     if(global_page.data.menu_left == _left && global_page.data.menu_top == _top) //如果click在同一target，消失
       _isPreDisplay = !global_page.data.isPreDisplay
-    console.log(_isPreDisplay)
-    
+    //设置menu可见，X/Y
     global_page.setData({
       isPreDisplay:_isPreDisplay,
       menu_left: e.currentTarget.offsetLeft-7 + "px",
@@ -155,7 +148,6 @@ Page({
  
   //菜单 gif拼接
   menuJoinAdd:function(){
-    console.log()
     //增加第一幅
     if(global_page.data.joinStep == 1)
     {
@@ -193,19 +185,6 @@ Page({
     
     Menu.Option.EditorJoin(_imgFirst,_imgSeconde,global_page.callBack)
   },
-
-  /**
-   * Page:private 回调函数
-   */
-  callBack:function(imgUrl,isDelete){
-    if(imgUrl) 
-      global_page.emoticonUpdate(imgUrl)
-
-    if(isDelete)
-      global_page.emoticonDelete(global_page.data.editorUrl)
-  },
-
-  
 
   //裁剪
   menuResize:function(){
@@ -250,18 +229,17 @@ Page({
   // reset
 
   onShow: function() {
-    console.log(app.globalData.editorSuccess)
-    
     /**
      * 编辑->收藏，
      * 进入private，在emotion列表中显示
      *  */
-    var _editorData = app.globalData['editorSuccess']
-    if ( _editorData != null && _editorData != '' &&  _editorData != 'undefined')
+    var _editorData = wx.getStorageSync('pre_editor')
+    if ( _editorData )
     {
-      console.log(_editorData )
+      //Todo  addPicture 增加表情
       global_page.emoticonUpdate(_editorData)
-      app.globalData.editorSuccess = ''
+      wx.removeStorageSync('pre_editor') 
+
     }
 
     /**
@@ -270,10 +248,10 @@ Page({
      * 清除storage
      *  */
     var _list = wx.getStorageSync('pre_collect')
-    console.log(_list)
     if ( _list )
     {
       global_page.emoticonUpdate(_list)
+      //Todo  addPicture 增加表情
       wx.removeStorageSync('pre_collect') //上传收藏信息后，清空存储
     }
   },
@@ -282,177 +260,8 @@ Page({
    * 加载完毕，更新图片
    */
   onReady:function(){
-    Menu.Option.GetPictureMy(global_page.init)
-  },
-
-  init:function(imgUrl){
-    global_page.setData({latest:imgUrl})
-  },
-
-  onLoad: function (param) {
-
-    //初始化显示view
-    var _view = {
-      miniHidden:false,
-      treeHidden:false
-    }
-    View.Switch.Init(this,_view)
-    // View.Switch.On("miniHidden","treeHidden")
-    View.Switch.Work()
-
-
-    global_page = this
-    this.fetchExpress();
-
-    console.log(param['editorSuccess'])
-  },
-  fetchExpress:function() {
+    Menu.Option.GetPictureMy(global_page.callBack)
     var that = this;
-    that.setData({
-      latest: [
-        {member:{
-          "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-          "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-          "avatar_normal":"http://img3.imgtn.bdimg.com/it/u=3903157596,3789827809&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-          "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-          "avatar_normal":"http://img4.imgtn.bdimg.com/it/u=1414733317,542758485&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-          "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-          "avatar_normal":"http://img1.imgtn.bdimg.com/it/u=2355442825,1034056032&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-          "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-          "avatar_normal":"http://img1.imgtn.bdimg.com/it/u=961666295,1941975572&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_normal":"http://img4.imgtn.bdimg.com/it/u=4286943230,2152721706&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_normal":"http://img.itlun.cn/uploads/allimg/150708/1-150FQ40144.gif"}
-        },{member:{
-          "avatar_normal":"http://upload.86628677.com/gifa/20150915/6a0544.gif"}
-        },{member:{
-          "avatar_normal":"http://img0.pconline.com.cn/pconline/1403/16/4445916_2013041711400540071.gif"}
-        },{member:{
-          "avatar_normal":"http://img0.imgtn.bdimg.com/it/u=288514605,1240644921&fm=21&gp=0.jpg"}
-        },
-
-        {member:{
-          "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-          "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-          "avatar_normal":"http://img3.imgtn.bdimg.com/it/u=3903157596,3789827809&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-          "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-          "avatar_normal":"http://img4.imgtn.bdimg.com/it/u=1414733317,542758485&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-          "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-          "avatar_normal":"http://img1.imgtn.bdimg.com/it/u=2355442825,1034056032&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-          "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-          "avatar_normal":"http://img1.imgtn.bdimg.com/it/u=961666295,1941975572&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_normal":"http://img4.imgtn.bdimg.com/it/u=4286943230,2152721706&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_normal":"http://img.itlun.cn/uploads/allimg/150708/1-150FQ40144.gif"}
-        },{member:{
-          "avatar_normal":"http://upload.86628677.com/gifa/20150915/6a0544.gif"}
-        },{member:{
-          "avatar_normal":"http://img0.pconline.com.cn/pconline/1403/16/4445916_2013041711400540071.gif"}
-        },{member:{
-          "avatar_normal":"http://img0.imgtn.bdimg.com/it/u=288514605,1240644921&fm=21&gp=0.jpg"}
-        },
-
-        {member:{
-          "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-          "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-          "avatar_normal":"http://img3.imgtn.bdimg.com/it/u=3903157596,3789827809&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-          "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-          "avatar_normal":"http://img4.imgtn.bdimg.com/it/u=1414733317,542758485&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-          "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-          "avatar_normal":"http://img1.imgtn.bdimg.com/it/u=2355442825,1034056032&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-          "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-          "avatar_normal":"http://img1.imgtn.bdimg.com/it/u=961666295,1941975572&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_normal":"http://img4.imgtn.bdimg.com/it/u=4286943230,2152721706&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_normal":"http://img.itlun.cn/uploads/allimg/150708/1-150FQ40144.gif"}
-        },{member:{
-          "avatar_normal":"http://upload.86628677.com/gifa/20150915/6a0544.gif"}
-        },{member:{
-          "avatar_normal":"http://img0.pconline.com.cn/pconline/1403/16/4445916_2013041711400540071.gif"}
-        },{member:{
-          "avatar_normal":"http://img0.imgtn.bdimg.com/it/u=288514605,1240644921&fm=21&gp=0.jpg"}
-        },
-
-        {member:{
-          "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-          "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-          "avatar_normal":"http://img3.imgtn.bdimg.com/it/u=3903157596,3789827809&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-          "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-          "avatar_normal":"http://img4.imgtn.bdimg.com/it/u=1414733317,542758485&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-          "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-          "avatar_normal":"http://img1.imgtn.bdimg.com/it/u=2355442825,1034056032&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-          "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-          "avatar_normal":"http://img1.imgtn.bdimg.com/it/u=961666295,1941975572&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_normal":"http://img4.imgtn.bdimg.com/it/u=4286943230,2152721706&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_normal":"http://img.itlun.cn/uploads/allimg/150708/1-150FQ40144.gif"}
-        },{member:{
-          "avatar_normal":"http://upload.86628677.com/gifa/20150915/6a0544.gif"}
-        },{member:{
-          "avatar_normal":"http://img0.pconline.com.cn/pconline/1403/16/4445916_2013041711400540071.gif"}
-        },{member:{
-          "avatar_normal":"http://img0.imgtn.bdimg.com/it/u=288514605,1240644921&fm=21&gp=0.jpg"}
-        },
-
-        {member:{
-          "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-          "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-          "avatar_normal":"http://img3.imgtn.bdimg.com/it/u=3903157596,3789827809&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-          "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-          "avatar_normal":"http://img4.imgtn.bdimg.com/it/u=1414733317,542758485&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-          "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-          "avatar_normal":"http://img1.imgtn.bdimg.com/it/u=2355442825,1034056032&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_large":"//cdn.v2ex.co/avatar/a8d9/a243/144294_large.png?m=1457670171",
-          "avatar_mini":"//cdn.v2ex.co/avatar/a8d9/a243/144294_mini.png?m=1457670171",
-          "avatar_normal":"http://img1.imgtn.bdimg.com/it/u=961666295,1941975572&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_normal":"http://img4.imgtn.bdimg.com/it/u=4286943230,2152721706&fm=21&gp=0.jpg"}
-        },{member:{
-          "avatar_normal":"http://img.itlun.cn/uploads/allimg/150708/1-150FQ40144.gif"}
-        },{member:{
-          "avatar_normal":"http://upload.86628677.com/gifa/20150915/6a0544.gif"}
-        },{member:{
-          "avatar_normal":"http://img0.pconline.com.cn/pconline/1403/16/4445916_2013041711400540071.gif"}
-        },{member:{
-          "avatar_normal":"http://img0.imgtn.bdimg.com/it/u=288514605,1240644921&fm=21&gp=0.jpg"}
-        },
-
-      ],
-    })
-
     // 300ms后，隐藏loading
     setTimeout(function() {
           that.setData({
@@ -461,6 +270,23 @@ Page({
     }, 300)
   },
 
+
+  /**
+   *  页面加载
+   */
+  onLoad: function (param) {
+    //初始化显示view
+    var _view = {
+      miniHidden:false,
+      treeHidden:false
+    }
+    View.Switch.Init(this,_view)
+    // View.Switch.On("miniHidden","treeHidden")
+    View.Switch.Work()
+    global_page = this
+  },
+
+
    //导航：水印页面
   navigateToEditor: function(e) {
     var url = '../watermark/watermark?imgurl=' + global_page.data.editorUrl;
@@ -468,6 +294,7 @@ Page({
       url: url
     })
   },
+
   //导航：gif拼接页面
   navigateToJoin: function(e) {
     var url = '../join/join?imgurl=' + global_page.data.editorUrl;
@@ -475,7 +302,8 @@ Page({
       url: url
     })
   },
-
+  
+  //导航：目录设置页面
   navigateToCategory: function(e) {
     var url = '../category/category'
     wx.navigateTo({

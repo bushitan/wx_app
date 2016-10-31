@@ -1,7 +1,7 @@
 {
   "pages":[
-    "pages/private/private",
     "pages/public/public",
+    "pages/private/private",
     "pages/category/category",
     "pages/category/category",
     "pages/watermark/watermark",
@@ -9,7 +9,7 @@
   ],
   "window":{
     "backgroundTextStyle":"light",
-    "navigationBarBackgroundColor": "#373b3e",
+    "navigationBarBackgroundColor": "#24292c",
     "navigationBarTitleText": "大画表情",
     "navigationBarTextStyle":"white",
     "enablePullDownRefresh":"false"
@@ -20,15 +20,15 @@
     "selectedColor":"#56abe4",
     "borderStyle":"black",
     "list": [{
+      "pagePath": "pages/private/private",
+      "text": "我的",
+      "iconPath":"images/icon_smile.png",
+      "selectedIconPath":"images/icon_big_my.png"
+    },{
       "pagePath": "pages/public/public",
       "text": "热图",
-      "iconPath":"images/hotest.png",
-      "selectedIconPath":"images/hotest_on.png"
-    },{
-      "pagePath": "pages/private/private",
-      "text": "私人图库",
-      "iconPath":"images/latest.png",
-      "selectedIconPath":"images/lastest_on.png"
+      "iconPath":"images/icon_smile.png",
+      "selectedIconPath":"images/icon_big_hot.png"
     }]
   }
 }
