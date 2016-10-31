@@ -7,10 +7,10 @@ var global_page
 Page({
   data: {
     title: '最热话题',
-    hidden: false,
+    displayLoading: true,
     menu_left: "0rpx",
     menu_top: "50rpx",
-    isPreDisplay:true,
+    dispalyMenu:false,
 
     keyword:"我擦", //搜索关键字
 
@@ -26,20 +26,43 @@ Page({
     global_page.setData({hotest:imgUrl})
   },
 
-  /**基础事件
+  /** Page:public 基础事件
    * 1、wxml的catchtap全触发eventBase
-   * 2、执行view的显示/隐藏
-   * 3、根据data-actiondata-action，确定执行的事件
+   * 2、eventDisplay:执行view的显示/隐藏
+   * 3、eventListen:根据data-actiondata-action，确定执行的事件
    */
   eventBase:function(e){
+    global_page.eventListen(e)
+    global_page.eventDisplay(e.currentTarget.dataset.action)
+  },
+
+  /**
+   * 触发view的隐藏显示
+   */
+  eventDisplay:function(action){
+    var _display = {
+      "onMenu":function(){ View.Switch.On("dispalyMenu") },
+      "btnSearch":function(){ View.Switch.Off("dispalyMenu") },
+      "btnShortcut":function(){ View.Switch.Off("dispalyMenu") },
+      "btnShare":function(){ View.Switch.Off("dispalyMenu") },
+      "btnCollect":function(){ View.Switch.Off("dispalyMenu") },
+    }
+    _display[action]()
+    View.Switch.Work() //触发效果
+  },
+  eventListen:function(e){
+
     var _eventDict = {
       "onMenu":global_page.switchFirstMenu,
-      "btnSearch":global_page.searchShortcut,
+      "btnSearch":global_page.searchBtn,
+      "btnShortcut":global_page.searchShortcut,
       "btnShare":global_page.menuShare,
       "btnCollect": global_page.menuCollect,
     }
     _eventDict[e.currentTarget.dataset.action](e) 
   },
+
+
   /**
    * 根据keyword，搜索
    */
@@ -107,20 +130,23 @@ Page({
 
   onLoad: function () {
 
+    /**this.data 中的的 display先手动同步
+     */
     var _view = {
-      hidden:true,
-      isPreDisplay:false
+      displayLoading:this.data.displayLoading,
+      dispalyMenu:this.data.dispalyMenu,
     }
     View.Switch.Init(this,_view)
-    View.Switch.Off("hidden","isPreDisplay")
+    // View.Switch.Off("hidden","isPreDisplay")
     View.Switch.Work()
 
-    console.log(this.data.isPreDisplay)
+    // console.log(this.data.isPreDisplay)
     global_page = this
-    this.setData({
-      hidden: false
-    })
+    // this.setData({
+    //   hidden: false
+    // })
     
+  
   },
 
   onReady:function(){
@@ -128,9 +154,8 @@ Page({
     var that = this;
     // 300ms后，隐藏loading
     setTimeout(function() {
-          that.setData({
-            hidden: true
-          })
+        View.Switch.Off("displayLoading")
+        View.Switch.Work()
     }, 300)
   }
 })

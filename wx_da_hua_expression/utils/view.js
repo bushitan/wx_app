@@ -23,7 +23,6 @@ var _switch = {
     On:function(){
       for(var i in arguments)
         this.view[arguments[i]] = true
-     
     },
     //仅关闭当前view
     Off:function( view ){

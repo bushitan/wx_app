@@ -11,8 +11,8 @@ Page({
     title: '最新话题',
     latest: [],
     hidden: false,
-    miniHidden:false,
-    treeHidden:false,
+    displayUpload:false,
+    displayCategory:false,
     
     editorUrl:"", //预备编辑的图片
     menu_left: "0rpx",
@@ -34,7 +34,7 @@ Page({
     
   },
 
-  /**
+  /** No.1
    * Page:private 回调函数
    * 该页面唯一的回调函数
    * imgUrl:按时间先手顺序加入， 逆转时间显示
@@ -48,11 +48,72 @@ Page({
       global_page.emoticonDelete(global_page.data.editorUrl)
   },
 
+  /** No.2
+   * Page:private 基础事件
+   * 1、wxml的catchtap全触发eventBase
+   * 2、eventDisplay:执行view的显示/隐藏
+   * 3、eventListen:根据data-actiondata-action，确定执行的事件
+   */
+  eventBase:function(e){
+    global_page.eventListen(e)
+    global_page.eventDisplay(e.currentTarget.dataset.action)
+  },
+
+  /**
+   * 触发view的隐藏显示
+   */
+  eventDisplay:function(action){
+    var _display = {
+      "btnCategory":function(){View.Switch.OffAllExcept("displayCategory")},
+      "changeCategory":function(){View.Switch.Off("displayCategory")},
+      "navigateToCategory":function(){},
+      "btnUpload":function(){ View.Switch.On("dispalyMenu") },
+      "uploadImage":function(){ View.Switch.Off("dispalyMenu") },
+      "uploadVideo":function(){ View.Switch.Off("dispalyMenu") },
+      "menuJoinOK":function(){ View.Switch.Off("dispalyMenu") },
+      "menuResizeShare":function(){ View.Switch.Off("dispalyMenu") },
+      "menuResizeAdd":function(){ View.Switch.Off("dispalyMenu") },
+      "onMenu":function(){ View.Switch.Off("dispalyMenu") },
+      "menuShare":function(){ View.Switch.Off("dispalyMenu") },
+      "navigateToEditor":function(){ View.Switch.Off("dispalyMenu") },
+      "menuJoinAdd":function(){ View.Switch.Off("dispalyMenu") },
+      "menuDelete":function(){ View.Switch.Off("dispalyMenu") },
+      "menuMoveCategory":function(){ View.Switch.Off("dispalyMenu") },
+      "menuResize":function(){ View.Switch.Off("dispalyMenu") },
+    }
+    _display[action]()
+    View.Switch.Work() //触发效果
+  },
+  eventListen:function(e){
+
+    var _eventDict = {
+      "btnCategory":global_page.categoryBtn,
+      "changeCategory":global_page.categoryChange,
+      "navigateToCategory":global_page.navigateToCategory,
+      "btnUpload":global_page.uploadBtn,
+      "uploadImage": global_page.uploadImage,
+      "uploadVideo": global_page.uploadVideo,
+      "menuJoinOK": global_page.menuJoinOK,
+      "menuResizeShare": global_page.menuResizeShare,
+      "menuResizeAdd": global_page.menuResizeAdd,
+      "onMenu": global_page.onMenu,
+      "menuShare": global_page.menuShare,
+      "navigateToEditor": global_page.navigateToEditor,
+      "menuJoinAdd": global_page.menuJoinAdd,
+      "menuDelete": global_page.menuDelete,
+      "menuMoveCategory": global_page.menuMoveCategory,
+      "menuResize": global_page.menuResize,
+    }
+    _eventDict[e.currentTarget.dataset.action](e) 
+  },
+
+
+
 
   //点击“目录”开关
   categoryBtn : function() {
     global_page.setData({
-      treeHidden: !global_page.data.treeHidden
+      displayCategory: !global_page.data.displayCategory
     })
   },
 
@@ -64,7 +125,7 @@ Page({
   //点击“+”开关
   uploadBtn:function() {
     global_page.setData({
-      miniHidden: !global_page.data.miniHidden
+      displayUpload: !global_page.data.displayUpload
     })
   },
   //上传图片
@@ -121,7 +182,7 @@ Page({
   },
 
    //点击表情，打开第一级menu
-  emoticonFirstMenu: function(e) {
+  onMenu: function(e) {
 
     //准备当前预备编辑的图片地址
     global_page.setData({
@@ -277,12 +338,12 @@ Page({
   onLoad: function (param) {
     //初始化显示view
     var _view = {
-      miniHidden:false,
-      treeHidden:false
+      displayUpload:false,
+      displayCategory:false
     }
     View.Switch.Init(this,_view)
     // View.Switch.On("miniHidden","treeHidden")
-    View.Switch.Work()
+    // View.Switch.Work()
     global_page = this
   },
 

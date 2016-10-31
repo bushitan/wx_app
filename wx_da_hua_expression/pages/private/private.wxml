@@ -1,37 +1,39 @@
 <!--latest.wxml-->
 <view class="container">
     <view class="bar" >
-        <view class="bar-tree" catchtap="categoryBtn">{{categoryTitle}}</view>
+        <view class="bar-tree"  catchtap="eventBase"  data-action="btnCategory">{{categoryTitle}}</view>
 
-        <view class="tree" wx:if="{{treeHidden}}">
+        <view class="tree" wx:if="{{displayCategory}}">
              <view  class="leaf" style="border-bottom: 1px solid #1b1d20;"
-             catchtap="categoryChange" data-category="全部">
+              catchtap="eventBase"  data-action="changeCategory"  data-category="全部">
                 <label class="a">全部</label>
             </view>
             <block wx:for="{{category}}">
                 <view class="leaf" style="border-bottom: 1px solid #1b1d20;"
-                catchtap="categoryChange" data-category="{{item}}">
+                 catchtap="eventBase"  data-action="changeCategory" data-category="{{item}}">
                     <label class="a">{{item}}</label>
                 </view>
             </block>
-            <view class="leaf" catchtap="navigateToCategory">
+            <view class="leaf"  catchtap="eventBase"  data-action="navigateToCategory">
                 <label>+</label>
             </view>
         </view>
 
         <view class="btn-content">
-            <image class="btn-add" src="../../images/ic_action_add.png" background-size="cover" catchtap="uploadBtn"></image>
+            <image class="btn-add" src="../../images/ic_action_add.png" background-size="cover" 
+             catchtap="eventBase"  data-action="btnUpload"></image>
         </view>
-        <view class="mini-bar" wx:if="{{miniHidden}}">
+        <view class="mini-bar" wx:if="{{displayUpload}}">
             <!--<view class="mini-bar-content" style="border-bottom: 1px solid #1b1d20;"  catchtap="NavigateTo" data-navigate="paint">
                 <image class="mini-btn" src="../../images/ic_action_edit.png" background-size="cover" ></image>
                 <label class="mini-text">手绘板</label>
             </view>-->
-            <view class="mini-bar-content" style="border-bottom: 1px solid #1b1d20;"  catchtap="uploadImage">
+            <view class="mini-bar-content" style="border-bottom: 1px solid #1b1d20;"  
+           catchtap="eventBase"  data-action="uploadImage" >
                 <image class="mini-btn" src="../../images/ic_action_picture.png" background-size="cover" ></image>
                 <text class="mini-text">上传图片</text>
             </view>
-            <view class="mini-bar-content" catchtap="uploadVideo">
+            <view class="mini-bar-content"  catchtap="eventBase"  data-action="uploadVideo">
                 <image class="mini-btn" src="../../images/ic_action_video.png" background-size="cover" ></image>
                 <text class="mini-text">小视频->GIF</text>
             </view>
@@ -46,8 +48,8 @@
             <image class="mark" src="../../images/gif_jia.png"></image>
             <image class="img"  src="{{joinSecondeImg}}"></image>
         </view>
-        <button catchtap="menuJoinOK" size="mini"> 交换 </button>
-        <button catchtap="menuJoinOK" size="mini"> GIF拼接 </button>
+        <button catchtap="eventBase"  data-action="menuJoinOK" size="mini"> 交换 </button>
+        <button catchtap="eventBase"  data-action="menuJoinOK"  size="mini"> GIF拼接 </button>
     </view>
 
     <view class="resize">
@@ -57,10 +59,10 @@
                     <view><text>{{item.text}}</text></view>
                     <view><image src="{{item.img}}"></image></view>
                     <view>
-                        <button catchtap="menuResizeShare" size="mini" data-imgurl="{{item.img}}">分享</button>
+                        <button  catchtap="eventBase"  data-action="menuResizeShare"  size="mini" data-imgurl="{{item.img}}">分享</button>
                     </view>
                     <view>
-                        <button catchtap="menuResizeAdd" size="mini" data-imgurl="{{item.img}}">收藏</button>
+                        <button  catchtap="eventBase" data-action="menuResizeAdd" size="mini" data-imgurl="{{item.img}}">收藏</button>
                     </view>
                 </view>
             </block>
@@ -72,19 +74,19 @@
         <block wx:for="{{latest}}">
             <view class="member" >
                 <image class="image-5" src="{{item}}" background-size="cover" 
-                catchtap="emoticonFirstMenu" data-imgurl="{{item}}"></image>
+                     catchtap="eventBase" data-action="onMenu" data-imgurl="{{item}}"></image>
             </view>
         </block>
       </view>
     </view>
   
     <view class="menu"  style="left:{{menu_left}};top:{{menu_top}};" wx:if="{{isPreDisplay}}"  >
-            <view class="top" catchtap="menuShare">分享</view>
-            <view class="left" catchtap="navigateToEditor" >编辑</view>
-            <view class="right" catchtap="menuJoinAdd">拼接</view>
-            <view class="bottom" catchtap="menuDelete">删除</view>
-            <view class="bottom-right" catchtap="menuMoveCategory">分类</view>
-            <view class="bottom-left" catchtap="menuResize">裁剪</view>
+            <view class="top"   catchtap="eventBase" data-action="menuShare">分享</view>
+            <view class="left"  catchtap="eventBase" data-action="navigateToEditor" >编辑</view>
+            <view class="right"   catchtap="eventBase" data-action="menuJoinAdd">拼接</view>
+            <view class="bottom" catchtap="eventBase" data-action="menuDelete">删除</view>
+            <view class="bottom-right"   catchtap="eventBase" data-action="menuMoveCategory">分类</view>
+            <view class="bottom-left"   catchtap="eventBase" data-action="menuResize">裁剪</view>
     </view>
 
   
