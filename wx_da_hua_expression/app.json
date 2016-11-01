@@ -5,6 +5,7 @@
     "pages/category/category",
     "pages/category/category",
     "pages/watermark/watermark",
+    "pages/painter/painter",
     "pages/join/join"
   ],
   "window":{

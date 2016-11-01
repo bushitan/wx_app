@@ -27,10 +27,10 @@
              catchtap="eventBase"  data-action="btnUpload"></image>
         </view>
         <view class="mini-bar" wx:if="{{displayUpload}}">
-            <!--<view class="mini-bar-content" style="border-bottom: 1px solid #1b1d20;"  catchtap="NavigateTo" data-navigate="paint">
+            <view class="mini-bar-content" style="border-bottom: 1px solid #1b1d20;" catchtap="eventBase"  data-action="navigateToPainter" >
                 <image class="mini-btn" src="../../images/ic_action_edit.png" background-size="cover" ></image>
-                <label class="mini-text">手绘板</label>
-            </view>-->
+                <label class="mini-text">绘板</label>
+            </view>
             <view class="mini-bar-content" style="border-bottom: 1px solid #1b1d20;"  
            catchtap="eventBase"  data-action="uploadImage" >
                 <image class="mini-btn" src="../../images/ic_action_picture.png" background-size="cover" ></image>

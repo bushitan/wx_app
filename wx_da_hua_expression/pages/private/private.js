@@ -69,12 +69,16 @@ Page({
    */
   eventDisplay:function(action){
     var _display = {
+      //目录菜单
       "btnCategory":function(){View.Switch.OffAllExcept("displayCategory","displayMask")}, //btn目录，显示目录、遮罩
       "changeCategory":function(){View.Switch.Off("displayCategory","displayMask")},//选择目录，关闭目录、遮罩
       "navigateToCategory":function(){View.Switch.Off("displayCategory","displayMask")},//设置目录，关闭目录、遮罩
+      //上传菜单
       "btnUpload":function(){ View.Switch.OffAllExcept("displayUpload","displayMask") },//btn上传，显示上传、遮罩
+      "navigateToPainter":function(){ View.Switch.Off("displayUpload","displayMask") },//btn上传图片，关闭上传、遮罩
       "uploadImage":function(){ View.Switch.Off("displayUpload","displayMask") },//btn上传图片，关闭上传、遮罩
       "uploadVideo":function(){ View.Switch.Off("displayUpload","displayMask") },//btn上传视频，关闭上传、遮罩
+      // 表情功能菜单
       "onMenu":function(){ View.Switch.On("displayMenu") },//btn打开菜单
       "menuJoinAdd":function(){ View.Switch.OffAllExcept("displayJoin") },
       // "menuJoinOK":function(){ View.Switch.Off("displayMenu") },
@@ -85,7 +89,7 @@ Page({
       "navigateToEditor":function(){ View.Switch.Off("displayMenu") },
       "menuDelete":function(){ View.Switch.OffAll() },
       "menuMoveCategory":function(){ View.Switch.OffAll() },
-
+      //基本view:遮罩、All
       "mask":function(){View.Switch.OffAll()}, //公共透明遮罩
       "all":function(){View.Switch.Off("displayMenu")}, //公共透明遮罩
     }
@@ -99,9 +103,12 @@ Page({
       "btnCategory":global_page.categoryBtn,
       "changeCategory":global_page.categoryChange,
       "navigateToCategory":global_page.navigateToCategory,
+
       "btnUpload":global_page.uploadBtn,
+      "navigateToPainter": global_page.navigateToPainter,
       "uploadImage": global_page.uploadImage,
       "uploadVideo": global_page.uploadVideo,
+
       "menuJoinOK": global_page.menuJoinOK,
       "menuResizeShare": global_page.menuResizeShare,
       "menuResizeAdd": global_page.menuResizeAdd,
@@ -381,6 +388,14 @@ Page({
   //导航：目录设置页面
   navigateToCategory: function(e) {
     var url = '../category/category'
+    wx.navigateTo({
+      url: url
+    })
+  },
+
+  //导航：目录设置页面
+  navigateToPainter: function(e) {
+    var url = '../painter/painter'
     wx.navigateTo({
       url: url
     })
