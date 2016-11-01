@@ -132,13 +132,13 @@ Page({
 
     /**this.data 中的的 display先手动同步
      */
-    var _view = {
-      displayLoading:this.data.displayLoading,
-      dispalyMenu:this.data.dispalyMenu,
-    }
-    View.Switch.Init(this,_view)
-    // View.Switch.Off("hidden","isPreDisplay")
-    View.Switch.Work()
+    // var _view = {
+    //   displayLoading:this.data.displayLoading,
+    //   dispalyMenu:this.data.dispalyMenu,
+    // }
+    // View.Switch.Init(this,_view)
+    // // View.Switch.Off("hidden","isPreDisplay")
+    // View.Switch.Work()
 
     // console.log(this.data.isPreDisplay)
     global_page = this
@@ -147,6 +147,20 @@ Page({
     // })
     
   
+  },
+
+  onHide:function(){
+    View.Switch.OffAll()
+    View.Switch.Work()
+  },
+
+  onShow: function() {
+    var _view = {
+      displayLoading:this.data.displayLoading,
+      dispalyMenu:this.data.dispalyMenu,
+    }
+    View.Switch.Init(this,_view)
+    View.Switch.Work()
   },
 
   onReady:function(){

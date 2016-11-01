@@ -22,6 +22,7 @@
 }
 
 .mini-bar{
+    
     background-color: #373b3e;
     position: absolute;
     width:330rpx;
@@ -29,7 +30,7 @@
     right:16rpx;
     /*font-size: 1rem;*/
     color:#ffffff;
-    z-index: 999;
+    z-index: 1001;
 
     -moz-box-shadow: 0px 0px 10px #000000;
     -webkit-box-shadow: 0px 0px 10px #000000;
@@ -62,8 +63,9 @@
     left:16rpx;
     /*font-size: 1rem;*/
     color:#ffffff;
-    z-index: 999;
+    z-index: 1001;
 
+    
     -moz-box-shadow: 0px 0px 10px #000000;
     -webkit-box-shadow: 0px 0px 10px #000000;
     box-shadow: 0px 0px 10px #000000;
