@@ -11,9 +11,13 @@ Page({
     title: '最新话题',
     latest: [],
     hidden: false,
+    
     displayUpload:false,
     displayCategory:false,
-    
+    displayMenu:false,
+    displayMask:false,
+    displayJoin:false,
+    displayResize:false,
     editorUrl:"", //预备编辑的图片
     menu_left: "0rpx",
     menu_top: "50rpx",
@@ -59,29 +63,34 @@ Page({
     global_page.eventDisplay(e.currentTarget.dataset.action)
   },
 
-  /**
+
+  /**No2.1
    * 触发view的隐藏显示
    */
   eventDisplay:function(action){
     var _display = {
-      "btnCategory":function(){View.Switch.OffAllExcept("displayCategory")},
-      "changeCategory":function(){View.Switch.Off("displayCategory")},
-      "navigateToCategory":function(){},
-      "btnUpload":function(){ View.Switch.On("dispalyMenu") },
-      "uploadImage":function(){ View.Switch.Off("dispalyMenu") },
-      "uploadVideo":function(){ View.Switch.Off("dispalyMenu") },
-      "menuJoinOK":function(){ View.Switch.Off("dispalyMenu") },
-      "menuResizeShare":function(){ View.Switch.Off("dispalyMenu") },
-      "menuResizeAdd":function(){ View.Switch.Off("dispalyMenu") },
-      "onMenu":function(){ View.Switch.Off("dispalyMenu") },
-      "menuShare":function(){ View.Switch.Off("dispalyMenu") },
-      "navigateToEditor":function(){ View.Switch.Off("dispalyMenu") },
-      "menuJoinAdd":function(){ View.Switch.Off("dispalyMenu") },
-      "menuDelete":function(){ View.Switch.Off("dispalyMenu") },
-      "menuMoveCategory":function(){ View.Switch.Off("dispalyMenu") },
-      "menuResize":function(){ View.Switch.Off("dispalyMenu") },
+      "btnCategory":function(){View.Switch.OffAllExcept("displayCategory","displayMask")}, //btn目录，显示目录、遮罩
+      "changeCategory":function(){View.Switch.Off("displayCategory","displayMask")},//选择目录，关闭目录、遮罩
+      "navigateToCategory":function(){View.Switch.Off("displayCategory","displayMask")},//设置目录，关闭目录、遮罩
+      "btnUpload":function(){ View.Switch.OffAllExcept("displayUpload","displayMask") },//btn上传，显示上传、遮罩
+      "uploadImage":function(){ View.Switch.Off("displayUpload","displayMask") },//btn上传图片，关闭上传、遮罩
+      "uploadVideo":function(){ View.Switch.Off("displayUpload","displayMask") },//btn上传视频，关闭上传、遮罩
+      "onMenu":function(){ View.Switch.On("displayMenu") },//btn打开菜单
+      "menuJoinAdd":function(){ View.Switch.OffAllExcept("displayJoin") },
+      // "menuJoinOK":function(){ View.Switch.Off("displayMenu") },
+      "menuResize":function(){ View.Switch.OffAllExcept("displayResize")},
+      // "menuResizeShare":function(){ View.Switch.Off("displayMenu") },
+      // "menuResizeAdd":function(){ View.Switch.Off("displayMenu") },
+      // "menuShare":function(){ View.Switch.Off("displayMenu") },
+      "navigateToEditor":function(){ View.Switch.Off("displayMenu") },
+      "menuDelete":function(){ View.Switch.OffAll() },
+      "menuMoveCategory":function(){ View.Switch.OffAll() },
+
+      "mask":function(){View.Switch.OffAll()}, //公共透明遮罩
+      "all":function(){View.Switch.Off("displayMenu")}, //公共透明遮罩
     }
-    _display[action]()
+    if (_display.hasOwnProperty(action))
+      _display[action]()
     View.Switch.Work() //触发效果
   },
   eventListen:function(e){
@@ -104,7 +113,9 @@ Page({
       "menuMoveCategory": global_page.menuMoveCategory,
       "menuResize": global_page.menuResize,
     }
-    _eventDict[e.currentTarget.dataset.action](e) 
+
+    if (_eventDict.hasOwnProperty(e.currentTarget.dataset.action))
+      _eventDict[e.currentTarget.dataset.action](e) 
   },
 
 
@@ -183,7 +194,6 @@ Page({
 
    //点击表情，打开第一级menu
   onMenu: function(e) {
-
     //准备当前预备编辑的图片地址
     global_page.setData({
       editorUrl:e.currentTarget.dataset.imgurl
@@ -191,12 +201,9 @@ Page({
     //menu显示位置修正
     var _left = e.currentTarget.offsetLeft-7 + "px";
     var _top = e.currentTarget.offsetTop-7 + "px";
-    var _isPreDisplay = true;
-    if(global_page.data.menu_left == _left && global_page.data.menu_top == _top) //如果click在同一target，消失
-      _isPreDisplay = !global_page.data.isPreDisplay
+ 
     //设置menu可见，X/Y
     global_page.setData({
-      isPreDisplay:_isPreDisplay,
       menu_left: e.currentTarget.offsetLeft-7 + "px",
       menu_top: e.currentTarget.offsetTop-7 + "px",
     })
@@ -287,9 +294,22 @@ Page({
     })
   },
 
-  // reset
+  onHide:function(){
+    View.Switch.OffAll()
+    View.Switch.Work()
+  },
 
   onShow: function() {
+    var _view = {
+      displayUpload:false,
+      displayCategory:false,
+      displayMenu:false,
+      displayMask:false,
+      displayJoin:false,
+      displayResize:false,
+    }
+    View.Switch.Init(this,_view)
+    View.Switch.Work()
     /**
      * 编辑->收藏，
      * 进入private，在emotion列表中显示
@@ -337,13 +357,7 @@ Page({
    */
   onLoad: function (param) {
     //初始化显示view
-    var _view = {
-      displayUpload:false,
-      displayCategory:false
-    }
-    View.Switch.Init(this,_view)
-    // View.Switch.On("miniHidden","treeHidden")
-    // View.Switch.Work()
+    
     global_page = this
   },
 

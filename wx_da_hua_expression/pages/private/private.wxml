@@ -1,5 +1,8 @@
 <!--latest.wxml-->
-<view class="container">
+
+<view class="mask" catchtap="eventBase" data-action="mask"  wx:if="{{displayMask}}"   ></view>
+<view class="container"  catchtap="eventBase" data-action="all" >
+
     <view class="bar" >
         <view class="bar-tree"  catchtap="eventBase"  data-action="btnCategory">{{categoryTitle}}</view>
 
@@ -42,7 +45,7 @@
         </view>
     </view>
     
-    <view class="join">
+    <view class="join" wx:if="{{displayJoin}}">
         <view class="content" >
             <image class="img" src="{{joinFirstImg}}"></image>
             <image class="mark" src="../../images/gif_jia.png"></image>
@@ -52,7 +55,7 @@
         <button catchtap="eventBase"  data-action="menuJoinOK"  size="mini"> GIF拼接 </button>
     </view>
 
-    <view class="resize">
+    <view class="resize" wx:if="{{displayResize}}">
         <view class="content" >
             <block wx:for="{{resize_success}}">
                 <view  index="{{index}}" id="{{item.id}}">
@@ -77,12 +80,13 @@
                      catchtap="eventBase" data-action="onMenu" data-imgurl="{{item}}"></image>
             </view>
         </block>
+        
       </view>
     </view>
   
-    <view class="menu"  style="left:{{menu_left}};top:{{menu_top}};" wx:if="{{isPreDisplay}}"  >
+    <view class="menu"  style="left:{{menu_left}};top:{{menu_top}};" wx:if="{{displayMenu}}"  >
             <view class="top"   catchtap="eventBase" data-action="menuShare">分享</view>
-            <view class="left"  catchtap="eventBase" data-action="navigateToEditor" >编辑</view>
+            <view class="left"  catchtap="eventBase" data-action="navigateToEditor" >水印</view>
             <view class="right"   catchtap="eventBase" data-action="menuJoinAdd">拼接</view>
             <view class="bottom" catchtap="eventBase" data-action="menuDelete">删除</view>
             <view class="bottom-right"   catchtap="eventBase" data-action="menuMoveCategory">分类</view>

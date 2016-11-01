@@ -33,14 +33,16 @@ var _switch = {
       console.log(this.view)
     },
     //关闭当前，打开全部
-    OnAllExcept:function(view){
+    OnAllExcept:function(){
       for ( var i in this.view)
         this.view[i] = true
       for(var i in arguments)
         this.view[arguments[i]] = false
     },
     //打开当前，关闭全部
-    OffAllExcept:function(view){
+    OffAllExcept:function(){
+      // for(var i in arguments)
+      //   this.view[arguments[i]] = true
       for ( var i in this.view)
         this.view[i] = false
       for(var i in arguments)
@@ -54,6 +56,8 @@ var _switch = {
     //Page执行显示/隐藏操作
     Work:function(){
       this.page.setData(this.view)
+      
+    console.log(this.view)
     }
 }
 
