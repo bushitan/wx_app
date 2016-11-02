@@ -4,6 +4,13 @@
         bindtouchmove="onTouchMove"   
         bindtouchend="onTouchEnd">    <!--触发触摸 事件--> <!--触摸移动 事件--> <!--触摸结束 事件-->
     </canvas>
+    <view>
+        透明度（画笔、柳叶刀、橡皮）:
+        <slider bindchange="slider3change" show-value/>
+        大小（画笔、橡皮）:
+        <slider bindchange="slider3change" show-value/>
+    </view>
+    
     <view class="color-picker">
         <view
             wx:for-items="{{colors}}"
@@ -14,4 +21,15 @@
             bindtap="chooseColor">     <!--选择颜色 事件-->
         </view>
     </view>
+    <view class="tool-picker">
+        <view class="tool-item selected" >铅笔</view>
+        <view class="tool-item selected" >柳叶刀</view>
+        <view class="tool-item selected" style="background-color: red"   >颜色</view>
+        <view class="tool-item selected" >橡皮</view>
+        <view class="tool-item selected" >保存</view>
+        <view class="tool-item selected" >外链资源</view>
+        <view class="tool-item selected" >长按取色</view>
+        
+    </view>
+    <!--<button catchtap="save" >保存</button>-->
 </view>

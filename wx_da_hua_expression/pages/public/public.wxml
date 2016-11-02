@@ -1,5 +1,5 @@
 <!--public.wxml-->
-<view class="container">
+<view class="container" catchtap="eventBase" data-action="all">
     <!--搜索栏-->
      <view class="search" >
         <view >
@@ -33,7 +33,7 @@
   </view>
  
     <!--悬浮菜单-->
-    <view class="menu"  style="left:{{menu_left}};top:{{menu_top}};" wx:if="{{dispalyMenu}}"  >
+    <view class="menu"  style="left:{{menu_left}};top:{{menu_top}};" wx:if="{{displayMenu}}"  >
             <view class="top" catchtap="eventBase"  data-action="btnShare">分享</view>
             <view class="left" catchtap="eventBase"  data-action="btnCollect">收藏</view>
             <!--<view class="right" catchtap="menuJoinAdd">拼接</view>

@@ -10,7 +10,7 @@ Page({
     displayLoading: true,
     menu_left: "0rpx",
     menu_top: "50rpx",
-    dispalyMenu:false,
+    displayMenu:false,
 
     keyword:"我擦", //搜索关键字
 
@@ -41,13 +41,15 @@ Page({
    */
   eventDisplay:function(action){
     var _display = {
-      "onMenu":function(){ View.Switch.On("dispalyMenu") },
-      "btnSearch":function(){ View.Switch.Off("dispalyMenu") },
-      "btnShortcut":function(){ View.Switch.Off("dispalyMenu") },
-      "btnShare":function(){ View.Switch.Off("dispalyMenu") },
-      "btnCollect":function(){ View.Switch.Off("dispalyMenu") },
+      "onMenu":function(){ View.Switch.On("displayMenu") },
+      "btnSearch":function(){ View.Switch.Off("displayMenu") },
+      "btnShortcut":function(){ View.Switch.Off("displayMenu") },
+      "btnShare":function(){ View.Switch.Off("displayMenu") },
+      "btnCollect":function(){ View.Switch.Off("displayMenu") },
+      "all":function(){View.Switch.Off("displayMenu")}, //公共透明遮罩
     }
-    _display[action]()
+    if (_display.hasOwnProperty(action))
+      _display[action]()
     View.Switch.Work() //触发效果
   },
   eventListen:function(e){
@@ -59,7 +61,8 @@ Page({
       "btnShare":global_page.menuShare,
       "btnCollect": global_page.menuCollect,
     }
-    _eventDict[e.currentTarget.dataset.action](e) 
+    if (_eventDict.hasOwnProperty(e.currentTarget.dataset.action))
+      _eventDict[e.currentTarget.dataset.action](e) 
   },
 
 
@@ -134,7 +137,7 @@ Page({
      */
     // var _view = {
     //   displayLoading:this.data.displayLoading,
-    //   dispalyMenu:this.data.dispalyMenu,
+    //   displayMenu:this.data.displayMenu,
     // }
     // View.Switch.Init(this,_view)
     // // View.Switch.Off("hidden","isPreDisplay")
@@ -157,7 +160,7 @@ Page({
   onShow: function() {
     var _view = {
       displayLoading:this.data.displayLoading,
-      dispalyMenu:this.data.dispalyMenu,
+      displayMenu:this.data.displayMenu,
     }
     View.Switch.Init(this,_view)
     View.Switch.Work()

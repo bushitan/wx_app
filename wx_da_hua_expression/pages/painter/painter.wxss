@@ -21,7 +21,7 @@ canvas.paper {
 
 view.color-picker {
     position: absolute;
-    bottom: 1rem;
+    bottom: 4rem;
     left: 1rem;
     right: 1rem;
     height: 2rem;
@@ -38,5 +38,27 @@ view.color-item {
 }
 
 view.color-item.selected {
+    border-color: black;
+}
+
+view.tool-picker {
+    position: absolute;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    height: 2rem;
+}
+
+view.tool-item {
+    display: block;
+    float: left;
+    width: 1.8rem;
+    height: 1.8rem;
+    border-radius: 100%;
+    border: 3px solid white;
+    margin-right: 5px;
+}
+
+view.tool-item.selected {
     border-color: black;
 }
