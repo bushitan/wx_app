@@ -22,13 +22,13 @@
         </view>
     </view>
     <view class="tool-picker">
-        <view class="tool-item selected" >铅笔</view>
-        <view class="tool-item selected" >柳叶刀</view>
+        <view class="tool-item selected"  catchtap="eventBase"  data-action="modeChange"  data-mode="pecile">铅笔</view>
+        <view class="tool-item selected" catchtap="eventBase"  data-action="modeChange"  data-mode="lancet">柳叶刀</view>
         <view class="tool-item selected" style="background-color: red"   >颜色</view>
-        <view class="tool-item selected" >橡皮</view>
-        <view class="tool-item selected" >保存</view>
-        <view class="tool-item selected" >外链资源</view>
-        <view class="tool-item selected" >长按取色</view>
+        <view class="tool-item selected" catchtap="eventBase" data-action="modeChange"  data-mode="eraser">橡皮</view>
+        <view class="tool-item selected" catchtap="eventBase" data-action="save" >保存</view>
+        <!--<view class="tool-item selected" >外链资源</view>-->
+        <!--<view class="tool-item selected" >长按取色</view>-->
         
     </view>
     <!--<button catchtap="save" >保存</button>-->
