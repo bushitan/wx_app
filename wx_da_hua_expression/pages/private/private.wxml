@@ -1,7 +1,8 @@
 <!--latest.wxml-->
 
 <view class="mask" catchtap="eventBase" data-action="mask"  wx:if="{{displayMask}}"   ></view>
-<view class="container"  catchtap="eventBase" data-action="all" >
+<!--<view class="container"  catchtap="eventBase" data-action="all" >-->
+<view class="container"   >
 
     <view class="bar" >
         <view class="bar-tree"  catchtap="eventBase"  data-action="btnCategory">{{categoryTitle}}</view>

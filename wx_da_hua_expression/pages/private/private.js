@@ -348,7 +348,18 @@ Page({
    * 加载完毕，更新图片
    */
   onReady:function(){
-    Menu.Option.GetPictureMy(global_page.callBack)
+    // Menu.Option.GetPictureMy(global_page.callBack)  临时删除
+
+    this.setData({
+      latest:[
+        "../../images/gif_anim.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+      ]
+    })
     var that = this;
     // 300ms后，隐藏loading
     setTimeout(function() {

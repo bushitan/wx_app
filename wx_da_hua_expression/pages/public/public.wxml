@@ -1,5 +1,6 @@
 <!--public.wxml-->
-<view class="container" catchtap="eventBase" data-action="all">
+<!--<view class="container" catchtap="eventBase" data-action="all">-->
+<view class="container" >
     <!--搜索栏-->
      <view class="search" >
         <view >

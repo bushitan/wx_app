@@ -1,10 +1,9 @@
 {
   "pages":[
-    "pages/painter/painter",
     "pages/private/private",
+    "pages/painter/painter",
     "pages/canvas/canvas",
     "pages/public/public",
-    "pages/category/category",
     "pages/category/category",
     "pages/watermark/watermark",
     "pages/join/join"

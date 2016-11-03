@@ -167,7 +167,18 @@ Page({
   },
 
   onReady:function(){
-    Menu.Option.GetPictureHot("2321",global_page.callBack)
+    // Menu.Option.GetPictureHot("2321",global_page.callBack)
+    this.setData({
+      hotest:[
+      
+        "../../images/gif_anim.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+      ]
+    })
+
+
     var that = this;
     // 300ms后，隐藏loading
     setTimeout(function() {
