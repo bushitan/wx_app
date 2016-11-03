@@ -4,6 +4,9 @@ var Menu = require('../../utils/menu.js');
 
 var global_page
 // var context
+var context_lancet
+var context_1
+var point_lancet = []
 Page({
     data: {
         //调色盘列表
@@ -14,6 +17,8 @@ Page({
         context:"",
 
         mode:"lancet",
+
+        displayLancet:true,
     },
 
     eventBase:function(e){
@@ -45,39 +50,40 @@ Page({
     },
 
     //铅笔模式
-    // modePecile(event,clientX,clientY){
-    //     var that = event
-       
-    //     context.beginPath()
-    //     context.setStrokeStyle (that.data.paintColor) ;
-    //     context.setLineWidth (2)
-    //     context.setGlobalAlpha(0.1)
-    //     context.moveTo(that.movements[0],that.movements[1])
-    //     context.lineTo(clientX,clientY)
-    //     context.stroke(); 
-    //     context.closePath()
-    //     that.movements = [clientX, clientY];
-    // },
-    // //柳叶笔模式
-    // modeLancet(event,clientX,clientY){
-    //     var that = event
-    //       //仿画吧，柳叶刀
-    //     context.beginPath()
-    //     context.setFillStyle (that.data.paintColor) ;
-    //     context.setStrokeStyle (that.data.paintColor) ;
-    //     context.setLineWidth (2)
-    //     context.moveTo(that.startX,that.startY)
-    //     context.setGlobalAlpha(0.8)
-    //     context.lineTo(that.movements[0],that.movements[1])
-    //     context.lineTo(clientX,clientY)
-    //     context.setLineCap("round")
-    //     context.setLineJoin("miter")
-    //     context.setMiterLimit(10)
-    //     context.fill()
-    //     // context.stroke();  
-    //     context.closePath()
-    //     that.movements = [clientX, clientY];
-    // },
+    modePecile(event,_context_,clientX,clientY){
+        var that = event
+        var _context = _context_
+        _context.beginPath()
+        _context.setStrokeStyle (that.data.paintColor) ;
+        _context.setLineWidth (2)
+        _context.setGlobalAlpha(0.1)
+        _context.moveTo(that.movements[0],that.movements[1])
+        _context.lineTo(clientX,clientY)
+        _context.stroke(); 
+        _context.closePath()
+        that.movements = [clientX, clientY];
+    },
+    //柳叶笔模式
+    modeLancet(event,_context_,clientX,clientY){
+        //仿画吧，柳叶刀
+        var that = event
+        var _context = _context_
+        _context.beginPath()
+        _context.setFillStyle (that.data.paintColor) ;
+        _context.setStrokeStyle (that.data.paintColor) ;
+        // _context.setLineWidth (2)
+        _context.moveTo(that.startX,that.startY)
+        _context.setGlobalAlpha(0.2)
+        _context.lineTo(that.movements[0],that.movements[1])
+        _context.lineTo(clientX,clientY)
+        _context.setLineCap("round")
+        _context.setLineJoin("miter")
+        _context.setMiterLimit(10)
+        _context.fill()
+        // _context.stroke();  
+        _context.closePath()
+        that.movements = [clientX, clientY];
+    },
     //橡皮擦模式
     modeEraser(){},
 
@@ -87,6 +93,9 @@ Page({
     },
 
     onTouchStart({ touches }) {
+        //  global_page.setData({
+        //     displayLancet:true
+        // })
         const  clientX = touches[0]['x'];
         const  clientY = touches[0]['y'];
 
@@ -129,7 +138,6 @@ Page({
     },
 
     onTouchEnd() {
-        
         var that = this
          that.context.fill()
         that.context.closePath()
@@ -137,15 +145,102 @@ Page({
         global_page.setData({context:that.context})
 
         this.lastActions = that.context.getActions();
-        this.updateCanvas(this.lastActions);//更新画布，得出一条线
+        global_page.updateCanvas("paper",this._lastActions,"true");//更新画布，得出一条线
     },
    
+     onLancetStart({ touches }) {
+
+        const  clientX = touches[0]['x'];
+        const  clientY = touches[0]['y'];
+        this.startX = clientX
+        this.startY = clientY
+        this.movements = [clientX, clientY];
+       
+       //记录柳叶刀坐标
+        point_lancet = []
+        point_lancet.push([this.startX, this.startY])
+        point_lancet.push([clientX, clientY])
+
+        // global_page.setData({
+        //     displayLancet:true
+        // })
+ 
+
+        
+        context_1 = wx.createContext()
+        context_1.beginPath()
+        context_1.setFillStyle ('#008000') ;
+        context_1.setStrokeStyle ('#008000') ;
+        context_1.setGlobalAlpha(0.5)
+        context_1.setLineWidth (2)
+        context_1.moveTo(point_lancet[0][0],point_lancet[0][1])
+        context_1.fill()
+    },
+    
+    onLancetMove({ touches }) {
+        const  clientX = touches[0]['x'];
+        const  clientY = touches[0]['y'];
+        global_page.modeLancet(this,context_lancet,clientX,clientY)
+
+        //第三种方法
+        // context_1.lineTo(point_lancet[i][0],point_lancet[i][1])
+        // context_1.closePath()
+
+        // 把当前的记录全画出来
+        // var _context = wx.createContext()
+        // _context.beginPath()
+        // _context.setFillStyle ('#008000') ;
+        // _context.setStrokeStyle ('#008000') ;
+        // _context.setGlobalAlpha(0.5)
+        // _context.setLineWidth (2)
+        // _context.moveTo(point_lancet[0][0],point_lancet[0][1])
+        // for (var i=1;i<point_lancet.length;i++)
+        //     _context.lineTo(point_lancet[i][0],point_lancet[i][1])
+        // _context.fill()
+        // _context.stroke();  
+        // _context.closePath()
+        // this.movements = [clientX, clientY];//记录上一个点
+        // this.lastActions = _context.getActions();
+
+        
+        this.movements = [clientX, clientY];//记录上一个点
+        this.lastActions = context_lancet.getActions();
+        point_lancet.push([clientX, clientY])//柳叶刀记录
+        // wx.drawCanvas({ canvasId: "paper-lancet", actions:this.lastActions});
+        // this.updateCanvas("paper-lancet",this.lastActions,"false");//更新画布，得出一条线
+       this.updateCanvas("paper-lancet",this.lastActions,"true");//更新画布，得出一条线
+        
+    },
+
+    onLancetEnd() {   
+      
+        var _context = wx.createContext()
+        _context.beginPath()
+        _context.setFillStyle ('#008000') ;
+        _context.setStrokeStyle ('#008000') ;
+        _context.setGlobalAlpha(0.5)
+        _context.setLineWidth (2)
+        _context.moveTo(point_lancet[0][0],point_lancet[0][1])
+        for (var i=1;i<point_lancet.length;i++)
+            _context.lineTo(point_lancet[i][0],point_lancet[i][1])
+        _context.fill()
+        // _context.stroke();  
+        _context.closePath()
+
+        var _lastActions = _context.getActions();
+        global_page.updateCanvas("paper",_lastActions,"true");//更新画布，得出一条线
+        // global_page.setData({
+        //     displayLancet:false
+        // })
+   },
+
+
     getAngle(arc) {  
         return Math.PI * (arc / 180);  
     } , 
-    updateCanvas(actions) {
+    updateCanvas(canvasId,actions,reserve) {
         // console.log(actions)
-        wx.drawCanvas({ canvasId: 'paper', actions,reserve:"true" }); //wx自带绘图接口
+        wx.drawCanvas({ canvasId: canvasId, actions,reserve:reserve}); //wx自带绘图接口
     },
 
     canvasIdErrorCallback: function (e) {
@@ -168,6 +263,7 @@ Page({
     onLoad({ paintId }) {
         global_page = this
         // context = wx.createContext()
+        context_lancet = wx.createContext() 
         // const context = wx.createContext();//创建空白画布
     },
     
