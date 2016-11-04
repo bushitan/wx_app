@@ -1,10 +1,13 @@
 /*public.wxss*/
 
 .shortcut {
-    
+     position:absolute;
+     top:72rpx;
 }
 
 .shortcut .content{
+    
+    /*position:absolute;*/
     display:flex;
     flex-wrap: wrap;
     width:100%;
@@ -33,20 +36,24 @@
 }
 
 .search {
-     height: 64rpx;
+    
+    position:absolute;
+     height: 72rpx;
+     width:100%;
 }
 
 .search .btn {
-    width: 48rpx;
-    height: 48rpx;
+    width: 64rpx;
+    height: 64rpx;
     
-    float:left ;
+    /*float:left ;*/
     /*background-color: #fa3;*/
 }
 .search .input {
     width:400rpx;
-    margin-left: 120rpx;
+    margin-left: 143rpx;
     margin-right: 32rpx;
+    margin-top: 6rpx;
     background-color: #fff;
     float:left ;
 }

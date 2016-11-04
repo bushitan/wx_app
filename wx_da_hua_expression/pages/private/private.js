@@ -34,9 +34,26 @@ Page({
     ],
 
     categoryTitle:"全部",
-    category:["类别1","类别2","类别3"],
+    category:["类别1","类别2","类别3","类别4","类别5","类别6",],
+    categorySelectName:"全部",
     
+
+    //控制菜单上架
+    classMenu:"m-down",  //m-up  m-down
+
+    // 手机设备信息，均已rpx为标准
+    windowWidth:0,
+    windowHeight:0,
   },
+   //选择目录
+  selectCategory:function(e){
+    global_page.setData({
+      categorySelectName: e.currentTarget.dataset.selectname
+    })
+  },
+
+
+
 
   /** No.1
    * Page:private 回调函数
@@ -87,7 +104,7 @@ Page({
       // "menuResizeAdd":function(){ View.Switch.Off("displayMenu") },
       // "menuShare":function(){ View.Switch.Off("displayMenu") },
       "navigateToEditor":function(){ View.Switch.Off("displayMenu") },
-      "menuDelete":function(){ View.Switch.OffAll() },
+      // "menuDelete":function(){ View.Switch.OffAll() },
       "menuMoveCategory":function(){ View.Switch.OffAll() },
       //基本view:遮罩、All
       "mask":function(){View.Switch.OffAll()}, //公共透明遮罩
@@ -119,6 +136,13 @@ Page({
       "menuDelete": global_page.menuDelete,
       "menuMoveCategory": global_page.menuMoveCategory,
       "menuResize": global_page.menuResize,
+
+
+      // 新的裁剪
+      "menuResizeV2": global_page.menuResizeV2,
+      "btnUploadV2":global_page.btnUploadV2,
+      "selectCategory":global_page.selectCategory,
+      "refesh":global_page.refesh,
     }
 
     if (_eventDict.hasOwnProperty(e.currentTarget.dataset.action))
@@ -126,26 +150,32 @@ Page({
   },
 
 
-
-
-  //点击“目录”开关
-  categoryBtn : function() {
-    global_page.setData({
-      displayCategory: !global_page.data.displayCategory
-    })
+/**Todo
+     * 1、传入该分类的总张数
+     * 2、设置已获取张渚
+     * 3、设置准备获取数量
+     * 4、当准备获取量为0，提示"图片加载完毕"
+     *  */
+  refesh:function(){
+    console.log("refesh")
   },
 
-  categoryChange :function(e){
-    global_page.setData({
-      categoryTitle:e.currentTarget.dataset.category
+   //新开发 目录最后点击“+”开关
+  btnUploadV2:function() {
+     wx.showActionSheet({
+      itemList: ['图片(GIF需要原图)', '小视频'],
+      success: function(res) {
+        if (!res.cancel) {
+          // console.log(res.tapIndex)
+          //Todo 上传
+          var _new_img = global_page.data.editorUrl
+          global_page.emoticonUpdate(_new_img)
+        }
+      }
     })
+
   },
-  //点击“+”开关
-  uploadBtn:function() {
-    global_page.setData({
-      displayUpload: !global_page.data.displayUpload
-    })
-  },
+
   //上传图片
   uploadImage:function() {
     Menu.Option.ChooseImage(global_page.callBack)
@@ -205,15 +235,12 @@ Page({
     global_page.setData({
       editorUrl:e.currentTarget.dataset.imgurl
     })
-    //menu显示位置修正
-    var _left = e.currentTarget.offsetLeft-7 + "px";
-    var _top = e.currentTarget.offsetTop-7 + "px";
- 
-    //设置menu可见，X/Y
-    global_page.setData({
-      menu_left: e.currentTarget.offsetLeft-7 + "px",
-      menu_top: e.currentTarget.offsetTop-7 + "px",
-    })
+
+    if (e.currentTarget.offsetTop < 200)
+       global_page.setData({classMenu:"m-down"})
+    else
+       global_page.setData({classMenu:"m-up"})
+
   },
 
 
@@ -261,28 +288,21 @@ Page({
     Menu.Option.EditorJoin(_imgFirst,_imgSeconde,global_page.callBack)
   },
 
-  //裁剪
-  menuResize:function(){
-    var _tempList = this.data.resize_success
-    if (_tempList.length == 4) //大于4张，从第一格顶替
-      _tempList.pop()
-    _tempList.unshift(
-       {img:global_page.data.editorUrl , text:"大图"},
-    )
-    this.setData({resize_success:_tempList})
+  menuResizeV2:function(){
+    wx.showActionSheet({
+      itemList: ['大图(170x170)', '中图(128x128)', '小图(96x96)', '炒鸡小(48x48)'],
+      success: function(res) {
+        if (!res.cancel) {
+          // console.log(res.tapIndex)
+          //Todo 上传
+          var _new_img = global_page.data.editorUrl
+          global_page.emoticonUpdate(_new_img)
+        }
+      }
+    })
   },
 
-  //裁剪后，选择分享
-  menuResizeShare:function(e){
-    var _img_url = e.currentTarget.dataset.imgurl
-    Menu.Option.Share(_img_url)
-  },
-
-  //裁剪后，选择增加
-  menuResizeAdd:function(e){
-    var img = e.currentTarget.dataset.imgurl
-    global_page.emoticonUpdate(img)
-  },
+  
 
   //表情删除
   menuDelete:function(){
@@ -290,6 +310,7 @@ Page({
     //删除后，menu框隐藏
   },
 
+//表情移动分组
   menuMoveCategory:function(){
     wx.showActionSheet({
       itemList: global_page.data.category,
@@ -349,9 +370,40 @@ Page({
    */
   onReady:function(){
     // Menu.Option.GetPictureMy(global_page.callBack)  临时删除
+    
 
     this.setData({
       latest:[
+        "../../images/gif_anim.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
         "../../images/gif_anim.gif",
         "../../images/gif_anim1.gif",
         "../../images/gif_anim.gif",
@@ -377,6 +429,32 @@ Page({
     //初始化显示view
     
     global_page = this
+
+    var _pixelRatio,_windowWidth,_windowHeight
+    wx.getSystemInfo({
+      success: function(res) {
+        console.log(res.model)
+        console.log(res.pixelRatio)
+        console.log(res.windowWidth)
+        console.log(res.windowHeight)
+        console.log(res.language)
+        console.log(res.version)
+
+        _pixelRatio = res.pixelRatio
+        _windowWidth = res.windowWidth
+        _windowHeight = res.windowHeight
+
+        global_page.setData({
+          windowWidth:_windowWidth,
+          windowHeight:_windowHeight
+        })
+        
+        console.log("data:")
+        console.log("4thuriehgoiregu894389:")
+        console.log(global_page.data)
+      }
+    })
+    
   },
 
 

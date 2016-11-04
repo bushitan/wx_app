@@ -19,6 +19,14 @@ Page({
     hotest: [],
     hotLabel:["金馆长","我想静静","意外","疼！"],
 
+    
+
+    //控制菜单上架
+    classMenu:"m-down",  //m-up  m-down
+
+    // 手机设备信息，均已rpx为标准
+    windowWidth:0,
+    windowHeight:0,
   },
 
   //Page:public 的函数
@@ -44,8 +52,8 @@ Page({
       "onMenu":function(){ View.Switch.On("displayMenu") },
       "btnSearch":function(){ View.Switch.Off("displayMenu") },
       "btnShortcut":function(){ View.Switch.Off("displayMenu") },
-      "btnShare":function(){ View.Switch.Off("displayMenu") },
-      "btnCollect":function(){ View.Switch.Off("displayMenu") },
+      // "btnShare":function(){ View.Switch.Off("displayMenu") },
+      // "btnCollect":function(){ View.Switch.Off("displayMenu") },
       "all":function(){View.Switch.Off("displayMenu")}, //公共透明遮罩
     }
     if (_display.hasOwnProperty(action))
@@ -55,7 +63,7 @@ Page({
   eventListen:function(e){
 
     var _eventDict = {
-      "onMenu":global_page.switchFirstMenu,
+      "onMenu":global_page.onMenu,
       "btnSearch":global_page.searchBtn,
       "btnShortcut":global_page.searchShortcut,
       "btnShare":global_page.menuShare,
@@ -91,26 +99,17 @@ Page({
 
   /**点击表情，悬浮菜单
    */
-  switchFirstMenu: function(e) {
+  onMenu: function(e) {
 
     //准备当前预备编辑的图片地址
     global_page.setData({
       editorUrl:e.currentTarget.dataset.imgurl
     })
-    
-    console.log(e.currentTarget.dataset.imgurl)
-    console.log(global_page.data.editorUrl)
-    var _left = e.currentTarget.offsetLeft-7 + "px";
-    var _top = e.currentTarget.offsetTop-7 + "px";
-    var _isPreDisplay = true;
-    if(global_page.data.menu_left == _left && global_page.data.menu_top == _top) //如果click在同一target，消失
-      _isPreDisplay = !global_page.data.isPreDisplay
-      
-    global_page.setData({
-      isPreDisplay:_isPreDisplay,
-      menu_left: e.currentTarget.offsetLeft-7 + "px",
-      menu_top: e.currentTarget.offsetTop-7 + "px",
-    })
+     if (e.currentTarget.offsetTop < 200)
+       global_page.setData({classMenu:"m-down"})
+    else
+       global_page.setData({classMenu:"m-up"})
+  
   },
 
   //图片分享
@@ -133,21 +132,28 @@ Page({
 
   onLoad: function () {
 
-    /**this.data 中的的 display先手动同步
-     */
-    // var _view = {
-    //   displayLoading:this.data.displayLoading,
-    //   displayMenu:this.data.displayMenu,
-    // }
-    // View.Switch.Init(this,_view)
-    // // View.Switch.Off("hidden","isPreDisplay")
-    // View.Switch.Work()
-
-    // console.log(this.data.isPreDisplay)
     global_page = this
-    // this.setData({
-    //   hidden: false
-    // })
+
+    //获取手机信息
+    var _pixelRatio,_windowWidth,_windowHeight
+    wx.getSystemInfo({
+      success: function(res) {
+        console.log(res.model)
+        console.log(res.pixelRatio)
+        console.log(res.windowWidth)
+        console.log(res.windowHeight)
+        console.log(res.language)
+        console.log(res.version)
+
+        _pixelRatio = res.pixelRatio
+        _windowWidth = res.windowWidth
+        _windowHeight = res.windowHeight
+      }
+    })
+    this.setData({
+      windowWidth:_windowWidth,
+      windowHeight:_windowHeight
+    })
     
   
   },
@@ -170,6 +176,46 @@ Page({
     // Menu.Option.GetPictureHot("2321",global_page.callBack)
     this.setData({
       hotest:[
+      
+        "../../images/gif_anim.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+      
+        "../../images/gif_anim.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+      
+        "../../images/gif_anim.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+      
+        "../../images/gif_anim.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+      
+        "../../images/gif_anim.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+      
+        "../../images/gif_anim.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+      
+        "../../images/gif_anim.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+      
+        "../../images/gif_anim.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
+        "../../images/gif_anim1.gif",
       
         "../../images/gif_anim.gif",
         "../../images/gif_anim1.gif",

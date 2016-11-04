@@ -1,78 +1,11 @@
 <!--latest.wxml-->
 
-<view class="mask" catchtap="eventBase" data-action="mask"  wx:if="{{displayMask}}"   ></view>
-<!--<view class="container"  catchtap="eventBase" data-action="all" >-->
-<view class="container"   >
-
-    <view class="bar" >
-        <view class="bar-tree"  catchtap="eventBase"  data-action="btnCategory">{{categoryTitle}}</view>
-
-        <view class="tree" wx:if="{{displayCategory}}">
-             <view  class="leaf" style="border-bottom: 1px solid #1b1d20;"
-              catchtap="eventBase"  data-action="changeCategory"  data-category="全部">
-                <label class="a">全部</label>
-            </view>
-            <block wx:for="{{category}}">
-                <view class="leaf" style="border-bottom: 1px solid #1b1d20;"
-                 catchtap="eventBase"  data-action="changeCategory" data-category="{{item}}">
-                    <label class="a">{{item}}</label>
-                </view>
-            </block>
-            <view class="leaf"  catchtap="eventBase"  data-action="navigateToCategory">
-                <label>+</label>
-            </view>
-        </view>
-
-        <view class="btn-content">
-            <image class="btn-add" src="../../images/ic_action_add.png" background-size="cover" 
-             catchtap="eventBase"  data-action="btnUpload"></image>
-        </view>
-        <view class="mini-bar" wx:if="{{displayUpload}}">
-            <view class="mini-bar-content" style="border-bottom: 1px solid #1b1d20;" catchtap="eventBase"  data-action="navigateToPainter" >
-                <image class="mini-btn" src="../../images/ic_action_edit.png" background-size="cover" ></image>
-                <label class="mini-text">绘板</label>
-            </view>
-            <view class="mini-bar-content" style="border-bottom: 1px solid #1b1d20;"  
-           catchtap="eventBase"  data-action="uploadImage" >
-                <image class="mini-btn" src="../../images/ic_action_picture.png" background-size="cover" ></image>
-                <text class="mini-text">上传图片</text>
-            </view>
-            <view class="mini-bar-content"  catchtap="eventBase"  data-action="uploadVideo">
-                <image class="mini-btn" src="../../images/ic_action_video.png" background-size="cover" ></image>
-                <text class="mini-text">小视频->GIF</text>
-            </view>
-            
-           
-        </view>
-    </view>
-    
-    <view class="join" wx:if="{{displayJoin}}">
-        <view class="content" >
-            <image class="img" src="{{joinFirstImg}}"></image>
-            <image class="mark" src="../../images/gif_jia.png"></image>
-            <image class="img"  src="{{joinSecondeImg}}"></image>
-        </view>
-        <button catchtap="eventBase"  data-action="menuJoinOK" size="mini"> 交换 </button>
-        <button catchtap="eventBase"  data-action="menuJoinOK"  size="mini"> GIF拼接 </button>
-    </view>
-
-    <view class="resize" wx:if="{{displayResize}}">
-        <view class="content" >
-            <block wx:for="{{resize_success}}">
-                <view  index="{{index}}" id="{{item.id}}">
-                    <view><text>{{item.text}}</text></view>
-                    <view><image src="{{item.img}}"></image></view>
-                    <view>
-                        <button  catchtap="eventBase"  data-action="menuResizeShare"  size="mini" data-imgurl="{{item.img}}">分享</button>
-                    </view>
-                    <view>
-                        <button  catchtap="eventBase" data-action="menuResizeAdd" size="mini" data-imgurl="{{item.img}}">收藏</button>
-                    </view>
-                </view>
-            </block>
-        </view>
-    </view>
-
+<!--<view class="mask" catchtap="eventBase" data-action="mask"  wx:if="{{displayMask}}"   ></view>-->
+<view class="container"  catchtap="eventBase" data-action="all" >
+   <!--表情图-->
+<scroll-view scroll-y="true" style="height:{{windowHeight}}px;"
+ bindscrolltolower="eventBase" data-action="refesh">
+    <view class="space-72"></view>
     <view class="emoticon">
       <view class="content">
         <block wx:for="{{latest}}">
@@ -81,21 +14,61 @@
                      catchtap="eventBase" data-action="onMenu" data-imgurl="{{item}}"></image>
             </view>
         </block>
-        
       </view>
     </view>
-  
-    <view class="menu"  style="left:{{menu_left}};top:{{menu_top}};" wx:if="{{displayMenu}}"  >
+</scroll-view>
+
+<!--<view class="container"   >-->
+    <!--表情目录-->
+    <view class="category">
+        <view catchtap="eventBase"  data-action="selectCategory" data-selectname="{{categoryTitle}}">
+            <label  class=" {{categorySelectName == categoryTitle ? 'select' : ''}}">全部</label> 
+        </view>
+        <scroll-view  scroll-x="true" >
+            <block wx:for="{{category}}" 
+                wx:for-item="c_name">
+                <label catchtap="eventBase"  data-action="selectCategory" data-selectName="{{c_name}}"
+                 class="{{categorySelectName == c_name ? 'select' : ''}}">{{c_name}}</label>
+            </block>
+            <label catchtap="eventBase"  data-action="navigateToCategory">+</label>
+            <!--</view>-->
+        </scroll-view>
+    </view>
+
+   
+    <!--点击表情，弹出菜单-->
+    <view class="menuv-v2 {{classMenu}}" wx:if="{{displayMenu}}">
+         <view><image src="{{editorUrl}}"></image></view>
+         <view><button class="" type="primary"  catchtap="eventBase" data-action="menuShare"
+            size="mini" >分享</button></view>
+        <view class="content" ><label><button catchtap="eventBase" data-action="menuDelete"
+            size="mini" >删除</button ></label>
+            <label ><button  catchtap="eventBase" data-action="menuMoveCategory"
+            size="mini" >分组</button ></label>
+            <label ><button catchtap="eventBase" data-action="menuResizeV2"
+            size="mini" >压缩</button ></label>
+        </view>
+    </view>
+
+    <!--图片、视频上传-->
+    <view class="upload">
+        <image src="../../images/ic_action_add.png" background-size="cover" 
+             catchtap="eventBase"  data-action="btnUploadV2"></image>
+    </view>
+ 
+    <!--<view class="menu"  style="left:{{menu_left}};top:{{menu_top}};" wx:if="{{displayMenu}}"  >
             <view class="top"   catchtap="eventBase" data-action="menuShare">分享</view>
             <view class="left"  catchtap="eventBase" data-action="navigateToEditor" >水印</view>
             <view class="right"   catchtap="eventBase" data-action="menuJoinAdd">拼接</view>
             <view class="bottom" catchtap="eventBase" data-action="menuDelete">删除</view>
             <view class="bottom-right"   catchtap="eventBase" data-action="menuMoveCategory">分类</view>
             <view class="bottom-left"   catchtap="eventBase" data-action="menuResize">裁剪</view>
-    </view>
+    </view>-->
 
   
   <loading hidden="{{hidden}}">
     加载中...
   </loading>
 </view>
+
+
