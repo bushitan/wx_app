@@ -231,22 +231,50 @@ var _Option = {
         formData.append("imgParentId","pId");
         formData.append("imgId","imgID_32");
 
-        fetch(url , {
-            method: 'POST',
-            headers: {},
-            body: formData,
-        }).then((response) => {
-            console.log(response);
-            if (response.ok) {
-                return response.json();
-            }
-        }).then((json) => {
-            console.log(JSON.stringify(json));
-            callBack(json["imgUrlList"])
+        // fetch(url , {
+        //     method: 'POST',
+        //     headers: {},
+        //     body: formData,
+        // }).then((response) => {
+        //     console.log(response);
+        //     if (response.ok) {
+        //         return response.json();
+        //     }
+        // }).then((json) => {
+        //     console.log(JSON.stringify(json));
+        //     callBack(json["imgUrlList"])
             
-        }).catch((error) => {
-            console.error(error);
-        });
+        // }).catch((error) => {
+        //     console.error(error);
+        // });
+
+
+        var url1 = "www.12xiong.top"
+        wx.request({
+            url: url1, //仅为示例，并非真实的接口地址
+            data: {
+                uId: 'uid_11' ,
+                imgParentId: 'pId',
+                imgId:"imgID_32",
+            },
+            header: {
+                'Content-Type': 'application/json'
+            },
+            success: function(res) {
+                console.log(res.data)
+            },
+            fail:function(res){
+                console.log(res.data)
+            },
+            complete:function(res){
+                console.log(res.data)
+            },
+        })
+
+
+
+
+
     },
 }
 

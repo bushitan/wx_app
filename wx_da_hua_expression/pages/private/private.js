@@ -369,56 +369,9 @@ Page({
    * 加载完毕，更新图片
    */
   onReady:function(){
-    // Menu.Option.GetPictureMy(global_page.callBack)  临时删除
-    
-
-    this.setData({
-      latest:[
-        "../../images/gif_anim.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-      ]
-    })
-    var that = this;
-    // 300ms后，隐藏loading
-    setTimeout(function() {
-          that.setData({
-            hidden: true
-          })
-    }, 300)
+    // Menu.Option.GetPictureMy(global_page.callBack)  //临时删除
+ 
+   
   },
 
 
@@ -455,8 +408,76 @@ Page({
       }
     })
     
+    app.setPage("private",this)
+    app.getUserInfo()
+      
   },
+  //Page：private  初始化页面的钩子
+  onInit:function(  ){
+    //数据初始化 图片
+    var that = this;
+    var url = Api.imgQuery() 
+    var  formData = new FormData();
+    
+    formData.append("uid",app.globalData.uid); //当前用户uid
+    formData.append("category_id","null");
+    fetch(url , {
+        method: 'POST',
+        headers: {},
+        body: formData,
+    }).then((response) => {
+        if (response.ok) {
+            return response.json();
+        }
+    }).then((object) => {
+        console.log(object);
 
+        var _latest = []
+        var _list = object.img_list
+        for (var i=0;i<_list.length;i++)  
+          _latest.push(_list[i]["yun_url"])
+        global_page.setData({latest:_latest})
+    }).catch((error) => {
+        console.error(error);
+    });
+
+
+    //数据初始化 目录
+    url = Api.categoryQuery() 
+    formData = new FormData();
+    formData.append("uid",app.globalData.uid); //当前用户uid
+    // formData.append("category_id","null");
+    fetch(url , {
+        method: 'POST',
+        headers: {},
+        body: formData,
+    }).then((response) => {
+        if (response.ok) {
+            return response.json();
+        }
+    }).then((object) => {
+        console.log(object);
+        object.category_list[0].is_default
+        if (object.category_list.length == 1 )
+          global_page.setData({category:[]})
+        
+        // var _latest = []
+        // var _list = object.img_list
+        // for (var i=0;i<_list.length;i++)  
+        //   _latest.push(_list[i]["yun_url"])
+        // global_page.setData({latest:_latest})
+    }).catch((error) => {
+        console.error(error);
+    });
+
+    var that = this;
+    // 300ms后，隐藏loading
+    setTimeout(function() {
+          that.setData({
+            hidden: true
+          })
+    }, 300)
+  },
 
    //导航：水印页面
   navigateToEditor: function(e) {

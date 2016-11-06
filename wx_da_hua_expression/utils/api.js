@@ -79,64 +79,124 @@ function _getPictureHot(){
 	return host_url+get_picture_hot;
 }
 
+
+
+
+/**--------------------------新版分割线-------------------------------- */
+
+	// addImg:_addImg,
+	// queryImg:_queryImg,
+	// moveImg:_moveImg,
+	// deleteImg:_deleteImg,
+
+/*
+	添加图片
+	method:Post
+	data: { uId, imgData,type}
+	success:{status,img_id,name,yun_url,size,create_time}
+	faile:{status,msg}  
+ */
+var img_add = 'img/add/';
+function _imgAdd(){
+	return host_url+img_add;
+}	
+
+/*
+	查询图片
+	method:Post
+	data: { uId,category_id}
+	success:{status,img_list}
+	faile:  
+ */
+var img_query = 'img/query/';
+function _imgQuery(){
+	return host_url+img_query;
+}	
+
+/*
+	图片移动目录 
+	method:Post
+	data: { img_id,category_id}
+	success:{status,category_id}
+	faile:{status,msg} 
+ */
+var img_move = 'img/move/';
+function _imgMove(){
+	return host_url+img_move;
+}	
+
+/*
+	删除图片
+	method:Post
+	data: { img_id}
+	success:{status,img_id,isDelete}
+	faile:{status,msg} 
+ */
+var img_delete = 'img/delete/';
+function _imgDelete(){
+	return host_url+img_delete;
+}	
+
+
+
 /*
 	7、添加目录
 	method:Post
-	data: { uId, categoryId,categoryParentId,name,isPublic }
-	success:{Token}
-	faile:  
+	data: {  category_name,uid,category_parent_id, }
+	success:{status,category_id}
+	faile:{status,msg} 
  */
-var add_category = 'category/add/';
-function _addCategory(){
-	return host_url+add_category;
+var category_add = 'category/add/';
+function _categoryAdd(){
+	return host_url+category_add;
 }	
 
 /*
 	8、修改目录
 	method:Post
-	data: { uId, categoryId,categoryParentId,name,isPublic }
-	success:{Token}
+	data: {  }
+	success:{}
 	faile:  
  */
-var reset_category = 'category/reset/';
-function _resetCategory(){
-	return host_url+reset_category;
+var category_reset = 'category/reset/';
+function _categoryReset(){
+	return host_url+category_reset;
 }	
 
 /*
 	9、删除目录
 	method:Post
-	data: { uId, categoryId }
-	success:{Token}
-	faile:  
+	data: { uid, category_id }
+	success:{status,category_id}
+	faile:  {status,msg} 
  */
-var delete_category = 'category/delete/';
-function _deleteCategory(){
-	return host_url+delete_category;
+var category_delete = 'category/delete/';
+function _categoryDelete(){
+	return host_url+category_delete;
 }	
 
 /*
 	10、查询目录
 	method:Post
-	data: { uId, categoryId }
-	success:{Token}
+	data: { uid }
+	success:{status,category_list}
 	faile:  
  */
-var query_category = 'category/query/';
-function _queryCategory(){
-	return host_url+query_category;
+var category_query = 'category/query/';
+function _categoryQuery(){
+	return host_url+category_query;
 }	
 
 /*
 	11、添加用户
 	method:Post
-	data: { uuId, role,icon,name,isManage }
-	success:{Token}
-	faile:  
+	data: { name, wx_code,wx_open_id,is_public,uuid }
+	success:{status,msg}
+	faile:{status,msg}  
  */
-var add_user = 'user/add/';
-function _addUser(){
-	return host_url+add_user;
+var user_add = 'user/add/';
+function _userAdd(){
+	return host_url+user_add;
 }	
 
 
@@ -153,21 +213,22 @@ module.exports = {
 	getPictureMy:_getPictureMy,
 	getPictureHot:_getPictureHot,
 
-	//Todo 表情收藏、删除
-	//addPicture:_addPicture,
-	//deletePicture:_deletePicture,
+	//Todo 图片增加、查询、移动、删除
+	imgAdd:_imgAdd,
+	imgQuery:_imgQuery,
+	imgMove:_imgMove,
+	imgDelete:_imgDelete,
 	
-	//Todo 表情分类
-	//addPictureCategory:_addPictureCategory
 
 	//目录类别增、删、查、改接口
-	addCategory:_addCategory,
-	resetCategory:_resetCategory,
-	deleteCategory:_deleteCategory,
-	queryCategory:_queryCategory,
+	categoryAdd:_categoryAdd,
+	categoryReset:_categoryReset,
+	categoryDelete:_categoryDelete,
+	categoryQuery:_categoryQuery,
+	
 	
 	//用户接口
-	addUser:_addUser,
+	userAdd:_userAdd,
 };
 
 

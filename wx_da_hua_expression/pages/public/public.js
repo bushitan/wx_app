@@ -155,8 +155,43 @@ Page({
       windowHeight:_windowHeight
     })
     
+    //数据初始化
+    var that = this;
+    var url = Api.imgQuery() 
+    let formData = new FormData();
+
+    formData.append("uid","9");
+    formData.append("category_id","null");
+    fetch(url , {
+        method: 'POST',
+        headers: {},
+        body: formData,
+    }).then((response) => {
+        if (response.ok) {
+            return response.json();
+        }
+    }).then((object) => {
+        console.log(object);
   
+        var _hotest = []
+        var _list = object.img_list
+        for (var i=0;i<_list.length;i++)  
+          _hotest.push(_list[i]["yun_url"])
+        global_page.setData({hotest:_hotest})
+    }).catch((error) => {
+        console.error(error);
+    });
+    // Menu.Option.GetPictureHot("2321",global_page.callBack)
+  
+    var that = this;
+    // 300ms后，隐藏loading
+    setTimeout(function() {
+        View.Switch.Off("displayLoading")
+        View.Switch.Work()
+    }, 300)
   },
+
+ 
 
   onHide:function(){
     View.Switch.OffAll()
@@ -173,63 +208,7 @@ Page({
   },
 
   onReady:function(){
-    // Menu.Option.GetPictureHot("2321",global_page.callBack)
-    this.setData({
-      hotest:[
-      
-        "../../images/gif_anim.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-      
-        "../../images/gif_anim.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-      
-        "../../images/gif_anim.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-      
-        "../../images/gif_anim.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-      
-        "../../images/gif_anim.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-      
-        "../../images/gif_anim.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-      
-        "../../images/gif_anim.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-      
-        "../../images/gif_anim.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-      
-        "../../images/gif_anim.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-        "../../images/gif_anim1.gif",
-      ]
-    })
 
-
-    var that = this;
-    // 300ms后，隐藏loading
-    setTimeout(function() {
-        View.Switch.Off("displayLoading")
-        View.Switch.Work()
-    }, 300)
+    
   }
 })
