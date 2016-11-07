@@ -26,7 +26,7 @@
 }
 .category icon {
     /*width:200rpx;*/
-    padding-left:48rpx;
+    padding-left:24rpx;
     /*background-color: #ffffff;*/
 }
 .category button{

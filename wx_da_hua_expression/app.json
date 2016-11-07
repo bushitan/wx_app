@@ -1,7 +1,7 @@
 {
   "pages":[
-    "pages/category/category",
     "pages/private/private",
+    "pages/category/category",
     "pages/public/public",
     "pages/painter/painter",
     "pages/watermark/watermark",

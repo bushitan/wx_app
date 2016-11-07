@@ -365,6 +365,21 @@ Page({
       //Todo  addPicture 增加表情
       wx.removeStorageSync('pre_collect') //上传收藏信息后，清空存储
     }
+
+    /**
+     * 更新目录
+     */
+    var _list = wx.getStorageSync('category')
+    if (_list.length == 1 )
+          global_page.setData({category:[]})         
+    else  //多个目录，默认目录不显示
+    { 
+      var _c = []
+      for (var i=0 ; i< _list.length ; i++)
+        if(_list[i].is_default == 0)
+          _c.push(_list[i].name)
+      global_page.setData({category:_c})
+    }
   },
 
   /**
@@ -459,18 +474,25 @@ Page({
         }
     }).then((object) => {
         console.log(object);
-        object.category_list[0].is_default
+        // object.category_list[0].is_default
         if (object.category_list.length == 1 )
         {
-          global_page.setData({category:["test1","test2"]})
-          global_page.setData({hasImg:["true","false"]})
-          wx.setStorageSync(
-              "category",
-             
-          )
+          global_page.setData({category:[]})
+         
         }
-          
+        else  //多个目录，默认目录不显示
+        { 
+          var _c = []
+          for (var i=0 ; i< object.category_list.length ; i++)
+            if(object.category_list[i].is_default == 0)
+              _c.push(object.category_list[i].name)
+          global_page.setData({category:_c})
+        }
         
+        wx.setStorageSync(
+            "category",
+            object.category_list
+        )
         // var _latest = []
         // var _list = object.img_list
         // for (var i=0;i<_list.length;i++)  
@@ -508,7 +530,7 @@ Page({
   //导航：目录设置页面
   //param 当前目录
   navigateToCategory: function(e) {
-    var url = '../category/category?category=' +  global_page.data.category + "&hasimg="+  global_page.data.hasImg
+    var url = '../category/category'
     wx.navigateTo({
       url: url
     })

@@ -44,7 +44,7 @@ App({
             formData.append("name","管理员");
             formData.append("wx_code","");
             formData.append("wx_open_id", that.globalData.open_id);
-            formData.append("is_public",1);
+            formData.append("is_public",0);
             formData.append("uuid","");
 
             // console.log("fetch:")
