@@ -34,7 +34,9 @@ Page({
     ],
 
     categoryTitle:"全部",
-    category:["类别1","类别2","类别3","类别4","类别5","类别6",],
+    category:[],
+    hasImg:[],
+    // category:[],
     categorySelectName:"全部",
     
 
@@ -459,7 +461,15 @@ Page({
         console.log(object);
         object.category_list[0].is_default
         if (object.category_list.length == 1 )
-          global_page.setData({category:[]})
+        {
+          global_page.setData({category:["test1","test2"]})
+          global_page.setData({hasImg:["true","false"]})
+          wx.setStorageSync(
+              "category",
+             
+          )
+        }
+          
         
         // var _latest = []
         // var _list = object.img_list
@@ -496,8 +506,9 @@ Page({
   },
   
   //导航：目录设置页面
+  //param 当前目录
   navigateToCategory: function(e) {
-    var url = '../category/category'
+    var url = '../category/category?category=' +  global_page.data.category + "&hasimg="+  global_page.data.hasImg
     wx.navigateTo({
       url: url
     })

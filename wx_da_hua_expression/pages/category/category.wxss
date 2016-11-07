@@ -14,19 +14,19 @@
     /*padding: 24rpx; */
 }
 .category label{
-    width:110rpx;
+    width:60rpx;
     /*font-size: 30rpx;*/
     text-align: right;
     line-height:52rpx;
     padding-right:24rpx;
 }
 .category input {
-    width:400rpx;
+    width:500rpx;
     background-color: #ffffff;
 }
 .category icon {
     /*width:200rpx;*/
-    padding-left:85rpx;
+    padding-left:48rpx;
     /*background-color: #ffffff;*/
 }
 .category button{
