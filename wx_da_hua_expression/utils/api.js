@@ -4,8 +4,8 @@
     小程序的api接口集合 
  */ 
 
-var host_url = 'http://127.0.0.1:8000/wx_app/';
-// var host_url = 'https://www.12xiong.top/wx_app/';
+// var host_url = 'http://127.0.0.1:8000/wx_app/';
+var host_url = 'https://www.12xiong.top/wx_app/';
 
 /*
 	1、上传图片

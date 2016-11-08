@@ -448,7 +448,7 @@ Page({
           "Content-Type": "application/x-www-form-urlencoded"  
         },
         success: function(res) {
-          // var object = res.data
+          var object = res.data
           // var _latest = []
           // var _list = object.img_list
           // for (var i=0;i<_list.length;i++)  
@@ -460,7 +460,7 @@ Page({
               object.img_list
           )
 
-          Render.emoticon(this,wx.getStorageSync("emoticonList"))
+          Render.emoticon(global_page,wx.getStorageSync("emoticonList"))
         }
       })
     
