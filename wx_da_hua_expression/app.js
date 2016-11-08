@@ -40,32 +40,53 @@ App({
             //假设已经获取到了open_id
 
             var url = Api.userAdd() //用户认证接口，没有用户添加，有用户做已登录
-            let formData = new FormData();
-            formData.append("name","管理员");
-            formData.append("wx_code","");
-            formData.append("wx_open_id", that.globalData.open_id);
-            formData.append("is_public",0);
-            formData.append("uuid","");
-
-            // console.log("fetch:")
-            fetch(url , {
-                method: 'POST',
-                headers: {},
-                body: formData,
-            }).then((response) => {
-                // console.log(response);
-                if (response.ok) {
-                    return response.json();
-                }
-            }).then((object) => {
-                var _obj = object
-                that.globalData.uid = _obj.uid;
-                
+            wx.request({
+              url: url, //仅为示例，并非真实的接口地址
+              method:"POST",
+              data: Api.json2Form({
+                name: '管理员' ,
+                wx_code: '',
+                wx_open_id: that.globalData.open_id,
+                is_public: 0,
+                uuid: '',
+              }),
+              header: {  
+                "Content-Type": "application/x-www-form-urlencoded"  
+              },
+              success: function(res) { //登陆后，用户设置用户id
+                that.globalData.uid = res.data.uid; 
                 that.globalData.pagePrivate.onInit()
                 // console.log(JSON.stringify(json));
-            }).catch((error) => {
-                console.error(error);
-            });
+              }
+            })
+
+            
+            // let formData = new FormData();
+            // formData.append("name","管理员");
+            // formData.append("wx_code","");
+            // formData.append("wx_open_id", that.globalData.open_id);
+            // formData.append("is_public",0);
+            // formData.append("uuid","");
+
+            // // console.log("fetch:")
+            // fetch(url , {
+            //     method: 'POST',
+            //     headers: {},
+            //     body: formData,
+            // }).then((response) => {
+            //     // console.log(response);
+            //     if (response.ok) {
+            //         return response.json();
+            //     }
+            // }).then((object) => {
+            //     var _obj = object
+            //     that.globalData.uid = _obj.uid;
+                
+            //     that.globalData.pagePrivate.onInit()
+            //     // console.log(JSON.stringify(json));
+            // }).catch((error) => {
+            //     console.error(error);
+            // });
           }
         })
       }

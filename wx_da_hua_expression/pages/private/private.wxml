@@ -8,10 +8,17 @@
     <view class="space-72"></view>
     <view class="emoticon">
       <view class="content">
-        <block wx:for="{{latest}}">
+        <!--<block wx:for="{{latest}}">
             <view class="member" >
                 <image class="image-5" src="{{item}}" background-size="cover" 
                      catchtap="eventBase" data-action="onMenu" data-imgurl="{{item}}"></image>
+            </view>
+        </block>-->
+
+        <block wx:for="{{emoticonList}}" wx:for-item="emoticon"> 
+            <view class="member" >
+                <image class="image-5" src="{{emoticon.static_url}}" background-size="cover" 
+                     catchtap="eventBase" data-action="onMenu" data-imgurl="{{emoticon.thumbnail_url}}"></image>
             </view>
         </block>
       </view>

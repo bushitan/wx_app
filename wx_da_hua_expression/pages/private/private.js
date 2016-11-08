@@ -2,6 +2,7 @@
 var Api = require('../../utils/api.js');
 var View = require('../../utils/view.js');
 var Menu = require('../../utils/menu.js');
+var Render = require('../../utils/render.js');
 
 var app = getApp()
 var global_page
@@ -9,6 +10,7 @@ var appInstance
 Page({
   data: {
     title: '最新话题',
+    emoticonList:[],
     latest: [],
     hidden: false,
     
@@ -382,6 +384,7 @@ Page({
     }
   },
 
+  
   /**
    * 加载完毕，更新图片
    */
@@ -403,105 +406,21 @@ Page({
     var _pixelRatio,_windowWidth,_windowHeight
     wx.getSystemInfo({
       success: function(res) {
-        console.log(res.model)
-        console.log(res.pixelRatio)
-        console.log(res.windowWidth)
-        console.log(res.windowHeight)
-        console.log(res.language)
-        console.log(res.version)
-
         _pixelRatio = res.pixelRatio
         _windowWidth = res.windowWidth
         _windowHeight = res.windowHeight
-
+        //设置屏幕宽/高
         global_page.setData({
           windowWidth:_windowWidth,
           windowHeight:_windowHeight
         })
-        
-        console.log("data:")
-        console.log("4thuriehgoiregu894389:")
-        console.log(global_page.data)
       }
     })
     
+    Render.emoticon(this,wx.getStorageSync("emoticonList")) //获取本地表情表
     app.setPage("private",this)
     app.getUserInfo()
       
-  },
-  //Page：private  初始化页面的钩子
-  onInit:function(  ){
-    //数据初始化 图片
-    var that = this;
-    var url = Api.imgQuery() 
-    var  formData = new FormData();
-    
-    formData.append("uid",app.globalData.uid); //当前用户uid
-    formData.append("category_id","null");
-    fetch(url , {
-        method: 'POST',
-        headers: {},
-        body: formData,
-    }).then((response) => {
-        if (response.ok) {
-            return response.json();
-        }
-    }).then((object) => {
-        console.log(object);
-
-        var _latest = []
-        var _list = object.img_list
-        for (var i=0;i<_list.length;i++)  
-          _latest.push(_list[i]["yun_url"])
-        global_page.setData({latest:_latest})
-    }).catch((error) => {
-        console.error(error);
-    });
-
-
-    //数据初始化 目录
-    url = Api.categoryQuery() 
-    formData = new FormData();
-    formData.append("uid",app.globalData.uid); //当前用户uid
-    // formData.append("category_id","null");
-    fetch(url , {
-        method: 'POST',
-        headers: {},
-        body: formData,
-    }).then((response) => {
-        if (response.ok) {
-            return response.json();
-        }
-    }).then((object) => {
-        console.log(object);
-        // object.category_list[0].is_default
-        if (object.category_list.length == 1 )
-        {
-          global_page.setData({category:[]})
-         
-        }
-        else  //多个目录，默认目录不显示
-        { 
-          var _c = []
-          for (var i=0 ; i< object.category_list.length ; i++)
-            if(object.category_list[i].is_default == 0)
-              _c.push(object.category_list[i].name)
-          global_page.setData({category:_c})
-        }
-        
-        wx.setStorageSync(
-            "category",
-            object.category_list
-        )
-        // var _latest = []
-        // var _list = object.img_list
-        // for (var i=0;i<_list.length;i++)  
-        //   _latest.push(_list[i]["yun_url"])
-        // global_page.setData({latest:_latest})
-    }).catch((error) => {
-        console.error(error);
-    });
-
     var that = this;
     // 300ms后，隐藏loading
     setTimeout(function() {
@@ -509,6 +428,76 @@ Page({
             hidden: true
           })
     }, 300)
+  },
+
+  //Page：private  初始化页面的钩子
+  onInit:function(  ){
+    //数据初始化 图片
+    var that = this;
+    var url = Api.imgQuery() 
+
+    //获取表情列表
+     wx.request({
+        url: url, //仅为示例，并非真实的接口地址
+        method:"POST",
+        data: Api.json2Form({
+          uid: app.globalData.uid ,
+          category_id: 'null',
+        }),
+        header: {  
+          "Content-Type": "application/x-www-form-urlencoded"  
+        },
+        success: function(res) {
+          // var object = res.data
+          // var _latest = []
+          // var _list = object.img_list
+          // for (var i=0;i<_list.length;i++)  
+          //   _latest.push(_list[i]["yun_url"])
+          // global_page.setData({latest:_latest})
+
+          wx.setStorageSync(
+              "emoticonList",
+              object.img_list
+          )
+
+          Render.emoticon(this,wx.getStorageSync("emoticonList"))
+        }
+      })
+    
+     //数据初始化 目录
+      url = Api.categoryQuery() 
+      wx.request({
+        url: url, //仅为示例，并非真实的接口地址
+        method:"POST",
+        data: Api.json2Form({
+          uid: app.globalData.uid ,
+        }),
+        header: {  
+          "Content-Type": "application/x-www-form-urlencoded"  
+        },
+        success: function(res) {
+          var object = res.data
+          if (object.category_list.length == 1 ) //1个默认目录，不显示
+          {
+            global_page.setData({category:[]})
+          
+          }
+          else  //多个目录，默认目录不显示
+          { 
+            var _c = []
+            for (var i=0 ; i< object.category_list.length ; i++)
+              if(object.category_list[i].is_default == 0)
+                _c.push(object.category_list[i].name)
+            global_page.setData({category:_c})
+          }
+          
+          wx.setStorageSync(
+              "category",
+              object.category_list
+          )
+        }
+      })
+    
   },
 
    //导航：水印页面

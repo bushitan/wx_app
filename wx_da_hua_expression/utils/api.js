@@ -5,6 +5,7 @@
  */ 
 
 var host_url = 'http://127.0.0.1:8000/wx_app/';
+// var host_url = 'https://www.12xiong.top/wx_app/';
 
 /*
 	1、上传图片
@@ -200,6 +201,13 @@ function _userAdd(){
 }	
 
 
+function json2Form(json) {  
+    var str = [];  
+    for(var p in json){  
+        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(json[p]));  
+    }  
+    return str.join("&");  
+}  
 module.exports = {
 	//上传接口
 	uploadImg:_uploadImg,
@@ -229,7 +237,12 @@ module.exports = {
 	
 	//用户接口
 	userAdd:_userAdd,
+
+	//Post请求请求，要把json变form
+	json2Form:json2Form,  
 };
+
+
 
 
 
