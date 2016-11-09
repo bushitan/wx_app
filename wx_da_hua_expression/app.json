@@ -30,7 +30,8 @@
       "iconPath":"images/icon_smile.png",
       "selectedIconPath":"images/icon_big_hot.png"
     }]
-  }
+  },
+  "debug": true
 }
 
 

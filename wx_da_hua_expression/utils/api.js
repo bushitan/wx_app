@@ -252,3 +252,54 @@ module.exports = {
 // 		return encodeURIComponent(k) + "=" + encodeURIComponent(obj[k]);
 // 	}).join('&');
 // }
+
+
+
+ //上传图片
+    // wx.chooseImage({
+    //   count: 1, 
+    //   success: function(res) {
+    //     var tempFilePaths = res.tempFilePaths
+    //     console.log(tempFilePaths[0])
+    //     wx.uploadFile({
+    //       url: url, //仅为示例，非真实的接口地址
+    //       filePath: tempFilePaths[0],
+    //       name: 'file',
+    //       header: {  
+    //         "Content-Type": "multipart/form-data"  
+    //       },
+    //       formData:{
+    //         'user': 'test123'
+    //       },
+    //       success: function(res){
+    //         console.log("chooseImage success")
+    //         var data = res.data
+    //         console.log(res)
+    //       },
+    //       fail:function(res){
+    //         console.log("chooseImage fail")
+    //         var data = res.data
+    //         console.log(res)
+    //         //do something
+    //       },
+    //     })
+    //   }
+    // })
+
+
+//request 成功事例
+
+  //  wx.request({  
+    //     url: url, 
+    //     method:"POST",
+      
+    //     header: {  
+    //       "Content-Type": "application/x-www-form-urlencoded"  
+    //     },
+    //     success: function(res) {
+          
+    //       console.log("request");
+    //       console.log(res.data);
+         
+    //     }
+    //   })

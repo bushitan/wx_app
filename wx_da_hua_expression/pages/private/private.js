@@ -391,7 +391,27 @@ Page({
   onReady:function(){
     // Menu.Option.GetPictureMy(global_page.callBack)  //临时删除
  
-   
+    console.log("private onReady")
+   var url = Api.userAdd() //用户认证接口，没有用户添加，有用户做已登录
+          wx.request({
+            url: url, //仅为示例，并非真实的接口地址
+            method:"POST",
+            // header: {  
+            //   "Content-Type": "application/x-www-form-urlencoded"  
+            // },
+            success: function(res) { //登陆后，用户设置用户id
+            console.log("private success")
+         
+            },
+            fail:function(res) { 
+              console.log("private fail")
+              console.log(res)
+            },
+            complete:function(res) { 
+              console.log("private complete")
+              console.log(res)
+            },
+          })
   },
 
 
@@ -417,12 +437,45 @@ Page({
       }
     })
     
-    Render.emoticon(this,wx.getStorageSync("emoticonList")) //获取本地表情表
-    app.setPage("private",this)
-    app.getUserInfo()
+    var url = "https://www.12xiong.top"
+
+    
+    console.log(url);
+    
+   
+
+    
+    wx.downloadFile({
+      url: 'https://www.12xiong.top/static/1.jpg', //仅为示例，并非真实的资源
+      success: function(res) {
+          console.log("下载成功")
+          var tempFilePath = res.tempFilePath
+          wx.saveFile({
+            tempFilePath: tempFilePath,
+            success: function(res) {
+              var savedFilePath = res.savedFilePath
+              console.log("保存成功")
+              console.log(res)
+            }
+          })
+      },
+      fail:function(res){
+        console.log("下载失败 fail")
+        var data = res.data
+        console.log(res)
+        //do something
+      },
+    })
+
+
+    // Render.emoticon(this,wx.getStorageSync("emoticonList")) //获取本地表情表
+    // console.log(wx.getStorageSync("emoticonList") );
+
+    // app.setPage("private",this)
+    // app.getUserInfo()
       
     var that = this;
-    // 300ms后，隐藏loading
+    // // 300ms后，隐藏loading
     setTimeout(function() {
           that.setData({
             hidden: true
@@ -431,7 +484,7 @@ Page({
   },
 
   //Page：private  初始化页面的钩子
-  onInit:function(  ){
+  onInit:function( ){
     //数据初始化 图片
     var that = this;
     var url = Api.imgQuery() 
@@ -463,7 +516,10 @@ Page({
           Render.emoticon(global_page,wx.getStorageSync("emoticonList"))
         }
       })
+    console.log("storyge" );
     
+    
+
      //数据初始化 目录
       url = Api.categoryQuery() 
       wx.request({
@@ -533,3 +589,8 @@ Page({
     })
   },
 })
+
+
+
+
+
