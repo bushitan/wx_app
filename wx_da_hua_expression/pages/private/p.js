@@ -437,11 +437,39 @@ Page({
       }
     })
     
+    var url = "https://www.12xiong.top"
+
+    
+    console.log(url);
+    
+   
+
+    
+    wx.downloadFile({
+      url: 'https://www.12xiong.top/static/1.jpg', //仅为示例，并非真实的资源
+      success: function(res) {
+          console.log("下载成功")
+          var tempFilePath = res.tempFilePath
+          wx.saveFile({
+            tempFilePath: tempFilePath,
+            success: function(res) {
+              var savedFilePath = res.savedFilePath
+              console.log("保存成功")
+              console.log(res)
+            }
+          })
+      },
+      fail:function(res){
+        console.log("下载失败 fail")
+        var data = res.data
+        console.log(res)
+        //do something
+      },
+    })
 
 
-
-    Render.emoticon(this,wx.getStorageSync("emoticonList")) //获取本地表情表
-    console.log(wx.getStorageSync("emoticonList") );
+    // Render.emoticon(this,wx.getStorageSync("emoticonList")) //获取本地表情表
+    // console.log(wx.getStorageSync("emoticonList") );
 
     // app.setPage("private",this)
     // app.getUserInfo()
