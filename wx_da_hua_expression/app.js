@@ -29,8 +29,14 @@ App({
                 header:{ "Content-Type": "application/x-www-form-urlencoded" },
                 success: function(res)
                 {
-
-                  wx.setStorageSync('session', res.data.session)
+                  if (res.data.status == "true")
+                    wx.setStorageSync('session', res.data.session)
+                  else
+                    wx.showToast({
+                      title: '登陆失败',
+                      icon: 'loading',
+                      duration: 1000
+                    })
                   // console.log(wx.getStorageSync('session'));                
                 }
               })
