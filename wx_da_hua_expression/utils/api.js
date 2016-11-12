@@ -4,8 +4,8 @@
     小程序的api接口集合 
  */ 
 
-// var host_url = 'http://127.0.0.1:8000/wx_app/';
-var host_url = 'https://www.12xiong.top/wx_app/';
+var host_url = 'http://127.0.0.1:8000/';
+// var host_url = 'https://www.12xiong.top/wx_app/';
 
 /*
 	1、上传图片
@@ -200,6 +200,10 @@ function _userAdd(){
 	return host_url+user_add;
 }	
 
+var user_login = 'user/login/';
+function _userLogin(){
+	return host_url+user_login;
+}	
 
 function json2Form(json) {  
     var str = [];  
@@ -237,6 +241,7 @@ module.exports = {
 	
 	//用户接口
 	userAdd:_userAdd,
+	userLogin:_userLogin,
 
 	//Post请求请求，要把json变form
 	json2Form:json2Form,  

@@ -10,7 +10,6 @@ var appInstance
 Page({
   data: {
     title: '最新话题',
-    emoticonList:[],
     latest: [],
     hidden: false,
     
@@ -21,26 +20,15 @@ Page({
     displayJoin:false,
     displayResize:false,
     editorUrl:"", //预备编辑的图片
-    menu_left: "0rpx",
-    menu_top: "50rpx",
 
-    joinStep:1,
-    joinFirstImg:"../../images/gif_in_1.gif",
-    joinSecondeImg:"../../images/gif_in_2.gif",
-
-    resize_success:[
-      {img:"../../images/gif_in_1.gif",text:"170x170"},
-      {img:"../../images/gif_in_2.gif",text:"128x128"},
-      {img:"../../images/gif_in_1.gif",text:"96x96"},
-      {img:"../../images/gif_in_2.gif",text:"48x48"},
-    ],
 
     categoryTitle:"全部",
     category:[],
     hasImg:[],
     // category:[],
     categorySelectName:"全部",
-    
+
+/***********************分割线*************************** */    
 
     //控制菜单上架
     classMenu:"m-down",  //m-up  m-down
@@ -48,6 +36,16 @@ Page({
     // 手机设备信息，均已rpx为标准
     windowWidth:0,
     windowHeight:0,
+
+    //页面渲染数据
+    // EmoticonList:[],
+    dataEmoticon:[],
+    dataCategory:[],
+
+    //touch选择对象
+    selectEmoticon:"",
+    selectCategory:"",
+
   },
    //选择目录
   selectCategory:function(e){
@@ -190,48 +188,48 @@ Page({
     Menu.Option.ChooseVideo(global_page.callBack)
   },
 
-  /** 页面更新表情
-   * status 1 ： 更新1张图片，
-   * status 2 ： 更新一串图片，
-   */
-  emoticonUpdate: function(img) {
-    //1张图片
-    if(img.constructor == String)
-    {
-        var _img = img
-        var _emoticonList = this.data.latest
-        _emoticonList.unshift(_img)
-        this.setData({latest:_emoticonList})
-        return
-    }
-    //一串图片
-    if(img.constructor == Array)
-    {
-      var _imgList = img
-      var _emoticonList = this.data.latest
-      for (var i=0 ; i<_imgList.length ;i++) //按时间插入图片
-        _emoticonList.unshift(_imgList[i])
-      this.setData({latest:_emoticonList})
-    }
+  // /** 页面更新表情
+  //  * status 1 ： 更新1张图片，
+  //  * status 2 ： 更新一串图片，
+  //  */
+  // emoticonUpdate: function(img) {
+  //   //1张图片
+  //   if(img.constructor == String)
+  //   {
+  //       var _img = img
+  //       var _emoticonList = this.data.latest
+  //       _emoticonList.unshift(_img)
+  //       this.setData({latest:_emoticonList})
+  //       return
+  //   }
+  //   //一串图片
+  //   if(img.constructor == Array)
+  //   {
+  //     var _imgList = img
+  //     var _emoticonList = this.data.latest
+  //     for (var i=0 ; i<_imgList.length ;i++) //按时间插入图片
+  //       _emoticonList.unshift(_imgList[i])
+  //     this.setData({latest:_emoticonList})
+  //   }
     
-  },
+  // },
   
   /** 页面删除表情
    * Todo deletePicture 删除表情
    */
-  emoticonDelete: function(imgUrl) {
-      var _imgUrl = imgUrl
-      var _emoticonList = this.data.latest
-      for (var i=0 ; i<_emoticonList.length ;i++)
-      {
-        if (_emoticonList[i] == _imgUrl)
-        {
-          _emoticonList.splice(i,1)
-          break
-        }
-      }
-      this.setData({latest:_emoticonList})
-  },
+  // emoticonDelete: function(imgUrl) {
+  //     var _imgUrl = imgUrl
+  //     var _emoticonList = this.data.latest
+  //     for (var i=0 ; i<_emoticonList.length ;i++)
+  //     {
+  //       if (_emoticonList[i] == _imgUrl)
+  //       {
+  //         _emoticonList.splice(i,1)
+  //         break
+  //       }
+  //     }
+  //     this.setData({latest:_emoticonList})
+  // },
 
    //点击表情，打开第一级menu
   onMenu: function(e) {
@@ -252,45 +250,7 @@ Page({
     Menu.Option.Share( global_page.data.editorUrl )
   },
  
-  //菜单 gif拼接
-  menuJoinAdd:function(){
-    //增加第一幅
-    if(global_page.data.joinStep == 1)
-    {
-      global_page.setData({ 
-         joinFirstImg:global_page.data.editorUrl,
-         joinStep:2
-      }) 
-      return
-    }
-    //增加第二幅
-    if(global_page.data.joinStep == 2)
-    {
-      global_page.setData({ 
-         joinSecondeImg:global_page.data.editorUrl,
-        joinStep:1 
-      }) 
-      return
-    }
-  },
 
-  //拼接确认
-  menuJoinOK:function(){
-    var _imgFirst = global_page.data.joinFirstImg
-    var _imgSeconde = global_page.data.joinSecondeImg
-    //两张图片相同，不做拼接
-    if ( global_page.data.joinFirstImg == global_page.data.joinSecondeImg )
-    {
-      wx.showToast({
-        title: '不能拼接相同的表情',
-        icon: 'loading',
-        duration: 2000
-      })
-      return
-    }
-    
-    Menu.Option.EditorJoin(_imgFirst,_imgSeconde,global_page.callBack)
-  },
 
   menuResizeV2:function(){
     wx.showActionSheet({
@@ -331,57 +291,24 @@ Page({
     View.Switch.Work()
   },
 
+  Render:function(){
+     //2 初始化本地表情表
+     Render.emoticon(this,wx.getStorageSync("emoticonList"))
+    //3 初始化目录
+     Render.category(this,wx.getStorageSync("categoryList"))
+  },
   onShow: function() {
+    //菜单显示框
     var _view = {
-      displayUpload:false,
-      displayCategory:false,
       displayMenu:false,
-      displayMask:false,
-      displayJoin:false,
-      displayResize:false,
     }
     View.Switch.Init(this,_view)
     View.Switch.Work()
-    /**
-     * 编辑->收藏，
-     * 进入private，在emotion列表中显示
-     *  */
-    var _editorData = wx.getStorageSync('pre_editor')
-    if ( _editorData )
-    {
-      //Todo  addPicture 增加表情
-      global_page.emoticonUpdate(_editorData)
-      wx.removeStorageSync('pre_editor') 
 
-    }
-
-    /**
-     * 公共页面->收藏，由storage临时保存
-     * 进入private，在emotion列表中显示，
-     * 清除storage
-     *  */
-    var _list = wx.getStorageSync('pre_collect')
-    if ( _list )
-    {
-      global_page.emoticonUpdate(_list)
-      //Todo  addPicture 增加表情
-      wx.removeStorageSync('pre_collect') //上传收藏信息后，清空存储
-    }
-
-    /**
-     * 更新目录
-     */
-    var _list = wx.getStorageSync('category')
-    if (_list.length == 1 )
-          global_page.setData({category:[]})         
-    else  //多个目录，默认目录不显示
-    { 
-      var _c = []
-      for (var i=0 ; i< _list.length ; i++)
-        if(_list[i].is_default == 0)
-          _c.push(_list[i].name)
-      global_page.setData({category:_c})
-    }
+    //渲染表情和目录
+    global_page.Render()
+   
+     //4 初始化选择目录
   },
 
   
@@ -391,61 +318,70 @@ Page({
   onReady:function(){
     // Menu.Option.GetPictureMy(global_page.callBack)  //临时删除
  
-    console.log("private onReady")
-   var url = Api.userAdd() //用户认证接口，没有用户添加，有用户做已登录
-          wx.request({
-            url: url, //仅为示例，并非真实的接口地址
-            method:"POST",
-            // header: {  
-            //   "Content-Type": "application/x-www-form-urlencoded"  
-            // },
-            success: function(res) { //登陆后，用户设置用户id
-            console.log("private success")
-         
-            },
-            fail:function(res) { 
-              console.log("private fail")
-              console.log(res)
-            },
-            complete:function(res) { 
-              console.log("private complete")
-              console.log(res)
-            },
-          })
   },
 
 
   /**
    *  页面加载
    */
-  onLoad: function (param) {
-    //初始化显示view
-    
+  onLoad: function (param) {    
     global_page = this
-
-    var _pixelRatio,_windowWidth,_windowHeight
-    wx.getSystemInfo({
-      success: function(res) {
-        _pixelRatio = res.pixelRatio
-        _windowWidth = res.windowWidth
-        _windowHeight = res.windowHeight
-        //设置屏幕宽/高
-        global_page.setData({
-          windowWidth:_windowWidth,
-          windowHeight:_windowHeight
-        })
-      }
+    //1 page初始化高宽
+    global_page.setData({
+      windowWidth:app.globalData.windowWidth,
+      windowHeight:app.globalData.windowHeight,
     })
     
+    //2 user loginlogin
+    wx.login
+    ({
+        success: function (res) 
+        {
+          var _session = wx.getStorageSync('session') 
+          if (! _session  ) //检查session,不存在，为false
+            _session = "false"
+          var url = Api.userLogin()
+          wx.request
+          ({  
+            url: url, 
+            method:"POST",
+            data:Api.json2Form({
+              js_code:res.code,
+              session:_session,
+            }),
+            header:{ "Content-Type": "application/x-www-form-urlencoded" },
+            success: function(res)
+            {
+              if (res.data.status == "true") //登陆成功
+              {
+                wx.setStorageSync('session', res.data.session)
+                //Todo 初始化页面、目录
+                global_page.onInit()
+              }
+                
+              else
+                wx.showToast({
+                  title: '登陆失败',
+                  icon: 'loading',
+                  duration: 1000
+                })              
+            },
+            fail:function(res) { 
+             wx.showToast({
+                  title: '网络连接失败',
+                  icon: 'loading',
+                  duration: 1000
+                })    
+            },
+            complete:function(res) { 
+              console.log("private complete")
+              console.log(res)
+            },
+          })
+        }
+    });
 
 
-
-    Render.emoticon(this,wx.getStorageSync("emoticonList")) //获取本地表情表
-    console.log(wx.getStorageSync("emoticonList") );
-
-    // app.setPage("private",this)
-    // app.getUserInfo()
-      
     var that = this;
     // // 300ms后，隐藏loading
     setTimeout(function() {
@@ -474,12 +410,6 @@ Page({
         },
         success: function(res) {
           var object = res.data
-          // var _latest = []
-          // var _list = object.img_list
-          // for (var i=0;i<_list.length;i++)  
-          //   _latest.push(_list[i]["yun_url"])
-          // global_page.setData({latest:_latest})
-
           wx.setStorageSync(
               "emoticonList",
               object.img_list
