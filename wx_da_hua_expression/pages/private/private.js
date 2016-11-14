@@ -19,14 +19,10 @@ Page({
     displayMask:false,
     displayJoin:false,
     displayResize:false,
-    editorUrl:"", //预备编辑的图片
-
-
-    categoryTitle:"全部",
-    category:[],
-    hasImg:[],
+ 
+    // categoryTitle:"全部",
     // category:[],
-    categorySelectName:"全部",
+    // categorySelectName:"全部",
 
 /***********************分割线*************************** */    
 
@@ -38,20 +34,31 @@ Page({
     windowHeight:0,
 
     //页面渲染数据
-    // EmoticonList:[],
-    dataEmoticon:[],
-    dataCategory:[],
+    emoticon:[],
+    category:[],
+    category_default:{},
 
     //touch选择对象
-    selectEmoticon:"",
-    selectCategory:"",
+    selectEmoticon:{id:"",name:"",img_url:""}, //预备编辑的图片
+    selectCategory:{id:"",name:""},
 
   },
+
    //选择目录
   selectCategory:function(e){
+    //改变目录
     global_page.setData({
-      categorySelectName: e.currentTarget.dataset.selectname
+      selectCategory:{id: e.currentTarget.dataset.select_id},
     })
+
+    //根据emoticone，更新表情
+    var e_list = wx.getStorageSync("emoticon")
+    var new_list = []
+    for (var i = 0; i<e_list.length;i++)
+      if(e_list[i].category_id == global_page.data.selectCategory.id)
+        new_list.push(e_list[i])
+    
+    Render.emoticon(this,new_list)
   },
 
 
@@ -68,7 +75,7 @@ Page({
       global_page.emoticonUpdate(imgUrl)
 
     if(isDelete)
-      global_page.emoticonDelete(global_page.data.editorUrl)
+      global_page.emoticonDelete(global_page.data.selectEmoticon)
   },
 
   /** No.2
@@ -170,7 +177,7 @@ Page({
         if (!res.cancel) {
           // console.log(res.tapIndex)
           //Todo 上传
-          var _new_img = global_page.data.editorUrl
+          var _new_img = global_page.data.selectEmoticon
           global_page.emoticonUpdate(_new_img)
         }
       }
@@ -187,55 +194,12 @@ Page({
   uploadVideo : function() {
     Menu.Option.ChooseVideo(global_page.callBack)
   },
-
-  // /** 页面更新表情
-  //  * status 1 ： 更新1张图片，
-  //  * status 2 ： 更新一串图片，
-  //  */
-  // emoticonUpdate: function(img) {
-  //   //1张图片
-  //   if(img.constructor == String)
-  //   {
-  //       var _img = img
-  //       var _emoticonList = this.data.latest
-  //       _emoticonList.unshift(_img)
-  //       this.setData({latest:_emoticonList})
-  //       return
-  //   }
-  //   //一串图片
-  //   if(img.constructor == Array)
-  //   {
-  //     var _imgList = img
-  //     var _emoticonList = this.data.latest
-  //     for (var i=0 ; i<_imgList.length ;i++) //按时间插入图片
-  //       _emoticonList.unshift(_imgList[i])
-  //     this.setData({latest:_emoticonList})
-  //   }
-    
-  // },
-  
-  /** 页面删除表情
-   * Todo deletePicture 删除表情
-   */
-  // emoticonDelete: function(imgUrl) {
-  //     var _imgUrl = imgUrl
-  //     var _emoticonList = this.data.latest
-  //     for (var i=0 ; i<_emoticonList.length ;i++)
-  //     {
-  //       if (_emoticonList[i] == _imgUrl)
-  //       {
-  //         _emoticonList.splice(i,1)
-  //         break
-  //       }
-  //     }
-  //     this.setData({latest:_emoticonList})
-  // },
-
+ 
    //点击表情，打开第一级menu
   onMenu: function(e) {
     //准备当前预备编辑的图片地址
     global_page.setData({
-      editorUrl:e.currentTarget.dataset.imgurl
+      selectEmoticon:{id: e.currentTarget.dataset.id, img_url:e.currentTarget.dataset.img_url}
     })
 
     if (e.currentTarget.offsetTop < 200)
@@ -244,14 +208,12 @@ Page({
        global_page.setData({classMenu:"m-up"})
 
   },
-
-
+  // 分享
   menuShare:function(){
-    Menu.Option.Share( global_page.data.editorUrl )
+    Menu.Option.Share( global_page.data.selectEmoticon )
   },
- 
 
-
+  // 裁剪
   menuResizeV2:function(){
     wx.showActionSheet({
       itemList: ['大图(170x170)', '中图(128x128)', '小图(96x96)', '炒鸡小(48x48)'],
@@ -259,28 +221,53 @@ Page({
         if (!res.cancel) {
           // console.log(res.tapIndex)
           //Todo 上传
-          var _new_img = global_page.data.editorUrl
+          var _new_img = global_page.data.selectEmoticon
           global_page.emoticonUpdate(_new_img)
         }
       }
     })
   },
 
-  
-
-  //表情删除
+  // 表情删除
   menuDelete:function(){
     Menu.Option.Delete(global_page.callBack)
     //删除后，menu框隐藏
   },
 
-//表情移动分组
+  // 表情移动分组
   menuMoveCategory:function(){
     wx.showActionSheet({
       itemList: global_page.data.category,
       success: function(res) {
         if (!res.cancel) {
           console.log(res.tapIndex)
+          
+          var url = Api.categoryMove() 
+          var session = wx.getStorageSync('session') 
+          //获取表情列表
+          wx.request({
+              url: url, //仅为示例，并非真实的接口地址
+              method:"POST",
+              data: Api.json2Form({
+                session: session,
+                img_id: global_page.data.selectEmoticon.id,
+                category_id: 'null',
+              }),
+              header: {  
+                "Content-Type": "application/x-www-form-urlencoded"  
+              },
+              success: function(res) {
+                var object = res.data
+                wx.setStorageSync(
+                    "emoticon",
+                    object.img_list
+                )
+                Render.emoticon(global_page,object.img_list)
+              }
+            })
+          console.log("storyge" );
+
+
         }
       }
     })
@@ -293,10 +280,11 @@ Page({
 
   Render:function(){
      //2 初始化本地表情表
-     Render.emoticon(this,wx.getStorageSync("emoticonList"))
+     Render.emoticon(this,wx.getStorageSync("emoticon"))
     //3 初始化目录
-     Render.category(this,wx.getStorageSync("categoryList"))
+     Render.category(this,wx.getStorageSync("category"))
   },
+
   onShow: function() {
     //菜单显示框
     var _view = {
@@ -317,7 +305,7 @@ Page({
    */
   onReady:function(){
     // Menu.Option.GetPictureMy(global_page.callBack)  //临时删除
- 
+    
   },
 
 
@@ -381,7 +369,6 @@ Page({
         }
     });
 
-
     var that = this;
     // // 300ms后，隐藏loading
     setTimeout(function() {
@@ -397,12 +384,16 @@ Page({
     var that = this;
     var url = Api.imgQuery() 
 
+    var session = wx.getStorageSync('session') 
+    if (! session  ) //检查session,不存在，为false
+      session = "false"
+
     //获取表情列表
      wx.request({
         url: url, //仅为示例，并非真实的接口地址
         method:"POST",
         data: Api.json2Form({
-          uid: app.globalData.uid ,
+          session: session,
           category_id: 'null',
         }),
         header: {  
@@ -411,11 +402,10 @@ Page({
         success: function(res) {
           var object = res.data
           wx.setStorageSync(
-              "emoticonList",
+              "emoticon",
               object.img_list
           )
-
-          Render.emoticon(global_page,wx.getStorageSync("emoticonList"))
+          Render.emoticon(global_page,object.img_list)
         }
       })
     console.log("storyge" );
@@ -428,13 +418,22 @@ Page({
         url: url, //仅为示例，并非真实的接口地址
         method:"POST",
         data: Api.json2Form({
-          uid: app.globalData.uid ,
+          session: session,
         }),
         header: {  
           "Content-Type": "application/x-www-form-urlencoded"  
         },
         success: function(res) {
           var object = res.data
+          
+          //设置"全部"目录
+          for (var i=0 ; i< object.category_list.length ; i++)
+            if(object.category_list[i].is_default == 1)
+              global_page.setData({
+                category_default:object.category_list[i],
+                selectCategoryId:object.category_list[i].category_id,
+              })
+          
           if (object.category_list.length == 1 ) //1个默认目录，不显示
           {
             global_page.setData({category:[]})
@@ -445,7 +444,7 @@ Page({
             var _c = []
             for (var i=0 ; i< object.category_list.length ; i++)
               if(object.category_list[i].is_default == 0)
-                _c.push(object.category_list[i].name)
+                _c.push(object.category_list[i])
             global_page.setData({category:_c})
           }
           
@@ -460,7 +459,7 @@ Page({
 
    //导航：水印页面
   navigateToEditor: function(e) {
-    var url = '../watermark/watermark?imgurl=' + global_page.data.editorUrl;
+    var url = '../watermark/watermark?imgurl=' + global_page.data.selectEmoticon;
     wx.navigateTo({
       url: url
     })
@@ -468,7 +467,7 @@ Page({
 
   //导航：gif拼接页面
   navigateToJoin: function(e) {
-    var url = '../join/join?imgurl=' + global_page.data.editorUrl;
+    var url = '../join/join?imgurl=' + global_page.data.selectEmoticon;
     wx.navigateTo({
       url: url
     })

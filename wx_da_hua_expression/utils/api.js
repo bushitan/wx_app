@@ -159,9 +159,9 @@ function _categoryAdd(){
 	success:{}
 	faile:  
  */
-var category_reset = 'category/reset/';
-function _categoryReset(){
-	return host_url+category_reset;
+var category_move = 'category/move/';
+function _categoryMove(){
+	return host_url+category_move;
 }	
 
 /*
@@ -234,7 +234,7 @@ module.exports = {
 
 	//目录类别增、删、查、改接口
 	categoryAdd:_categoryAdd,
-	categoryReset:_categoryReset,
+	categoryMove:_categoryMove,
 	categoryDelete:_categoryDelete,
 	categoryQuery:_categoryQuery,
 	

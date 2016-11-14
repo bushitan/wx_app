@@ -15,10 +15,10 @@
             </view>
         </block>-->
 
-        <block wx:for="{{emoticonList}}" wx:for-item="emoticon"> 
+        <block wx:for="{{emoticon}}" wx:for-item="emoticon"> 
             <view class="member" >
                 <image class="image-5" src="{{emoticon.static_url}}" background-size="cover" 
-                     catchtap="eventBase" data-action="onMenu" data-imgurl="{{emoticon.thumbnail_url}}"></image>
+                     catchtap="eventBase" data-action="onMenu" data-id="{{emoticon.id}}" data-img_url="{{emoticon.thumbnail_url}}"></image>
             </view>
         </block>
       </view>
@@ -28,14 +28,14 @@
 <!--<view class="container"   >-->
     <!--表情目录-->
     <view class="category">
-        <view catchtap="eventBase"  data-action="selectCategory" data-selectname="{{categoryTitle}}">
-            <label  class=" {{categorySelectName == categoryTitle ? 'select' : ''}}">全部</label> 
+        <view catchtap="eventBase"  data-action="selectCategory" data-select_id="{{category_default.id}}">
+            <label  class=" {{selectCategory.id == category_default.id ? 'select' : ''}}">全部</label> 
         </view>
         <scroll-view  scroll-x="true" >
             <block wx:for="{{category}}" 
                 wx:for-item="c_name">
-                <label catchtap="eventBase"  data-action="selectCategory" data-selectName="{{c_name}}"
-                 class="{{categorySelectName == c_name ? 'select' : ''}}">{{c_name}}</label>
+                <label catchtap="eventBase"  data-action="selectCategory" data-select_id="{{c_name.category_id}}"
+                 class="{{selectCategory.id == c_name.category_id ? 'select' : ''}}">{{c_name.name}}</label>
             </block>
             <label catchtap="eventBase"  data-action="navigateToCategory">+</label>
             <!--</view>-->
@@ -45,7 +45,7 @@
    
     <!--点击表情，弹出菜单-->
     <view class="menuv-v2 {{classMenu}}" wx:if="{{displayMenu}}">
-         <view><image src="{{editorUrl}}"></image></view>
+         <view><image src="{{selectEmoticon.img_url}}"></image></view>
          <view><button class="" type="primary"  catchtap="eventBase" data-action="menuShare"
             size="mini" >分享</button></view>
         <view class="content" ><label><button catchtap="eventBase" data-action="menuDelete"
