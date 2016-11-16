@@ -1,4 +1,4 @@
-// latest.js
+// private.js
 var Api = require('../../utils/api.js');
 var View = require('../../utils/view.js');
 var Menu = require('../../utils/menu.js');
@@ -9,25 +9,14 @@ var global_page
 var appInstance
 Page({
   data: {
-    title: '最新话题',
-    latest: [],
+    //loading框
     hidden: false,
-    
-    displayUpload:false,
-    displayCategory:false,
-    displayMenu:false,
-    displayMask:false,
-    displayJoin:false,
-    displayResize:false,
- 
-    // categoryTitle:"全部",
-    // category:[],
-    // categorySelectName:"全部",
 
-/***********************分割线*************************** */    
+    //点击弹出菜单
+    displayMenu:false,
 
     //控制菜单上架
-    classMenu:"m-down",  //m-up  m-down
+    menuType:"m-down",  //m-up  m-down
 
     // 手机设备信息，均已rpx为标准
     windowWidth:0,
@@ -36,46 +25,11 @@ Page({
     //页面渲染数据
     emoticon:[],
     category:[],
-    category_default:{},
 
     //touch选择对象
     selectEmoticon:{id:"",name:"",img_url:""}, //预备编辑的图片
     selectCategory:{id:"",name:""},
 
-  },
-
-   //选择目录
-  selectCategory:function(e){
-    //改变目录
-    global_page.setData({
-      selectCategory:{id: e.currentTarget.dataset.select_id},
-    })
-
-    //根据emoticone，更新表情
-    var e_list = wx.getStorageSync("emoticon")
-    var new_list = []
-    for (var i = 0; i<e_list.length;i++)
-      if(e_list[i].category_id == global_page.data.selectCategory.id)
-        new_list.push(e_list[i])
-    
-    Render.emoticon(this,new_list)
-  },
-
-
-
-
-  /** No.1
-   * Page:private 回调函数
-   * 该页面唯一的回调函数
-   * imgUrl:按时间先手顺序加入， 逆转时间显示
-   * isDelete:确认删除图片
-   */
-  callBack:function(imgUrl,isDelete){
-    if(imgUrl) 
-      global_page.emoticonUpdate(imgUrl)
-
-    if(isDelete)
-      global_page.emoticonDelete(global_page.data.selectEmoticon)
   },
 
   /** No.2
@@ -95,25 +49,11 @@ Page({
    */
   eventDisplay:function(action){
     var _display = {
-      //目录菜单
-      "btnCategory":function(){View.Switch.OffAllExcept("displayCategory","displayMask")}, //btn目录，显示目录、遮罩
-      "changeCategory":function(){View.Switch.Off("displayCategory","displayMask")},//选择目录，关闭目录、遮罩
       "navigateToCategory":function(){View.Switch.Off("displayCategory","displayMask")},//设置目录，关闭目录、遮罩
-      //上传菜单
-      "btnUpload":function(){ View.Switch.OffAllExcept("displayUpload","displayMask") },//btn上传，显示上传、遮罩
       "navigateToPainter":function(){ View.Switch.Off("displayUpload","displayMask") },//btn上传图片，关闭上传、遮罩
-      "uploadImage":function(){ View.Switch.Off("displayUpload","displayMask") },//btn上传图片，关闭上传、遮罩
-      "uploadVideo":function(){ View.Switch.Off("displayUpload","displayMask") },//btn上传视频，关闭上传、遮罩
       // 表情功能菜单
       "onMenu":function(){ View.Switch.On("displayMenu") },//btn打开菜单
-      "menuJoinAdd":function(){ View.Switch.OffAllExcept("displayJoin") },
-      // "menuJoinOK":function(){ View.Switch.Off("displayMenu") },
-      "menuResize":function(){ View.Switch.OffAllExcept("displayResize")},
-      // "menuResizeShare":function(){ View.Switch.Off("displayMenu") },
-      // "menuResizeAdd":function(){ View.Switch.Off("displayMenu") },
-      // "menuShare":function(){ View.Switch.Off("displayMenu") },
       "navigateToEditor":function(){ View.Switch.Off("displayMenu") },
-      // "menuDelete":function(){ View.Switch.OffAll() },
       "menuMoveCategory":function(){ View.Switch.OffAll() },
       //基本view:遮罩、All
       "mask":function(){View.Switch.OffAll()}, //公共透明遮罩
@@ -126,47 +66,57 @@ Page({
   eventListen:function(e){
 
     var _eventDict = {
-      "btnCategory":global_page.categoryBtn,
-      "changeCategory":global_page.categoryChange,
       "navigateToCategory":global_page.navigateToCategory,
-
-      "btnUpload":global_page.uploadBtn,
       "navigateToPainter": global_page.navigateToPainter,
-      "uploadImage": global_page.uploadImage,
-      "uploadVideo": global_page.uploadVideo,
-
-      "menuJoinOK": global_page.menuJoinOK,
-      "menuResizeShare": global_page.menuResizeShare,
-      "menuResizeAdd": global_page.menuResizeAdd,
+      "navigateToEditor": global_page.navigateToEditor,
       "onMenu": global_page.onMenu,
       "menuShare": global_page.menuShare,
-      "navigateToEditor": global_page.navigateToEditor,
-      "menuJoinAdd": global_page.menuJoinAdd,
       "menuDelete": global_page.menuDelete,
       "menuMoveCategory": global_page.menuMoveCategory,
-      "menuResize": global_page.menuResize,
-
-
-      // 新的裁剪
       "menuResizeV2": global_page.menuResizeV2,
       "btnUploadV2":global_page.btnUploadV2,
       "selectCategory":global_page.selectCategory,
-      "refesh":global_page.refesh,
+      "selectAllCategory":global_page.selectAllCategory,
+      "scrollTolower":global_page.scrollTolower,
     }
 
     if (_eventDict.hasOwnProperty(e.currentTarget.dataset.action))
       _eventDict[e.currentTarget.dataset.action](e) 
   },
 
+  /** 1 选择所有目录 */
+  selectAllCategory:function(){
+    var e = wx.getStorageSync("emoticon")
+      
+    Render.emoticon(global_page,e)
+  },
 
-/**Todo
+  /** 2 选择指定目录 */
+  selectCategory:function(e){
+    //改变目录
+    global_page.setData({
+      selectCategory:{id: e.currentTarget.dataset.select_id},
+    })
+
+    //根据emoticone，更新表情
+    var e_list = wx.getStorageSync("emoticon")
+    var new_list = []
+    for (var i = 0; i<e_list.length;i++)
+      if(e_list[i].category_id == global_page.data.selectCategory.id)
+        new_list.push(e_list[i])
+    
+    Render.emoticon(global_page,new_list)
+  },
+
+
+/** 3 Todo
      * 1、传入该分类的总张数
      * 2、设置已获取张渚
      * 3、设置准备获取数量
      * 4、当准备获取量为0，提示"图片加载完毕"
      *  */
-  refesh:function(){
-    console.log("refesh")
+  scrollTolower:function(){
+    console.log("scrollTolower")
   },
 
    //新开发 目录最后点击“+”开关
@@ -187,15 +137,13 @@ Page({
 
   //上传图片
   uploadImage:function() {
-    Menu.Option.ChooseImage(global_page.callBack)
   },
   
   //选择视频
   uploadVideo : function() {
-    Menu.Option.ChooseVideo(global_page.callBack)
   },
  
-   //点击表情，打开第一级menu
+  /** 4 打开菜单 */
   onMenu: function(e) {
     //准备当前预备编辑的图片地址
     global_page.setData({
@@ -203,17 +151,17 @@ Page({
     })
 
     if (e.currentTarget.offsetTop < 200)
-       global_page.setData({classMenu:"m-down"})
+       global_page.setData({menuType:"m-down"})
     else
-       global_page.setData({classMenu:"m-up"})
+       global_page.setData({menuType:"m-up"})
 
   },
-  // 分享
+  /** 5 菜单-分享 */
   menuShare:function(){
     Menu.Option.Share( global_page.data.selectEmoticon )
   },
 
-  // 裁剪
+  /** 6 菜单-裁剪 */
   menuResizeV2:function(){
     wx.showActionSheet({
       itemList: ['大图(170x170)', '中图(128x128)', '小图(96x96)', '炒鸡小(48x48)'],
@@ -228,13 +176,13 @@ Page({
     })
   },
 
-  // 表情删除
+  /** 7 菜单-删除 */
   menuDelete:function(){
     Menu.Option.Delete(global_page.callBack)
     //删除后，menu框隐藏
   },
 
-  // 表情移动分组
+  /** 8 菜单-分组 */
   menuMoveCategory:function(){
     wx.showActionSheet({
       itemList: global_page.data.category,
@@ -266,8 +214,6 @@ Page({
               }
             })
           console.log("storyge" );
-
-
         }
       }
     })
@@ -401,6 +347,9 @@ Page({
         },
         success: function(res) {
           var object = res.data
+
+          //temp 删除默认目录
+
           wx.setStorageSync(
               "emoticon",
               object.img_list
@@ -425,28 +374,12 @@ Page({
         },
         success: function(res) {
           var object = res.data
-          
-          //设置"全部"目录
-          for (var i=0 ; i< object.category_list.length ; i++)
-            if(object.category_list[i].is_default == 1)
-              global_page.setData({
-                category_default:object.category_list[i],
-                selectCategoryId:object.category_list[i].category_id,
-              })
-          
-          if (object.category_list.length == 1 ) //1个默认目录，不显示
-          {
-            global_page.setData({category:[]})
-          
-          }
-          else  //多个目录，默认目录不显示
-          { 
+
             var _c = []
             for (var i=0 ; i< object.category_list.length ; i++)
-              if(object.category_list[i].is_default == 0)
                 _c.push(object.category_list[i])
             global_page.setData({category:_c})
-          }
+          // }
           
           wx.setStorageSync(
               "category",
