@@ -32,7 +32,7 @@ function emoticon(page,emoticon){
  * }]
  */
 function category(page, categoryList){
-
+    page.setData({category:categoryList})
 }
 
 

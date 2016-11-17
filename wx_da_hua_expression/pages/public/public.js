@@ -3,35 +3,35 @@ var Api = require('../../utils/api.js');
 var View = require('../../utils/view.js');
 var Menu = require('../../utils/menu.js');
 
-var global_page
+var Render = require('../../utils/render.js');
+var Key = require('../../utils/storage_key.js');
+
+
+var APP = getApp()
+var GLOBAL_PAGE
 Page({
   data: {
-    title: '最热话题',
     displayLoading: true,
-    menu_left: "0rpx",
-    menu_top: "50rpx",
-    displayMenu:false,
-
     keyword:"我擦", //搜索关键字
-
-    editorUrl:"",
-    
-    hotest: [],
-    hotLabel:["金馆长","我想静静","意外","疼！"],
-
-    
-
+    // emoticon: [],
+    hotLabel:["金馆长","我想静静","意外","疼！"],  
+    hidden: false,
+    //点击弹出菜单
+    displayMenu:false,
     //控制菜单上架
-    classMenu:"m-down",  //m-up  m-down
+    menuType:"m-down",  //m-up  m-down
 
     // 手机设备信息，均已rpx为标准
     windowWidth:0,
     windowHeight:0,
-  },
 
-  //Page:public 的函数
-  callBack:function(imgUrl){
-    global_page.setData({hotest:imgUrl})
+    //页面渲染数据
+    emoticon:[],
+    category:[],
+
+    //touch选择对象
+    selectEmoticon:{id:"",name:"",img_url:""}, //预备编辑的图片
+    selectCategory:{id:"",name:""},
   },
 
   /** Page:public 基础事件
@@ -40,8 +40,8 @@ Page({
    * 3、eventListen:根据data-actiondata-action，确定执行的事件
    */
   eventBase:function(e){
-    global_page.eventListen(e)
-    global_page.eventDisplay(e.currentTarget.dataset.action)
+    GLOBAL_PAGE.eventListen(e)
+    GLOBAL_PAGE.eventDisplay(e.currentTarget.dataset.action)
   },
 
   /**
@@ -63,11 +63,11 @@ Page({
   eventListen:function(e){
 
     var _eventDict = {
-      "onMenu":global_page.onMenu,
-      "btnSearch":global_page.searchBtn,
-      "btnShortcut":global_page.searchShortcut,
-      "btnShare":global_page.menuShare,
-      "btnCollect": global_page.menuCollect,
+      "onMenu":GLOBAL_PAGE.onMenu,
+      "btnSearch":GLOBAL_PAGE.searchBtn,
+      "btnShortcut":GLOBAL_PAGE.searchShortcut,
+      "btnShare":GLOBAL_PAGE.menuShare,
+      "btnCollect": GLOBAL_PAGE.menuCollect,
     }
     if (_eventDict.hasOwnProperty(e.currentTarget.dataset.action))
       _eventDict[e.currentTarget.dataset.action](e) 
@@ -80,9 +80,27 @@ Page({
   searchBtn:function(){
     //Todo 搜索信息
     //  刷新 hotest  hotLabel  连个参数
-    var _keyword = global_page.data.keyword
-    Menu.Option.GetPictureHot(_keyword,global_page.callBack)
+    var _keyword = GLOBAL_PAGE.data.keyword
 
+    
+    var url = Api.imgQuery() 
+    var session = wx.getStorageSync(Key.session) 
+    //获取表情列表
+     wx.request({
+        url: url, //仅为示例，并非真实的接口地址
+        method:"POST",
+        data: Api.json2Form({
+          session: session,
+          category_id: 'null',
+        }),
+        header: {  
+          "Content-Type": "application/x-www-form-urlencoded"  
+        },
+        success: function(res) {
+          var object = res.data
+          GLOBAL_PAGE.renderEmoticon(object.img_list)
+        }
+      })
   },
 
   /**点击Shortcut按钮，触发search搜索，
@@ -90,10 +108,10 @@ Page({
    */
   searchShortcut:function(e){
     
-    global_page.setData({
+    GLOBAL_PAGE.setData({
       keyword:e.currentTarget.dataset.keyword
     })
-    global_page.searchBtn();
+    GLOBAL_PAGE.searchBtn();
 
   },
 
@@ -102,19 +120,19 @@ Page({
   onMenu: function(e) {
 
     //准备当前预备编辑的图片地址
-    global_page.setData({
-      editorUrl:e.currentTarget.dataset.imgurl
+    GLOBAL_PAGE.setData({
+      selectEmoticon:{id: e.currentTarget.dataset.id, img_url:e.currentTarget.dataset.img_url}
     })
      if (e.currentTarget.offsetTop < 200)
-       global_page.setData({classMenu:"m-down"})
+       GLOBAL_PAGE.setData({classMenu:"m-down"})
     else
-       global_page.setData({classMenu:"m-up"})
+       GLOBAL_PAGE.setData({classMenu:"m-up"})
   
   },
 
   //图片分享
   menuShare:function(){
-    Menu.Option.Share( global_page.data.editorUrl )
+    Menu.Option.Share( GLOBAL_PAGE.data.editorUrl )
   },
 
   /**
@@ -122,67 +140,32 @@ Page({
    * 跳转到Page：private时，onShow方法一齐显示
    */
   menuCollect:function(){
-    var _list = wx.getStorageSync('pre_collect')
-    var _new_list = Menu.Option.Collect( global_page.data.editorUrl,_list )
-    wx.setStorageSync(
-        "pre_collect",
-        _new_list
-    )
+    // var _list = wx.getStorageSync('pre_collect')
+    // var _new_list = Menu.Option.Collect( GLOBAL_PAGE.data.editorUrl,_list )
+    // wx.setStorageSync(
+    //     "pre_collect",
+    //     _new_list
+    // )
+    /**Todo request增加用户-图片 记录
+     * 添加成功，更新本地storage(emoticon)
+     */
+
   },
 
   onLoad: function () {
-
-    global_page = this
-
-    //获取手机信息
-    var _pixelRatio,_windowWidth,_windowHeight
-    wx.getSystemInfo({
-      success: function(res) {
-        console.log(res.model)
-        console.log(res.pixelRatio)
-        console.log(res.windowWidth)
-        console.log(res.windowHeight)
-        console.log(res.language)
-        console.log(res.version)
-
-        _pixelRatio = res.pixelRatio
-        _windowWidth = res.windowWidth
-        _windowHeight = res.windowHeight
-      }
+    GLOBAL_PAGE = this
+    //1 page初始化高宽
+    console.log("width:" , APP.globalData.windowWidth)
+    console.log("height:" , APP.globalData.windowHeight - 48)
+    GLOBAL_PAGE.setData({
+      windowWidth:APP.globalData.windowWidth,
+      windowHeight:APP.globalData.windowHeight - 48,
     })
-    this.setData({
-      windowWidth:_windowWidth,
-      windowHeight:_windowHeight
-    })
-    
-    //数据初始化
-    var that = this;
-    var url = Api.imgQuery() 
-    let formData = new FormData();
 
-    formData.append("uid","9");
-    formData.append("category_id","null");
-    fetch(url , {
-        method: 'POST',
-        headers: {},
-        body: formData,
-    }).then((response) => {
-        if (response.ok) {
-            return response.json();
-        }
-    }).then((object) => {
-        console.log(object);
-  
-        var _hotest = []
-        var _list = object.img_list
-        for (var i=0;i<_list.length;i++)  
-          _hotest.push(_list[i]["yun_url"])
-        global_page.setData({hotest:_hotest})
-    }).catch((error) => {
-        console.error(error);
-    });
-    // Menu.Option.GetPictureHot("2321",global_page.callBack)
-  
+    //测试登陆
+    GLOBAL_PAGE.initTest()
+
+
     var that = this;
     // 300ms后，隐藏loading
     setTimeout(function() {
@@ -208,7 +191,61 @@ Page({
   },
 
   onReady:function(){
+  },
+
+  initTest:function(){
+    //临时表情
+    var e =  [
+      {img_id: 4, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135650.jpeg"},
+      {img_id: 5, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135820.gif"},
+      {img_id: 6, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135856.gif"},
+      {img_id: 7, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106143937.jpeg"},
+      {img_id: 2, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135136.jpeg"},
+      {img_id: 3, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135420.jpeg"},
+    {img_id: 4, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135650.jpeg"},
+      {img_id: 5, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135820.gif"},
+      {img_id: 6, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135856.gif"},
+      {img_id: 7, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106143937.jpeg"},
+      {img_id: 2, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135136.jpeg"},
+      {img_id: 3, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135420.jpeg"},
+    {img_id: 4, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135650.jpeg"},
+      {img_id: 5, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135820.gif"},
+      {img_id: 6, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135856.gif"},
+      {img_id: 7, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106143937.jpeg"},
+      {img_id: 2, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135136.jpeg"},
+      {img_id: 3, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135420.jpeg"},
+    {img_id: 4, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135650.jpeg"},
+      {img_id: 5, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135820.gif"},
+      {img_id: 6, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135856.gif"},
+      {img_id: 7, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106143937.jpeg"},
+      {img_id: 2, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135136.jpeg"},
+      {img_id: 3, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135420.jpeg"},
+    {img_id: 4, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135650.jpeg"},
+      {img_id: 5, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135820.gif"},
+      {img_id: 6, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135856.gif"},
+      {img_id: 7, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106143937.jpeg"},
+      {img_id: 2, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135136.jpeg"},
+      {img_id: 3, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135420.jpeg"},
+    {img_id: 4, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135650.jpeg"},
+      {img_id: 5, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135820.gif"},
+      {img_id: 6, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135856.gif"},
+      {img_id: 7, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106143937.jpeg"},
+      {img_id: 2, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135136.jpeg"},
+      {img_id: 3, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135420.jpeg"},
+    {img_id: 4, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135650.jpeg"},
+      {img_id: 5, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135820.gif"},
+      {img_id: 6, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135856.gif"},
+      {img_id: 7, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106143937.jpeg"},
+      {img_id: 2, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135136.jpeg"},
+      {img_id: 3, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135420.jpeg"},
+    ]
 
     
-  }
+    GLOBAL_PAGE.renderEmoticon(e)
+  },
+  
+  renderEmoticon:function(emoticon){
+    Render.emoticon(GLOBAL_PAGE,emoticon)
+  },
+
 })

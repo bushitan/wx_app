@@ -2,45 +2,39 @@
 
 <!--<view class="mask" catchtap="eventBase" data-action="mask"  wx:if="{{displayMask}}"   ></view>-->
 <view class="container"  catchtap="eventBase" data-action="all" >
-   <!--表情图-->
-<scroll-view scroll-y="true" style="height:{{windowHeight}}px;"
- bindscrolltolower="eventBase" data-action="scrollTolower">
-    <view class="space-72"></view>
-    <view class="emoticon">
-      <view class="content">
-        <!--<block wx:for="{{latest}}">
-            <view class="member" >
-                <image class="image-5" src="{{item}}" background-size="cover" 
-                     catchtap="eventBase" data-action="onMenu" data-imgurl="{{item}}"></image>
-            </view>
-        </block>-->
-
-        <block wx:for="{{emoticon}}" wx:for-item="emoticon"> 
-            <view class="member" >
-                <image class="image-5" src="{{emoticon.static_url}}" background-size="cover" 
-                     catchtap="eventBase" data-action="onMenu" data-id="{{emoticon.id}}" data-img_url="{{emoticon.thumbnail_url}}"></image>
-            </view>
-        </block>
-      </view>
-    </view>
-</scroll-view>
+    
+    <!--表情图-->
+    <scroll-view class="emoticon-wall" scroll-y="true" style="height:{{windowHeight}}px;"
+    bindscrolltolower="eventBase" data-action="scrollTolower">
+        <view class="space-72"></view>
+        <view class="emoticon">
+        <view class="content">
+            <block wx:for="{{emoticon}}" wx:for-item="emoticon"> 
+                <view class="member" >
+                    <image class="image-5" src="{{emoticon.static_url}}" background-size="cover" 
+                        catchtap="eventBase" data-action="onMenu" data-id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}"></image>
+                </view>
+            </block>
+        </view>
+        </view>
+    </scroll-view>
 
 <!--<view class="container"   >-->
     <!--表情目录-->
     <view class="category">
-        <view catchtap="eventBase"  data-action="selectAllCategory" data-select_id="{{category_default.id}}">
-            <label  class=" {{selectCategory.id == category_default.id ? 'select' : ''}}">全部</label> 
+            <view catchtap="eventBase"  data-action="selectAllCategory" >
+                <label  class=" {{selectCategory.category_id == null ? 'select' : ''}}">全部</label> 
+            </view>
+            <scroll-view  scroll-x="true" >
+                <block wx:for="{{category}}" 
+                    wx:for-item="c_name">
+                    <label catchtap="eventBase"  data-action="selectCategory" data-select_category_id="{{c_name.category_id}}"
+                    class="{{selectCategory.category_id == c_name.category_id ? 'select' : ''}}">{{c_name.name}}</label>
+                </block>
+                <label catchtap="eventBase"  data-action="navigateToCategory">+</label>
+                <!--</view>-->
+            </scroll-view>
         </view>
-        <scroll-view  scroll-x="true" >
-            <block wx:for="{{category}}" 
-                wx:for-item="c_name">
-                <label catchtap="eventBase"  data-action="selectCategory" data-select_id="{{c_name.category_id}}"
-                 class="{{selectCategory.id == c_name.category_id ? 'select' : ''}}">{{c_name.name}}</label>
-            </block>
-            <label catchtap="eventBase"  data-action="navigateToCategory">+</label>
-            <!--</view>-->
-        </scroll-view>
-    </view>
 
    
     <!--点击表情，弹出菜单-->

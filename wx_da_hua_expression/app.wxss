@@ -20,6 +20,10 @@
   font: 14px "Microsoft YaHei";
 }
 
+.emoticon-wall{
+    position:absolute;
+    width:100%;
+}
 /*.header {
     height: 80rpx;
     display: flex;

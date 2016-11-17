@@ -129,10 +129,10 @@ var _Option = {
     Delete:function(callFun){
         wx.showModal({
             title: '是否删除表情',
-            // content: '是否删除表情',
+            content: ' ',
             success: function(res) {
                 if (res.confirm) {
-                    callFun(false,true)
+                    // callFun(false,true)
                 }
                 /**
                  * Todo 与后台确认删除表情

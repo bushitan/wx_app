@@ -2,15 +2,21 @@
 <view class="container" catchtap="eventBase" data-action="all">
 
     <!--表情图-->
-<scroll-view scroll-y="true" style="height:{{windowHeight}}px;"
+<scroll-view class="emoticon-wall" scroll-y="true" style="height:{{windowHeight}}px;"
  bindscrolltolower="eventBase" data-action="refesh">
    <view class="space-72"></view>
   <view class="emoticon">
       <view class="content">
-        <block wx:for="{{hotest}}">
+        <!--<block wx:for="{{emoticon}}">
             <view class="member" >
-                <image class="image-5" src="{{item}}" background-size="cover" 
-                catchtap="eventBase" data-action="onMenu" data-imgurl="{{item}}"></image>
+                <image class="image-5" src="{{emoticon.static_url}}" background-size="cover" 
+                catchtap="eventBase" data-action="onMenu" data-id="{{emoticon.img_id}}" data-imgurl="{{emoticon.thumbnail_url}}"></image>
+            </view>
+        </block>-->
+         <block wx:for="{{emoticon}}" wx:for-item="emoticon"> 
+            <view class="member" >
+                <image class="image-5" src="{{emoticon.static_url}}" background-size="cover" 
+                    catchtap="eventBase" data-action="onMenu" data-id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}"></image>
             </view>
         </block>
       </view>
@@ -41,7 +47,7 @@
 
     <!--点击表情悬浮功能菜单-->
     <view class="menuv-v2 {{classMenu}}" wx:if="{{displayMenu}}">
-        <view><image src="{{editorUrl}}"></image></view>
+        <view><image src="{{selectEmoticon.img_url}}"></image></view>
         <view>
             <button type="primary" catchtap="eventBase" data-action="btnShare"
             size="mini" >分享</button>
