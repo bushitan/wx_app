@@ -4,8 +4,10 @@ var Api = require('../../utils/api.js');
 var View = require('../../utils/view.js');
 var Menu = require('../../utils/menu.js');
 
+var KEY = require('../../utils/storage_key.js');
+
 var t_id = 0
-var global_page
+var GLOBAL_PAGE
 var app = getApp()
 Page({
   data: {
@@ -23,17 +25,16 @@ Page({
 
   //focus离开input后，更新临时缓存
   inputBlur:function(e){
-
-      global_page.setData({addCategoryInput:e.detail.value })
+      GLOBAL_PAGE.setData({addCategoryInput:e.detail.value })
   },
   addCategory:function(){
-      global_page.setData({
+      GLOBAL_PAGE.setData({
           isAdd:true,
       })
   },
 
   addCategoryOK:function(){
-      if (global_page.data.addCategoryInput == "")
+      if (GLOBAL_PAGE.data.addCategoryInput == "")
       {
          wx.showToast({
             title: '请输入目录名称',
@@ -43,41 +44,39 @@ Page({
         return
       }
 
-        global_page.setData({
+        GLOBAL_PAGE.setData({
             isAdd:false,
         })
 
-        var url = Api.categoryAdd() 
-        var formData = new FormData();
-        formData.append("category_name",global_page.data.addCategoryInput);
-        formData.append("uid",app.globalData.uid); //当前用户uid
-        fetch(url , {
-            method: 'POST',
-            headers: {},
-            body: formData,
-        }).then((response) => {
-            if (response.ok) {
-                return response.json();
+        wx.request({
+            url: Api.categoryAdd(),
+            method:"POST",
+            data: Api.json2Form({
+                session: wx.getStorageSync(KEY.session) ,
+                category_name:GLOBAL_PAGE.data.addCategoryInput,
+            }),
+            header: {  
+                "Content-Type": "application/x-www-form-urlencoded"  
+            },
+            success: function(res) {
+                var object = res.data
+                if(object.status == "true")
+                {
+                    var c = wx.getStorageSync(KEY.category)
+                    c.push(object.category)
+                    wx.setStorageSync(
+                        KEY.category,
+                        c
+                    )
+                    GLOBAL_PAGE.renderCategory()
+                }
+                 
             }
-        }).then((object) => {
-            console.log(object);
-            //将新的目录更新至storage
-            wx.setStorageSync(
-                "category",
-                object.category_list
-            )
-            this.setData({
-                category:wx.getStorageSync('category'),  
-            })
-         
-        }).catch((error) => {
-            console.error(error);
-        });
-
+        })
   },
 
   addCategoryCancel:function(){
-      global_page.setData({
+      GLOBAL_PAGE.setData({
           isAdd:false,
       })
   },
@@ -86,8 +85,8 @@ Page({
   fixCategory:function(){
 
 
-      var _my = global_page.data.myCategory
-      var _temp = global_page.data.tempCategory
+      var _my = GLOBAL_PAGE.data.myCategory
+      var _temp = GLOBAL_PAGE.data.tempCategory
 
       if( _my.toString() == _temp.toString())
       {
@@ -158,7 +157,7 @@ Page({
 
 
     // var _index = e.currentTarget.dataset.index
-    // var _hasImg = global_page.data.hasImg
+    // var _hasImg = GLOBAL_PAGE.data.hasImg
     // var _isTrue = _hasImg[_index]
     // if (_isTrue == true || _isTrue == "true"){
     //     wx.showToast({
@@ -170,12 +169,12 @@ Page({
     // }
     // else
     // {
-    //     var _temp = global_page.data.myCategory
-    //     var _hasImg = global_page.data.hasImg
+    //     var _temp = GLOBAL_PAGE.data.myCategory
+    //     var _hasImg = GLOBAL_PAGE.data.hasImg
 
     //     _temp.splice(_index,1)
     //     _hasImg.splice(_index,1)
-    //     global_page.setData({
+    //     GLOBAL_PAGE.setData({
     //         myCategory:_temp,
     //         hasImg:_hasImg,
     //     })
@@ -186,34 +185,32 @@ Page({
   },
   
   onLoad: function (param) {
-    global_page = this
+    GLOBAL_PAGE = this
     console.log(param["category"])
 
-    
-    
-    this.setData({
-        category:wx.getStorageSync('category'),  
-        // tCategory:wx.getStorageSync('category') , 
+    wx.request({
+        url: Api.categoryQuery(),
+        method:"POST",
+        data: Api.json2Form({
+            session: wx.getStorageSync(KEY.session) ,
+        }),
+        header: {  
+            "Content-Type": "application/x-www-form-urlencoded"  
+        },
+        success: function(res) {
+            var object = res.data
+            wx.setStorageSync(
+                KEY.category,
+                object.category_list
+            )
+            GLOBAL_PAGE.renderCategory()
+        }
     })
+    
+  },
 
-
-
-    // var _c = param["category"].split(",");
-    // var _h = param["hasimg"].split(",");
-    // this.setData({
-    //     myCategory:_c,
-    //     tempCategory:_c,
-    //     hasImg:_h
-    // })
-
-
-    // for(var i = 0 ; i<)
-    // var _category = [
-    //     {name:"目录1" , Elemnt:21},
-    //     {name:"目录dsad2" , Elemnt:21},
-    //     {name:"傻逼目录3" , Elemnt:32},
-    // ]
-
-  }
+  renderCategory:function(){
+    GLOBAL_PAGE.setData({category:wx.getStorageSync(KEY.category)})
+  },
 
 })

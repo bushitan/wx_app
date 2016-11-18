@@ -44,7 +44,6 @@ Page({
     GLOBAL_PAGE.eventDisplay(e.currentTarget.dataset.action)
   },
 
-
   /**No2.1
    * 触发view的隐藏显示
    */
@@ -124,9 +123,11 @@ Page({
       success: function(res) {
         if (!res.cancel) {
           // console.log(res.tapIndex)
-          //Todo 上传
-          var _new_img = GLOBAL_PAGE.data.selectEmoticon
-          GLOBAL_PAGE.emoticonUpdate(_new_img)
+          switch(res.tapIndex){
+            case 0 :  GLOBAL_PAGE.uploadImage();break;
+            case 1 :  GLOBAL_PAGE.uploadVideo();break;
+          }
+          
         }
       }
     })
@@ -135,6 +136,46 @@ Page({
 
   //上传图片
   uploadImage:function() {
+    //上传图片
+    wx.chooseImage({
+      count: 1, 
+      success: function(res) {
+        var tempFilePaths = res.tempFilePaths
+        console.log(tempFilePaths[0])
+        wx.uploadFile({
+          url: Api.uploadImg(), 
+          filePath: tempFilePaths[0],
+          name: 'file',
+          header: {  
+            "Content-Type": "multipart/form-data"  
+          },
+          formData:{
+            'session': wx.getStorageSync(Key.session)
+          },
+          success: function(res){
+            var data = JSON.parse(res.data)
+            if(data.status == "true")
+            {
+              var e = wx.getStorageSync(Key.emoticon)
+              e.push(data.img)
+              wx.setStorageSync(Key.emoticon,e)
+              GLOBAL_PAGE.renderEmoticon()
+
+              wx.showToast({
+                  title: '上传图片成功',
+                  icon: 'success',
+                  duration: 700
+              })
+            } 
+          },
+          fail:function(res){
+            console.log("chooseImage fail")
+            var data = res.data
+            console.log(res)
+          },
+        })
+      }
+    })
   },
   
   //选择视频
@@ -145,7 +186,11 @@ Page({
   onMenu: function(e) {
     //准备当前预备编辑的图片地址
     GLOBAL_PAGE.setData({
-      selectEmoticon:{id: e.currentTarget.dataset.id, img_url:e.currentTarget.dataset.img_url}
+      selectEmoticon:{
+        id: e.currentTarget.dataset.id, 
+        img_url:e.currentTarget.dataset.img_url,
+        category_id:e.currentTarget.dataset.category_id,
+        }
     })
 
     if (e.currentTarget.offsetTop < 200)
@@ -176,8 +221,58 @@ Page({
 
   /** 7 菜单-删除 */
   menuDelete:function(){
-    // Menu.Option.Delete(GLOBAL_PAGE.callBack)
-    Menu.Option.Delete()
+    var url = Api.imgDelete() 
+    wx.showModal({
+        title: '是否删除表情',
+        content: ' ',
+        success: function(res) {
+            if (res.confirm) {
+                wx.request({
+                    url: Api.imgDelete() , 
+                    method:"POST",
+                    data: Api.json2Form({
+                      session: wx.getStorageSync(Key.session),
+                      img_id: GLOBAL_PAGE.data.selectEmoticon.id,
+                      category_id:GLOBAL_PAGE.data.selectEmoticon.category_id,
+                    }),
+                    header: {  
+                      "Content-Type": "application/x-www-form-urlencoded"  
+                    },
+                    success: function(res) {
+                        var object = res.data
+                        if (object.status == "true")
+                        {
+                           //删除成功，去掉数组元素
+                            var img_id = parseInt(object.img_id)
+                            var category_id = parseInt(object.category_id)
+                            var e = wx.getStorageSync(Key.emoticon)
+                            for ( var i=0;i<e.length;i++)
+                            {
+                              if ( e[i].img_id == img_id && e[i].category_id == category_id )
+                              {
+                                  e.splice(i,1)
+                                  break
+                              }
+                            }
+                          
+                            //更新emotion
+                            wx.setStorageSync(Key.emoticon,e)
+                            GLOBAL_PAGE.renderEmoticon()
+
+                            wx.showToast({
+                                title: '修改分组成功',
+                                icon: 'success',
+                                duration: 700
+                            })
+                        }
+                    }
+                })
+            }
+            /**
+             * Todo 与后台确认删除表情
+             */
+        }   
+    })
     //删除后，menu框隐藏
   },
 
@@ -186,36 +281,60 @@ Page({
     var list = []
     for (var i=0;i<GLOBAL_PAGE.data.category.length;i++)
       list.push(GLOBAL_PAGE.data.category[i].name)
+    //竖排列表选取
     wx.showActionSheet({
       itemList: list,
       success: function(res) {
         if (!res.cancel) {
           console.log(res.tapIndex)
-          
-          // var url = Api.categoryMove() 
-          // var session = wx.getStorageSync('session') 
-          // //获取表情列表
-          // wx.request({
-          //     url: url, //仅为示例，并非真实的接口地址
-          //     method:"POST",
-          //     data: Api.json2Form({
-          //       session: session,
-          //       img_id: GLOBAL_PAGE.data.selectEmoticon.id,
-          //       category_id: 'null',
-          //     }),
-          //     header: {  
-          //       "Content-Type": "application/x-www-form-urlencoded"  
-          //     },
-          //     success: function(res) {
-          //       var object = res.data
-          //       wx.setStorageSync(
-          //           "emoticon",
-          //           object.img_list
-          //       )
-          //       Render.emoticon(GLOBAL_PAGE,object.img_list)
-          //     }
-          //   })
-          console.log("storyge" );
+
+          var a = GLOBAL_PAGE.data.category[res.tapIndex] 
+          //移动表情
+          wx.request({
+              url: Api.imgMove() , 
+              method:"POST",
+              data: Api.json2Form({
+                session: wx.getStorageSync(Key.session),
+                img_id: GLOBAL_PAGE.data.selectEmoticon.id,
+                old_category_id:GLOBAL_PAGE.data.selectEmoticon.category_id,
+                new_category_id: GLOBAL_PAGE.data.category[res.tapIndex].category_id,
+              }),
+              header: {  
+                "Content-Type": "application/x-www-form-urlencoded"  
+              },
+              success: function(res) {
+                var object = res.data
+                if (object.status == "true")
+                {
+                  var img_id = parseInt(object.img_id)
+                  var category_id = parseInt(object.category_id)
+                  var e = wx.getStorageSync(Key.emoticon)
+                  for ( var i=0;i<e.length;i++)
+                  {
+                    if ( e[i].img_id == img_id )
+                      e[i].category_id = category_id
+                  }
+
+                  //更新emotion
+                  wx.setStorageSync(Key.emoticon,e)
+                  GLOBAL_PAGE.renderEmoticon()
+
+                   wx.showToast({
+                      title: '修改分组成功',
+                      icon: 'success',
+                      duration: 100
+                  })
+                }
+                else{
+                  wx.showToast({
+                      title: '图片已在该目录',
+                      icon: 'success',
+                      duration: 700
+                  })
+                }
+               
+              }
+            })
         }
       }
     })
@@ -298,10 +417,10 @@ Page({
     //测试session
     wx.setStorageSync('session',"ds9") 
     //测试登陆
-    GLOBAL_PAGE.loginTest()
+    // GLOBAL_PAGE.loginTest()
 
     //正式登陆
-    // GLOBAL_PAGE.login()
+    GLOBAL_PAGE.login()
 
     // // 300ms后，隐藏loading
     setTimeout(function() {

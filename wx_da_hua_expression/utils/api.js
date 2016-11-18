@@ -7,6 +7,7 @@
 // var host_url = 'http://127.0.0.1:8000/';
 // var host_url = 'https://www.12xiong.top/wx_app/';
 var host_url = 'https://www.12xiong.top/';
+// var host_url = 'http://www.12xiong.top/';
 
 /*
 	1、上传图片
@@ -15,7 +16,7 @@ var host_url = 'https://www.12xiong.top/';
 	success:{Token,imgUrl}
 	faile:  
  */
-var upload_img = 'upload/img/';
+var upload_img = 'upload/wx_img/';
 function _uploadImg(){
 	return host_url+upload_img;
 }

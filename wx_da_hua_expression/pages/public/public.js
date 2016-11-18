@@ -4,7 +4,7 @@ var View = require('../../utils/view.js');
 var Menu = require('../../utils/menu.js');
 
 var Render = require('../../utils/render.js');
-var Key = require('../../utils/storage_key.js');
+var KEY = require('../../utils/storage_key.js');
 
 
 var APP = getApp()
@@ -12,7 +12,7 @@ var GLOBAL_PAGE
 Page({
   data: {
     displayLoading: true,
-    keyword:"我擦", //搜索关键字
+    keyword:"null", //搜索关键字
     // emoticon: [],
     hotLabel:["金馆长","我想静静","意外","疼！"],  
     hidden: false,
@@ -74,24 +74,29 @@ Page({
   },
 
 
+  inputBlur:function(e){
+      var value = e.detail.value
+      GLOBAL_PAGE.setData({keyword:value})
+  },
+
+
   /**
-   * 根据keyword，搜索
+   * 1 根据keyword，搜索
    */
   searchBtn:function(){
-    //Todo 搜索信息
-    //  刷新 hotest  hotLabel  连个参数
     var _keyword = GLOBAL_PAGE.data.keyword
-
-    
     var url = Api.imgQuery() 
-    var session = wx.getStorageSync(Key.session) 
+    // var session = wx.getStorageSync(KEY.session) 
+    var session = "ds9"
     //获取表情列表
      wx.request({
         url: url, //仅为示例，并非真实的接口地址
         method:"POST",
         data: Api.json2Form({
           session: session,
-          category_id: 'null',
+          category_id: '1',
+          category_name: _keyword,
+
         }),
         header: {  
           "Content-Type": "application/x-www-form-urlencoded"  
@@ -103,7 +108,7 @@ Page({
       })
   },
 
-  /**点击Shortcut按钮，触发search搜索，
+  /** 2 点击Shortcut按钮，触发search搜索，
    * 更新keyword
    */
   searchShortcut:function(e){
@@ -115,13 +120,11 @@ Page({
 
   },
 
-  /**点击表情，悬浮菜单
+  /** 3 点击表情，悬浮菜单
    */
   onMenu: function(e) {
-
-    //准备当前预备编辑的图片地址
-    GLOBAL_PAGE.setData({
-      selectEmoticon:{id: e.currentTarget.dataset.id, img_url:e.currentTarget.dataset.img_url}
+    GLOBAL_PAGE.setData({  //准备当前预备编辑的图片地址
+      selectEmoticon:{id: e.currentTarget.dataset.id, img_url:e.currentTarget.dataset.img_url} 
     })
      if (e.currentTarget.offsetTop < 200)
        GLOBAL_PAGE.setData({classMenu:"m-down"})
@@ -130,24 +133,25 @@ Page({
   
   },
 
-  //图片分享
+  // 4 图片分享
   menuShare:function(){
     Menu.Option.Share( GLOBAL_PAGE.data.editorUrl )
   },
 
   /**
-   * 菜单收藏按钮，可以收藏多张
+   * 5 菜单收藏按钮，可以收藏多张
    * 跳转到Page：private时，onShow方法一齐显示
    */
   menuCollect:function(){
     // var _list = wx.getStorageSync('pre_collect')
     // var _new_list = Menu.Option.Collect( GLOBAL_PAGE.data.editorUrl,_list )
-    // wx.setStorageSync(
-    //     "pre_collect",
-    //     _new_list
-    // )
+    
     /**Todo request增加用户-图片 记录
      * 添加成功，更新本地storage(emoticon)
+     * wx.setStorageSync(
+          K,
+          _new_list
+      )
      */
 
   },
@@ -162,9 +166,13 @@ Page({
       windowHeight:APP.globalData.windowHeight - 48,
     })
 
-    //测试登陆
-    GLOBAL_PAGE.initTest()
+    //测试初始化表情
+    // GLOBAL_PAGE.initTest()
+    GLOBAL_PAGE.searchBtn()
 
+    //初始化关键字
+    GLOBAL_PAGE.setData({hotLabel:["null","默认目录","管理的哈哈"]})
+    
 
     var that = this;
     // 300ms后，隐藏loading
@@ -173,8 +181,6 @@ Page({
         View.Switch.Work()
     }, 300)
   },
-
- 
 
   onHide:function(){
     View.Switch.OffAll()

@@ -1,8 +1,8 @@
 {
   "pages":[
-    "pages/public/public",
     "pages/private/private",
     "pages/category/category",
+    "pages/public/public",
     "pages/painter/painter",
     "pages/watermark/watermark",
     "pages/join/join"

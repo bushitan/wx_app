@@ -12,7 +12,8 @@
             <block wx:for="{{emoticon}}" wx:for-item="emoticon"> 
                 <view class="member" >
                     <image class="image-5" src="{{emoticon.static_url}}" background-size="cover" 
-                        catchtap="eventBase" data-action="onMenu" data-id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}"></image>
+                        catchtap="eventBase" data-action="onMenu" 
+                        data-id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}" data-category_id="{{emoticon.category_id}}" ></image>
                 </view>
             </block>
         </view>
