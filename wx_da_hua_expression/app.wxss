@@ -141,3 +141,25 @@ opacity:0.1;
 .space-72 {
     height:72rpx
 }
+
+.menuv-long{
+    position:absolute;
+    background-color: #ededed;
+    width:750rpx;
+    /*margin-top: 200rpx;*/
+    /*margin-left: 175rpx;*/
+    /*bottom:200rpx;*/
+    /*left:25rpx;*/
+    padding: 10rpx;
+    border-radius: 5rpx;
+    /*box-shadow: 0px 3px 6px -2px rgba(0,0,0,0.3);*/
+    z-index: 10001;
+    box-shadow: 0px 3px 20px 2px rgba(0,0,0,0.4);
+}
+.menuv-long label {
+    width:33.3%;
+}
+
+.menuv-long view{
+    text-align: center;
+}

@@ -31,6 +31,8 @@ Page({
     selectEmoticon:{id:"",name:"",img_url:""}, //预备编辑的图片
     selectCategory:{id:"",name:""},
 
+    w:0,
+    h:0,
   },
 
   /** No.2
@@ -623,6 +625,20 @@ Page({
     wx.navigateTo({
       url: url
     })
+  },
+
+
+  //图片加载完毕
+  bindload:function(e){
+    console.log(e)
+
+    var new_h = parseInt( e.detail.height*730/e.detail.width)
+     
+    GLOBAL_PAGE.setData({
+      
+      w:e.detail.width,
+      h:new_h
+      })
   },
 })
 

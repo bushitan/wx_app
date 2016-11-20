@@ -17,12 +17,15 @@ App({
 
     var that =this
     var _pixelRatio,_windowWidth,_windowHeight
+    
     wx.getSystemInfo({
       success: function(res) {
         //设置屏幕宽/高
         // console.log(res)
         that.globalData.windowWidth = res.windowWidth
         that.globalData.windowHeight = res.windowHeight
+
+        console.log(res.windowWidth,res.windowHeight,res.pixelRatio)
       }
     })
     },

@@ -12,12 +12,13 @@
             <block wx:for="{{emoticon}}" wx:for-item="emoticon"> 
                 <view class="member" >
                     <image class="image-5" src="{{emoticon.static_url}}" background-size="cover" 
-                        catchtap="eventBase" data-action="onMenu" 
+                        catchtap="eventBase" data-action="onMenu"  mode="center"
                         data-id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}" data-category_id="{{emoticon.category_id}}" ></image>
                 </view>
             </block>
         </view>
         </view>
+        
     </scroll-view>
 
 <!--<view class="container"   >-->
@@ -40,7 +41,7 @@
    
     <!--点击表情，弹出菜单-->
     <view class="menuv-v2 {{menuType}}" wx:if="{{displayMenu}}">
-         <view><image src="{{selectEmoticon.img_url}}"></image></view>
+         <view><image src="{{selectEmoticon.img_url}}" mode="aspectFit" bindload="bindload"></image></view>
          <view><button class="" type="primary"  catchtap="eventBase" data-action="menuShare"
             size="mini" >分享</button></view>
         <view class="content" ><label><button catchtap="eventBase" data-action="menuDelete"
@@ -52,6 +53,21 @@
         </view>
     </view>
 
+    <view class="menuv-long " >
+        <scroll-view scroll-y="true" style="height:{{windowHeight - 50}}px;">
+            <image src="http://7xsark.com1.z0.glb.clouddn.com/9_20161120110603.jpg" bindload="bindload"
+            mode='aspectFit' style="width:730rpx;height:{{h}}rpx">Content</image>
+        </scroll-view>
+         <view><button class="" type="primary"  catchtap="eventBase" data-action="menuShare"
+            size="mini" >分享</button></view>
+        <view class="content" ><label><button catchtap="eventBase" data-action="menuDelete"
+            size="mini" >删除</button ></label>
+            <label ><button  catchtap="eventBase" data-action="menuMoveCategory"
+            size="mini" >分组</button ></label>
+            <label ><button catchtap="eventBase" data-action="menuResizeV2"
+            size="mini" >压缩</button ></label>
+        </view>
+    </view>
     <!--图片、视频上传-->
     <view class="upload">
         <image src="../../images/ic_action_add.png" background-size="cover" 
