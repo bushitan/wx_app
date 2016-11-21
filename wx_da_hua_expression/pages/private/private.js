@@ -123,11 +123,13 @@ Page({
      wx.showActionSheet({
       itemList: ['图片(GIF需要原图)', '小视频'],
       success: function(res) {
+        
+        console.log(res)
         if (!res.cancel) {
-          // console.log(res.tapIndex)
+          console.log(res.tapIndex)
           switch(res.tapIndex){
-            case 0 :  GLOBAL_PAGE.uploadImage();break;
-            case 1 :  GLOBAL_PAGE.uploadVideo();break;
+            case "0" :  GLOBAL_PAGE.uploadImage();break;
+            case "1" :  GLOBAL_PAGE.uploadVideo();break;
           }
           
         }
@@ -138,6 +140,8 @@ Page({
 
   //上传图片
   uploadImage:function() {
+    
+    console.log("chooseImage")
     //上传图片
     wx.chooseImage({
       count: 1, 
@@ -176,6 +180,9 @@ Page({
             console.log(res)
           },
         })
+      },
+      fail:function(res){
+        console.log(res)
       }
     })
   },
@@ -231,14 +238,11 @@ Page({
             if (res.confirm) {
                 wx.request({
                     url: Api.imgDelete() , 
-                    method:"POST",
-                    data: Api.json2Form({
+                    method:"GET",
+                    data: {
                       session: wx.getStorageSync(Key.session),
                       img_id: GLOBAL_PAGE.data.selectEmoticon.id,
                       category_id:GLOBAL_PAGE.data.selectEmoticon.category_id,
-                    }),
-                    header: {  
-                      "Content-Type": "application/x-www-form-urlencoded"  
                     },
                     success: function(res) {
                         var object = res.data
@@ -294,15 +298,12 @@ Page({
           //移动表情
           wx.request({
               url: Api.imgMove() , 
-              method:"POST",
-              data: Api.json2Form({
+              method:"GET",
+              data: {
                 session: wx.getStorageSync(Key.session),
                 img_id: GLOBAL_PAGE.data.selectEmoticon.id,
                 old_category_id:GLOBAL_PAGE.data.selectEmoticon.category_id,
                 new_category_id: GLOBAL_PAGE.data.category[res.tapIndex].category_id,
-              }),
-              header: {  
-                "Content-Type": "application/x-www-form-urlencoded"  
               },
               success: function(res) {
                 var object = res.data
@@ -492,6 +493,8 @@ Page({
 
   login:function(){
      //2 user loginlogin
+     
+    console.log( wx.getStorageSync('session') )
     wx.login
     ({
         success: function (res) 
@@ -503,12 +506,11 @@ Page({
           wx.request
           ({  
             url: url, 
-            method:"POST",
-            data:Api.json2Form({
+            method:"GET",
+            data:{
               js_code:res.code,
               session:_session,
-            }),
-            header:{ "Content-Type": "application/x-www-form-urlencoded" },
+            },
             success: function(res)
             {
               if (res.data.status == "true") //登陆成功
@@ -526,6 +528,8 @@ Page({
                 })              
             },
             fail:function(res) { 
+              
+              console.log(res)
              wx.showToast({
                   title: '网络连接失败',
                   icon: 'loading',
@@ -553,13 +557,10 @@ Page({
     //获取表情列表
      wx.request({
         url: url, //仅为示例，并非真实的接口地址
-        method:"POST",
-        data: Api.json2Form({
+        method:"GET",
+        data: {
           session: session,
           category_id: 'null',
-        }),
-        header: {  
-          "Content-Type": "application/x-www-form-urlencoded"  
         },
         success: function(res) {
           var object = res.data
@@ -575,12 +576,9 @@ Page({
       url = Api.categoryQuery() 
       wx.request({
         url: url, //仅为示例，并非真实的接口地址
-        method:"POST",
-        data: Api.json2Form({
+        method:"GET",
+        data: {
           session: session,
-        }),
-        header: {  
-          "Content-Type": "application/x-www-form-urlencoded"  
         },
         success: function(res) {
           var object = res.data
@@ -632,12 +630,19 @@ Page({
   bindload:function(e){
     console.log(e)
 
-    var new_h = parseInt( e.detail.height*730/e.detail.width)
+    var new_h = parseInt( e.detail.height*680/e.detail.width)
      
     GLOBAL_PAGE.setData({
       
       w:e.detail.width,
       h:new_h
+      })
+  },
+  heng:function(e){
+    var new_w = parseInt( e.detail.width/e.detail.height * 450)
+     
+    GLOBAL_PAGE.setData({
+      w:new_w
       })
   },
 })

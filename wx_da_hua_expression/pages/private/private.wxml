@@ -40,7 +40,8 @@
 
    
     <!--点击表情，弹出菜单-->
-    <view class="menuv-v2 {{menuType}}" wx:if="{{displayMenu}}">
+    <!--small-->
+     <!--<view class="menuv-v2 m-up" wx:if="{{displayMenu}}">
          <view><image src="{{selectEmoticon.img_url}}" mode="aspectFit" bindload="bindload"></image></view>
          <view><button class="" type="primary"  catchtap="eventBase" data-action="menuShare"
             size="mini" >分享</button></view>
@@ -51,12 +52,13 @@
             <label ><button catchtap="eventBase" data-action="menuResizeV2"
             size="mini" >压缩</button ></label>
         </view>
-    </view>
+    </view>-->
 
-    <view class="menuv-long " >
-        <scroll-view scroll-y="true" style="height:{{windowHeight - 50}}px;">
-            <image src="http://7xsark.com1.z0.glb.clouddn.com/9_20161120110603.jpg" bindload="bindload"
-            mode='aspectFit' style="width:730rpx;height:{{h}}rpx">Content</image>
+    <!--横框-->
+    <!--<view class="menuv-heng m-up" wx:if="{{displayMenu}}">
+        <scroll-view scroll-y="true" scroll-x="true" style="height:450rpx;">
+            <image src="http://7xsark.com1.z0.glb.clouddn.com/9_20161121091746.jpg" bindload="heng"
+            mode='aspectFit' style="width:{{w}}rpx;height:450rpx">Content</image>
         </scroll-view>
          <view><button class="" type="primary"  catchtap="eventBase" data-action="menuShare"
             size="mini" >分享</button></view>
@@ -67,7 +69,35 @@
             <label ><button catchtap="eventBase" data-action="menuResizeV2"
             size="mini" >压缩</button ></label>
         </view>
+    </view>-->
+
+    <!--竖框-->
+    <view class="menuv-long " >
+        <scroll-view scroll-y="true" scroll-x="true" style="height:{{windowHeight -48}}px;">
+        <!--<scroll-view scroll-y="true" scroll-x="true" style="height:700rpx;">-->
+            <image src="http://7xsark.com1.z0.glb.clouddn.com/0_20161106135650.jpeg " bindload="bindload"
+            mode='aspectFit' style="width:680rpx;height:{{h}}rpx;margin-left: 35rpx;">Content</image>
+            <!--<image src="http://7xsark.com1.z0.glb.clouddn.com/9_20161121091746.jpg" bindload="bindload"
+            mode='aspectFit' style="width:1830rpx;height:700rpx">Content</image>-->
+        </scroll-view>
+        <view>
+             <label><button catchtap="eventBase" data-action="menuDelete"
+            size="mini" >删除</button ></label>
+            <label ><button  catchtap="eventBase" data-action="menuMoveCategory"
+            size="mini" >分组</button ></label>
+            <label ><button catchtap="eventBase" data-action="menuResizeV2"
+            size="mini" >压缩</button ></label>
+             <label> <button class="" type="primary"  catchtap="eventBase" data-action="menuShare"
+            size="mini" >分享</button></label>
+        </view>
+           
+        <view class="content" >
+        </view>
     </view>
+    <!--http://7xsark.com1.z0.glb.clouddn.com/9_20161120110603.jpg 长图
+  http://7xsark.com1.z0.glb.clouddn.com/9_20161121091746.jpg 长图横向
+http://7xsark.com1.z0.glb.clouddn.com/9_20161121091145.jpg    横图
+http://7xsark.com1.z0.glb.clouddn.com/0_20161106135650.jpeg 竖图-->
     <!--图片、视频上传-->
     <view class="upload">
         <image src="../../images/ic_action_add.png" background-size="cover" 

@@ -12,7 +12,7 @@ var GLOBAL_PAGE
 Page({
   data: {
     displayLoading: true,
-    keyword:"null", //搜索关键字
+    keyword:"默认目录", //搜索关键字
     // emoticon: [],
     hotLabel:["金馆长","我想静静","意外","疼！"],  
     hidden: false,
@@ -91,15 +91,11 @@ Page({
     //获取表情列表
      wx.request({
         url: url, //仅为示例，并非真实的接口地址
-        method:"POST",
-        data: Api.json2Form({
+        method:"GET",
+        data: {
           session: session,
           category_id: '1',
           category_name: _keyword,
-
-        }),
-        header: {  
-          "Content-Type": "application/x-www-form-urlencoded"  
         },
         success: function(res) {
           var object = res.data
@@ -171,7 +167,7 @@ Page({
     GLOBAL_PAGE.searchBtn()
 
     //初始化关键字
-    GLOBAL_PAGE.setData({hotLabel:["null","默认目录","管理的哈哈"]})
+    GLOBAL_PAGE.setData({hotLabel:["默认目录","管理的哈哈"]})
     
 
     var that = this;
