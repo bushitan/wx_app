@@ -18,7 +18,7 @@ Page({
 
     //控制菜单上架
     menuType:"m-down",  //m-up  m-down
-
+    menuStyle:"2",
     // 手机设备信息，均已rpx为标准
     windowWidth:0,
     windowHeight:0,
@@ -28,9 +28,9 @@ Page({
     category:[],
 
     //touch选择对象
-    selectEmoticon:{id:"",name:"",img_url:""}, //预备编辑的图片
+    selectEmoticon:{id:"",name:"",img_url:"",size:""}, //预备编辑的图片
     selectCategory:{id:"",name:""},
-
+    
     w:0,
     h:0,
   },
@@ -199,13 +199,17 @@ Page({
         id: e.currentTarget.dataset.id, 
         img_url:e.currentTarget.dataset.img_url,
         category_id:e.currentTarget.dataset.category_id,
+        size:e.currentTarget.dataset.size,
         }
     })
 
-    if (e.currentTarget.offsetTop < 200)
-       GLOBAL_PAGE.setData({menuType:"m-down"})
-    else
-       GLOBAL_PAGE.setData({menuType:"m-up"})
+    // 根据size，显示图片样式
+
+
+    // if (e.currentTarget.offsetTop < 200)
+    //    GLOBAL_PAGE.setData({menuType:"m-down"})
+    // else
+    //    GLOBAL_PAGE.setData({menuType:"m-up"})
 
   },
   /** 5 菜单-分享 */
@@ -411,10 +415,10 @@ Page({
     GLOBAL_PAGE = this
     //1 page初始化高宽
     console.log("width:" , APP.globalData.windowWidth)
-    console.log("height:" , APP.globalData.windowHeight - 48)
+    console.log("height:" , APP.globalData.windowHeight)
     GLOBAL_PAGE.setData({
       windowWidth:APP.globalData.windowWidth,
-      windowHeight:APP.globalData.windowHeight - 48,
+      windowHeight:APP.globalData.windowHeight,
       // windowHeight:app.globalData.windowHeight - 48,
     })
     //测试session
