@@ -1,30 +1,12 @@
 <!--latest.wxml-->
+<import src="../../template/emoticon.wxml"/><!--menu模板-->
 <import src="../../template/menu.wxml"/><!--menu模板-->
 <!--<view class="mask" catchtap="eventBase" data-action="mask"  wx:if="{{displayMask}}"   ></view>-->
 <view class="container"  catchtap="eventBase" data-action="all" >
     
     <!--表情图-->
-    <scroll-view class="emoticon-wall" scroll-y="true" style="height:{{windowHeight}}px;"
-    bindscrolltolower="eventBase" data-action="scrollTolower">
-        <view class="space-72"></view>
-        <view class="emoticon">
-        <view class="content">
-            <block wx:for="{{emoticon}}" wx:for-item="emoticon"> 
-                <view class="member" >
-                    <image class="image-5" src="{{emoticon.static_url}}" background-size="cover" 
-                        catchtap="eventBase" data-action="onMenu"  mode="center"
-                        data-id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}" data-category_id="{{emoticon.category_id}}" 
-                        data-size="{{emoticon.size}}" data-static_url="{{emoticon.static_url}}"  
-                        data-menu_type="{{emoticon.menu_type}}"  
-                        ></image>
-                </view>
-            </block>
-        </view>
-        </view>
-        
-    </scroll-view>
-
-<!--<view class="container"   >-->
+    <template is="emoticon" data="{{emoticon}}"></template>
+ 
     <!--表情目录-->
     <view class="category">
             <view catchtap="eventBase"  data-action="selectAllCategory" >
@@ -43,79 +25,14 @@
 
    
     <!--点击表情，弹出菜单-->
-    
-    <template is="menu" data="{{menuStyle,MENU_TYPE,w,h,selectEmoticon}}"></template>
+    <template is="menu" data="{{menuType,MENU_TYPE,menuWidth,menuHeight,selectEmoticon}}"></template>
 
-
-     <!--<view class="menuv-v2 m-up" hidden="{{menuStyle == MENU_TYPE.SQUARE ? false:true}}">
-         <view><image src="{{selectEmoticon.img_url}}" mode="aspectFit" bindload="bindload"></image></view>
-         <view><button class="" type="primary"  catchtap="eventBase" data-action="menuShare"
-            size="mini" >分享</button></view>
-        <view class="content" ><label><button catchtap="eventBase" data-action="menuDelete"
-            size="mini" >删除</button ></label>
-            <label ><button  catchtap="eventBase" data-action="menuMoveCategory"
-            size="mini" >分组</button ></label>
-            <label ><button catchtap="eventBase" data-action="menuResizeV2"
-            size="mini" >压缩</button ></label>
-        </view>
-    </view>
-
-   
-
-   
-    <view class="menuv-long " hidden="{{menuStyle == MENU_TYPE.VERTICAL ? false:true}}">
-        <scroll-view scroll-y="true"  style="height:{{windowHeight}}px;">   
-            <image src="{{selectEmoticon.img_url}}" bindload="bindload"
-            mode='aspectFit' style="width:680rpx;height:{{h}}rpx;margin-left: 35rpx;">Content</image>
-        </scroll-view>
-        <view>
-             <label><button catchtap="eventBase" data-action="menuDelete"
-            size="mini" >删除</button ></label>
-            <label ><button  catchtap="eventBase" data-action="menuMoveCategory"
-            size="mini" >分组</button ></label>
-            <label ><button catchtap="eventBase" data-action="menuResizeV2"
-            size="mini" >压缩</button ></label>
-             <label> <button class="" type="primary"  catchtap="eventBase" data-action="menuShare"
-            size="mini" >分享</button></label>
-        </view>
-    </view>
-    
- 
-    <view class="menuv-heng " hidden="{{menuStyle == MENU_TYPE.HORIZONTAL ? false:true}}">
-        <scroll-view  scroll-x="true" style="height:450rpx;">
-            <image src="{{selectEmoticon.img_url}}" bindload="heng"
-            mode='aspectFit' style="width:{{w}}rpx;height:450rpx">Content</image>
-        </scroll-view>
-         <view><button class="" type="primary"  catchtap="eventBase" data-action="menuShare"
-            size="mini" >分享</button></view>
-        <view class="content" ><label><button catchtap="eventBase" data-action="menuDelete"
-            size="mini" >删除</button ></label>
-            <label ><button  catchtap="eventBase" data-action="menuMoveCategory"
-            size="mini" >分组</button ></label>
-            <label ><button catchtap="eventBase" data-action="menuResizeV2"
-            size="mini" >压缩</button ></label>
-        </view>
-    </view>-->
-       
-    <!--http://7xsark.com1.z0.glb.clouddn.com/9_20161120110603.jpg 长图
-  http://7xsark.com1.z0.glb.clouddn.com/9_20161121091746.jpg 长图横向
-http://7xsark.com1.z0.glb.clouddn.com/9_20161121091145.jpg    横图
-http://7xsark.com1.z0.glb.clouddn.com/0_20161106135650.jpeg 竖图-->
     <!--图片、视频上传-->
     <view class="upload">
         <image src="../../images/ic_action_add.png" background-size="cover" 
              catchtap="eventBase"  data-action="btnUploadV2"></image>
     </view>
  
-    <!--<view class="menu"  style="left:{{menu_left}};top:{{menu_top}};" wx:if="{{displayMenu}}"  >
-            <view class="top"   catchtap="eventBase" data-action="menuShare">分享</view>
-            <view class="left"  catchtap="eventBase" data-action="navigateToEditor" >水印</view>
-            <view class="right"   catchtap="eventBase" data-action="menuJoinAdd">拼接</view>
-            <view class="bottom" catchtap="eventBase" data-action="menuDelete">删除</view>
-            <view class="bottom-right"   catchtap="eventBase" data-action="menuMoveCategory">分类</view>
-            <view class="bottom-left"   catchtap="eventBase" data-action="menuResize">裁剪</view>
-    </view>-->
-
   
   <loading hidden="{{hidden}}">
     加载中...

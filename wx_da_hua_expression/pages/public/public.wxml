@@ -1,27 +1,10 @@
 <!--public.wxml-->
+<import src="../../template/emoticon.wxml"/><!--menu模板-->
+<import src="../../template/menu.wxml"/><!--menu模板-->
 <view class="container" catchtap="eventBase" data-action="all">
-
     <!--表情图-->
-<scroll-view class="emoticon-wall" scroll-y="true" style="height:{{windowHeight}}px;"
- bindscrolltolower="eventBase" data-action="refesh">
-   <view class="space-72"></view>
-  <view class="emoticon">
-      <view class="content">
-        <!--<block wx:for="{{emoticon}}">
-            <view class="member" >
-                <image class="image-5" src="{{emoticon.static_url}}" background-size="cover" 
-                catchtap="eventBase" data-action="onMenu" data-id="{{emoticon.img_id}}" data-imgurl="{{emoticon.thumbnail_url}}"></image>
-            </view>
-        </block>-->
-         <block wx:for="{{emoticon}}" wx:for-item="emoticon"> 
-            <view class="member" >
-                <image class="image-5" src="{{emoticon.static_url}}" background-size="cover" 
-                    catchtap="eventBase" data-action="onMenu" data-id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}"></image>
-            </view>
-        </block>
-      </view>
-  </view>
-</scroll-view>
+    <template is="emoticon" data="{{emoticon}}"></template>
+   
 
 <!--<view class="container" >-->
     <!--搜索栏-->
@@ -44,19 +27,8 @@
             </block>
         </view>
     </view>
-
-    <!--点击表情悬浮功能菜单-->
-    <view class="menuv-v2 {{classMenu}}" wx:if="{{displayMenu}}">
-        <view><image src="{{selectEmoticon.img_url}}"></image></view>
-        <view>
-            <button type="primary" catchtap="eventBase" data-action="btnShare"
-            size="mini" >分享</button>
-            <button  catchtap="eventBase" data-action="btnCollect"
-            size="mini" >收藏</button>
-        </view>
-        <view class="content" ><view> 
-    </view>
-
+<!--点击表情，弹出菜单-->
+    <template is="menu" data="{{menuType,MENU_TYPE,menuWidth,menuHeight,selectEmoticon}}"></template>
   <loading wx:if="{{displayLoading}}" >
     加载中...
   </loading>

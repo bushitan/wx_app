@@ -1,23 +1,6 @@
 //render.js   
 //private 和 public 渲染页面
-//  G240:2,
-//     G180:3, 
-//     G124:4,  
-//     G96:5,
-var MENU_TYPE = {
-    SQUARE:1, //小方块
-    VERTICAL:2,  // 竖直 vertical
-    HORIZONTAL:3, //横向
-} 
 
-// function (){}
-//  size 对应 缩略 
-//  var size = {
-//      1:'原图',
-//      2:180,
-//      3：124,
-//      4:96,
-//  } 
 
 /** emoticonList 的元素内容
  * emoticonList[{ 
@@ -42,15 +25,15 @@ function emoticon(page,emoticon){
             switch(_size){
                 case 170:
                  _list[i]["thumbnail_url"]  = _list[i]["yun_url"] + "?imageMogr2/thumbnail/"+_size+"x"+_size
-                 _list[i]["menu_type"] =  MENU_TYPE.SQUARE
+                 _list[i]["menu_type"] =  menu.TYPE.SQUARE
                  break;
                 case 2:   //竖图
                 _list[i]["thumbnail_url"]  = _list[i]["yun_url"] ;
-                _list[i]["menu_type"] =  MENU_TYPE.VERTICAL
+                _list[i]["menu_type"] =  menu.TYPE.VERTICAL
                 break;
                 case 3:   //横图
                 _list[i]["thumbnail_url"]  = _list[i]["yun_url"] ;
-                _list[i]["menu_type"] =  MENU_TYPE.HORIZONTAL
+                _list[i]["menu_type"] =  menu.TYPE.HORIZONTAL
                 break;
                 // case 3:break;
                 // case 4:break;
@@ -72,10 +55,37 @@ function category(page, categoryList){
     page.setData({category:categoryList})
 }
 
+var menu = {
+    TYPE:{
+        SQUARE:1, //小方块
+        VERTICAL:2,  // 竖直 vertical
+        HORIZONTAL:3, //横向
+    },
+    //竖直菜单
+    vertical:function  (page,e){
+        var new_h = parseInt( e.detail.height*680/e.detail.width)
+        var min_h = 800
+        new_h = new_h < min_h ? min_h:new_h
+        page.setData({
+            menuHeight:new_h
+        })
+    },
+    // 横向菜单
+    horizontal:function (page,e){
+        var new_w = parseInt( e.detail.width/e.detail.height * 450)
+        var min_w = 750
+        new_w = new_w < min_w ? min_w:new_w
+    
+        page.setData({
+        menuWidth:new_w
+        })
+    },
 
+}
+// 竖菜单
 
 module.exports = {
-    MENU_TYPE:MENU_TYPE,
     emoticon:emoticon,
     category:category,
+    menu:menu,
 }

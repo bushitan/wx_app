@@ -1,7 +1,7 @@
 <!--wxml-->
 <template name="menu">
  <!--square-->
-    <view class="menuv-v2 m-up" hidden="{{menuStyle == MENU_TYPE.SQUARE ? false:true}}">
+    <view class="menuv-v2 m-up" hidden="{{menuType == MENU_TYPE.SQUARE ? false:true}}">
          <view><image src="{{selectEmoticon.img_url}}" mode="aspectFit" bindload="bindload"></image></view>
          <view><button class="" type="primary"  catchtap="eventBase" data-action="menuShare"
             size="mini" >分享</button></view>
@@ -13,14 +13,11 @@
             size="mini" >压缩</button ></label>
         </view>
     </view>
-
-   
-
     <!--竖框-->
-    <view class="menuv-long " hidden="{{menuStyle == MENU_TYPE.VERTICAL ? false:true}}">
+    <view class="menuv-long " hidden="{{menuType == MENU_TYPE.VERTICAL ? false:true}}">
         <scroll-view scroll-y="true"  style="height:{{windowHeight}}px;">   
-            <image src="{{selectEmoticon.img_url}}" bindload="bindload"
-            mode='aspectFit' style="width:680rpx;height:{{h}}rpx;margin-left: 35rpx;">Content</image>
+            <image src="{{selectEmoticon.img_url}}" bindload="bindloadVertical"
+            mode='aspectFit' style="width:680rpx;height:{{menuHeight}}rpx;margin-left: 35rpx;">Content</image>
         </scroll-view>
         <view>
              <label><button catchtap="eventBase" data-action="menuDelete"
@@ -33,12 +30,11 @@
             size="mini" >分享</button></label>
         </view>
     </view>
-    
      <!--横框-->
-    <view class="menuv-heng " hidden="{{menuStyle == MENU_TYPE.HORIZONTAL ? false:true}}">
+    <view class="menuv-heng " hidden="{{menuType == MENU_TYPE.HORIZONTAL ? false:true}}">
         <scroll-view  scroll-x="true" style="height:450rpx;">
-            <image src="{{selectEmoticon.img_url}}" bindload="heng"
-            mode='aspectFit' style="width:{{w}}rpx;height:450rpx">Content</image>
+            <image src="{{selectEmoticon.img_url}}" bindload="bindloadHorizontal"
+            mode='aspectFit' style="width:{{menuWidth}}rpx;height:450rpx">Content</image>
         </scroll-view>
          <view><button class="" type="primary"  catchtap="eventBase" data-action="menuShare"
             size="mini" >分享</button></view>

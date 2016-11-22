@@ -278,6 +278,27 @@ var _Option = {
     },
 }
 
+ //图片加载完毕
+//   function (e){
+//     console.log(e)
+
+//     var new_h = parseInt( e.detail.height*680/e.detail.width)
+//     var min_h = 800
+//     new_h = new_h < min_h ? min_h:new_h
+//     GLOBAL_PAGE.setData({
+//       // menuWidth:e.detail.width,
+//       menuHeight:new_h
+//       })
+//   },
+//   heng:function(e){
+//     var new_w = parseInt( e.detail.width/e.detail.height * 450)
+//     var min_w = 750
+//     new_w = new_w < min_w ? min_w:new_w
+  
+//     GLOBAL_PAGE.setData({
+//       menuWidth:new_w
+//       })
+//   },
 
 module.exports = {
   Option: _Option
