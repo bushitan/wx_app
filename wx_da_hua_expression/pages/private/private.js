@@ -8,6 +8,7 @@ var Key = require('../../utils/storage_key.js');
 var APP = getApp()
 var GLOBAL_PAGE
 var appInstance
+var i = 0
 Page({
   data: {
     //loading框
@@ -18,7 +19,9 @@ Page({
 
     //控制菜单上架
     menuType:"m-down",  //m-up  m-down
-    menuStyle:"2",
+    MENU_TYPE:Render.MENU_TYPE,
+    menuStyle:"4",
+    
     // 手机设备信息，均已rpx为标准
     windowWidth:0,
     windowHeight:0,
@@ -59,7 +62,7 @@ Page({
       "menuMoveCategory":function(){ View.Switch.OffAll() },
       //基本view:遮罩、All
       "mask":function(){View.Switch.OffAll()}, //公共透明遮罩
-      "all":function(){View.Switch.Off("displayMenu")}, //公共透明遮罩
+      "all":function(){ GLOBAL_PAGE.setData({menuStyle:0}) }, //公共透明遮罩
     }
     if (_display.hasOwnProperty(action))
       _display[action]()
@@ -200,11 +203,15 @@ Page({
         img_url:e.currentTarget.dataset.img_url,
         category_id:e.currentTarget.dataset.category_id,
         size:e.currentTarget.dataset.size,
+        static_url:e.currentTarget.dataset.static_url,
         }
     })
 
-    // 根据size，显示图片样式
-
+    
+    // 显示缩略图
+    GLOBAL_PAGE.setData({
+        menuStyle: e.currentTarget.dataset.menu_type
+      })
 
     // if (e.currentTarget.offsetTop < 200)
     //    GLOBAL_PAGE.setData({menuType:"m-down"})
@@ -630,21 +637,67 @@ Page({
   },
 
 
+  //square做loading 界面
+  //加载后
+  // bindLoadPre:function(e){
+  //   // console.log(e+"rh4893r9342u83")
+
+  //    console.log(e)
+     
+  //   // var size = e.currentTarget.dataset.size
+  //   var list = ["1","2","3"]
+  //   var size = list[i%3]
+    
+  //   i++
+
+  //   if (size == 1){
+  //     GLOBAL_PAGE.setData({
+  //       menuStyle:"1",
+  //     })
+  //   }
+
+  //   if (size == 2)
+  //   {
+  //     var new_h = parseInt( e.detail.height*680/e.detail.width)
+  //     var min_h = 800
+  //     new_h = new_h < min_h ? min_h:new_h
+  //     GLOBAL_PAGE.setData({
+  //       menuStyle:"2",
+  //       h:new_h
+  //     })
+  //   }
+    
+
+  //   if (size == 3){
+  //       var new_w = parseInt( e.detail.width/e.detail.height * 450)
+  //       var min_w = 750
+  //       new_w = new_w < min_w ? min_w:new_w
+      
+  //       GLOBAL_PAGE.setData({
+  //         menuStyle:"3",
+  //         w:new_w
+  //         })
+  //   }
+    
+  // },
+
   //图片加载完毕
   bindload:function(e){
     console.log(e)
 
     var new_h = parseInt( e.detail.height*680/e.detail.width)
-     
+    var min_h = 800
+    new_h = new_h < min_h ? min_h:new_h
     GLOBAL_PAGE.setData({
-      
       w:e.detail.width,
       h:new_h
       })
   },
   heng:function(e){
     var new_w = parseInt( e.detail.width/e.detail.height * 450)
-     
+    var min_w = 750
+    new_w = new_w < min_w ? min_w:new_w
+  
     GLOBAL_PAGE.setData({
       w:new_w
       })
