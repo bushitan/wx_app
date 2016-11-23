@@ -12,7 +12,7 @@ var _Option = {
     Share:function(img_url){
         var _img_url = img_url
         wx.showToast({
-            title: '分享成功',
+            title: '微信暂不支持分享T_T！',
             icon: 'success',
             duration: 700
         })

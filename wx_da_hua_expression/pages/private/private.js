@@ -11,6 +11,7 @@ var appInstance
 var i = 0
 Page({
   data: {
+    pageName: "private",
     //loading框
     hidden: false,
 
@@ -122,17 +123,14 @@ Page({
    //新开发 目录最后点击“+”开关
   btnUploadV2:function() {
      wx.showActionSheet({
-      itemList: ['图片(GIF需要原图)', '小视频'],
+      // itemList: ['图片(GIF需要原图)', '小视频'],
+      itemList: ['图片(GIF需要原图)'],
       success: function(res) {
-        
-        console.log(res)
         if (!res.cancel) {
-          console.log(res.tapIndex)
-          switch(res.tapIndex){
-            case "0" :  GLOBAL_PAGE.uploadImage();break;
-            case "1" :  GLOBAL_PAGE.uploadVideo();break;
-          }
-          
+          if(res.tapIndex == 0 || res.tapIndex =='0')
+            GLOBAL_PAGE.uploadImage()
+          if(res.tapIndex == 1 || res.tapIndex =='1')
+            GLOBAL_PAGE.uploadVideo()         
         }
       }
     })
@@ -148,6 +146,7 @@ Page({
       count: 1, 
       success: function(res) {
         var tempFilePaths = res.tempFilePaths
+        console.log("uploadImg")
         console.log(tempFilePaths[0])
         wx.uploadFile({
           url: Api.uploadImg(), 
@@ -228,6 +227,11 @@ Page({
       itemList: ['大图(170x170)', '中图(128x128)', '小图(96x96)', '炒鸡小(48x48)'],
       success: function(res) {
         if (!res.cancel) {
+          wx.showToast({
+              title: '压缩成功，分享试试',
+              icon: 'success',
+              duration: 700
+          })
           // console.log(res.tapIndex)
           //Todo 上传
           var _new_img = GLOBAL_PAGE.data.selectEmoticon
@@ -427,9 +431,9 @@ Page({
       // windowHeight:app.globalData.windowHeight - 48,
     })
     //测试session
-    wx.setStorageSync('session',"ds9") 
-    //测试登陆
-    // GLOBAL_PAGE.loginTest()
+    // wx.setStorageSync('session',"ds9") 
+    // wx.setStorageSync('session',"") 
+    // console.log("session:", wx.getStorageSync('session') )
 
     //正式登陆
     GLOBAL_PAGE.login()
@@ -442,68 +446,10 @@ Page({
     }, 300)
   },
 
-  //登陆测试
-  loginTest:function(){
-    //临时表情
-    var e =  [
-      {img_id: 4, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135650.jpeg"},
-      {img_id: 5, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135820.gif"},
-      {img_id: 6, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135856.gif"},
-      {img_id: 7, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106143937.jpeg"},
-      {img_id: 2, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135136.jpeg"},
-      {img_id: 3, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135420.jpeg"},
-    {img_id: 4, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135650.jpeg"},
-      {img_id: 5, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135820.gif"},
-      {img_id: 6, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135856.gif"},
-      {img_id: 7, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106143937.jpeg"},
-      {img_id: 2, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135136.jpeg"},
-      {img_id: 3, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135420.jpeg"},
-    {img_id: 4, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135650.jpeg"},
-      {img_id: 5, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135820.gif"},
-      {img_id: 6, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135856.gif"},
-      {img_id: 7, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106143937.jpeg"},
-      {img_id: 2, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135136.jpeg"},
-      {img_id: 3, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135420.jpeg"},
-    {img_id: 4, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135650.jpeg"},
-      {img_id: 5, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135820.gif"},
-      {img_id: 6, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135856.gif"},
-      {img_id: 7, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106143937.jpeg"},
-      {img_id: 2, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135136.jpeg"},
-      {img_id: 3, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135420.jpeg"},
-    {img_id: 4, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135650.jpeg"},
-      {img_id: 5, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135820.gif"},
-      {img_id: 6, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135856.gif"},
-      {img_id: 7, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106143937.jpeg"},
-      {img_id: 2, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135136.jpeg"},
-      {img_id: 3, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135420.jpeg"},
-    {img_id: 4, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135650.jpeg"},
-      {img_id: 5, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135820.gif"},
-      {img_id: 6, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135856.gif"},
-      {img_id: 7, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106143937.jpeg"},
-      {img_id: 2, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135136.jpeg"},
-      {img_id: 3, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135420.jpeg"},
-    {img_id: 4, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135650.jpeg"},
-      {img_id: 5, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135820.gif"},
-      {img_id: 6, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135856.gif"},
-      {img_id: 7, category_name: "默认目录", size: 170, category_id: 1, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106143937.jpeg"},
-      {img_id: 2, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135136.jpeg"},
-      {img_id: 3, category_name: "管理的哈哈", size: 170, category_id: 14, yun_url: "http://7xsark.com1.z0.glb.clouddn.com/0_20161106135420.jpeg"},
-    ]
-    wx.setStorageSync("emoticon",e)
-    GLOBAL_PAGE.renderEmoticon()
-
-    var c = [
-      {is_default: 1, hasImg: true, category_id: 1, name: "默认目录"},
-      {is_default: 0, hasImg: true, category_id: 14, name: "管理的哈哈"},
-    ] 
-    wx.setStorageSync("category",c)
-    GLOBAL_PAGE.renderCategory()   
-  },
-
   login:function(){
      //2 user loginlogin
      
-    console.log( wx.getStorageSync('session') )
+    console.log("session:", wx.getStorageSync('session') )
     wx.login
     ({
         success: function (res) 
@@ -511,7 +457,9 @@ Page({
           var _session = wx.getStorageSync('session') 
           if (! _session  ) //检查session,不存在，为false
             _session = "false"
+         
           var url = Api.userLogin()
+          console.log(res.code)
           wx.request
           ({  
             url: url, 
@@ -522,6 +470,8 @@ Page({
             },
             success: function(res)
             {
+              console.log("success:")
+              console.log(res)
               if (res.data.status == "true") //登陆成功
               {
                 wx.setStorageSync('session', res.data.session)
@@ -538,7 +488,7 @@ Page({
             },
             fail:function(res) { 
               
-              console.log(res)
+              console.log("fail:",res)
              wx.showToast({
                   title: '网络连接失败',
                   icon: 'loading',

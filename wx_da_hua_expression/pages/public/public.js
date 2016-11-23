@@ -11,8 +11,10 @@ var APP = getApp()
 var GLOBAL_PAGE
 Page({
   data: {
+    pageName: "public",
+
     displayLoading: true,
-    keyword:"默认目录", //搜索关键字
+    keyword:"老司机", //搜索关键字
     // emoticon: [],
     hotLabel:["金馆长","我想静静","意外","疼！"],  
     hidden: false,
@@ -150,16 +152,30 @@ Page({
    * 跳转到Page：private时，onShow方法一齐显示
    */
   menuCollect:function(){
-    // var _list = wx.getStorageSync('pre_collect')
-    // var _new_list = Menu.Option.Collect( GLOBAL_PAGE.data.editorUrl,_list )
-    
-    /**Todo request增加用户-图片 记录
-     * 添加成功，更新本地storage(emoticon)
-     * wx.setStorageSync(
-          K,
-          _new_list
-      )
-     */
+      wx.request({
+          url: Api.imgAdd() , 
+          method:"GET",
+          data: {
+            session: wx.getStorageSync(KEY.session),
+            img_id: GLOBAL_PAGE.data.selectEmoticon.id,
+          },
+          success: function(res) {
+              var object = res.data
+              if (object.status == "true")
+              {
+                  //收藏成功
+                  var e = wx.getStorageSync(KEY.emoticon)
+                  e.push(object.img)
+                  wx.setStorageSync(KEY.emoticon,e)
+
+                  wx.showToast({
+                      title: '收藏成功',
+                      icon: 'success',
+                      duration: 700
+                  })
+              }
+          }
+      })
 
   },
 
@@ -178,7 +194,8 @@ Page({
     GLOBAL_PAGE.searchBtn()
 
     //初始化关键字
-    GLOBAL_PAGE.setData({hotLabel:["默认目录","管理的哈哈"]})
+    // GLOBAL_PAGE.setData({hotLabel:["默认目录","管理的哈哈","特技","疼"]})
+    GLOBAL_PAGE.setData({hotLabel:["老司机","管理的哈哈","特技","疼","意外"]})
     
 
     var that = this;

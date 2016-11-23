@@ -23,6 +23,10 @@ function emoticon(page,emoticon){
             var _size =  _list[i]["size"]
             var thumbnail_url = ''
             switch(_size){
+                case 1:
+                 _list[i]["thumbnail_url"]  = _list[i]["yun_url"] + "?imageMogr2/thumbnail/170x170"
+                 _list[i]["menu_type"] =  menu.TYPE.SQUARE
+                 break;
                 case 170:
                  _list[i]["thumbnail_url"]  = _list[i]["yun_url"] + "?imageMogr2/thumbnail/"+_size+"x"+_size
                  _list[i]["menu_type"] =  menu.TYPE.SQUARE
@@ -82,10 +86,17 @@ var menu = {
     },
 
 }
-// 竖菜单
+
+var page = {
+    NAME:{
+        PRIVATE:"private",
+        PUBLICK:"public",
+    },
+}
 
 module.exports = {
     emoticon:emoticon,
     category:category,
     menu:menu,
+    // page:page,
 }

@@ -3,7 +3,7 @@
 <import src="../../template/menu.wxml"/><!--menu模板-->
 <view class="container" catchtap="eventBase" data-action="all">
     <!--表情图-->
-    <template is="emoticon" data="{{emoticon}}"></template>
+    <template is="emoticon" data="{{emoticon,windowHeight}}"></template>
    
 
 <!--<view class="container" >-->
@@ -28,7 +28,7 @@
         </view>
     </view>
 <!--点击表情，弹出菜单-->
-    <template is="menu" data="{{menuType,MENU_TYPE,menuWidth,menuHeight,selectEmoticon}}"></template>
+    <template is="menu" data="{{menuType,MENU_TYPE,menuWidth,menuHeight,selectEmoticon,pageName}}"></template>
   <loading wx:if="{{displayLoading}}" >
     加载中...
   </loading>

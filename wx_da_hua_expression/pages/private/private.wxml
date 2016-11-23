@@ -5,7 +5,7 @@
 <view class="container"  catchtap="eventBase" data-action="all" >
     
     <!--表情图-->
-    <template is="emoticon" data="{{emoticon}}"></template>
+    <template is="emoticon" data="{{emoticon,windowHeight}}"></template>
  
     <!--表情目录-->
     <view class="category">
@@ -25,7 +25,7 @@
 
    
     <!--点击表情，弹出菜单-->
-    <template is="menu" data="{{menuType,MENU_TYPE,menuWidth,menuHeight,selectEmoticon}}"></template>
+    <template is="menu" data="{{menuType,MENU_TYPE,menuWidth,menuHeight,selectEmoticon,pageName}}"></template>
 
     <!--图片、视频上传-->
     <view class="upload">
