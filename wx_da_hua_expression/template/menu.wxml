@@ -22,6 +22,13 @@
         </scroll-view>
         <template is="menu_btn" data="{{pageName}}"></template>
     </view>
+    <view class="menuv-heng " hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}">
+        <view catchtap="eventBase">
+        <!--<video src="http://mvvideo1.meitudata.com/575c2b652d7375255.mp4"></video>-->
+            <video src="{{selectEmoticon.img_url}}" ></video>
+        </view>
+        <template is="menu_btn" data="{{pageName}}"></template>
+    </view>
 </template>
 
 
@@ -29,7 +36,7 @@
     <view  hidden="{{pageName == 'public' ? false:true}}">
         <button class="" type="primary"  catchtap="eventBase" data-action="menuShare"
             size="mini" >分享</button>
-        <button  catchtap="eventBase" data-action="btnCollect"
+        <button  catchtap="eventBase" data-action="menuCollect"
             size="mini"  hidden="">收藏</button>
     </view>
     <view  hidden="{{pageName == 'private' ? false:true}}">

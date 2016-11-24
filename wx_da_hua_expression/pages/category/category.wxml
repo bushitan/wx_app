@@ -11,8 +11,10 @@
         </block>-->
         
         <block wx:for="{{category}}" wx:for-index="index" wx:for-item="item">
-            <view class="content"   > 
-            <!--<view class="content" hidden="{{item.is_default == 1?true :false }}"> -->
+            <!--<view class="content"   > -->
+            <!--<view class="content" hidden="{{item.is_default == '1'? true:false }}"> -->
+            <view class="content" wx:if="{{item.is_default == 1? false:true }}"> 
+            <!--<view class="content" hidden="true"> -->
                 <label><text>{{index}}:</text></label>   
                 <input placeholder="输入名称" auto-focus bindblur="inputBlur" data-category_id="{{item.category_id}}" 
                   value="{{item.name}}" />

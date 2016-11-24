@@ -50,13 +50,10 @@ Page({
 
         wx.request({
             url: Api.categoryAdd(),
-            method:"POST",
-            data: Api.json2Form({
+            method:"GET",
+            data: {
                 session: wx.getStorageSync(KEY.session) ,
                 category_name:GLOBAL_PAGE.data.addCategoryInput,
-            }),
-            header: {  
-                "Content-Type": "application/x-www-form-urlencoded"  
             },
             success: function(res) {
                 var object = res.data
@@ -113,72 +110,42 @@ Page({
   },
 
   deleteCategory:function(e){
-      if (e.currentTarget.dataset.has_img == "true" || e.currentTarget.dataset.has_img == true)
-      {
+        if (e.currentTarget.dataset.has_img == "true" || e.currentTarget.dataset.has_img == true)
+        {
         wx.showToast({
             title: '请先移除该分类的表情图',
             icon: 'loading',
             duration: 800
         })
         return
-      }
-          
-
-    var url = Api.categoryDelete() 
-    var formData = new FormData();
-    formData.append("uid",app.globalData.uid); //当前用户uid
-    formData.append("category_id",e.currentTarget.dataset.category_id);
-    fetch(url , {
-        method: 'POST',
-        headers: {},
-        body: formData,
-    }).then((response) => {
-        if (response.ok) {
-            return response.json();
         }
-    }).then((object) => {
-        console.log(object);
-        if(object.status == "true")
+        if (e.currentTarget.dataset.is_default == "1" || e.currentTarget.dataset.is_default == 1)
         {
-            //将新的目录更新至storage
-            wx.setStorageSync(
-                "category",
-                object.category_list
-            )
-            this.setData({
-                category:wx.getStorageSync('category'),  
+            wx.showToast({
+                title: '默认目录不能删除',
+                icon: 'loading',
+                duration: 800
             })
+            return
         }
-        
-        
-    }).catch((error) => {
-        console.error(error);
-    });
-
-
-    // var _index = e.currentTarget.dataset.index
-    // var _hasImg = GLOBAL_PAGE.data.hasImg
-    // var _isTrue = _hasImg[_index]
-    // if (_isTrue == true || _isTrue == "true"){
-    //     wx.showToast({
-    //         title: '请先移除该分类的表情图',
-    //         icon: 'loading',
-    //         duration: 800
-    //     })
-    //     return
-    // }
-    // else
-    // {
-    //     var _temp = GLOBAL_PAGE.data.myCategory
-    //     var _hasImg = GLOBAL_PAGE.data.hasImg
-
-    //     _temp.splice(_index,1)
-    //     _hasImg.splice(_index,1)
-    //     GLOBAL_PAGE.setData({
-    //         myCategory:_temp,
-    //         hasImg:_hasImg,
-    //     })
-    // }
+     
+        wx.request({
+            url: Api.categoryDelete(), //仅为示例，并非真实的接口地址
+            method:"GET",
+            data: {
+                session : wx.getStorageSync(KEY.session),
+                category_id : e.currentTarget.dataset.category_id
+            },
+            success: function(res) {
+                var object = res.data
+                wx.setStorageSync(
+                    KEY.category,
+                    object.category_list
+                )
+                GLOBAL_PAGE.renderCategory()
+            }
+        })
+    
   },
   onReady:function(){
 
@@ -187,15 +154,14 @@ Page({
   onLoad: function (param) {
     GLOBAL_PAGE = this
     console.log(param["category"])
-
+    
+    //数据初始化 目录
+    var url = Api.categoryQuery() 
     wx.request({
-        url: Api.categoryQuery(),
-        method:"POST",
-        data: Api.json2Form({
-            session: wx.getStorageSync(KEY.session) ,
-        }),
-        header: {  
-            "Content-Type": "application/x-www-form-urlencoded"  
+        url: Api.categoryQuery(), //仅为示例，并非真实的接口地址
+        method:"GET",
+        data: {
+            session:  wx.getStorageSync(KEY.session),
         },
         success: function(res) {
             var object = res.data
@@ -206,6 +172,25 @@ Page({
             GLOBAL_PAGE.renderCategory()
         }
     })
+    
+    // wx.request({
+    //     url: Api.categoryQuery(),
+    //     method:"POST",
+    //     data: Api.json2Form({
+    //         session: wx.getStorageSync(KEY.session) ,
+    //     }),
+    //     header: {  
+    //         "Content-Type": "application/x-www-form-urlencoded"  
+    //     },
+    //     success: function(res) {
+    //         var object = res.data
+    //         wx.setStorageSync(
+    //             KEY.category,
+    //             object.category_list
+    //         )
+    //         GLOBAL_PAGE.renderCategory()
+    //     }
+    // })
     
   },
 

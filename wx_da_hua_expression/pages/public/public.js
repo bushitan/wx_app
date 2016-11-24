@@ -23,7 +23,7 @@ Page({
 
     //控制菜单上架
     MENU_TYPE:Render.menu.TYPE,
-    menuType:"4",
+    menuType:"-1",
     menuWidth:0,
     menuHeight:0,
 
@@ -59,7 +59,7 @@ Page({
       "btnSearch":function(){ View.Switch.Off("displayMenu") },
       "btnShortcut":function(){ View.Switch.Off("displayMenu") },
       // "btnShare":function(){ View.Switch.Off("displayMenu") },
-      // "btnCollect":function(){ View.Switch.Off("displayMenu") },
+      // "menuCollect":function(){ View.Switch.Off("displayMenu") },
       "all":function(){ GLOBAL_PAGE.setData({menuType:0}) }, //公共透明遮罩
     }
     if (_display.hasOwnProperty(action))
@@ -72,8 +72,8 @@ Page({
       "onMenu":GLOBAL_PAGE.onMenu,
       "btnSearch":GLOBAL_PAGE.searchBtn,
       "btnShortcut":GLOBAL_PAGE.searchShortcut,
-      "btnShare":GLOBAL_PAGE.menuShare,
-      "btnCollect": GLOBAL_PAGE.menuCollect,
+      "menuShare":GLOBAL_PAGE.menuShare,
+      "menuCollect": GLOBAL_PAGE.menuCollect,
     }
     if (_eventDict.hasOwnProperty(e.currentTarget.dataset.action))
       _eventDict[e.currentTarget.dataset.action](e) 
@@ -144,7 +144,7 @@ Page({
 
   // 4 图片分享
   menuShare:function(){
-    Menu.Option.Share( GLOBAL_PAGE.data.editorUrl )
+    Menu.Option.Share( GLOBAL_PAGE.data.selectEmoticon )
   },
 
   /**
@@ -160,6 +160,7 @@ Page({
             img_id: GLOBAL_PAGE.data.selectEmoticon.id,
           },
           success: function(res) {
+             console.log("collect success:",res.data)
               var object = res.data
               if (object.status == "true")
               {
@@ -174,9 +175,11 @@ Page({
                       duration: 700
                   })
               }
+          },
+          fail:function(res){
+            console.log("collect fail:",res.data)
           }
       })
-
   },
 
   onLoad: function () {

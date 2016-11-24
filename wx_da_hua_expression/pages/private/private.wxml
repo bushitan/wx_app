@@ -29,14 +29,17 @@
 
     <!--图片、视频上传-->
     <view class="upload">
-        <image src="../../images/ic_action_add.png" background-size="cover" 
+        <view wx:if="{{isUpload}}">
+            <image  src="../../images/upload.gif" background-size="cover" 
+             catchtap="eventBase"  data-action="btnIsUpload"></image>
+        </view>
+        <view wx:else>
+            <image  src="../../images/ic_action_add.png" background-size="cover" 
              catchtap="eventBase"  data-action="btnUploadV2"></image>
+        </view>
     </view>
- 
   
-  <loading hidden="{{hidden}}">
-    加载中...
-  </loading>
+    
 </view>
 
 

@@ -14,11 +14,14 @@ Page({
     pageName: "private",
     //loading框
     hidden: false,
+    
+    //上传控制
+    isUpload:false,
 
     //控制菜单上架
     // menuType:"m-down",  //m-up  m-down
     MENU_TYPE:Render.menu.TYPE,
-    menuType:"4",
+    menuType:"-1",
     menuWidth:0,
     menuHeight:0,
     
@@ -34,7 +37,7 @@ Page({
     selectEmoticon:{id:"",name:"",img_url:"",size:""}, //预备编辑的图片
     selectCategory:{id:"",name:""},
     
-    
+    src:'',
   },
 
   /** No.2
@@ -78,7 +81,9 @@ Page({
       "menuDelete": GLOBAL_PAGE.menuDelete,
       "menuMoveCategory": GLOBAL_PAGE.menuMoveCategory,
       "menuResizeV2": GLOBAL_PAGE.menuResizeV2,
-      "btnUploadV2":GLOBAL_PAGE.btnUploadV2,
+      "btnUploadV2":GLOBAL_PAGE.btnUploadV2, //可以上传
+      "btnIsUpload":GLOBAL_PAGE.btnIsUpload, //上传中
+
       "selectCategory":GLOBAL_PAGE.selectCategory,
       "selectAllCategory":GLOBAL_PAGE.selectAllCategory,
       "scrollTolower":GLOBAL_PAGE.scrollTolower,
@@ -123,8 +128,8 @@ Page({
    //新开发 目录最后点击“+”开关
   btnUploadV2:function() {
      wx.showActionSheet({
-      // itemList: ['图片(GIF需要原图)', '小视频'],
-      itemList: ['图片(GIF需要原图)'],
+      itemList: ['图片(GIF需要原图)', '小视频'],
+      // itemList: ['图片(GIF需要原图)'],
       success: function(res) {
         if (!res.cancel) {
           if(res.tapIndex == 0 || res.tapIndex =='0')
@@ -137,10 +142,18 @@ Page({
 
   },
 
+  btnIsUpload:function() {
+    wx.showToast({
+        title: '正在上传',
+        icon: 'loading',
+        duration: 700
+    })
+  },
   //上传图片
   uploadImage:function() {
     
     console.log("chooseImage")
+    //  GLOBAL_PAGE.setData({isUpload:true})
     //上传图片
     wx.chooseImage({
       count: 1, 
@@ -148,11 +161,15 @@ Page({
         var tempFilePaths = res.tempFilePaths
         console.log("uploadImg")
         console.log(tempFilePaths[0])
+
+        //改变上传btn状态为
+        GLOBAL_PAGE.setData({isUpload:true})
+
         wx.uploadFile({
           url: Api.uploadImg(), 
           filePath: tempFilePaths[0],
           name: 'file',
-          header: {  
+          header: {
             "Content-Type": "multipart/form-data"  
           },
           formData:{
@@ -179,6 +196,9 @@ Page({
             var data = res.data
             console.log(res)
           },
+          complete:function(res) { 
+             GLOBAL_PAGE.setData({isUpload:false})
+          },
         })
       },
       fail:function(res){
@@ -187,8 +207,62 @@ Page({
     })
   },
   
-  //选择视频
+  //上传视频
   uploadVideo : function() {
+      wx.chooseVideo({
+          sourceType: ['album','camera'],
+          maxDuration: 60,
+          camera: ['front','back'],
+          success: function(res) {
+
+            var tempFilePath = res.tempFilePath
+            //改变上传btn状态为
+            GLOBAL_PAGE.setData({isUpload:true})
+            //开始上传
+            wx.uploadFile({
+              url: Api.uploadImg(), 
+              filePath: tempFilePath,
+              name: 'file',
+              header: {
+                "Content-Type": "multipart/form-data"  
+              },
+              formData:{
+                'session': wx.getStorageSync(Key.session)
+              },
+              success: function(res){ //上传成功
+                console.log(res)
+                var data = JSON.parse(res.data)
+                console.log(data)
+                if(data.status == "true")
+                {
+                  var e = wx.getStorageSync(Key.emoticon)
+                  e.push(data.img)
+                  wx.setStorageSync(Key.emoticon,e)
+                  GLOBAL_PAGE.renderEmoticon()
+
+                  wx.showToast({
+                      title: '上传图片成功',
+                      icon: 'success',
+                      duration: 700
+                  })
+                } 
+              },
+              fail:function(res){
+                console.log("chooseVideo fail")
+                var data = res.data
+                console.log(res)
+              },
+              complete:function(res) { 
+                GLOBAL_PAGE.setData({isUpload:false})
+              },
+            })
+            console.log(res.tempFilePath)
+            GLOBAL_PAGE.setData({
+                src: res.tempFilePath
+            })
+
+          }
+      })
   },
  
   /** 4 打开菜单 */
@@ -433,7 +507,7 @@ Page({
     //测试session
     // wx.setStorageSync('session',"ds9") 
     // wx.setStorageSync('session',"") 
-    // console.log("session:", wx.getStorageSync('session') )
+    console.log("session:", wx.getStorageSync('session') )
 
     //正式登陆
     GLOBAL_PAGE.login()

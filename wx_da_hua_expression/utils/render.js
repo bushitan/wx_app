@@ -36,8 +36,12 @@ function emoticon(page,emoticon){
                 _list[i]["menu_type"] =  menu.TYPE.VERTICAL
                 break;
                 case 3:   //横图
-                _list[i]["thumbnail_url"]  = _list[i]["yun_url"] ;
+                _list[i]["thumbnail_url"]  = _list[i]["yun_url"] +"" ;
                 _list[i]["menu_type"] =  menu.TYPE.HORIZONTAL
+                case 4:   //横图
+                _list[i]["static_url"] = _list[i]["yun_url"] + "?vframe/jpg/offset/0/w/120/h/90"
+                _list[i]["thumbnail_url"]  = _list[i]["yun_url"] 
+                _list[i]["menu_type"] =  menu.TYPE.VIDEO
                 break;
                 // case 3:break;
                 // case 4:break;
@@ -64,6 +68,7 @@ var menu = {
         SQUARE:1, //小方块
         VERTICAL:2,  // 竖直 vertical
         HORIZONTAL:3, //横向
+        VIDEO:4,
     },
     //竖直菜单
     vertical:function  (page,e){
