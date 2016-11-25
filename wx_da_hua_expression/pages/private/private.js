@@ -81,6 +81,7 @@ Page({
       "menuDelete": GLOBAL_PAGE.menuDelete,
       "menuMoveCategory": GLOBAL_PAGE.menuMoveCategory,
       "menuResizeV2": GLOBAL_PAGE.menuResizeV2,
+      "menuVideo2Gif":GLOBAL_PAGE.menuVideo2Gif,
       "btnUploadV2":GLOBAL_PAGE.btnUploadV2, //可以上传
       "btnIsUpload":GLOBAL_PAGE.btnIsUpload, //上传中
 
@@ -428,6 +429,45 @@ Page({
         }
       }
     })
+  },
+
+  /** 8 菜单-视频转GIF */
+  menuVideo2Gif:function(){
+      //改变上传btn状态为
+      GLOBAL_PAGE.setData({isUpload:true})
+      
+      wx.request({
+          url: Api.imgVideo2gif(), 
+          data:{
+            'session': wx.getStorageSync(Key.session),
+            "video_url":GLOBAL_PAGE.data.selectEmoticon.img_url,
+          },
+          success: function(res){
+              var data = res.data
+              console.log(data)
+              if(data.status == "true")
+              {
+                var e = wx.getStorageSync(Key.emoticon)
+                e.push(data.img)
+                wx.setStorageSync(Key.emoticon,e)
+                GLOBAL_PAGE.renderEmoticon()
+
+                wx.showToast({
+                    title: '视频转Gif成功',
+                    icon: 'success',
+                    duration: 700
+                })
+              } 
+          },
+          fail:function(res){
+              console.log("chooseImage fail")
+              var data = res.data
+              console.log(res)
+          },
+          complete:function(res) { 
+              GLOBAL_PAGE.setData({isUpload:false})
+          },
+      })
   },
 
   onHide:function(){

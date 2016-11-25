@@ -140,6 +140,16 @@ function _imgDelete(){
 	return host_url+img_delete;
 }	
 
+/**
+ * method:GET
+ * data: { video_url}
+ * 
+ */
+var img_video2gif = 'img/video2gif/';
+function _imgVideo2gif(){
+	return host_url+img_video2gif;
+}	
+
 
 
 /*
@@ -232,6 +242,7 @@ module.exports = {
 	imgQuery:_imgQuery,
 	imgMove:_imgMove,
 	imgDelete:_imgDelete,
+	imgVideo2gif:_imgVideo2gif,
 	
 
 	//目录类别增、删、查、改接口

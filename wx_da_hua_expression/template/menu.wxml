@@ -3,7 +3,7 @@
  <!--square-->
     <view class="menuv-v2 m-up" hidden="{{menuType == MENU_TYPE.SQUARE ? false:true}}">
          <view><image src="{{selectEmoticon.img_url}}" mode="aspectFit" bindload="bindload"></image></view>
-        <template is="menu_btn" data="{{pageName}}"></template>
+        <template is="menu_btn" data="{{pageName,menuType,MENU_TYPE}}"></template>
       
     </view>
     <!--竖框-->
@@ -12,7 +12,7 @@
             <image src="{{selectEmoticon.img_url}}" bindload="bindloadVertical"
             mode='aspectFit' style="width:680rpx;height:{{menuHeight}}rpx;margin-left: 35rpx;">Content</image>
         </scroll-view>
-        <template is="menu_btn" data="{{pageName}}"></template>
+        <template is="menu_btn" data="{{pageName,menuType,MENU_TYPE}}"></template>
     </view>
      <!--横框-->
     <view class="menuv-heng " hidden="{{menuType == MENU_TYPE.HORIZONTAL ? false:true}}">
@@ -20,14 +20,14 @@
             <image src="{{selectEmoticon.img_url}}" bindload="bindloadHorizontal"
             mode='aspectFit' style="width:{{menuWidth}}rpx;height:450rpx">Content</image>
         </scroll-view>
-        <template is="menu_btn" data="{{pageName}}"></template>
+        <template is="menu_btn" data="{{pageName,menuType,MENU_TYPE}}"></template>
     </view>
     <view class="menuv-heng " hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}">
         <view catchtap="eventBase">
         <!--<video src="http://mvvideo1.meitudata.com/575c2b652d7375255.mp4"></video>-->
             <video src="{{selectEmoticon.img_url}}" ></video>
         </view>
-        <template is="menu_btn" data="{{pageName}}"></template>
+        <template is="menu_btn" data="{{pageName,menuType,MENU_TYPE}}"></template>
     </view>
 </template>
 
@@ -49,8 +49,14 @@
                 size="mini" >删除</button ></label>
                 <label ><button  catchtap="eventBase" data-action="menuMoveCategory"
                 size="mini" >分组</button ></label>
-                <label ><button catchtap="eventBase" data-action="menuResizeV2"
-                size="mini" >压缩</button ></label>
+                <!--<label hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}">
+                    <button catchtap="eventBase" data-action="menuResizeV2"
+                    size="mini" >压缩</button ></label>-->
+                <label hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}">
+                    <button catchtap="eventBase" data-action="menuVideo2Gif"
+                        size="mini" >转GIF</button >
+                </label>
+                
         </view>
     </view>
 </template>

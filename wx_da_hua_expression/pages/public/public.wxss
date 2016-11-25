@@ -17,7 +17,6 @@
     background: #fff;
     border: 1px solid #9ac600;
     border-radius: 3px;
-     
 }
 .shortcut .label{
     /*background-color: gainsboro;
@@ -46,6 +45,7 @@
     width: 64rpx;
     height: 64rpx;
     
+     margin-top: 12rpx;
     /*float:left ;*/
     /*background-color: #fa3;*/
 }
