@@ -56,6 +56,11 @@
                     <button catchtap="eventBase" data-action="menuVideo2Gif"
                         size="mini" >转GIF</button >
                 </label>
+
+                <label hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}">
+                    <button catchtap="eventBase" data-action="menuJoin"
+                        size="mini" >GIF拼接</button >
+                </label>
                 
         </view>
     </view>

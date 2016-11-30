@@ -38,7 +38,24 @@
              catchtap="eventBase"  data-action="btnUploadV2"></image>
         </view>
     </view>
-  
+    
+    
+    <!--gif合成-->
+    <view class="join" wx:if="{{isJoin}}">
+        <!--图片、视频上传-->
+        <view class="cancel btn"  catchtap="eventBase"  data-action="joinCancel">
+            ×
+        </view>
+        <view class="confirm btn"  catchtap="eventBase"  data-action="joinConfirm">
+           拼
+        </view>
+        <view class="img">
+            <image class="first" src="{{joinImg.first}}" mode="aspectFit" 
+                catchtap="eventBase"  data-action="btnIsUpload"></image>
+            <image class="seconde" src="{{joinImg.seconde}}" mode="aspectFit" 
+                catchtap="eventBase"  data-action="btnUploadV2"></image>
+          </view>
+    </view>
     
 </view>
 

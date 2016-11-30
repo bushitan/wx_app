@@ -31,6 +31,11 @@
       "selectedIconPath":"images/icon_big_hot.png"
     }]
   },
+  "networkTimeout": {
+    "request": 120000,
+    "uploadFile":120000,
+    "downloadFile": 120000
+  },
   "debug": true
 }
 

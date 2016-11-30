@@ -17,6 +17,13 @@ Page({
     
     //上传控制
     isUpload:false,
+    isJoin:false,
+
+    //join数据
+    joinImg:{
+      step:1,
+      first:"http://7xsark.com1.z0.glb.clouddn.com/0_20161106135820.gif",
+      seconde:"http://7xsark.com1.z0.glb.clouddn.com/9_20161123100806.gif"},
 
     //控制菜单上架
     // menuType:"m-down",  //m-up  m-down
@@ -62,9 +69,15 @@ Page({
       "onMenu":function(){ View.Switch.On("displayMenu") },//btn打开菜单
       "navigateToEditor":function(){ View.Switch.Off("displayMenu") },
       "menuMoveCategory":function(){ View.Switch.OffAll() },
+      "menuJoin":function(){ GLOBAL_PAGE.setData({menuType:0}) },
+
       //基本view:遮罩、All
       "mask":function(){View.Switch.OffAll()}, //公共透明遮罩
       "all":function(){ GLOBAL_PAGE.setData({menuType:0}) }, //公共透明遮罩
+
+      
+      "joinCancel":function(){}, //join关闭
+      "joinConfirm":function(){},//join确认
     }
     if (_display.hasOwnProperty(action))
       _display[action]()
@@ -82,12 +95,17 @@ Page({
       "menuMoveCategory": GLOBAL_PAGE.menuMoveCategory,
       "menuResizeV2": GLOBAL_PAGE.menuResizeV2,
       "menuVideo2Gif":GLOBAL_PAGE.menuVideo2Gif,
+      "menuJoin":GLOBAL_PAGE.menuJoin, //gif拼接
+
       "btnUploadV2":GLOBAL_PAGE.btnUploadV2, //可以上传
       "btnIsUpload":GLOBAL_PAGE.btnIsUpload, //上传中
 
       "selectCategory":GLOBAL_PAGE.selectCategory,
       "selectAllCategory":GLOBAL_PAGE.selectAllCategory,
       "scrollTolower":GLOBAL_PAGE.scrollTolower,
+
+       "joinCancel":GLOBAL_PAGE.joinCancel, //join关闭
+       "joinConfirm":GLOBAL_PAGE.joinConfirm, //join确认
     }
 
     if (_eventDict.hasOwnProperty(e.currentTarget.dataset.action))
@@ -134,7 +152,9 @@ Page({
       success: function(res) {
         if (!res.cancel) {
           if(res.tapIndex == 0 || res.tapIndex =='0')
-            GLOBAL_PAGE.uploadImage()
+            // GLOBAL_PAGE.uploadImage()
+            GLOBAL_PAGE.uploadQiniuImage()
+            
           if(res.tapIndex == 1 || res.tapIndex =='1')
             GLOBAL_PAGE.uploadVideo()         
         }
@@ -150,6 +170,70 @@ Page({
         duration: 700
     })
   },
+
+  //直传七牛云
+  uploadQiniuImage:function(){
+    //  var uptoken = "bK5xWj0a-TBIljlxHYOHuQib9HYF_9Ft-HtP8tEb:eeq4GTKA5p085KlijXZM67OiM-M=:eyJzY29wZSI6ImNsaWNrejpjYzEyMy5naWYiLCJkZWFkbGluZSI6MTQ4MDM5MDYzM30="
+
+      
+
+      wx.chooseImage({
+        count: 1, 
+        success: function(res) {
+            var tempFilePaths = res.tempFilePaths
+            wx.request({
+                url: Api.uploadToken(), 
+                data:{
+                  'session': wx.getStorageSync(Key.session),
+                  "type":"gif",
+                },
+                success: function(res){
+                    var data = res.data
+                    console.log(data)
+                    if(data.status == "true")
+                    {
+                        wx.uploadFile({
+                            url: 'https://up.qbox.me',
+                            filePath: tempFilePaths[0],
+                            name: 'file',
+                            formData:{
+                              'key': data.key,
+                              'token': data.token,
+                            },
+                            success: function(res){
+                              console.log("上传七牛云成功")
+                              var data = JSON.parse(res.data);
+                              console.log(data)
+                              // self.setData({
+                              //   imageUrl: `https://xxx.qnssl.com/${data.key}`
+                              // })
+                              //do something
+                            },
+                            fail (error) {
+                              console.log(error)
+                            },
+                            complete (res) {
+                              console.log(res)
+                            }
+                        })
+                    } 
+                },
+                fail:function(res){
+                    var data = res.data
+                    console.log(res)
+                },
+                complete:function(res) { 
+                    GLOBAL_PAGE.setData({isUpload:false})
+                },
+            })
+        },
+        fail:function(res){
+          console.log(res)
+        }
+      })
+  },
+
+
   //上传图片
   uploadImage:function() {
     
@@ -276,6 +360,7 @@ Page({
         category_id:e.currentTarget.dataset.category_id,
         size:e.currentTarget.dataset.size,
         static_url:e.currentTarget.dataset.static_url,
+        yun_url:e.currentTarget.dataset.yun_url,
         }
     })
 
@@ -469,6 +554,71 @@ Page({
           },
       })
   },
+
+  /** 9 join 拼接 */
+  menuJoin:function(){
+      GLOBAL_PAGE.setData({isJoin:true})
+      var _join = GLOBAL_PAGE.data.joinImg 
+      // var _url = GLOBAL_PAGE.data.selectEmoticon.img_url
+      var _url = GLOBAL_PAGE.data.selectEmoticon.yun_url
+      
+      if (_join.step % 2 == 1)
+        _join.first = _url
+      else
+        _join.seconde = _url
+
+      _join.step ++ 
+      GLOBAL_PAGE.setData({isJoin:true,joinImg:_join})
+
+  },
+
+
+  joinCancel:function(){
+      GLOBAL_PAGE.setData({isJoin:false})
+  },
+  joinConfirm:function(){
+    GLOBAL_PAGE.setData({isJoin:false}) //关闭join
+    GLOBAL_PAGE.setData({isUpload:true}) //打开上传
+
+    wx.request({
+        url: Api.editorJoin(), 
+        data:{
+          'session': wx.getStorageSync(Key.session),
+          "first":GLOBAL_PAGE.data.joinImg.first,
+          "seconde":GLOBAL_PAGE.data.joinImg.seconde,
+        },
+        success: function(res){
+            var data = res.data
+            console.log(data)
+            if(data.status == "true")
+            {
+              var e = wx.getStorageSync(Key.emoticon)
+              e.push(data.img)
+              wx.setStorageSync(Key.emoticon,e)
+              GLOBAL_PAGE.renderEmoticon()
+              wx.showToast({
+                  title: 'Gif拼接成功',
+                  icon: 'success',
+                  duration: 700
+              })
+            } 
+        },
+        fail:function(res){
+            console.log("chooseImage fail")
+            var data = res.data
+            console.log(res)
+            wx.showToast({
+                title: 'Gif拼接失败',
+                icon: 'success',
+                duration: 700
+            })
+        },
+        complete:function(res) { 
+            GLOBAL_PAGE.setData({isUpload:false})
+        },
+    })
+  },
+
 
   onHide:function(){
     View.Switch.OffAll()

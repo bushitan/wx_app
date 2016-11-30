@@ -33,6 +33,10 @@ function _uploadVideo(){
 	return host_url + upload_video;
 }
 
+var upload_token = 'upload/token/';
+function _uploadToken(){
+	return host_url + upload_token;
+}
 
 /*
 	3、图片打水印
@@ -53,7 +57,7 @@ function _editorWatermark(){
 	success:{Token,imgUrl}
 	faile:  
  */
-var editorJoin = 'editor/join/';
+var editorJoin = 'img/join/';
 function _editorJoin(){
 	return host_url+editorJoin;
 }
@@ -228,7 +232,8 @@ module.exports = {
 	//上传接口
 	uploadImg:_uploadImg,
 	uploadVideo:_uploadVideo,
-
+	uploadToken:_uploadToken,
+	
 	//图片编辑接口
 	editorWatermark:_editorWatermark,
 	editorJoin:_editorJoin,
