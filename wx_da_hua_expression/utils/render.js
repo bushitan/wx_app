@@ -38,6 +38,7 @@ function emoticon(page,emoticon){
                 case 3:   //横图
                 _list[i]["thumbnail_url"]  = _list[i]["yun_url"] +"" ;
                 _list[i]["menu_type"] =  menu.TYPE.HORIZONTAL
+                break;
                 case 4:   //横图
                 _list[i]["static_url"] = _list[i]["yun_url"] + "?vframe/jpg/offset/0/w/120/h/90"
                 _list[i]["thumbnail_url"]  = _list[i]["yun_url"] 
