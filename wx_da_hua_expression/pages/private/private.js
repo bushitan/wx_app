@@ -156,7 +156,8 @@ Page({
             GLOBAL_PAGE.uploadQiniuImage()
             
           if(res.tapIndex == 1 || res.tapIndex =='1')
-            GLOBAL_PAGE.uploadVideo()         
+            GLOBAL_PAGE.uploadQiniuVideo()
+            // GLOBAL_PAGE.uploadVideo()         
         }
       }
     })
@@ -170,185 +171,209 @@ Page({
         duration: 700
     })
   },
-
   //直传七牛云
   uploadQiniuImage:function(){
-    //  var uptoken = "bK5xWj0a-TBIljlxHYOHuQib9HYF_9Ft-HtP8tEb:eeq4GTKA5p085KlijXZM67OiM-M=:eyJzY29wZSI6ImNsaWNrejpjYzEyMy5naWYiLCJkZWFkbGluZSI6MTQ4MDM5MDYzM30="
-
-      
-
       wx.chooseImage({
         count: 1, 
         success: function(res) {
-            var tempFilePaths = res.tempFilePaths
-            wx.request({
-                url: Api.uploadToken(), 
-                data:{
-                  'session': wx.getStorageSync(Key.session),
-                  "type":"gif",
-                },
-                success: function(res){
-                    var data = res.data
-                    console.log(data)
-                    if(data.status == "true")
-                    {
-                        wx.uploadFile({
-                            url: 'https://up.qbox.me',
-                            filePath: tempFilePaths[0],
-                            name: 'file',
-                            formData:{
-                              'key': data.key,
-                              'token': data.token,
-                            },
-                            success: function(res){
-                              console.log("上传七牛云成功")
-                              var data = JSON.parse(res.data);
-                              console.log(data)
-                              // self.setData({
-                              //   imageUrl: `https://xxx.qnssl.com/${data.key}`
-                              // })
-                              //do something
-                            },
-                            fail (error) {
-                              console.log(error)
-                            },
-                            complete (res) {
-                              console.log(res)
-                            }
-                        })
-                    } 
-                },
-                fail:function(res){
-                    var data = res.data
-                    console.log(res)
-                },
-                complete:function(res) { 
-                    GLOBAL_PAGE.setData({isUpload:false})
-                },
-            })
+            var tempFilePath = res.tempFilePaths[0] //图片            
+            GLOBAL_PAGE.uploadFile(tempFilePath)
         },
         fail:function(res){
           console.log(res)
         }
       })
   },
-
-
-  //上传图片
-  uploadImage:function() {
-    
-    console.log("chooseImage")
-    //  GLOBAL_PAGE.setData({isUpload:true})
-    //上传图片
-    wx.chooseImage({
-      count: 1, 
-      success: function(res) {
-        var tempFilePaths = res.tempFilePaths
-        console.log("uploadImg")
-        console.log(tempFilePaths[0])
-
-        //改变上传btn状态为
-        GLOBAL_PAGE.setData({isUpload:true})
-
-        wx.uploadFile({
-          url: Api.uploadImg(), 
-          filePath: tempFilePaths[0],
-          name: 'file',
-          header: {
-            "Content-Type": "multipart/form-data"  
-          },
-          formData:{
-            'session': wx.getStorageSync(Key.session)
-          },
-          success: function(res){
-            var data = JSON.parse(res.data)
-            if(data.status == "true")
-            {
-              var e = wx.getStorageSync(Key.emoticon)
-              e.push(data.img)
-              wx.setStorageSync(Key.emoticon,e)
-              GLOBAL_PAGE.renderEmoticon()
-
-              wx.showToast({
-                  title: '上传图片成功',
-                  icon: 'success',
-                  duration: 700
-              })
-            } 
-          },
-          fail:function(res){
-            console.log("chooseImage fail")
-            var data = res.data
-            console.log(res)
-          },
-          complete:function(res) { 
-             GLOBAL_PAGE.setData({isUpload:false})
-          },
-        })
-      },
-      fail:function(res){
-        console.log(res)
-      }
-    })
-  },
-  
-  //上传视频
-  uploadVideo : function() {
+  uploadQiniuVideo:function(){
       wx.chooseVideo({
-          sourceType: ['album','camera'],
-          maxDuration: 60,
-          camera: ['front','back'],
-          success: function(res) {
-
-            var tempFilePath = res.tempFilePath
-            //改变上传btn状态为
-            GLOBAL_PAGE.setData({isUpload:true})
-            //开始上传
-            wx.uploadFile({
-              url: Api.uploadImg(), 
-              filePath: tempFilePath,
-              name: 'file',
-              header: {
-                "Content-Type": "multipart/form-data"  
-              },
-              formData:{
-                'session': wx.getStorageSync(Key.session)
-              },
-              success: function(res){ //上传成功
-                console.log(res)
-                var data = JSON.parse(res.data)
-                console.log(data)
-                if(data.status == "true")
-                {
-                  var e = wx.getStorageSync(Key.emoticon)
-                  e.push(data.img)
-                  wx.setStorageSync(Key.emoticon,e)
-                  GLOBAL_PAGE.renderEmoticon()
-
-                  wx.showToast({
-                      title: '上传图片成功',
-                      icon: 'success',
-                      duration: 700
-                  })
-                } 
-              },
-              fail:function(res){
-                console.log("chooseVideo fail")
-                var data = res.data
-                console.log(res)
-              },
-              complete:function(res) { 
-                GLOBAL_PAGE.setData({isUpload:false})
-              },
-            })
-            console.log(res.tempFilePath)
-            GLOBAL_PAGE.setData({
-                src: res.tempFilePath
-            })
-
-          }
+        sourceType: ['album','camera'],
+        maxDuration: 60,
+        camera: ['front','back'],
+        success: function(res) {
+            var tempFilePath = res.tempFilePath //小视频
+            GLOBAL_PAGE.uploadFile(tempFilePath)
+        },
+        fail:function(res){
+          console.log(res)
+        }
       })
   },
+  uploadFile:function(file_path){
+      var _type = file_path.split(".").pop()
+      console.log(file_path)
+      wx.request({
+          url: Api.uploadToken(), 
+          data:{
+            'session': wx.getStorageSync(Key.session),
+            "type":_type,
+          },
+          success: function(res){
+              var data = res.data
+              console.log(data)
+              if(data.status == "true")
+              {
+                  wx.uploadFile({
+                      url: 'https://up.qbox.me',
+                      // filePath: tempFilePaths[0],//图片
+                      filePath: file_path,//小视频
+                      name: 'file',
+                      formData:{
+                        'key': data.key,
+                        'token': data.token,
+                      },
+                      success: function(res){
+                        console.log("上传七牛云成功")
+                        var data = JSON.parse(res.data);
+                        console.log(data)
+                        if(data.status == "true")
+                        {
+                          var e = wx.getStorageSync(Key.emoticon)
+                          e.push(data.img)
+                          wx.setStorageSync(Key.emoticon,e)
+                          GLOBAL_PAGE.renderEmoticon()
+
+                          wx.showToast({
+                              title: '上传图片成功',
+                              icon: 'success',
+                              duration: 700
+                          })
+                        } 
+                      },
+                      fail (error) {
+                        console.log(error)
+                      },
+                      complete (res) {
+                        console.log(res)
+                      }
+                  })
+              } 
+          },
+          fail:function(res){
+              var data = res.data
+              console.log(res)
+          },
+          complete:function(res) { 
+              GLOBAL_PAGE.setData({isUpload:false})
+          },
+      })
+  },
+
+  //上传图片
+  // uploadImage:function() {
+    
+  //   console.log("chooseImage")
+  //   //  GLOBAL_PAGE.setData({isUpload:true})
+  //   //上传图片
+
+  //   wx.chooseImage({
+  //     count: 1, 
+  //     success: function(res) {
+  //       var tempFilePaths = res.tempFilePaths
+  //       console.log("uploadImg")
+  //       console.log(tempFilePaths[0])
+
+  //       //改变上传btn状态为
+  //       GLOBAL_PAGE.setData({isUpload:true})
+
+  //       wx.uploadFile({
+  //         url: Api.uploadImg(), 
+  //         filePath: tempFilePaths[0],
+  //         name: 'file',
+  //         header: {
+  //           "Content-Type": "multipart/form-data"  
+  //         },
+  //         formData:{
+  //           'session': wx.getStorageSync(Key.session)
+  //         },
+  //         success: function(res){
+  //           var data = JSON.parse(res.data)
+  //           if(data.status == "true")
+  //           {
+  //             var e = wx.getStorageSync(Key.emoticon)
+  //             e.push(data.img)
+  //             wx.setStorageSync(Key.emoticon,e)
+  //             GLOBAL_PAGE.renderEmoticon()
+
+  //             wx.showToast({
+  //                 title: '上传图片成功',
+  //                 icon: 'success',
+  //                 duration: 700
+  //             })
+  //           } 
+  //         },
+  //         fail:function(res){
+  //           console.log("chooseImage fail")
+  //           var data = res.data
+  //           console.log(res)
+  //         },
+  //         complete:function(res) { 
+  //            GLOBAL_PAGE.setData({isUpload:false})
+  //         },
+  //       })
+  //     },
+  //     fail:function(res){
+  //       console.log(res)
+  //     }
+  //   })
+  // },
+  
+  //上传视频
+  // uploadVideo : function() {
+  //     wx.chooseVideo({
+  //         sourceType: ['album','camera'],
+  //         maxDuration: 60,
+  //         camera: ['front','back'],
+  //         success: function(res) {
+
+  //           var tempFilePath = res.tempFilePath
+  //           //改变上传btn状态为
+  //           GLOBAL_PAGE.setData({isUpload:true})
+  //           //开始上传
+  //           wx.uploadFile({
+  //             url: Api.uploadImg(), 
+  //             filePath: tempFilePath,
+  //             name: 'file',
+  //             header: {
+  //               "Content-Type": "multipart/form-data"  
+  //             },
+  //             formData:{
+  //               'session': wx.getStorageSync(Key.session)
+  //             },
+  //             success: function(res){ //上传成功
+  //               console.log(res)
+  //               var data = JSON.parse(res.data)
+  //               console.log(data)
+  //               if(data.status == "true")
+  //               {
+  //                 var e = wx.getStorageSync(Key.emoticon)
+  //                 e.push(data.img)
+  //                 wx.setStorageSync(Key.emoticon,e)
+  //                 GLOBAL_PAGE.renderEmoticon()
+
+  //                 wx.showToast({
+  //                     title: '上传图片成功',
+  //                     icon: 'success',
+  //                     duration: 700
+  //                 })
+  //               } 
+  //             },
+  //             fail:function(res){
+  //               console.log("chooseVideo fail")
+  //               var data = res.data
+  //               console.log(res)
+  //             },
+  //             complete:function(res) { 
+  //               GLOBAL_PAGE.setData({isUpload:false})
+  //             },
+  //           })
+  //           console.log(res.tempFilePath)
+  //           GLOBAL_PAGE.setData({
+  //               src: res.tempFilePath
+  //           })
+
+  //         }
+  //     })
+  // },
  
   /** 4 打开菜单 */
   onMenu: function(e) {
