@@ -3,26 +3,25 @@
 <import src="../../template/menu.wxml"/><!--menu模板-->
 <!--<view class="mask" catchtap="eventBase" data-action="mask"  wx:if="{{displayMask}}"   ></view>-->
 <view class="container"  catchtap="eventBase" data-action="all" >
-    
-    <!--表情图-->
-    <template is="emoticon" data="{{emoticon,windowHeight}}"></template>
- 
     <!--表情目录-->
     <view class="category">
             <view catchtap="eventBase"  data-action="selectAllCategory" >
-                <label  class=" {{selectCategory.category_id == null ? 'select' : ''}}">全部</label> 
+                <label  class=" {{selectCategory.category_id == null ? 'select' : 'unselect'}}">全部</label> 
             </view>
             <scroll-view  scroll-x="true" >
                 <block wx:for="{{category}}" 
                     wx:for-item="c_name">
                     <label catchtap="eventBase"  data-action="selectCategory" data-select_category_id="{{c_name.category_id}}"
-                    class="{{selectCategory.category_id == c_name.category_id ? 'select' : ''}}">{{c_name.name}}</label>
+                    class="{{selectCategory.category_id == c_name.category_id ? 'select' : 'unselect'}}">{{c_name.name}}</label>
                 </block>
                 <label catchtap="eventBase"  data-action="navigateToCategory">+</label>
                 <!--</view>-->
             </scroll-view>
         </view>
-
+    
+    <!--表情图-->
+    <template is="emoticon" data="{{emoticon,windowHeight}}"></template>
+ 
    
     <!--点击表情，弹出菜单-->
     <template is="menu" data="{{menuType,MENU_TYPE,menuWidth,menuHeight,selectEmoticon,pageName}}"></template>
@@ -57,6 +56,14 @@
           </view>
     </view>
     
+    <scroll-view class="select-category" wx:if="{{isMove}}"
+    scroll-y="true" style="height:{{windowHeight}}px;"
+    catchtap="closeMove"  data-action=""
+    >
+         <block wx:for="{{category}}" wx:for-index="index" wx:for-item="item">
+            <button  catchtap="buttonMove"  data-index="{{index}}">{{item.name}}</button>
+        </block>
+    </scroll-view>
 </view>
 
 

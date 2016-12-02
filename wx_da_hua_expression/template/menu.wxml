@@ -23,9 +23,9 @@
         <template is="menu_btn" data="{{pageName,menuType,MENU_TYPE}}"></template>
     </view>
     <view class="menuv-heng " hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}">
-        <view catchtap="eventBase">
+        <view >
         <!--<video src="http://mvvideo1.meitudata.com/575c2b652d7375255.mp4"></video>-->
-            <video src="{{selectEmoticon.img_url}}" ></video>
+            <video src="{{selectEmoticon.img_url}}" catchtap="eventBase"></video>
         </view>
         <template is="menu_btn" data="{{pageName,menuType,MENU_TYPE}}"></template>
     </view>

@@ -8,17 +8,21 @@ var KEY = require('../../utils/storage_key.js');
 
 var t_id = 0
 var GLOBAL_PAGE
-var app = getApp()
+var APP = getApp()
 Page({
   data: {
     myCategory:["t1","t2"],
     tempCategory:["t1","t2"],
     hasImg:["true","false"],
 
+    //屏幕高宽
+    windowWidth:0,
+    windowHeight:1000,
+
     category:[],
     tCategory:[],
     // t_index:0,
-
+    
     isAdd:false, //是否增加新目录
     addCategoryInput:"", //新目录名字输入
   },
@@ -154,7 +158,8 @@ Page({
   onLoad: function (param) {
     GLOBAL_PAGE = this
     console.log(param["category"])
-    
+  
+
     //数据初始化 目录
     var url = Api.categoryQuery() 
     wx.request({
@@ -173,24 +178,6 @@ Page({
         }
     })
     
-    // wx.request({
-    //     url: Api.categoryQuery(),
-    //     method:"POST",
-    //     data: Api.json2Form({
-    //         session: wx.getStorageSync(KEY.session) ,
-    //     }),
-    //     header: {  
-    //         "Content-Type": "application/x-www-form-urlencoded"  
-    //     },
-    //     success: function(res) {
-    //         var object = res.data
-    //         wx.setStorageSync(
-    //             KEY.category,
-    //             object.category_list
-    //         )
-    //         GLOBAL_PAGE.renderCategory()
-    //     }
-    // })
     
   },
 

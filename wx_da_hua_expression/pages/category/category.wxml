@@ -1,25 +1,13 @@
 <!--category.wxml-->
 
 <view class="container">
-    <view class="category"> 
-        <!--<block wx:for="{{myCategory}}" wx:for-index="index" wx:for-item="item">
-            <view class="content"> 
-                <label><text>{{index+1}}:</text></label>   
-                <input placeholder="输入名称" auto-focus value="{{item}}" bindblur="inputBlur" data-index="{{index}}" />
-                <icon type="cancel" size="24" catchtap="deleteCategory" data-index="{{index}}"/> 
-            </view>
-        </block>-->
-        
+    <scroll-view  class="category" scroll-y="true" style="height:{{windowHeight}}px;">
         <block wx:for="{{category}}" wx:for-index="index" wx:for-item="item">
-            <!--<view class="content"   > -->
-            <!--<view class="content" hidden="{{item.is_default == '1'? true:false }}"> -->
             <view class="content" wx:if="{{item.is_default == 1? false:true }}"> 
-            <!--<view class="content" hidden="true"> -->
                 <label><text>{{index}}:</text></label>   
-                <input placeholder="输入名称" auto-focus bindblur="inputBlur" data-category_id="{{item.category_id}}" 
-                  value="{{item.name}}" />
-                <!--<icon type="success_circle" size="24" catchtap="addCategoryOK" data-id="{{item.id}}"/> -->
-                <icon type="cancel" size="24" catchtap="deleteCategory" data-category_id="{{item.category_id}}" data-has_img="{{item.hasImg}}"/> 
+            <input placeholder="输入名称" auto-focus bindblur="inputBlur" data-category_id="{{item.category_id}}" 
+                value="{{item.name}}" />
+            <icon type="cancel" size="24" catchtap="deleteCategory" data-category_id="{{item.category_id}}" data-has_img="{{item.hasImg}}"/> 
             </view>
         </block>
          <view class="content" wx:if ="{{isAdd}}"  > 
@@ -30,6 +18,6 @@
         </view>
 
         <view><button catchtap="addCategory"  wx:if ="{{!isAdd}}">增加目录</button></view>
-        <!--<view><button catchtap="fixCategory">确认修改</button></view>-->
-    </view>
+ 
+    </scroll-view>
 </view>

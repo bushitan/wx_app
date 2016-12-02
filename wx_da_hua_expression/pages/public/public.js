@@ -186,10 +186,10 @@ Page({
     GLOBAL_PAGE = this
     //1 page初始化高宽
     console.log("width:" , APP.globalData.windowWidth)
-    console.log("height:" , APP.globalData.windowHeight - 48)
+    console.log("height:" , APP.globalData.windowHeight - 84)
     GLOBAL_PAGE.setData({
       windowWidth:APP.globalData.windowWidth,
-      windowHeight:APP.globalData.windowHeight - 48,
+      windowHeight:APP.globalData.windowHeight - 84,
     })
 
     //测试初始化表情
@@ -198,8 +198,28 @@ Page({
 
     //初始化关键字
     // GLOBAL_PAGE.setData({hotLabel:["默认目录","管理的哈哈","特技","疼"]})
-    GLOBAL_PAGE.setData({hotLabel:["老司机","管理的哈哈","特技","疼","意外"]})
-    
+    GLOBAL_PAGE.setData({hotLabel:["老司机","管理的哈哈","特技","疼","意外","老司机","管理的哈哈","特技","疼","意外"]})
+   
+    //获取表情列表
+     wx.request({
+        url: Api.categoryQuery() , //仅为示例，并非真实的接口地址
+        method:"GET",
+        data: {
+          session: "ds9"
+        },
+        success: function(res) {
+          var object = res.data
+          if(object.status == "true"){
+              var c_list = []
+              for (var i=0;i< res.data.category_list.length;i++)
+              {
+                  c_list.push(res.data.category_list[i].name)  
+              }
+              GLOBAL_PAGE.setData({hotLabel:c_list})
+   
+          }
+        }
+      })
 
     var that = this;
     // 300ms后，隐藏loading

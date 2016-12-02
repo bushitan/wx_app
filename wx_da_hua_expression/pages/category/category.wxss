@@ -4,7 +4,6 @@
     
 }
 
-
 /*表情show*/
 .category .content{
     display:flex;
@@ -14,14 +13,14 @@
     /*padding: 24rpx; */
 }
 .category label{
-    width:60rpx;
+    width:100rpx;
     /*font-size: 30rpx;*/
     text-align: right;
     line-height:52rpx;
     padding-right:24rpx;
 }
 .category input {
-    width:500rpx;
+    width:460rpx;
     background-color: #ffffff;
 }
 .category icon {
