@@ -1,48 +1,56 @@
 <!--wxml-->
 <template name="menu">
+   
  <!--square-->
     <view class="menuv-v2 m-up" hidden="{{menuType == MENU_TYPE.SQUARE ? false:true}}">
          <view><image src="{{selectEmoticon.img_url}}" mode="aspectFit" bindload="bindload"></image></view>
-        <template is="menu_btn" data="{{pageName,menuType,MENU_TYPE}}"></template>
+        <template is="menu_btn" data="{{pageName,menuType,MENU_TYPE,selectEmoticon}}"></template>
       
     </view>
     <!--竖框-->
     <view class="menuv-long " hidden="{{menuType == MENU_TYPE.VERTICAL ? false:true}}">
-        <scroll-view scroll-y="true"  style="height:{{windowHeight}}px;">   
+        <scroll-view scroll-y="true"  style="height:{{windowHeight+42-66}}px;">   
             <image src="{{selectEmoticon.img_url}}" bindload="bindloadVertical"
             mode='aspectFit' style="width:680rpx;height:{{menuHeight}}rpx;margin-left: 35rpx;">Content</image>
         </scroll-view>
-        <template is="menu_btn" data="{{pageName,menuType,MENU_TYPE}}"></template>
+        <template is="menu_btn" data="{{pageName,menuType,MENU_TYPE,selectEmoticon}}"></template>
     </view>
      <!--横框-->
     <view class="menuv-heng " hidden="{{menuType == MENU_TYPE.HORIZONTAL ? false:true}}">
+         <view class="space-16"></view>
         <scroll-view  scroll-x="true" style="height:450rpx;">
             <image src="{{selectEmoticon.img_url}}" bindload="bindloadHorizontal"
             mode='aspectFit' style="width:{{menuWidth}}rpx;height:450rpx">Content</image>
         </scroll-view>
-        <template is="menu_btn" data="{{pageName,menuType,MENU_TYPE}}"></template>
+        <template is="menu_btn" data="{{pageName,menuType,MENU_TYPE,selectEmoticon}}"></template>
     </view>
+    <!--视频-->
     <view class="menuv-heng " hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}">
+         <view class="space-16"></view>
         <view >
         <!--<video src="http://mvvideo1.meitudata.com/575c2b652d7375255.mp4"></video>-->
             <video src="{{selectEmoticon.img_url}}" catchtap="eventBase"></video>
         </view>
-        <template is="menu_btn" data="{{pageName,menuType,MENU_TYPE}}"></template>
+        <template is="menu_btn" data="{{pageName,menuType,MENU_TYPE,selectEmoticon}}"></template>
     </view>
 </template>
 
 
 <template name="menu_btn">
+    <view class="space-16"></view>
     <view  hidden="{{pageName == 'public' ? false:true}}">
-        <button class="" type="primary"  catchtap="eventBase" data-action="menuShare"
-            size="mini" >分享</button>
+        <!--<button class="" type="primary"  catchtap="eventBase" data-action="menuShare"
+            size="mini" >分享</button>-->
+        <input value="{{selectEmoticon.yun_url}}"   catchtap="eventBase" />
         <button  catchtap="eventBase" data-action="menuCollect"
             size="mini"  hidden="">收藏</button>
     </view>
     <view  hidden="{{pageName == 'private' ? false:true}}">
         <view>
-            <button class="" type="primary"  catchtap="eventBase" data-action="menuShare"
-                size="mini" >分享</button>
+            <!--<button class="" type="primary"  catchtap="eventBase" data-action="menuShare"
+                size="mini" >分享</button>-->
+            <input   value="{{selectEmoticon.yun_url}}"   catchtap="eventBase" />
+             
         </view>
         <view >
                 <label><button catchtap="eventBase" data-action="menuDelete"

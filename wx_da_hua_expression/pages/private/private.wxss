@@ -62,48 +62,55 @@
 .select-category {
     position: absolute;
     top: 42px;
-    background-color: #ededed;
+    /*background-color: rgba(237,237,237,0.4);*/
+    background-color: rgba(36,41,44,0.4);
+    
+    /*#ededed;*/
+    
 }
 
 .select-category button {
    width:500rpx;
    margin-left:125rpx; 
+   /*margin-top:4rpx; */
 }
 
 
 
 /*gif拼接*/
 .join{
+    position:absolute;
+    width:450rpx;
+    height:170rpx;
+    bottom: 40rpx;
+    right:40rpx;
+    background-color: #ededed;
+    box-shadow: 0px 3px 20px 2px rgba(0,0,0,0.4);
 }
 
 .join .btn{
     position:absolute;
     width:72rpx;
     height:72rpx;
-    right:48rpx;
-    border-radius: 50%;
-    box-shadow: 0px 2px 6px 1px rgba(0,0,0,0.2);
+    right:20rpx;
+    /*border-radius: 50%;*/
+    /*box-shadow: 0px 2px 6px 1px rgba(0,0,0,0.2);*/
     color: white;
-    font-size: 36rpx;
+    /*font-size: 36rpx;*/
+    
 }
 
 .join .confirm{
-    bottom: 48rpx;
-    background-color: #03bd00;
+    bottom: 20rpx;
+    /*background-color: #ffffff;*/
 }
 .join .cancel{  
-    bottom: 150rpx;
-    background-color: red
+    bottom: 96rpx;
+    /*background-color: #ffffff;*/
 }
 
 .join .img{
-    position:absolute;
-    width:360rpx;
-    height:170rpx;
-    bottom: 48rpx;
-    right:144rpx;
-    background-color: #ededed;
-    box-shadow: 0px 3px 20px 2px rgba(0,0,0,0.4);
+    
 }
 
 .join  .first{

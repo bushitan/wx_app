@@ -68,7 +68,7 @@ Page({
       // 表情功能菜单
       "onMenu":function(){ View.Switch.On("displayMenu") },//btn打开菜单
       "navigateToEditor":function(){ View.Switch.Off("displayMenu") },
-      "menuMoveCategory":function(){ View.Switch.OffAll() },
+      "menuMoveCategory":function(){ GLOBAL_PAGE.setData({menuType:0}) },
       "menuJoin":function(){ GLOBAL_PAGE.setData({menuType:0}) },
 
       //基本view:遮罩、All
@@ -359,7 +359,10 @@ Page({
             /**
              * Todo 与后台确认删除表情
              */
-        }   
+        },
+        complete:function(res) { 
+          GLOBAL_PAGE.setData({menuType:0})
+        }
     })
     //删除后，menu框隐藏
   },
@@ -431,7 +434,7 @@ Page({
                    wx.showToast({
                       title: '修改分组成功',
                       icon: 'success',
-                      duration: 100
+                      duration: 500
                   })
                 }
                 else{
@@ -622,7 +625,7 @@ Page({
     console.log("height:" , APP.globalData.windowHeight)
     GLOBAL_PAGE.setData({
       windowWidth:APP.globalData.windowWidth,
-      windowHeight:APP.globalData.windowHeight - 42,
+      windowHeight:APP.globalData.windowHeight - 42,  //category框高度42px
       // windowHeight:app.globalData.windowHeight - 48,
     })
     //测试session

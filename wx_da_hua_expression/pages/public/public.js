@@ -132,6 +132,7 @@ Page({
           category_id:e.currentTarget.dataset.category_id,
           size:e.currentTarget.dataset.size,
           static_url:e.currentTarget.dataset.static_url,
+          yun_url:e.currentTarget.dataset.yun_url,
           }
       })
 
@@ -189,7 +190,7 @@ Page({
     console.log("height:" , APP.globalData.windowHeight - 84)
     GLOBAL_PAGE.setData({
       windowWidth:APP.globalData.windowWidth,
-      windowHeight:APP.globalData.windowHeight - 84,
+      windowHeight:APP.globalData.windowHeight - 84, //搜索框高度42px,短语框高度42px
     })
 
     //测试初始化表情

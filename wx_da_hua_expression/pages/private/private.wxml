@@ -24,9 +24,10 @@
  
    
     <!--点击表情，弹出菜单-->
-    <template is="menu" data="{{menuType,MENU_TYPE,menuWidth,menuHeight,selectEmoticon,pageName}}"></template>
+    <template is="menu" data="{{menuType,MENU_TYPE,menuWidth,menuHeight,selectEmoticon,pageName,windowHeight}}"></template>
 
-    <!--图片、视频上传-->
+   
+      <!--图片、视频上传-->
     <view class="upload">
         <view wx:if="{{isUpload}}">
             <image  src="../../images/upload.gif" background-size="cover" 
@@ -37,29 +38,33 @@
              catchtap="eventBase"  data-action="btnUploadV2"></image>
         </view>
     </view>
-    
-    
     <!--gif合成-->
-    <view class="join" wx:if="{{isJoin}}">
+    <view class="join" wx:if="{{isJoin}}"  catchtap="eventBase"  data-action="joinCancel" >
         <!--图片、视频上传-->
-        <view class="cancel btn"  catchtap="eventBase"  data-action="joinCancel">
+        <!--<icon type="cancel" class="cancel btn" size="40"  catchtap="eventBase"  data-action="joinCancel"></icon>-->
+        <icon type="success" class="confirm btn" size="42" catchtap="eventBase"  data-action="joinConfirm"></icon>
+        <!--<view class="cancel btn"  catchtap="eventBase"  data-action="joinCancel">
             ×
         </view>
         <view class="confirm btn"  catchtap="eventBase"  data-action="joinConfirm">
            拼
-        </view>
-        <view class="img">
+        </view>-->
+        <!--<view class="img">-->
             <image class="first" src="{{joinImg.first}}" mode="aspectFit" 
-                catchtap="eventBase"  data-action="btnIsUpload"></image>
+              ></image>
             <image class="seconde" src="{{joinImg.seconde}}" mode="aspectFit" 
-                catchtap="eventBase"  data-action="btnUploadV2"></image>
-          </view>
+              ></image>
+          <!--</view>-->
     </view>
     
+   
+    
+
     <scroll-view class="select-category" wx:if="{{isMove}}"
     scroll-y="true" style="height:{{windowHeight}}px;"
     catchtap="closeMove"  data-action=""
-    >
+    >   
+        <view class="space-72"></view>
          <block wx:for="{{category}}" wx:for-index="index" wx:for-item="item">
             <button  catchtap="buttonMove"  data-index="{{index}}">{{item.name}}</button>
         </block>
