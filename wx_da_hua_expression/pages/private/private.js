@@ -19,6 +19,10 @@ Page({
     isUpload:false,
     isJoin:false,
     isMove:false,
+
+    // 上传图片数量
+    uploadNum:{count:9,finish:0},
+
     //join数据
     joinImg:{
       step:1,
@@ -174,8 +178,9 @@ Page({
   //直传七牛云
   uploadQiniuImage:function(){
       wx.chooseImage({
-        count: 1, 
+        count: 9, 
         success: function(res) {
+            GLOBAL_PAGE.uploadPrepare(1,res.tempFilePaths)
             var tempFilePath = res.tempFilePaths[0] //图片            
             GLOBAL_PAGE.uploadFile(tempFilePath)
         },
@@ -190,6 +195,7 @@ Page({
         maxDuration: 60,
         camera: ['front','back'],
         success: function(res) {
+            GLOBAL_PAGE.uploadPrepare(2,res.tempFilePath)
             var tempFilePath = res.tempFilePath //小视频
             GLOBAL_PAGE.uploadFile(tempFilePath)
         },
@@ -198,10 +204,49 @@ Page({
         }
       })
   },
+
+  uploadPrepare:function(method,path){
+    var _method = method
+    var _path = path
+    var _count
+    if (_method == 1) // 上传图片
+        _count = _path.length
+    if (_method == 2) // 上传视频 
+    {
+        _count = 1
+        _path = [_path] //视频、图片地址，均按数组传递
+    }
+     if(_count <= 0)  console.log("上传数量出错")  
+     GLOBAL_PAGE.setData({
+        isUpload:true,//设置上传状态
+        uploadNum:{
+          path:_path,
+          count:_count,//设置上传数量 
+          finish:0
+        }
+      })
+  },
+
+  uploadCompelte:function(){
+      var _uploadNum = GLOBAL_PAGE.data.uploadNum
+      var _count = _uploadNum.count
+      var _finish = _uploadNum.finish
+      _finish++ 
+      _uploadNum.finish = _finish
+      GLOBAL_PAGE.setData({
+        uploadNum:_uploadNum
+      })
+      if(_count == _finish)
+          GLOBAL_PAGE.setData({isUpload:false})
+      else
+        console.log( GLOBAL_PAGE.data.uploadNum)
+        GLOBAL_PAGE.uploadFile( GLOBAL_PAGE.data.uploadNum.path[_finish])
+        //todo 上传函数
+  },
+
   uploadFile:function(file_path){
       var _type = file_path.split(".").pop()
       console.log(file_path)
-      GLOBAL_PAGE.setData({isUpload:true})
       wx.request({
           url: Api.uploadToken(), 
           data:{
@@ -245,6 +290,7 @@ Page({
                       },
                       complete (res) {
                         console.log(res)
+                        GLOBAL_PAGE.uploadCompelte()
                       }
                   })
               } 
@@ -254,7 +300,7 @@ Page({
               console.log(res)
           },
           complete:function(res) { 
-              GLOBAL_PAGE.setData({isUpload:false})
+              // GLOBAL_PAGE.setData({isUpload:false})
           },
       })
   },
