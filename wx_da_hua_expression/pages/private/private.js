@@ -71,7 +71,7 @@ Page({
       "navigateToPainter":function(){ View.Switch.Off("displayUpload","displayMask") },//btn上传图片，关闭上传、遮罩
       // 表情功能菜单
       "onMenu":function(){ View.Switch.On("displayMenu") },//btn打开菜单
-      "navigateToEditor":function(){ View.Switch.Off("displayMenu") },
+      "navigateToWatermark":function(){ View.Switch.Off("displayMenu") },
       "menuMoveCategory":function(){ GLOBAL_PAGE.setData({menuType:0}) },
       "menuJoin":function(){ GLOBAL_PAGE.setData({menuType:0}) },
 
@@ -92,7 +92,7 @@ Page({
     var _eventDict = {
       "navigateToCategory":GLOBAL_PAGE.navigateToCategory,
       "navigateToPainter": GLOBAL_PAGE.navigateToPainter,
-      "navigateToEditor": GLOBAL_PAGE.navigateToEditor,
+      "navigateToWatermark": GLOBAL_PAGE.navigateToWatermark,
       "onMenu": GLOBAL_PAGE.onMenu,
       "menuShare": GLOBAL_PAGE.menuShare,
       "menuDelete": GLOBAL_PAGE.menuDelete,
@@ -683,6 +683,7 @@ Page({
     GLOBAL_PAGE.setData({
       windowWidth:APP.globalData.windowWidth,
       windowHeight:APP.globalData.windowHeight - 42,  //category框高度42px
+      windowHeight:APP.globalData.windowHeight - 84,  //category框高度42px
       // windowHeight:app.globalData.windowHeight - 48,
     })
     //测试session
@@ -809,7 +810,7 @@ Page({
   },
 
    //导航：水印页面
-  navigateToEditor: function(e) {
+  navigateToWatermark: function(e) {
     var url = '../watermark/watermark?imgurl=' + GLOBAL_PAGE.data.selectEmoticon;
     wx.navigateTo({
       url: url

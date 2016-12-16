@@ -52,6 +52,8 @@
                 <label hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}">
                     <button catchtap="eventBase" data-action="menuJoin"
                         size="mini" >GIF拼接</button >
+                    <button catchtap="eventBase" data-action="navigateToWatermark"
+                        size="mini" >水印</button >
                 </label>
                 
         </view>
