@@ -14,6 +14,7 @@
 function emoticon(page,emoticon){
     if (emoticon){
         var _list = emoticon //浅拷贝，最好深拷
+
         for (var i=0;i<_list.length;i++)
         {
             //临时将地址指向image.12xiong.top
@@ -50,12 +51,12 @@ function emoticon(page,emoticon){
                 // case 3:break;
                 // case 4:break;
             }
-
         }
-        page.setData({emoticon:_list})
+        page.setData({emoticon:_list})  
     }
     
     //Todo 增加多种数据
+  
 }
 
 /** categoryList 的元素内容
@@ -96,6 +97,21 @@ var menu = {
 
 }
 
+var share = function(current,urls){
+      wx.previewImage({
+        current: current, // 当前显示图片的http链接
+        // urls:yun_list
+        urls: urls, // 需要预览的图片http链接列表
+        success:function(res){
+          console.log(res)
+          },
+        fail:function(res){console.log(res)},
+        comlete:function(res){
+          console.log(res)
+          },
+      })
+}
+
 var page = {
     NAME:{
         PRIVATE:"private",
@@ -107,5 +123,6 @@ module.exports = {
     emoticon:emoticon,
     category:category,
     menu:menu,
+    share:share,
     // page:page,
 }

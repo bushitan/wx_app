@@ -32,7 +32,7 @@ Page({
     //控制菜单上架
     // menuType:"m-down",  //m-up  m-down
     MENU_TYPE:Render.menu.TYPE,
-    menuType:"-1",
+    menuType:"0",
     menuWidth:0,
     menuHeight:0,
     
@@ -333,7 +333,18 @@ Page({
   },
   /** 5 菜单-分享 */
   menuShare:function(){
-    Menu.Option.Share( GLOBAL_PAGE.data.selectEmoticon )
+    // Menu.Option.Share( GLOBAL_PAGE.data.selectEmoticon )
+
+    var current = GLOBAL_PAGE.data.selectEmoticon.yun_url
+    var urls = []
+    var e = GLOBAL_PAGE.data.emoticon
+    for ( var i = 0;i<e.length;i++)
+    {
+      if( e[i].menu_type == GLOBAL_PAGE.data.MENU_TYPE.VIDEO)
+          continue
+      urls.push(e[i].yun_url)
+    }
+    Render.share(current,urls)
   },
 
   /** 6 菜单-裁剪 */
@@ -682,12 +693,14 @@ Page({
     //正式登陆
     GLOBAL_PAGE.login()
 
+
+    
     // // 300ms后，隐藏loading
-    setTimeout(function() {
-          GLOBAL_PAGE.setData({
-            hidden: true
-          })
-    }, 300)
+    // setTimeout(function() {
+    //       GLOBAL_PAGE.setData({
+    //         hidden: true
+    //       })
+    // }, 300)
   },
 
   login:function(){
