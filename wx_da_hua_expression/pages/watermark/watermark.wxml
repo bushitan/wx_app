@@ -2,7 +2,7 @@
 <view class="container">
     <view class="bg-box">
         <view class="bg-box-img">
-            <image class="bg-img" src="{{background}}" mode="aspectFit" ></image>
+            <image class="bg-img" src="{{imgBackground}}" mode="aspectFit" ></image>
         </view>
     </view>
     <view class="tool">
@@ -44,7 +44,7 @@
     
     <view class="editor-btn">
     <!--<button catchtap="editorSuccess">一键编辑 </button>-->
-        <button class="" bindtap="editorCreate"> 一键生成 </button>
+        <button class="" bindtap="Create"> 一键生成 </button>
     </view>
 
     <view id="input_view" style="position:absolute;left:{{offsetLeft}};top:{{offsetTop}};" >
@@ -61,4 +61,16 @@
         </view>
     </modal>
 
+    <view class="menuv-v2 m-up" hidden="{{menuType != '0' ? false:true}}">
+         <view>
+            <image src="{{imgSuccess}}" mode="aspectFit" bindload="bindload"></image>
+        </view>
+         <view class="space-16"></view>
+         <view>
+            <button class="" type="primary"  catchtap="eventBase" data-action="menuShare"
+                size="mini" >保存</button>
+            <button class=""   catchtap="eventBase" data-action="menuShare"
+                size="mini" >重新编辑</button>
+        </view>
+    </view>
 </view>

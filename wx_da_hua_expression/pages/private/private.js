@@ -811,7 +811,7 @@ Page({
 
    //导航：水印页面
   navigateToWatermark: function(e) {
-    var url = '../watermark/watermark?imgurl=' + GLOBAL_PAGE.data.selectEmoticon;
+    var url = '../watermark/watermark?imgurl=' + GLOBAL_PAGE.data.selectEmoticon.yun_url
     wx.navigateTo({
       url: url
     })

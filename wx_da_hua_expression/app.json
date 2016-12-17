@@ -1,10 +1,10 @@
 {
   "pages":[
+    "pages/watermark/watermark",
     "pages/private/private",
     "pages/public/public",
     "pages/category/category",
     "pages/painter/painter",
-    "pages/watermark/watermark",
     "pages/join/join"
   ],
   "window":{
