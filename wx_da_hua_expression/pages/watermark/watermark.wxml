@@ -2,7 +2,7 @@
 <view class="container">
     <view class="bg-box">
         <view class="bg-box-img">
-            <image class="bg-img" src="{{imgBackground}}" mode="aspectFit" ></image>
+            <image class="bg-img" src="{{watermark.img_url}}" mode="aspectFit" ></image>
         </view>
     </view>
     <view class="tool">
@@ -29,13 +29,13 @@
                 <view class="section section_gap">
                 <text class="section_title">X坐标</text>
                 <view class="body-view">
-                    <slider bindchange="x_sliderchange" value="195" min="0" max="500"  show-value/>
+                    <slider bindchange="x_sliderchange" value="150" min="0" max="500"  show-value/>
                 </view>
                 </view>
                 <view class="section section_gap">
                 <text class="section_title">Y坐标</text>
                 <view class="body-view">
-                    <slider bindchange="y_sliderchange" value="425"  min="0" max="500" show-value/>
+                    <slider bindchange="y_sliderchange" value="150"  min="0" max="500" show-value/>
                 </view>
             </view>
         </view>
@@ -49,7 +49,7 @@
 
     <view id="input_view" style="position:absolute;left:{{offsetLeft}};top:{{offsetTop}};" >
     <!--输入的字-->
-        <view style="font-size:{{font_size}};">{{word_mix}}</view>
+        <view style="font-size:{{font_size}};color:#ffffff;">{{word_mix}}</view>
         <!--<input  id="myInput" bindchange="word_Change" value="{{word_mix}}"   />-->
     </view>
     <modal title="你的表情" class="modal" hidden="{{express_ModalHidden}}"
@@ -61,7 +61,7 @@
         </view>
     </modal>
 
-    <view class="menuv-v2 m-up" hidden="{{menuType != '0' ? false:true}}">
+    <!--<view class="menuv-v2 m-down" style="right:0; opacity:0.7;" hidden="{{menuType != '0' ? false:true}}">
          <view>
             <image src="{{imgSuccess}}" mode="aspectFit" bindload="bindload"></image>
         </view>
@@ -72,5 +72,5 @@
             <button class=""   catchtap="eventBase" data-action="menuShare"
                 size="mini" >重新编辑</button>
         </view>
-    </view>
+    </view>-->
 </view>
