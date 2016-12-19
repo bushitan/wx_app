@@ -1,4 +1,4 @@
-// editor.js
+// watermark.js
 // var Api = require('../../utils/api.js');
 var app = getApp()
 var Menu = require('../../utils/menu.js');

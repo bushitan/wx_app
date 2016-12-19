@@ -1,4 +1,4 @@
-<!--editor.wxml-->
+<!--watermark.wxml-->
 <view class="container">
     <view class="bg-box">
         <view class="bg-box-img">

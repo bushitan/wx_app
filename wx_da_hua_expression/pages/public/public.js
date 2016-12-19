@@ -92,6 +92,7 @@ Page({
   searchBtn:function(){
     var _keyword = GLOBAL_PAGE.data.keyword
     var url = Api.imgQuery() 
+    url = "http://127.0.0.1:8000/tag/img_query"
     // var session = wx.getStorageSync(KEY.session) 
     var session = "ds9"
     //获取表情列表
@@ -100,8 +101,9 @@ Page({
         method:"GET",
         data: {
           session: session,
-          category_id: '1',
-          category_name: _keyword,
+          tag_name : _keyword,
+          // category_id: '1',
+          // category_name: _keyword,
         },
         success: function(res) {
           var object = res.data
@@ -211,9 +213,11 @@ Page({
     // GLOBAL_PAGE.setData({hotLabel:["默认目录","管理的哈哈","特技","疼"]})
     GLOBAL_PAGE.setData({hotLabel:["老司机","管理的哈哈","特技","疼","意外","老司机","管理的哈哈","特技","疼","意外"]})
    
+    var url =   Api.categoryQuery()
+    url = "http://127.0.0.1:8000/tag/query/?session=ds9"
     //获取表情列表
      wx.request({
-        url: Api.categoryQuery() , //仅为示例，并非真实的接口地址
+        url: url, //仅为示例，并非真实的接口地址
         method:"GET",
         data: {
           session: "ds9"

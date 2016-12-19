@@ -1,5 +1,6 @@
 {
   "pages":[
+    "pages/manage/manage",
     "pages/private/private",
     "pages/public/public",
     "pages/category/category",

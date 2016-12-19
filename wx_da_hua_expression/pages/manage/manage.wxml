@@ -1,0 +1,11 @@
+<!--manage.wxml-->
+
+<view class="container">
+    <scroll-view scroll-y="true" style="height:600rpx;">
+        <button type="mini">3u4893</button>
+    </scroll-view>
+    
+    <scroll-view scroll-y="true" style="height:600rpx;background:#ffffff">
+        <image src="http://7xsark.com1.z0.glb.clouddn.com/9_20161118171253.jpg"></image>>
+    </scroll-view>
+</view>
