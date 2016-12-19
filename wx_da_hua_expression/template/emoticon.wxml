@@ -15,7 +15,7 @@
 
                         <!--<label class="{{ emoticon.menu_type == 4 ? 'mark-m' :''}}">M</label>-->
                         <!--{ emoticon.menu_type == 4 ? 'border-m' :''}}  {{ emoticon.menu_type == 1 ? 'border-g' :''}} {{ emoticon.menu_type == 2 ? 'border-i' :''}} {{ emoticon.menu_type == 3 ? 'border-i' :''}} -->
-                        <image class="image-5 {"  
+                        <image class="image-5 "  
                         src="{{emoticon.static_url}}" background-size="cover" 
                             catchtap="eventBase" data-action="onMenu"  mode="center"
                             data-id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}" data-category_id="{{emoticon.category_id}}" 

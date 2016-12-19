@@ -29,7 +29,7 @@ Page({
       first:"http://7xsark.com1.z0.glb.clouddn.com/0_20161106135820.gif",
       seconde:"http://7xsark.com1.z0.glb.clouddn.com/9_20161123100806.gif"},
 
-    //控制菜单上架
+    // 控制菜单上架
     // menuType:"m-down",  //m-up  m-down
     MENU_TYPE:Render.menu.TYPE,
     menuType:"0",
