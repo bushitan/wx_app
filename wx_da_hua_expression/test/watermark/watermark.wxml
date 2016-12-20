@@ -1,0 +1,66 @@
+<view class="page">
+    <!--private 菜单-->
+    <view class=" page__bd_spacing">
+        <view class="weui-flex">
+            <view></view>
+            <view class="weui-flex__item"> 
+                <view class="placeholder">
+                    <!--<image class="weui-media-box__thumb" mode="aspectFit" src="http://image.12xiong.top/12_20161205114607.jpg" />-->
+                    <video class="weui-media-box__thumb" src="http://image.12xiong.top/12_20161126085608.mp4"></video>
+                </view>
+            </view>
+            <view></view>
+        </view>
+    </view>
+    
+    <view class="weui-grids">
+        <block wx:for-items="{{grids}}" wx:key="{{index}}">
+            <navigator url="" class="weui-grid-10" hover-class="weui-grid_active">
+                <image class="weui-grid__icon" src="../images/icon_tabbar.png" />
+               
+            </navigator>
+        </block>
+    </view>
+
+    <view class="page__bd page__bd_spacing">
+        <view class="weui-flex">
+            <view class=""> 
+                <view class="weui-cells__title">透明度：</view>
+            </view>    
+            <view class="weui-flex__item"> 
+                <slider show-value value="50"/>
+            </view>
+        </view>
+        
+        <view class="weui-flex">
+            <view class=""> 
+                <view class="weui-cells__title">X：</view>
+            </view>    
+            <view class="weui-flex__item"> 
+                <slider show-value value="50"/>
+            </view>
+        </view>
+
+        <view class="weui-flex">
+            <view class=""> 
+                <view class="weui-cells__title">Y：</view>
+            </view>    
+            <view class="weui-flex__item"> 
+                <slider show-value value="50"/>
+            </view>
+        </view>
+
+        <view class="weui-flex">
+            <view class=""> 
+                <view class="weui-cells__title">大小：</view>
+            </view>    
+            <view class="weui-flex__item"> 
+                <slider show-value value="50"/>
+            </view>
+        </view>
+    </view>  
+
+    <view class="weui-btn-area">
+        <button class="weui-btn" type="primary" bindtap="showTopTips">确定</button>
+    </view>
+</view>

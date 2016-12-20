@@ -1,4 +1,72 @@
 /**app.wxss**/
+@import 'weui.wxss';
+
+page{
+    background-color: #F8F8F8;
+    font-size: 16px;
+    font-family: -apple-system-font,Helvetica Neue,Helvetica,sans-serif;
+}
+.page__hd {
+    padding: 40px;
+}
+.page__bd {
+    padding-bottom: 40px;
+}
+.page__bd_spacing {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.page__ft{
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.page__title {
+    text-align: left;
+    font-size: 20px;
+    font-weight: 400;
+}
+
+.page__desc {
+    margin-top: 5px;
+    color: #888888;
+    text-align: left;
+    font-size: 14px;
+}
+
+
+/*自定义css*/
+.weui-grid-5 {
+  position: relative;
+  float: left;
+  padding: 20px 10px;
+  width: 20%;
+  box-sizing: border-box;
+  border-right: 1rpx solid #D9D9D9;
+  border-bottom: 1rpx solid #D9D9D9;
+}
+.weui-grid-10 {
+  position: relative;
+  float: left;
+  /*padding: 20px 10px;*/
+  width: 10%;
+  box-sizing: border-box;
+  border-right: 1rpx solid #D9D9D9;
+  border-bottom: 1rpx solid #D9D9D9;
+}
+.placeholder{
+    margin: 5px;
+    padding: 0 10px;
+    text-align: center;
+    background-color: #EBEBEB;
+    height: 15em;
+    line-height: 2.3em;
+    color: #cfcfcf;
+}
+
+
+
 
 /*原标题颜色 background-color :#373b3e */
 /*新标题颜色 background-color :#24292c */
