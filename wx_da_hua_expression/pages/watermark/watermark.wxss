@@ -170,5 +170,5 @@
 .color {
     width:96rpx;
     height:48rpx;
-    background-color: white;
+    
 }

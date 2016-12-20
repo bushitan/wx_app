@@ -57,7 +57,7 @@ Page({
     var font = `font/${watermark.font}/`
     var fontsize = `fontsize/${t_fontsize}/`
     var fill = `fill/${watermark.fill}/`
-    var dissolve = `issolve/${watermark.dissolve}/`
+    var dissolve = `dissolve/${watermark.dissolve}/`
     var gravity = `gravity/${watermark.gravity}/`
     var dx = `dx/${t_dx}/`
     var dy = `dy/${t_dy}`
@@ -125,6 +125,24 @@ Page({
     watermark.text = BASE64.encode(e.detail.value)
     GLOBAL_PAGE.setData({watermark:watermark})
 
+  },
+
+  color_change:function(e){
+    var fill = e.currentTarget.dataset.color
+    var watermark = GLOBAL_PAGE.data.watermark
+    watermark.fill = BASE64.encode(fill)
+    GLOBAL_PAGE.setData({watermark:watermark})
+  },
+
+  dissolve_sliderchange: function(e) {
+    var dissolve = e.detail.value
+    // GLOBAL_PAGE.setData({
+    //   font_size:font_size + "rpx",
+    // })
+
+    var watermark = GLOBAL_PAGE.data.watermark
+    watermark.dissolve = e.detail.value
+    GLOBAL_PAGE.setData({watermark:watermark})
   },
   size_sliderchange: function(e) {
     console.log(e.detail.value)

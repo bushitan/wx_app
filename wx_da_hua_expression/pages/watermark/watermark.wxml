@@ -12,12 +12,17 @@
             <!--</view>-->
                 
         </view>
-        <!--<view>
-            <label>文字颜色</label><label class="color">#ffffff</label>
-            <label>背景颜色</label><label class="color">#ffffff</label>
-            <label>背景透明度</label><label class="color">60%</label>
-            
-        </view>-->
+        <view>
+            <text class="section_title">文字颜色</text>
+            <label class="color" style="background-color: white;" catchtap="color_change" data-color="white">#ffffff</label>
+            <label class="color" style="background-color: black;" catchtap="color_change" data-color="black">#ffffff</label>
+            <!--<label>背景颜色</label><label class="color">#ffffff</label>
+            <label>背景透明度</label><text class="section_title">文字大小</text>-->
+            <view class="body-view">
+                 <text class="section_title">背景透明度</text>
+                <slider bindchange="dissolve_sliderchange" value="90" min="10" max="100" show-value/>
+            </view>
+        </view>
         <view class="tool-right">
             <view class="section section_gap">
                 <text class="section_title">文字大小</text>
