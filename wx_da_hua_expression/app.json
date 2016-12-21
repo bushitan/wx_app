@@ -1,10 +1,11 @@
 {
   "pages":[
+    "pages/private/private",
+    "pages/watermark/watermark",
+    
     "test/private/private",
     
-    "pages/private/private",
     "pages/join/join",
-    "pages/watermark/watermark",
     "pages/manage/manage",
     "pages/public/public",
     "pages/category/category",

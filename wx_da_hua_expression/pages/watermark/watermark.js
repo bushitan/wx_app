@@ -6,6 +6,8 @@ var BASE64 = require('../../utils/base64.js');
 var GLOBAL_PAGE
 Page({
   data: {
+    grids: ["white","black","orangered",  "red", "blue", "yellow"],
+
     title: '最热话题',
     hotest: [],
     hidden: false,

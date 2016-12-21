@@ -1,10 +1,100 @@
 <!--watermark.wxml-->
-<view class="container">
-    <view class="bg-box">
+
+<view class="page">
+    <!--private 菜单-->
+  
+    <view class="weui-flex">
+        <view></view>
+        <view class="weui-flex__item"> 
+            <view class="bg-box">
+                <!--<image class="weui-media-box__thumb" src="{{watermark.img_url}}" mode="aspectFit" ></image>-->
+                <image class="bg-box-img" src="{{watermark.img_url}}" mode="aspectFit" ></image>
+                <!--<image class="bg-box-img" src="http://image.12xiong.top/12_20161205114607.jpg" mode="aspectFit" ></image>-->
+                <!--<image class="weui-media-box__thumb" mode="aspectFit" src="http://image.12xiong.top/12_20161205114607.jpg" />-->
+                <!--<video class="" src="http://image.12xiong.top/12_20161126085608.mp4"></video>-->
+            </view>
+        </view>
+        <view></view>
+    </view>
+    
+    <!--<view class="weui-grids">
+    </view>-->
+    <view class="tool-left">
+        <!--<view class="layer-content-input">-->
+            <input class="layer-input-input"  value="{{word_mix}}" bindinput="inputChange" auto-focus="true"  />
+        <!--</view>-->
+            
+    </view>
+    <view class="page__bd_spacing">
+        <view class="weui-flex">
+            <block wx:for-items="{{grids}}" wx:key="{{index}}">
+                <view class="weui-flex__item" catchtap="color_change" data-color="{{item}}">
+                    <view class="color {{item}}"></view>
+                </view>
+            </block>
+            
+        </view>
+    </view>
+  
+
+    <view class=" page__bd_spacing">
+        <view class="weui-flex">
+            <view class=""> 
+                <view class="title">透明度：</view>
+            </view>    
+            <view class="weui-flex__item">  
+                <slider bindchange="dissolve_sliderchange" value="90" min="10" max="100" show-value/>
+            </view>
+        </view>
+        
+        <view class="weui-flex">
+            <view class=""> 
+                <view class="title">X：</view>
+            </view>    
+            <view class="weui-flex__item"> 
+                <slider bindchange="x_sliderchange" value="150" min="0" max="500"  show-value/>
+            </view>
+        </view>
+
+        <view class="weui-flex">
+            <view class=""> 
+                <view class="title">Y：</view>
+            </view>    
+            <view class="weui-flex__item"> 
+                <slider bindchange="y_sliderchange" value="150"  min="0" max="500" show-value/>
+            </view>
+        </view>
+
+        <view class="weui-flex">
+            <view class=""> 
+                <view class="title">大小：</view>
+            </view>    
+            <view class="weui-flex__item"> 
+                <slider bindchange="size_sliderchange" value="47" min="8" max="96" show-value/>
+            </view>
+        </view>
+    </view>  
+
+    <view class="weui-btn-area">
+        <button class="weui-btn" type="primary"  bindtap="Create">确定</button>
+    </view>
+
+
+    <view id="input_view" style="position:absolute;left:{{offsetLeft}};top:{{offsetTop}};" >
+    <!--输入的字-->
+        <view style="font-size:{{font_size}};color:#ffffff;">{{word_mix}}</view>
+        <!--<input  id="myInput" bindchange="word_Change" value="{{word_mix}}"   />-->
+    </view>
+</view>
+
+    
+
+<view class="container" hidden="true">
+    <!--<view class="bg-box">
         <view class="bg-box-img">
             <image class="bg-img" src="{{watermark.img_url}}" mode="aspectFit" ></image>
         </view>
-    </view>
+    </view>-->
     <view class="tool">
         <view class="tool-left">
             <!--<view class="layer-content-input">-->
@@ -52,11 +142,7 @@
         <button class="" bindtap="Create"> 一键生成 </button>
     </view>
 
-    <view id="input_view" style="position:absolute;left:{{offsetLeft}};top:{{offsetTop}};" >
-    <!--输入的字-->
-        <view style="font-size:{{font_size}};color:#ffffff;">{{word_mix}}</view>
-        <!--<input  id="myInput" bindchange="word_Change" value="{{word_mix}}"   />-->
-    </view>
+   
     <modal title="你的表情" class="modal" hidden="{{express_ModalHidden}}"
         confirm-text="收藏" bindconfirm="modalShare"  
         cancel-text="重新编辑"  bindcancel="modalReEditor"

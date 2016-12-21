@@ -1,3 +1,5 @@
+<!--test  watermark.wxml-->
+
 <view class="page">
     <!--private 菜单-->
     <view class=" page__bd_spacing">

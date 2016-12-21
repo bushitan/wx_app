@@ -19,7 +19,7 @@
             </view>
             <view></view>
         </view>
-        <view class="weui-flex">
+        <view  class="weui-flex gif"  hidden="true">
             <view class="weui-flex__item"></view>
             <view class="">
                 <button size="mini">水印</button>
@@ -28,7 +28,52 @@
             </view>
             <view class="weui-flex__item">
             </view>
-           
+        </view>
+
+        <view class="video2gif" hidden="">
+            <view class="weui-flex">
+                <view class=""> 
+                    <view class="weui-cells__title">开始时间：</view>
+                </view>    
+                <view class="weui-flex__item"> 
+                    <slider show-value value="50" min="1" max="100"/>
+                </view>
+            </view>
+            <view class="weui-flex">
+                <view class=""> 
+                    <view class="weui-cells__title">持续时间：</view>
+                    
+                </view>
+                <view class="weui-flex__item"> 
+                    <view><slider show-value value="6" min="1" max="6"/></view>
+                </view>
+            </view>
+            <view class="weui-btn-area">
+                <button class="weui-btn" type="primary"  bindtap="showTopTips">视频转GIF</button>
+            </view>
+        </view>
+
+        <view class="gifjoin" hidden="true">
+            <view class="weui-flex">
+                <view class=""> 
+                    <view class="weui-cells__title">开始时间：</view>
+                </view>    
+                <view class="weui-flex__item"> 
+                    <slider show-value value="50" min="1" max="100"/>
+                </view>
+            </view>
+            <view class="weui-flex">
+                <view class=""> 
+                    <view class="weui-cells__title">持续时间：</view>
+                    
+                </view>
+                <view class="weui-flex__item"> 
+                    <view><slider show-value value="6" min="1" max="6"/></view>
+                </view>
+            </view>
+            <view class="weui-btn-area">
+                <button class="weui-btn"  bindtap="showTopTips">确定</button>
+            </view>
         </view>
     </view>
 
