@@ -1,19 +1,53 @@
 <!--public.wxml-->
-<import src="../../template/emoticon.wxml"/><!--menu模板-->
-<import src="../../template/menu.wxml"/><!--menu模板-->
-<view class="container" catchtap="eventBase" data-action="all">
+<view class="page" catchtap="eventBase" data-action="all">
+    <view class="">
+        <view class="weui-search-bar">
+            <view class="weui-search-bar__form">
+                <view class="weui-search-bar__box">
+                    <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
+                    <input type="text" class="weui-search-bar__input" placeholder="搜索" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" />
+                    <view class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" bindtap="clearInput">
+                        <icon type="clear" size="14"></icon>
+                    </view>
+                </view>
+                <label class="weui-search-bar__label" hidden="{{inputShowed}}" bindtap="showInput">
+                    <icon class="weui-icon-search" type="search" size="14"></icon>
+                    <view class="weui-search-bar__text">搜索</view>
+                </label>
+            </view>
+            <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="hideInput">取消</view>
+        </view>
+        <view class="weui-cells searchbar-result" wx:if="{{inputVal.length > 0}}">
+            <navigator url="" class="weui-cell" hover-class="weui-cell_active">
+                <view class="weui-cell__bd">
+                    <view>实时搜索文本</view>
+                </view>
+            </navigator>
+            <navigator url="" class="weui-cell" hover-class="weui-cell_active">
+                <view class="weui-cell__bd">
+                    <view>实时搜索文本</view>
+                </view>
+            </navigator>
+            <navigator url="" class="weui-cell" hover-class="weui-cell_active">
+                <view class="weui-cell__bd">
+                    <view>实时搜索文本</view>
+                </view>
+            </navigator>
+            <navigator url="" class="weui-cell" hover-class="weui-cell_active">
+                <view class="weui-cell__bd">
+                    <view>实时搜索文本</view>
+                </view>
+            </navigator>
+        </view>
+    </view>
 
-<!--<view class="container" >-->
     <!--搜索栏-->
-     <view class="search" >
+     <!--<view class="search" >
         <view >
             <input class="input" 	placeholder="热图、丰兄" value="{{keyword}}" bindblur="inputBlur"/>
-            
             <icon class="btn" type="search" color="white" catchtap="eventBase"  data-action="btnSearch" />
-            <!--<image class="btn" src="../../images/ic_action_search.png" background-size="cover" catchtap="eventBase"  data-action="btnSearch" ></image>-->
         </view>
-        
-    </view>
+    </view>-->
    <!--短语快捷键-->
     <view class="shortcut">
         <scroll-view scroll-x="true">
@@ -21,13 +55,98 @@
                 <button size="mini" catchtap="eventBase"  data-action="btnShortcut"
                     data-keyword="{{item}}">{{item}}</button>
             </block>
+            
+            <block wx:for="{{hotLabel}}">
+                <button size="mini" catchtap="eventBase"  data-action="btnShortcut"
+                    data-keyword="{{item}}">{{item}}</button>
+            </block>
         </scroll-view>
     </view>
+
+   
+    <!--public Menu菜单-->
+    <view class="emoticon-menu" hidden="{{menuType != '0' ? false:true}}">
+        <view class=" page__bd_spacing" >
+            <view class="weui-flex">
+                <view></view>
+                <view class="weui-flex__item"> 
+                    <view class="placeholder">
+                            
+                        <image hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" class="weui-media-box__thumb" mode="aspectFit" src="{{selectEmoticon.img_url}}"  bindload="bindload"/>
+                        <video hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}" class="weui-media-box__thumb" src="{{selectEmoticon.img_url}}" catchtap="eventBase"></video>
+
+                    </view>
+                </view>
+                <view></view>
+            </view>
+            <view class="weui-flex">
+                <view class="weui-flex__item"> </view>
+                <view > 
+                    <button  catchtap="eventBase" data-action="menuCollect"
+                        size="mini"  hidden="">收藏</button>
+                    <button class="" type="primary"  catchtap="eventBase"                               data-action="menuShare"size="mini" >预览分享</button>
+                </view>
+                <view class="weui-flex__item"> </view>
+            </view>
+        </view>
+    </view>
+
+    <!--emoticon表情显示列表-->
+    <scroll-view class="emoticon-wall" scroll-y="true" style="height:{{windowHeight}}px;" bindscrolltolower="eventBase" data-action="scrollTolower">
+        <view class="weui-grids">
+        <block wx:for-items="{{emoticon}}"  wx:for-item="emoticon">
+            <navigator url="" class="emoticon-grid" hover-class="weui-grid_active"
+            catchtap="eventBase" data-action="onMenu"  mode="center" data-id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}" data-category_id="{{emoticon.category_id}}"  data-size="{{emoticon.size}}" data-static_url="{{emoticon.static_url}}"   data-yun_url="{{emoticon.yun_url}}" data-menu_type="{{emoticon.menu_type}}" >
+            <image class="emoticon-grid__icon" src="{{emoticon.static_url}}" background-size="cover"  />
+                <!--<view class="weui-grid__label">Grid</view>-->
+                <image wx:if="{{ emoticon.menu_type == 4 ? true :false}}" class="emoticon-grid__mark " src="../../images/mp4.png"></image>
+            <image wx:if="{{ emoticon.menu_type == 1 ? true :false}}" class="emoticon-grid__mark " src="../../images/gif.png"></image>
+            </navigator>
+        </block>
+        </view>
+    </scroll-view>
+    
+    <view class="page__bd" hidden="true">
+        <view class="weui-loadmore">
+            <view class="weui-loading"></view>
+            <view class="weui-loadmore__tips">正在加载</view>
+        </view>
+        <view class="weui-loadmore weui-loadmore_line">
+            <view class="weui-loadmore__tips weui-loadmore__tips_in-line">暂无数据</view>
+        </view>
+        <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot">
+            <view class="weui-loadmore__tips weui-loadmore__tips_in-line weui-loadmore__tips_in-dot"></view>
+        </view>
+    </view>
+</view>
+
+
+
+
+<!--<import src="../../template/emoticon.wxml"/><!--menu模板-->
+<!--<import src="../../template/menu.wxml"/><!--menu模板-->
+<!--<view class="container" catchtap="eventBase" data-action="all">-->
+
+<!--<view class="container" >-->
+    <!--搜索栏-->
+     <!--<view class="search" >
+        <view >
+            <input class="input" 	placeholder="热图、丰兄" value="{{keyword}}" bindblur="inputBlur"/>
+            <icon class="btn" type="search" color="white" catchtap="eventBase"  data-action="btnSearch" />
+        </view>
+    </view>-->
+   <!--短语快捷键-->
+    <!--<view class="shortcut">
+        <scroll-view scroll-x="true">
+            <block wx:for="{{hotLabel}}">
+                <button size="mini" catchtap="eventBase"  data-action="btnShortcut"
+                    data-keyword="{{item}}">{{item}}</button>
+            </block>
+        </scroll-view>
+    </view>-->
       <!--表情图-->
-    <template is="emoticon" data="{{emoticon,windowHeight}}"></template>
+    <!--<template is="emoticon" data="{{emoticon,windowHeight}}"></template>-->
 
 <!--点击表情，弹出菜单-->
-    <template is="menu" data="{{menuType,MENU_TYPE,menuWidth,menuHeight,selectEmoticon,pageName}}"></template>
-    
-    
-</view>
+    <!--<template is="menu" data="{{menuType,MENU_TYPE,menuWidth,menuHeight,selectEmoticon,pageName}}"></template>
+</view>-->

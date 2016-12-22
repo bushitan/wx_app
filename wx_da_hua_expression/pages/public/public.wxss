@@ -1,5 +1,7 @@
 /*public.wxss*/
 
+
+
 .search {
     
     /*position:absolute;*/
@@ -27,18 +29,18 @@
 
 
 .shortcut {
-     /*position:absolute;*/
-     /*top:72rpx;*/
-    height: 42px;
+
 }
 .shortcut scroll-view{
     width:750rpx;
     white-space: nowrap; 
     display: flex;    
     text-align: center;
+    padding-top: 7px;
+    /*padding-left: 15px;
+    padding-right: 15px;*/
 }
 .shortcut button{
-    margin-left: 4rpx; 
-    margin-right: 4rpx; 
-    margin-top: 10px; 
+    margin: 0px 4px ; 
+    overflow: scroll;
 }

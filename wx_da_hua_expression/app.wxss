@@ -35,17 +35,46 @@ page{
     font-size: 14px;
 }
 
+.emoticon-menu{
+    position:absolute;
+    background-color: #F8F8F8;
+    width:750rpx;
+    z-index: 1000;
+    box-shadow: 0px 3px 20px 2px rgba(0,0,0,0.4);
+}
+
 
 /*自定义css*/
-.weui-grid-5 {
+.emoticon-grid {
   position: relative;
   float: left;
-  padding: 20px 10px;
+  padding:  10px;
   width: 20%;
   box-sizing: border-box;
-  border-right: 1rpx solid #D9D9D9;
-  border-bottom: 1rpx solid #D9D9D9;
+  /*border-right: 1rpx solid #D9D9D9;
+  border-bottom: 1rpx solid #D9D9D9;*/
 }
+.emoticon-grid__icon {
+  display: block;
+  /*width: 64px;
+  height: 64px;*/
+   width: 117rpx;
+  height: 117rpx;
+  margin: 0 auto;
+  border-radius: 0% 5% 5% 5%;
+  box-shadow: 0px 3px 6px -2px rgba(0,0,0,0.3);
+}
+.emoticon-grid__mark {
+    position: absolute;
+    font:bold 18rpx "Microsoft YaHei";
+    top:10px;
+    width:32rpx;
+    height:32rpx;
+}
+
+
+
+
 .weui-grid-10 {
   position: relative;
   float: left;
@@ -175,7 +204,7 @@ page{
 
 }
 .emoticon .g{
-    color: #95cb41;
+    /*color: #95cb41;*/
 
 }
 

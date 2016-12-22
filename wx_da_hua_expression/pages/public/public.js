@@ -38,6 +38,11 @@ Page({
     //touch选择对象
     selectEmoticon:{id:"",name:"",img_url:""}, //预备编辑的图片
     selectCategory:{id:"",name:""},
+
+
+
+     inputShowed: false,
+      inputVal: "",
   },
 
   /** Page:public 基础事件
@@ -275,4 +280,36 @@ Page({
   bindloadHorizontal:function(e){    
     Render.menu.horizontal(GLOBAL_PAGE,e)
   },
+
+  onShareAppMessage: function () {
+    return {
+      title: '自定义分享标题',
+      desc: '自定义分享描述',
+      path: '/page/user?id=123'
+    }
+  },
+  
+  showInput: function () {
+      this.setData({
+          inputShowed: true
+      });
+  },
+  hideInput: function () {
+      this.setData({
+          inputVal: "",
+          inputShowed: false
+      });
+  },
+  clearInput: function () {
+      this.setData({
+          inputVal: ""
+      });
+  },
+  inputTyping: function (e) {
+      this.setData({
+          inputVal: e.detail.value
+      });
+  }
+
+
 })

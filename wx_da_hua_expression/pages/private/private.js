@@ -683,7 +683,7 @@ Page({
     GLOBAL_PAGE.setData({
       windowWidth:APP.globalData.windowWidth,
       windowHeight:APP.globalData.windowHeight - 42,  //category框高度42px
-      windowHeight:APP.globalData.windowHeight - 84,  //category框高度42px
+      // windowHeight:APP.globalData.windowHeight - 84,  //category框高度42px
       // windowHeight:app.globalData.windowHeight - 48,
     })
     //测试session
@@ -974,4 +974,5 @@ Page({
   //         }
   //     })
   // },
- 
+
+

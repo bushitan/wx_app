@@ -1,33 +1,134 @@
 <!--latest.wxml-->
-<import src="../../template/emoticon.wxml"/><!--menu模板-->
-<import src="../../template/menu.wxml"/><!--menu模板-->
-<!--<view class="mask" catchtap="eventBase" data-action="mask"  wx:if="{{displayMask}}"   ></view>-->
-<view class="container"  catchtap="eventBase" data-action="all" >
-    <!--表情目录-->
-    <view class="category">
-            <view catchtap="eventBase"  data-action="selectAllCategory" >
-                <label  class=" {{selectCategory.category_id == null ? 'select' : 'unselect'}}">全部</label> 
-            </view>
+
+<view class="page" catchtap="eventBase" data-action="all">
+    <view class="weui-flex page__bd_spacing category">
+        <view class="weui-flex__item all"> 
+            <label catchtap="eventBase"  data-action="selectAllCategory"   class=" {{selectCategory.category_id == null ? 'select' : 'unselect'}}">全部</label> 
+        </view>    
+        <view class="weui-flex__item"> 
             <scroll-view  scroll-x="true" >
                 <block wx:for="{{category}}" 
                     wx:for-item="c_name">
                     <label catchtap="eventBase"  data-action="selectCategory" data-select_category_id="{{c_name.category_id}}"
                     class="{{selectCategory.category_id == c_name.category_id ? 'select' : 'unselect'}}">{{c_name.name}}</label>
                 </block>
-                <label catchtap="eventBase"  data-action="navigateToCategory">+</label>
-                <!--</view>-->
-            </scroll-view>
+            <label catchtap="eventBase"  data-action="navigateToCategory">+</label>
+            <!--</view>-->
+        </scroll-view>
         </view>
-    
-    <!--表情图-->
-    <template is="emoticon" data="{{emoticon,windowHeight}}"></template>
- 
-   
-    <!--点击表情，弹出菜单-->
-    <template is="menu" data="{{menuType,MENU_TYPE,menuWidth,menuHeight,selectEmoticon,pageName,windowHeight}}"></template>
+        <view class="weui-flex__item intro"> 
+            <image   src="../../images/icon_intro.png" ></image> 
+        </view>    
+    </view>
+
+    <!--<view class="category">
+        <view catchtap="eventBase"  data-action="selectAllCategory" >
+            <label  class=" {{selectCategory.category_id == null ? 'select' : 'unselect'}}">全部</label> 
+        </view>
+        <scroll-view  scroll-x="true" >
+            <block wx:for="{{category}}" 
+                wx:for-item="c_name">
+                <label catchtap="eventBase"  data-action="selectCategory" data-select_category_id="{{c_name.category_id}}"
+                class="{{selectCategory.category_id == c_name.category_id ? 'select' : 'unselect'}}">{{c_name.name}}</label>
+            </block>
+            <label catchtap="eventBase"  data-action="navigateToCategory">+</label>
+        </scroll-view>
+        <image  src="../../images/icon_intro.png" ></image>
+    </view>-->
 
    
-      <!--图片、视频上传-->
+    <!--public Menu菜单-->  
+    <view class="emoticon-menu"  hidden="{{menuType != '0' ? false:true}}">
+    <view class=" page__bd_spacing " >
+        <!--右上角菜单-->
+        <view class="weui-flex">
+            <view class="weui-flex__item"></view>
+            <view >
+                <icon type="cancel" catchtap="eventBase" data-action="menuDelete"/>
+                <icon type="info"  catchtap="eventBase" data-action="menuMoveCategory"/>
+            </view>
+        </view>
+        <!--emoticon显示框-->
+        <view class="weui-flex">
+            <view></view>
+            <view class="weui-flex__item"> 
+                <view class="placeholder">
+                        
+                    <image hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" class="weui-media-box__thumb" mode="aspectFit" src="{{selectEmoticon.img_url}}"  bindload="bindload"/>
+                    <video hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}" class="weui-media-box__thumb" src="{{selectEmoticon.img_url}}" catchtap="eventBase"></video>
+
+                </view>
+            </view>
+            <view></view>
+        </view>
+
+        <!--按钮栏  jpg/gif-->
+        <view class="weui-flex" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" >
+            <view class="weui-flex__item"> </view>
+            <view > 
+                <button size="mini" catchtap="eventBase" data-action="navigateToWatermark">水印</button>
+                <button size="mini" catchtap="eventBase" data-action="menuJoin">GIF拼接</button>
+                <button class="" type="primary"  catchtap="eventBase"                               data-action="menuShare"size="mini" >预览分享</button>
+            </view>
+            <view class="weui-flex__item"> </view>
+        </view>
+
+        <!--按钮栏  mp4-->
+        <view class="video2gif" hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}">
+            <view class="weui-flex">
+                <view class=""> 
+                    <view class="weui-cells__title">开始时间：</view>
+                </view>    
+                <view class="weui-flex__item"> 
+                    <slider show-value value="50" min="1" max="100"/>
+                </view>
+            </view>
+            <view class="weui-flex">
+                <view class=""> 
+                    <view class="weui-cells__title">持续时间：</view>
+                    
+                </view>
+                <view class="weui-flex__item"> 
+                    <view><slider show-value value="6" min="1" max="6"/></view>
+                </view>
+            </view>
+            <view class="weui-btn-area">
+                <button class="weui-btn" type="primary"  catchtap="eventBase" data-action="menuVideo2Gif">视频转GIF</button>
+            </view>
+        </view>
+    </view>
+
+    </view>  
+
+
+    <!--emoticon表情显示列表-->
+    <scroll-view class="emoticon-wall" scroll-y="true" style="height:{{windowHeight}}px;" bindscrolltolower="eventBase" data-action="scrollTolower">
+        <view class="weui-grids">
+        <block wx:for-items="{{emoticon}}"  wx:for-item="emoticon">
+            <navigator url="" class="emoticon-grid" hover-class="weui-grid_active"
+            catchtap="eventBase" data-action="onMenu"  mode="center" data-id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}" data-category_id="{{emoticon.category_id}}"  data-size="{{emoticon.size}}" data-static_url="{{emoticon.static_url}}"   data-yun_url="{{emoticon.yun_url}}" data-menu_type="{{emoticon.menu_type}}" >
+            <image class="emoticon-grid__icon" src="{{emoticon.static_url}}" background-size="cover"  />
+           
+                <image wx:if="{{ emoticon.menu_type == 4 ? true :false}}" class="emoticon-grid__mark " src="../../images/mp4.png"></image>
+            <image wx:if="{{ emoticon.menu_type == 1 ? true :false}}" class="emoticon-grid__mark " src="../../images/gif.png"></image>
+            </navigator>
+        </block>
+        </view>
+    </scroll-view>
+    
+    <view class="page__bd" hidden="true">
+        <view class="weui-loadmore">
+            <view class="weui-loading"></view>
+            <view class="weui-loadmore__tips">正在加载</view>
+        </view>
+        <view class="weui-loadmore weui-loadmore_line">
+            <view class="weui-loadmore__tips weui-loadmore__tips_in-line">暂无数据</view>
+        </view>
+        <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot">
+            <view class="weui-loadmore__tips weui-loadmore__tips_in-line weui-loadmore__tips_in-dot"></view>
+        </view>
+    </view>
+        <!--图片、视频上传-->
     <view class="upload">
         <view wx:if="{{isUpload}}">
             <image  src="../../images/upload.gif" background-size="cover" 
@@ -57,9 +158,7 @@
           <!--</view>-->
     </view>
     
-   
-    
-
+    <!--目录选择列表-->
     <scroll-view class="select-category" wx:if="{{isMove}}"
     scroll-y="true" style="height:{{windowHeight}}px;"
     catchtap="closeMove"  data-action=""
@@ -69,6 +168,53 @@
             <button  catchtap="buttonMove"  data-index="{{index}}">{{item.name}}</button>
         </block>
     </scroll-view>
+</view>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<import src="../../template/emoticon.wxml"/><!--menu模板-->
+<import src="../../template/menu.wxml"/><!--menu模板-->
+<!--<view class="mask" catchtap="eventBase" data-action="mask"  wx:if="{{displayMask}}"   ></view>-->
+<view class="container"  catchtap="eventBase" data-action="all" >
+    <!--表情目录-->
+    <!--<view class="category">
+        <view catchtap="eventBase"  data-action="selectAllCategory" >
+            <label  class=" {{selectCategory.category_id == null ? 'select' : 'unselect'}}">全部</label> 
+        </view>
+        <scroll-view  scroll-x="true" >
+            <block wx:for="{{category}}" 
+                wx:for-item="c_name">
+                <label catchtap="eventBase"  data-action="selectCategory" data-select_category_id="{{c_name.category_id}}"
+                class="{{selectCategory.category_id == c_name.category_id ? 'select' : 'unselect'}}">{{c_name.name}}</label>
+            </block>
+            <label catchtap="eventBase"  data-action="navigateToCategory">+</label>
+        
+        </scroll-view>
+    </view>-->
+    
+    <!--表情图-->
+    <!--<template is="emoticon" data="{{emoticon,windowHeight}}"></template>-->
+ 
+   
+    <!--点击表情，弹出菜单-->
+    <!--<template is="menu" data="{{menuType,MENU_TYPE,menuWidth,menuHeight,selectEmoticon,pageName,windowHeight}}"></template>-->
+
+   
+  
+   
+    
+
+
 </view>
 
 
