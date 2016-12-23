@@ -180,6 +180,5 @@
     width: 20px;
     height:20px;
     margin: 11px 0px;
-    margin-left:20px;
-    
+    margin-left:20px;  
 }

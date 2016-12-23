@@ -5,42 +5,55 @@
             <view class="weui-search-bar__form">
                 <view class="weui-search-bar__box">
                     <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
-                    <input type="text" class="weui-search-bar__input" placeholder="搜索" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" />
+                    <input type="text" class="weui-search-bar__input" placeholder="搜索" value="{{inputVal}}" bindinput="inputTyping" bindfocus="inpuFocus" bindblur="inpuBlur"/>
                     <view class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" bindtap="clearInput">
                         <icon type="clear" size="14"></icon>
                     </view>
                 </view>
-                <label class="weui-search-bar__label" hidden="{{inputShowed}}" bindtap="showInput">
+                <!--<label class="weui-search-bar__label" hidden="{{inputShowed}}" bindtap="showInput">
                     <icon class="weui-icon-search" type="search" size="14"></icon>
                     <view class="weui-search-bar__text">搜索</view>
-                </label>
+                </label>-->
             </view>
-            <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="hideInput">取消</view>
+            <!--<view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="hideInput">取消</view>-->
         </view>
-        <view class="weui-cells searchbar-result" wx:if="{{inputVal.length > 0}}">
-            <navigator url="" class="weui-cell" hover-class="weui-cell_active">
+
+        <!--关键字推荐栏目-->
+        <view class="weui-cells searchbar-result" hidden="{{!searchResultShowed}}">
+            <block wx:for="{{searchKey}}">
+                <navigator url="" class="weui-cell" hover-class="weui-cell_active"
+                catchtap="eventBase"  data-action="btnShortcut" data-keyword="{{item}}">
+                    <view class="weui-cell__bd">
+                        <view>{{item}}</view>
+                    </view>
+                </navigator>
+            </block>
+            <navigator url="" class="weui-cell" hover-class="weui-cell_active"
+                catchtap="eventBase"  data-action="btnShortcut" data-keyword="">
                 <view class="weui-cell__bd">
-                    <view>实时搜索文本</view>
-                </view>
-            </navigator>
-            <navigator url="" class="weui-cell" hover-class="weui-cell_active">
-                <view class="weui-cell__bd">
-                    <view>实时搜索文本</view>
-                </view>
-            </navigator>
-            <navigator url="" class="weui-cell" hover-class="weui-cell_active">
-                <view class="weui-cell__bd">
-                    <view>实时搜索文本</view>
-                </view>
-            </navigator>
-            <navigator url="" class="weui-cell" hover-class="weui-cell_active">
-                <view class="weui-cell__bd">
-                    <view>实时搜索文本</view>
+                    <view>更多表情，尽在乾坤袋首页</view>
                 </view>
             </navigator>
         </view>
     </view>
 
+    <!--首页全选项-->
+    <view class="main">
+        <block wx:for-items="{{tagList}}"  wx:for-item="tag">
+            <view class="page__hd">
+                <view class="page__title">{{tag.parent.name}}</view>
+            </view>
+            <view class=" page__bd_spacing" >
+                <view class="weui-flex wrap">
+                    <block wx:for-items="{{tag.sub}}"  wx:for-item="sub">
+                        <view  class="placeholder-1" catchtap="eventBase"  data-action="btnShortcut"
+                    data-keyword="{{sub.name}}">{{sub.name}}</view>
+                    </block>
+                </view>
+             </view>
+        </block>
+    </view>
+    
     <!--搜索栏-->
      <!--<view class="search" >
         <view >

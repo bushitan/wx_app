@@ -34,6 +34,7 @@ Page({
     //页面渲染数据
     emoticon:[],
     category:[],
+    tagList:[],
 
     //touch选择对象
     selectEmoticon:{id:"",name:"",img_url:""}, //预备编辑的图片
@@ -42,7 +43,9 @@ Page({
 
 
      inputShowed: false,
-      inputVal: "",
+     inputVal: "",
+     searchKey:["搞笑","运动","笑屎了","老司机"],
+     searchResultShowed:false,
   },
 
   /** Page:public 基础事件
@@ -85,10 +88,10 @@ Page({
   },
 
 
-  inputBlur:function(e){
-      var value = e.detail.value
-      GLOBAL_PAGE.setData({keyword:value})
-  },
+  // inputBlur:function(e){
+  //     var value = e.detail.value
+  //     GLOBAL_PAGE.setData({keyword:value})
+  // },
 
 
   /**
@@ -123,11 +126,16 @@ Page({
   searchShortcut:function(e){
     
     GLOBAL_PAGE.setData({
-      keyword:e.currentTarget.dataset.keyword
+      keyword:e.currentTarget.dataset.keyword,
+      inputVal:e.currentTarget.dataset.keyword,
+      inputShowed:true,
+      searchResultShowed:false,
     })
     GLOBAL_PAGE.searchBtn();
 
   },
+
+
 
   /** 3 点击表情，悬浮菜单
    */
@@ -230,6 +238,8 @@ Page({
         success: function(res) {
           var object = res.data
           if(object.status == "true"){
+              GLOBAL_PAGE.setData({category:res.data.category_list})
+              GLOBAL_PAGE.createTag(res.data.category_list)
               var c_list = []
               for (var i=0;i< res.data.category_list.length;i++)
               {
@@ -247,6 +257,30 @@ Page({
         View.Switch.Off("displayLoading")
         View.Switch.Work()
     }, 300)
+  },
+
+  createTag:function(category){
+      var _cat = category
+      var tag = []
+      var parent = [],sun_name=[]
+      for(var i=0;i<_cat.length;i++)
+        if(_cat[i].parent_id ==  null)
+          tag.push({
+            "parent":_cat[i],
+            "sub":[]
+          })
+          
+      for(var i=0;i<_cat.length;i++)
+        for(var j=0;j<tag.length;j++)
+          if( _cat[i].parent_id == tag[j].parent.category_id)
+            tag[j].sub.push(_cat[i])
+              //  parent_name.push(_cat[i].name)
+      
+      console.log(tag)
+
+      GLOBAL_PAGE.setData({
+        tagList:tag
+      })
   },
 
   onHide:function(){
@@ -306,10 +340,83 @@ Page({
       });
   },
   inputTyping: function (e) {
-      this.setData({
+      GLOBAL_PAGE.setData({
           inputVal: e.detail.value
       });
-  }
+
+      var category = GLOBAL_PAGE.data.category
+      var inputVal = e.detail.value
+      var searchKey = []
+      for (var i=0;i< category.length;i++)
+      { 
+          console.log(inputVal,category[i].name ,  category[i].name.indexOf(inputVal))
+          if(category[i].name.indexOf(inputVal) != -1)
+              searchKey.push(category[i].name)  
+          // c_list.push(category[i].name)  
+      }
+
+      GLOBAL_PAGE.setData({
+          searchKey: searchKey
+      });
+      
 
 
+      // var input='这是一大段文本';
+      // var keys=['这是','这里是','文本','一'];
+      
+      // var prepareKeys=function(){
+      //   if(!prepareKeys.$map){
+      //     var map={};
+      //     var maxLength=0;
+      //     for(var i=0;i<keys.length;i++){
+      //       map[keys[i]]=1;
+      //       maxLength=Math.max(keys[i].length,maxLength);
+      //     }
+      //     prepareKeys.$map={
+      //       map:map,
+      //       length:maxLength
+      //       }
+      //     }
+      //   return prepareKeys.$map;
+      // }
+      
+      // var colorKeyword=function(str){
+      // var info=prepareKeys();
+      // var output=[];
+      // while(str){
+      //   var sub=str.substring(0,info.length);
+      //   str=str.substring(info.length);
+      //   while(!info.map[sub]&&sub){
+      //     str=sub.charAt(sub.length-1)+str;
+      //     sub=sub.slice(0,-1);
+      //     console.log(sub);
+      //   }
+      //   console.log('color',sub);
+      //     if(sub){
+      //       output.push('#',sub,'#');
+      //     }else{
+      //       output.push(str.charAt(0));
+      //       str=str.substring(1);
+      //     }
+      //   }
+      //   return output.join('');
+      // }
+      // colorKeyword(input);
+
+  },
+
+    // 输入框聚焦
+  inpuFocus:function(e){
+      GLOBAL_PAGE.setData({
+        searchResultShowed:true,
+    })
+  },
+
+  inpuBlur:function(e){
+      GLOBAL_PAGE.setData({
+        searchResultShowed:false,
+    })
+  },
+
+  
 })

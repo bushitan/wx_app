@@ -94,6 +94,20 @@ page{
     color: #cfcfcf;
 }
 
+.wrap{
+    flex-direction: row;
+    flex-wrap: wrap
+}
+.placeholder-1{
+    margin: 5px;
+    padding:0px 10px;
+    text-align: center;
+    background-color: #EBEBEB;
+    height: 2.3em;
+    line-height: 2.3em;
+    font-size: 14px;
+    color: #cfcfcf;
+}
 
 
 
