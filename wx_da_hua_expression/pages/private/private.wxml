@@ -2,7 +2,8 @@
 
 <view class="page" catchtap="eventBase" data-action="all">
     <view class="weui-flex page__bd_spacing category">
-        <view class="weui-flex__item all"> 
+        <!--<view class="weui-flex__item all"> -->
+        <view class=""> 
             <label catchtap="eventBase"  data-action="selectAllCategory"   class=" {{selectCategory.category_id == null ? 'select' : 'unselect'}}">全部</label> 
         </view>    
         <view class="weui-flex__item"> 
@@ -16,9 +17,9 @@
             <!--</view>-->
         </scroll-view>
         </view>
-        <view class="weui-flex__item intro"> 
+        <!--<view class="weui-flex__item intro"> 
             <image   src="../../images/icon_intro.png" ></image> 
-        </view>    
+        </view>    -->
     </view>
 
     <!--<view class="category">
@@ -68,33 +69,39 @@
             <view > 
                 <button size="mini" catchtap="eventBase" data-action="navigateToWatermark">水印</button>
                 <button size="mini" catchtap="eventBase" data-action="menuJoin">GIF拼接</button>
-                <button class="" type="primary"  catchtap="eventBase"                               data-action="menuShare"size="mini" >预览分享</button>
+                <button class="" type="primary"  catchtap="eventBase"                               data-action="menuShare"size="mini" >预览(右上角分享)</button>
             </view>
             <view class="weui-flex__item"> </view>
         </view>
 
         <!--按钮栏  mp4-->
         <view class="video2gif" hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}">
+            <!--<view class="weui-flex">
+                <view class="page__desc">截取视频片段，制作GIF(需设置GIF开始、持续时间)</view>
+            </view>    -->
             <view class="weui-flex">
                 <view class=""> 
                     <view class="weui-cells__title">开始时间：</view>
                 </view>    
                 <view class="weui-flex__item"> 
-                    <slider show-value value="50" min="1" max="100"/>
+                    <slider bindchange="starTimeChange" show-value value="0" min="0" max="{{selectEmoticon.duration}}"/>
                 </view>
             </view>
             <view class="weui-flex">
                 <view class=""> 
                     <view class="weui-cells__title">持续时间：</view>
-                    
                 </view>
                 <view class="weui-flex__item"> 
-                    <view><slider show-value value="6" min="1" max="6"/></view>
+                    <view><slider bindchange="durationTimeChange" show-value value="6" min="1" max="6"/></view>
                 </view>
             </view>
             <view class="weui-btn-area">
                 <button class="weui-btn" type="primary"  catchtap="eventBase" data-action="menuVideo2Gif">视频转GIF</button>
             </view>
+            <view class="weui-flex">
+                <view class="weui-flex__item page__desc" style=" text-align: center;">截取视频片段，制作GIF(需设置GIF开始、持续时间)</view>
+            </view>
+            
         </view>
     </view>
 
@@ -106,7 +113,8 @@
         <view class="weui-grids">
         <block wx:for-items="{{emoticon}}"  wx:for-item="emoticon">
             <navigator url="" class="emoticon-grid" hover-class="weui-grid_active"
-            catchtap="eventBase" data-action="onMenu"  mode="center" data-id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}" data-category_id="{{emoticon.category_id}}"  data-size="{{emoticon.size}}" data-static_url="{{emoticon.static_url}}"   data-yun_url="{{emoticon.yun_url}}" data-menu_type="{{emoticon.menu_type}}" >
+            catchtap="eventBase" data-action="onMenu"  mode="center" data-id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}" data-category_id="{{emoticon.category_id}}"  data-size="{{emoticon.size}}" data-static_url="{{emoticon.static_url}}"   data-yun_url="{{emoticon.yun_url}}" data-menu_type="{{emoticon.menu_type}}
+            data-width="{{emoticon.width}}" data-height="{{emoticon.height}}"  data-duration="{{emoticon.duration}}"  >
             <image class="emoticon-grid__icon" src="{{emoticon.static_url}}" background-size="cover"  />
            
                 <image wx:if="{{ emoticon.menu_type == 4 ? true :false}}" class="emoticon-grid__mark " src="../../images/mp4.png"></image>

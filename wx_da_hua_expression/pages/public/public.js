@@ -41,6 +41,10 @@ Page({
     selectCategory:{id:"",name:""},
 
 
+    indexShow:false,
+    shortcutShow:false,
+    emoticonShow:false,
+    loadShow:true,
 
      inputShowed: false,
      inputVal: "",
@@ -98,11 +102,17 @@ Page({
    * 1 根据keyword，搜索
    */
   searchBtn:function(){
+    //开启loading
+    GLOBAL_PAGE.setData({
+      indexShow:false,
+      shortcutShow:true,
+      emoticonShow:false,
+      loadShow:true,
+    }) 
+
     var _keyword = GLOBAL_PAGE.data.keyword
-    var url = Api.imgQuery() 
-    url = "http://127.0.0.1:8000/tag/img_query"
-    // var session = wx.getStorageSync(KEY.session) 
-    var session = "ds9"
+    var url = Api.tagImgQuery() 
+    var session = wx.getStorageSync(KEY.session) 
     //获取表情列表
      wx.request({
         url: url, //仅为示例，并非真实的接口地址
@@ -116,6 +126,14 @@ Page({
         success: function(res) {
           var object = res.data
           GLOBAL_PAGE.renderEmoticon(object.img_list)
+        },
+        complete:function(){
+            GLOBAL_PAGE.setData({
+              indexShow:false,
+              shortcutShow:true,
+              emoticonShow:true,
+              loadShow:false,
+            }) 
         }
       })
   },
@@ -131,7 +149,19 @@ Page({
       inputShowed:true,
       searchResultShowed:false,
     })
-    GLOBAL_PAGE.searchBtn();
+
+    if(e.currentTarget.dataset.keyword == "index")
+    {
+        
+        GLOBAL_PAGE.setData({
+          indexShow:true,
+          shortcutShow:false,
+          emoticonShow:false,
+          loadShow:false,
+        }) 
+    }
+    else
+      GLOBAL_PAGE.searchBtn();
 
   },
 
@@ -224,10 +254,10 @@ Page({
 
     //初始化关键字
     // GLOBAL_PAGE.setData({hotLabel:["默认目录","管理的哈哈","特技","疼"]})
-    GLOBAL_PAGE.setData({hotLabel:["老司机","管理的哈哈","特技","疼","意外","老司机","管理的哈哈","特技","疼","意外"]})
+    // GLOBAL_PAGE.setData({hotLabel:["老司机","管理的哈哈","特技","疼","意外","老司机","管理的哈哈","特技","疼","意外"]})
    
-    var url =   Api.categoryQuery()
-    url = "http://127.0.0.1:8000/tag/query/?session=ds9"
+    var url =   Api.tagQuery()
+    // url = "http://127.0.0.1:8000/tag/query/?session=ds9"
     //获取表情列表
      wx.request({
         url: url, //仅为示例，并非真实的接口地址
@@ -248,6 +278,14 @@ Page({
               GLOBAL_PAGE.setData({hotLabel:c_list})
    
           }
+        },
+        complete:function(){
+            GLOBAL_PAGE.setData({
+              indexShow:false,
+              shortcutShow:true,
+              emoticonShow:true,
+              loadShow:false,
+            }) 
         }
       })
 

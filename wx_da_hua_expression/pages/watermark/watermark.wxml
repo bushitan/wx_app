@@ -28,8 +28,8 @@
     <view class="page__bd_spacing">
         <view class="weui-flex">
             <block wx:for-items="{{grids}}" wx:key="{{index}}">
-                <view class="weui-flex__item" catchtap="color_change" data-color="{{item}}">
-                    <view class="color {{item}}"></view>
+                <view class="weui-flex__item {{ color == item ? 'select' : ''}}" catchtap="color_change" data-color="{{item}}">
+                    <view class="color {{item}} "></view>
                 </view>
             </block>
             
@@ -47,7 +47,7 @@
             </view>
         </view>
         
-        <view class="weui-flex">
+        <!--<view class="weui-flex">
             <view class=""> 
                 <view class="title">X：</view>
             </view>    
@@ -63,7 +63,7 @@
             <view class="weui-flex__item"> 
                 <slider bindchange="y_sliderchange" value="150"  min="0" max="500" show-value/>
             </view>
-        </view>
+        </view>-->
 
         <view class="weui-flex">
             <view class=""> 
@@ -76,13 +76,16 @@
     </view>  
 
     <view class="weui-btn-area">
-        <button class="weui-btn" type="primary"  bindtap="Create">确定</button>
+        <button class="weui-btn" type="primary"  bindtap="Create">预览（右上角分享）</button>
     </view>
 
 
-    <view id="input_view" style="position:absolute;left:{{offsetLeft}};top:{{offsetTop}};" >
+    <view id="input_view" style="position:absolute;left:{{offsetLeft}};top:{{offsetTop}}; border:1px dashed white;" 
+    catchtouchstart="touchstart" 
+    catchtouchmove="touchmove"
+    catchtouchend="touchend">
     <!--输入的字-->
-        <view style="font-size:{{font_size}};color:#ffffff;">{{word_mix}}</view>
+        <view style="font-size:{{font_size}};color:{{color}}; ">{{word_mix}}</view>
         <!--<input  id="myInput" bindchange="word_Change" value="{{word_mix}}"   />-->
     </view>
 </view>

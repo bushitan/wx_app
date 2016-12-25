@@ -29,7 +29,7 @@
                 </navigator>
             </block>
             <navigator url="" class="weui-cell" hover-class="weui-cell_active"
-                catchtap="eventBase"  data-action="btnShortcut" data-keyword="">
+                catchtap="eventBase"  data-action="btnShortcut" data-keyword="index">
                 <view class="weui-cell__bd">
                     <view>更多表情，尽在乾坤袋首页</view>
                 </view>
@@ -38,7 +38,7 @@
     </view>
 
     <!--首页全选项-->
-    <view class="main">
+    <view class="main" hidden="{{!indexShow}}">
         <block wx:for-items="{{tagList}}"  wx:for-item="tag">
             <view class="page__hd">
                 <view class="page__title">{{tag.parent.name}}</view>
@@ -53,29 +53,6 @@
              </view>
         </block>
     </view>
-    
-    <!--搜索栏-->
-     <!--<view class="search" >
-        <view >
-            <input class="input" 	placeholder="热图、丰兄" value="{{keyword}}" bindblur="inputBlur"/>
-            <icon class="btn" type="search" color="white" catchtap="eventBase"  data-action="btnSearch" />
-        </view>
-    </view>-->
-   <!--短语快捷键-->
-    <view class="shortcut">
-        <scroll-view scroll-x="true">
-            <block wx:for="{{hotLabel}}">
-                <button size="mini" catchtap="eventBase"  data-action="btnShortcut"
-                    data-keyword="{{item}}">{{item}}</button>
-            </block>
-            
-            <block wx:for="{{hotLabel}}">
-                <button size="mini" catchtap="eventBase"  data-action="btnShortcut"
-                    data-keyword="{{item}}">{{item}}</button>
-            </block>
-        </scroll-view>
-    </view>
-
    
     <!--public Menu菜单-->
     <view class="emoticon-menu" hidden="{{menuType != '0' ? false:true}}">
@@ -104,8 +81,18 @@
         </view>
     </view>
 
+    <!--短语快捷键-->
+    <view class="shortcut" hidden="{{!shortcutShow}}">
+        <scroll-view scroll-x="true">
+            <block wx:for="{{hotLabel}}">
+                <button size="mini" catchtap="eventBase"  data-action="btnShortcut"
+                    data-keyword="{{item}}">{{item}}</button>
+            </block>
+        </scroll-view>
+    </view>
+
     <!--emoticon表情显示列表-->
-    <scroll-view class="emoticon-wall" scroll-y="true" style="height:{{windowHeight}}px;" bindscrolltolower="eventBase" data-action="scrollTolower">
+    <scroll-view class="emoticon-wall" scroll-y="true" style="height:{{windowHeight}}px;" bindscrolltolower="eventBase" data-action="scrollTolower"  hidden="{{!emoticonShow}}">
         <view class="weui-grids">
         <block wx:for-items="{{emoticon}}"  wx:for-item="emoticon">
             <navigator url="" class="emoticon-grid" hover-class="weui-grid_active"
@@ -118,8 +105,8 @@
         </block>
         </view>
     </scroll-view>
-    
-    <view class="page__bd" hidden="true">
+
+    <view class="page__bd" hidden="{{!loadShow}}">
         <view class="weui-loadmore">
             <view class="weui-loading"></view>
             <view class="weui-loadmore__tips">正在加载</view>
@@ -132,34 +119,3 @@
         </view>
     </view>
 </view>
-
-
-
-
-<!--<import src="../../template/emoticon.wxml"/><!--menu模板-->
-<!--<import src="../../template/menu.wxml"/><!--menu模板-->
-<!--<view class="container" catchtap="eventBase" data-action="all">-->
-
-<!--<view class="container" >-->
-    <!--搜索栏-->
-     <!--<view class="search" >
-        <view >
-            <input class="input" 	placeholder="热图、丰兄" value="{{keyword}}" bindblur="inputBlur"/>
-            <icon class="btn" type="search" color="white" catchtap="eventBase"  data-action="btnSearch" />
-        </view>
-    </view>-->
-   <!--短语快捷键-->
-    <!--<view class="shortcut">
-        <scroll-view scroll-x="true">
-            <block wx:for="{{hotLabel}}">
-                <button size="mini" catchtap="eventBase"  data-action="btnShortcut"
-                    data-keyword="{{item}}">{{item}}</button>
-            </block>
-        </scroll-view>
-    </view>-->
-      <!--表情图-->
-    <!--<template is="emoticon" data="{{emoticon,windowHeight}}"></template>-->
-
-<!--点击表情，弹出菜单-->
-    <!--<template is="menu" data="{{menuType,MENU_TYPE,menuWidth,menuHeight,selectEmoticon,pageName}}"></template>
-</view>-->

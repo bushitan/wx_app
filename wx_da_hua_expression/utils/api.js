@@ -192,6 +192,8 @@ function _categoryDelete(){
 	return host_url+category_delete;
 }	
 
+
+
 /*
 	10、查询目录
 	method:Post
@@ -203,6 +205,36 @@ var category_query = 'category/query/';
 function _categoryQuery(){
 	return host_url+category_query;
 }	
+
+/*
+	11、Tag目录
+
+ */
+var tag_query = 'tag/query/';
+function _tagQuery(){
+	return host_url+tag_query;
+}	
+
+/*
+	12、查Tag关键字，获取Img
+
+ */
+var tag_img_query = 'tag/img_query/';
+function _tagImgQuery(){
+	return host_url+tag_img_query;
+}	
+
+/*
+	13、绑定Tag和Img
+
+ */
+var tag_img_add = 'tag/img_add/';
+function _tagImgAdd(){
+	return host_url+tag_img_add;
+}	
+
+
+
 
 /*
 	11、添加用户
@@ -256,6 +288,10 @@ module.exports = {
 	categoryDelete:_categoryDelete,
 	categoryQuery:_categoryQuery,
 	
+	//标签查询
+	tagQuery:_tagQuery,
+	tagImgQuery:_tagImgQuery,
+	tagImgAdd:_tagImgAdd,
 	
 	//用户接口
 	userAdd:_userAdd,

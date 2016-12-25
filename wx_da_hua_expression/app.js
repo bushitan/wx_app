@@ -31,3 +31,9 @@ App({
     },
 })
 
+// ,{
+//       "pagePath": "pages/manage/manage",
+//       "text": "管理",
+//       "iconPath":"images/icon_smile.png",
+//       "selectedIconPath":"images/icon_big_hot.png"
+//     }

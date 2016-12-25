@@ -29,6 +29,10 @@ Page({
       first:"http://7xsark.com1.z0.glb.clouddn.com/0_20161106135820.gif",
       seconde:"http://7xsark.com1.z0.glb.clouddn.com/9_20161123100806.gif"},
 
+    //video 控制
+    startTime:0,
+    durationTime:6,
+
     // 控制菜单上架
     // menuType:"m-down",  //m-up  m-down
     MENU_TYPE:Render.menu.TYPE,
@@ -316,6 +320,9 @@ Page({
         size:e.currentTarget.dataset.size,
         static_url:e.currentTarget.dataset.static_url,
         yun_url:e.currentTarget.dataset.yun_url,
+        width:e.currentTarget.dataset.width,
+        height:e.currentTarget.dataset.height,
+        duration:e.currentTarget.dataset.duration,
         }
     })
 
@@ -507,6 +514,18 @@ Page({
   },
 
 
+  starTimeChange:function(e){
+    GLOBAL_PAGE.setData({
+      startTime:e.detail.value 
+    })
+  },
+
+  durationTimeChange:function(e){
+     GLOBAL_PAGE.setData({
+      durationTime:e.detail.value 
+    })
+  },
+   
   /** 8 菜单-视频转GIF */
   menuVideo2Gif:function(){
       //改变上传btn状态为
@@ -517,6 +536,8 @@ Page({
           data:{
             'session': wx.getStorageSync(Key.session),
             "video_url":GLOBAL_PAGE.data.selectEmoticon.img_url,
+            "start_time":GLOBAL_PAGE.data.startTime,
+            "duration_time":GLOBAL_PAGE.data.durationTime,
           },
           success: function(res){
               var data = res.data
@@ -811,7 +832,10 @@ Page({
 
    //导航：水印页面
   navigateToWatermark: function(e) {
-    var url = '../watermark/watermark?imgurl=' + GLOBAL_PAGE.data.selectEmoticon.yun_url
+    var url = '../watermark/watermark?imgurl=' + GLOBAL_PAGE.data.selectEmoticon.yun_url 
+    + "&width=" + GLOBAL_PAGE.data.selectEmoticon.width 
+    + "&height=" + GLOBAL_PAGE.data.selectEmoticon.height 
+
     wx.navigateTo({
       url: url
     })
@@ -854,125 +878,5 @@ Page({
 })
 
 
-
-
-
-
-  //上传图片
-  // uploadImage:function() {
-    
-  //   console.log("chooseImage")
-  //   //  GLOBAL_PAGE.setData({isUpload:true})
-  //   //上传图片
-
-  //   wx.chooseImage({
-  //     count: 1, 
-  //     success: function(res) {
-  //       var tempFilePaths = res.tempFilePaths
-  //       console.log("uploadImg")
-  //       console.log(tempFilePaths[0])
-
-  //       //改变上传btn状态为
-  //       GLOBAL_PAGE.setData({isUpload:true})
-
-  //       wx.uploadFile({
-  //         url: Api.uploadImg(), 
-  //         filePath: tempFilePaths[0],
-  //         name: 'file',
-  //         header: {
-  //           "Content-Type": "multipart/form-data"  
-  //         },
-  //         formData:{
-  //           'session': wx.getStorageSync(Key.session)
-  //         },
-  //         success: function(res){
-  //           var data = JSON.parse(res.data)
-  //           if(data.status == "true")
-  //           {
-  //             var e = wx.getStorageSync(Key.emoticon)
-  //             e.push(data.img)
-  //             wx.setStorageSync(Key.emoticon,e)
-  //             GLOBAL_PAGE.renderEmoticon()
-
-  //             wx.showToast({
-  //                 title: '上传图片成功',
-  //                 icon: 'success',
-  //                 duration: 700
-  //             })
-  //           } 
-  //         },
-  //         fail:function(res){
-  //           console.log("chooseImage fail")
-  //           var data = res.data
-  //           console.log(res)
-  //         },
-  //         complete:function(res) { 
-  //            GLOBAL_PAGE.setData({isUpload:false})
-  //         },
-  //       })
-  //     },
-  //     fail:function(res){
-  //       console.log(res)
-  //     }
-  //   })
-  // },
-  
-  //上传视频
-  // uploadVideo : function() {
-  //     wx.chooseVideo({
-  //         sourceType: ['album','camera'],
-  //         maxDuration: 60,
-  //         camera: ['front','back'],
-  //         success: function(res) {
-
-  //           var tempFilePath = res.tempFilePath
-  //           //改变上传btn状态为
-  //           GLOBAL_PAGE.setData({isUpload:true})
-  //           //开始上传
-  //           wx.uploadFile({
-  //             url: Api.uploadImg(), 
-  //             filePath: tempFilePath,
-  //             name: 'file',
-  //             header: {
-  //               "Content-Type": "multipart/form-data"  
-  //             },
-  //             formData:{
-  //               'session': wx.getStorageSync(Key.session)
-  //             },
-  //             success: function(res){ //上传成功
-  //               console.log(res)
-  //               var data = JSON.parse(res.data)
-  //               console.log(data)
-  //               if(data.status == "true")
-  //               {
-  //                 var e = wx.getStorageSync(Key.emoticon)
-  //                 e.push(data.img)
-  //                 wx.setStorageSync(Key.emoticon,e)
-  //                 GLOBAL_PAGE.renderEmoticon()
-
-  //                 wx.showToast({
-  //                     title: '上传图片成功',
-  //                     icon: 'success',
-  //                     duration: 700
-  //                 })
-  //               } 
-  //             },
-  //             fail:function(res){
-  //               console.log("chooseVideo fail")
-  //               var data = res.data
-  //               console.log(res)
-  //             },
-  //             complete:function(res) { 
-  //               GLOBAL_PAGE.setData({isUpload:false})
-  //             },
-  //           })
-  //           console.log(res.tempFilePath)
-  //           GLOBAL_PAGE.setData({
-  //               src: res.tempFilePath
-  //           })
-
-  //         }
-  //     })
-  // },
 
 

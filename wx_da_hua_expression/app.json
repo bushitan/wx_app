@@ -1,8 +1,8 @@
 {
   "pages":[
-    "pages/public/public",
     "pages/private/private",
     "pages/watermark/watermark",
+    "pages/public/public",
     "pages/category/category",
     "pages/join/join",
     "pages/manage/manage",
@@ -28,11 +28,6 @@
     },{
       "pagePath": "pages/public/public",
       "text": "热图",
-      "iconPath":"images/icon_smile.png",
-      "selectedIconPath":"images/icon_big_hot.png"
-    },{
-      "pagePath": "pages/manage/manage",
-      "text": "管理",
       "iconPath":"images/icon_smile.png",
       "selectedIconPath":"images/icon_big_hot.png"
     }]

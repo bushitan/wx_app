@@ -194,14 +194,17 @@
 
 .color{
     margin: 5px;
-    padding: 0 10px;
+    padding: 5px 10px;
     text-align: center;
     /*background-color: #EBEBEB;*/
     height: 32px;
     /*line-height: 2.3em;*/
     color: #cfcfcf;
+}
+.select {
     border: 1rpx solid #D9D9D9;
 }
+
 
 .white{
     background-color: white;

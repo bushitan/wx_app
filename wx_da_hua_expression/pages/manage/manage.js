@@ -22,7 +22,7 @@ Page({
     console.log(tag_id,img_id)
 
     wx.request({
-        url: "http://127.0.0.1:8000/tag/img_add/" , //仅为示例，并非真实的接口地址
+        url: API.tagImgAdd() , //仅为示例，并非真实的接口地址
         method:"GET",
         data: {
           session: wx.getStorageSync(KEY.session),
@@ -118,7 +118,7 @@ Page({
 
       //获取tage
       wx.request({
-        url: "http://127.0.0.1:8000/tag/query/?session=1" , //仅为示例，并非真实的接口地址
+        url: API.tagQuery(), //仅为示例，并非真实的接口地址
         method:"GET",
         data: {
           session: wx.getStorageSync(KEY.session) ,

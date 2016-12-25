@@ -17,6 +17,7 @@ Page({
     
     word_mix:"七牛云存储",
     font_size:"47rpx",
+    color:"white",
     offsetLeft: "278rpx", //增加128rpx
     offsetTop: "150rpx",
     editorSuccess:"",
@@ -133,7 +134,10 @@ Page({
     var fill = e.currentTarget.dataset.color
     var watermark = GLOBAL_PAGE.data.watermark
     watermark.fill = BASE64.encode(fill)
-    GLOBAL_PAGE.setData({watermark:watermark})
+    GLOBAL_PAGE.setData({
+      watermark:watermark,
+      color:fill
+    })
   },
 
   dissolve_sliderchange: function(e) {
@@ -179,6 +183,37 @@ Page({
     watermark.dy = e.detail.value
     GLOBAL_PAGE.setData({watermark:watermark})
   },
+
+  //touch时间改变x、y位置
+  touchstart:function(event){
+  
+  },
+  touchmove:function(event){
+    // console.log(event.currentTarget.id)
+    // console.log(globle_page.data.offsetLeft,globle_page.data.offsetTop)
+
+    var watermark = GLOBAL_PAGE.data.watermark
+    var ratio = 750 / app.globalData.windowWidth 
+    // watermark.dx = parseInt( event.touches[0].clientX * ratio )
+    // watermark.dy =  parseInt(event.touches[0].clientY * ratio )
+    watermark.dx =event.touches[0].clientX 
+    watermark.dy = event.touches[0].clientY 
+
+    GLOBAL_PAGE.setData({
+    // isTrue : !this.data.isTrue,
+      offsetLeft:event.touches[0].clientX + "px",
+      offsetTop:event.touches[0].clientY + "px",
+      watermark:watermark
+    })
+    // console.log("m:"+event.touches[0].clientX)
+    // console.log("m:"+event.touches[0].clientY)
+
+    
+  },
+  touchend:function(event){
+
+  },
+
 
   /**
    * 根据水印数据(watermarkData)，上传后台合成
@@ -266,8 +301,13 @@ Page({
     console.log(options.imgurl)
     var watermark = GLOBAL_PAGE.data.watermark
     watermark.img_url = options.imgurl
+
+
+    
     this.setData({
-      watermark:watermark //更改背景图
+      watermark:watermark, //更改背景图
+      imgWidth:options.width,
+      imgHeight:options.height,
     })
     
 
