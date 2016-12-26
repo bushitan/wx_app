@@ -64,7 +64,7 @@
         </view>
 
         <!--按钮栏  jpg/gif-->
-        <view class="weui-flex" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" >
+        <view class="weui-flex " hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" >
             <view class="weui-flex__item"> </view>
             <view > 
                 <button size="mini" catchtap="eventBase" data-action="navigateToWatermark">水印</button>
@@ -74,6 +74,48 @@
             <view class="weui-flex__item"> </view>
         </view>
 
+          <!--按钮栏  join拼接-->
+          <view class="join-new" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}">
+            <view class="weui-flex">
+                <view class="weui-flex__item"></view>
+                <view >
+                    <image class="back" src="../../images/ic_action_undo.png" />
+                    
+                </view>
+            </view>
+                <view class="weui-flex "  >
+                    <view class="weui-flex__item"><button size="mini" catchtap="eventBase" data-action="">设为第一幅</button> </view>
+                    <view class="weui-flex__item"> 
+                        <button size="mini" catchtap="eventBase" data-action="">设为第二幅</button>
+                    </view>
+                    <view class="weui-flex__item">
+                    <button size="mini" catchtap="eventBase" data-action="" type="primary" >拼接</button> </view>
+                </view>
+                <view class="weui-flex " hidden="" >
+                    <view class="weui-flex__item">  <image  class= "image" src="http://image.12xiong.top/12_20161226084253.gif?imageMogr2/thumbnail/170x170" mode="aspectFit" ></image> 
+                    </view>
+                    <view class="weui-flex__item"> 
+                        <image  class= "image" src="http://image.12xiong.top/12_20161226084358.gif?imageMogr2/thumbnail/170x170" mode="aspectFit" ></image>
+                    </view>
+                    <view class="weui-flex__item"> <image  class= "image" src="http://image.12xiong.top/12_20161226084407.gif?imageMogr2/thumbnail/170x170" ></image></view>
+                </view>
+                <!--<view class="weui-flex " hidden="" >
+                    <view class="weui-flex__item">   
+                        <image class="first" src="{{joinImg.first}}" mode="aspectFit"  ></image>
+                        <image class="seconde" src="{{joinImg.seconde}}" mode="aspectFit"  ></image>
+                    </view>
+                 </view>-->
+
+            <!--<view class="join" wx:if="{{isJoin}}"  catchtap="eventBase"  data-action="joinCancel" >
+        
+                <icon type="success" class="confirm btn" size="42" catchtap="eventBase"  data-action="joinConfirm"></icon>
+                <image class="first" src="{{joinImg.first}}" mode="aspectFit" 
+                ></image>
+                <image class="seconde" src="{{joinImg.seconde}}" mode="aspectFit" 
+                ></image>
+            </view>-->
+        </view>
+        
         <!--按钮栏  mp4-->
         <view class="video2gif" hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}">
             <!--<view class="weui-flex">
@@ -149,16 +191,8 @@
     </view>
     <!--gif合成-->
     <view class="join" wx:if="{{isJoin}}"  catchtap="eventBase"  data-action="joinCancel" >
-        <!--图片、视频上传-->
-        <!--<icon type="cancel" class="cancel btn" size="40"  catchtap="eventBase"  data-action="joinCancel"></icon>-->
+    
         <icon type="success" class="confirm btn" size="42" catchtap="eventBase"  data-action="joinConfirm"></icon>
-        <!--<view class="cancel btn"  catchtap="eventBase"  data-action="joinCancel">
-            ×
-        </view>
-        <view class="confirm btn"  catchtap="eventBase"  data-action="joinConfirm">
-           拼
-        </view>-->
-        <!--<view class="img">-->
             <image class="first" src="{{joinImg.first}}" mode="aspectFit" 
               ></image>
             <image class="seconde" src="{{joinImg.seconde}}" mode="aspectFit" 

@@ -136,7 +136,22 @@
     /*background-color: #24292c;*/
 }
 
+.join-new{
+}
+.join-new .back{
+    width:23px;
+    height:23px;
+}
+.join-new .image{
+    width:150rpx;
+    height:150rpx;
+    background-color: #EBEBEB;
+}
 
+.join-new view{
+     justify-content: center;align-items:center;
+     text-align: center;
+}
 .category {
     height:42px;
     line-height:42px;
