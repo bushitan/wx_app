@@ -69,7 +69,7 @@
     top: 42px;
     /*background-color: rgba(237,237,237,0.4);*/
     background-color: rgba(36,41,44,0.4);
-    
+    z-index: 1000;
     /*#ededed;*/
     
 }
@@ -196,4 +196,13 @@
     height:20px;
     margin: 11px 0px;
     margin-left:20px;  
+}
+
+.category__set{
+    margin: 5px;
+    margin-top: 5px;
+    padding: 2px;
+    background-color: #10aeff;
+    border-radius:  5px;
+    color: white;
 }

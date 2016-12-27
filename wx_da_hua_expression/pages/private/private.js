@@ -26,8 +26,14 @@ Page({
     //join数据
     joinImg:{
       step:1,
-      first:"http://7xsark.com1.z0.glb.clouddn.com/0_20161106135820.gif",
-      seconde:"http://7xsark.com1.z0.glb.clouddn.com/9_20161123100806.gif"},
+      status:1, // 1 准备状态 2 用户已操作 3 正在上传 
+      first:"http://image.12xiong.top/12_20161226084253.gif?imageMogr2/thumbnail/170x170",
+      seconde:"http://image.12xiong.top/12_20161226084358.gif?imageMogr2/thumbnail/170x170",
+      resualt:"http://image.12xiong.top/12_20161226084407.gif?imageMogr2/thumbnail/170x170",
+      resualt_alert:"http://image.12xiong.top/12_20161226084358.gif?imageMogr2/thumbnail/170x170",
+    },
+
+    joinShow:false,
 
     //video 控制
     startTime:0,
@@ -76,8 +82,8 @@ Page({
       // 表情功能菜单
       "onMenu":function(){ View.Switch.On("displayMenu") },//btn打开菜单
       "navigateToWatermark":function(){ View.Switch.Off("displayMenu") },
-      "menuMoveCategory":function(){ GLOBAL_PAGE.setData({menuType:0}) },
-      "menuJoin":function(){ GLOBAL_PAGE.setData({menuType:0}) },
+      "menuMoveCategory":function(){  },
+      "menuJoin":function(){  },
 
       //基本view:遮罩、All
       "mask":function(){View.Switch.OffAll()}, //公共透明遮罩
@@ -416,6 +422,7 @@ Page({
                                 icon: 'success',
                                 duration: 700
                             })
+                            GLOBAL_PAGE.setData({menuType:0})
                         }
                     }
                 })
@@ -425,7 +432,7 @@ Page({
              */
         },
         complete:function(res) { 
-          GLOBAL_PAGE.setData({menuType:0})
+          
         }
     })
     //删除后，menu框隐藏
@@ -569,27 +576,47 @@ Page({
 
   /** 9 join 拼接 */
   menuJoin:function(){
-      GLOBAL_PAGE.setData({isJoin:true})
-      var _join = GLOBAL_PAGE.data.joinImg 
-      // var _url = GLOBAL_PAGE.data.selectEmoticon.img_url
-      var _url = GLOBAL_PAGE.data.selectEmoticon.yun_url
-      
-      if (_join.step % 2 == 1)
-        _join.first = _url
-      else
-        _join.seconde = _url
-
-      _join.step ++ 
-      GLOBAL_PAGE.setData({isJoin:true,joinImg:_join})
-
+      GLOBAL_PAGE.setData({joinShow:true})
   },
 
+  //10 设置join的的1，2幅图片
+  joinSet:function(e){
+      var action  = e.currentTarget.dataset.action
+      var joinImg = GLOBAL_PAGE.data.joinImg 
+      var select = GLOBAL_PAGE.data.selectEmoticon 
+
+
+
+      if (joinImg.status == 1)
+          joinImg.status = 2
+      if (action == "1"){
+          if ( select.img_url == joinImg.seconde)
+              change()
+          else
+              joinImg.first = select.img_url
+      }
+          
+      if (action == "2") 
+          if ( select.img_url == joinImg.first)
+              change()
+          else
+              joinImg.seconde = select.img_url
+      
+      GLOBAL_PAGE.setData({joinImg:joinImg})
+
+      //交换图片1和2的位置
+      function change(){
+          var temp = joinImg.first
+          joinImg.first = joinImg.seconde
+          joinImg.seconde = temp
+      }
+  },
 
   joinCancel:function(){
-      GLOBAL_PAGE.setData({isJoin:false})
+      GLOBAL_PAGE.setData({joinShow:false})
   },
   joinConfirm:function(){
-    GLOBAL_PAGE.setData({isJoin:false}) //关闭join
+    // GLOBAL_PAGE.setData({isJoin:false}) //关闭join
     GLOBAL_PAGE.setData({isUpload:true}) //打开上传
 
     wx.request({
@@ -604,12 +631,19 @@ Page({
             console.log(data)
             if(data.status == "true")
             {
+              //渲染图片
               var e = wx.getStorageSync(Key.emoticon)
               e.push(data.img)
               wx.setStorageSync(Key.emoticon,e)
               GLOBAL_PAGE.renderEmoticon()
+
+              //成功显示图片
+              var joinImg = GLOBAL_PAGE.data.joinImg 
+              joinImg.resualt =  data.img.yun_url
+              GLOBAL_PAGE.setData({joinImg:joinImg})
+
               wx.showToast({
-                  title: 'Gif拼接成功',
+                  title: '拼接成功,保存在默认目录',
                   icon: 'success',
                   duration: 700
               })
@@ -620,7 +654,7 @@ Page({
             var data = res.data
             console.log(res)
             wx.showToast({
-                title: 'Gif拼接失败',
+                title: '网路连接失败，请重试',
                 icon: 'success',
                 duration: 700
             })
