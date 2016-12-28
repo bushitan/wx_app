@@ -13,12 +13,12 @@ Page({
   data: {
     pageName: "private",
     //loading框
-    hidden: false,
+    loadShow: true,
     
-    //上传控制
+    //显示控制
     isUpload:false,
-    isJoin:false,
-    isMove:false,
+    selectCategoryShow:false,
+    joinShow:false, //显示拼接框
 
     // 上传图片数量
     uploadNum:{count:9,finish:0},
@@ -33,14 +33,11 @@ Page({
       resualt_alert:"http://image.12xiong.top/12_20161226084358.gif?imageMogr2/thumbnail/170x170",
     },
 
-    joinShow:false,
-
     //video 控制
     startTime:0,
     durationTime:6,
 
     // 控制菜单上架
-    // menuType:"m-down",  //m-up  m-down
     MENU_TYPE:Render.menu.TYPE,
     menuType:"0",
     menuWidth:0,
@@ -58,126 +55,53 @@ Page({
     selectEmoticon:{id:"",name:"",img_url:"",size:""}, //预备编辑的图片
     selectCategory:{id:"",name:""},
     
-    src:'',
   },
 
-  /** No.2
-   * Page:private 基础事件
-   * 1、wxml的catchtap全触发eventBase
-   * 2、eventDisplay:执行view的显示/隐藏
-   * 3、eventListen:根据data-actiondata-action，确定执行的事件
-   */
-  eventBase:function(e){
-    GLOBAL_PAGE.eventListen(e)
-    GLOBAL_PAGE.eventDisplay(e.currentTarget.dataset.action)
-  },
 
-  /**No2.1
-   * 触发view的隐藏显示
-   */
-  eventDisplay:function(action){
-    var _display = {
-      "navigateToCategory":function(){View.Switch.Off("displayCategory","displayMask")},//设置目录，关闭目录、遮罩
-      "navigateToPainter":function(){ View.Switch.Off("displayUpload","displayMask") },//btn上传图片，关闭上传、遮罩
-      // 表情功能菜单
-      "onMenu":function(){ View.Switch.On("displayMenu") },//btn打开菜单
-      "navigateToWatermark":function(){ View.Switch.Off("displayMenu") },
-      "menuMoveCategory":function(){  },
-      "menuJoin":function(){  },
+  //1 关闭所有悬浮框
+  hiddenAll:function(){GLOBAL_PAGE.setData({menuType:0})},
 
-      //基本view:遮罩、All
-      "mask":function(){View.Switch.OffAll()}, //公共透明遮罩
-      "all":function(){ GLOBAL_PAGE.setData({menuType:0}) }, //公共透明遮罩
 
-      
-      "joinCancel":function(){}, //join关闭
-      "joinConfirm":function(){},//join确认
-    }
-    if (_display.hasOwnProperty(action))
-      _display[action]()
-    View.Switch.Work() //触发效果
-  },
-  eventListen:function(e){
-
-    var _eventDict = {
-      "navigateToCategory":GLOBAL_PAGE.navigateToCategory,
-      "navigateToPainter": GLOBAL_PAGE.navigateToPainter,
-      "navigateToWatermark": GLOBAL_PAGE.navigateToWatermark,
-      "onMenu": GLOBAL_PAGE.onMenu,
-      "menuShare": GLOBAL_PAGE.menuShare,
-      "menuDelete": GLOBAL_PAGE.menuDelete,
-      "menuMoveCategory": GLOBAL_PAGE.menuMoveCategory,
-      "menuResizeV2": GLOBAL_PAGE.menuResizeV2,
-      "menuVideo2Gif":GLOBAL_PAGE.menuVideo2Gif,
-      "menuJoin":GLOBAL_PAGE.menuJoin, //gif拼接
-
-      "btnUploadV2":GLOBAL_PAGE.btnUploadV2, //可以上传
-      "btnIsUpload":GLOBAL_PAGE.btnIsUpload, //上传中
-
-      "selectCategory":GLOBAL_PAGE.selectCategory,
-      "selectAllCategory":GLOBAL_PAGE.selectAllCategory,
-      "scrollTolower":GLOBAL_PAGE.scrollTolower,
-
-       "joinCancel":GLOBAL_PAGE.joinCancel, //join关闭
-       "joinConfirm":GLOBAL_PAGE.joinConfirm, //join确认
-    }
-
-    if (_eventDict.hasOwnProperty(e.currentTarget.dataset.action))
-      _eventDict[e.currentTarget.dataset.action](e) 
-  },
-
-  /** 1 选择所有目录 */
-  selectAllCategory:function(){
-    //选择全部，category_id == null
-    GLOBAL_PAGE.setData({
-      selectCategory:{category_id:null },
-    })
-    GLOBAL_PAGE.renderEmoticon()
-  },
-
-  /** 2 选择指定目录 */
+  /**2 选择指定目录 */
   selectCategory:function(e){
+    GLOBAL_PAGE.hiddenAll()//清除屏幕框
     var c_id = e.currentTarget.dataset.select_category_id
-    //改变目录
+    if (c_id == "") c_id = null  //c_id为空，全选
     GLOBAL_PAGE.setData({
-      selectCategory:{category_id:c_id },
+      selectCategory:{ //改变目录
+        category_id:c_id
+      },
     })
     //根据emoticone，更新表情
     GLOBAL_PAGE.renderEmoticon()
-
   },
 
 
-/** 3 Todo
+/** 3 表情滚动条
      * 1、传入该分类的总张数
      * 2、设置已获取张渚
      * 3、设置准备获取数量
      * 4、当准备获取量为0，提示"图片加载完毕"
      *  */
-  scrollTolower:function(){
+  emoticonScrollTolower:function(){
     console.log("scrollTolower")
   },
 
-   //新开发 目录最后点击“+”开关
-  btnUploadV2:function() {
+  //上传大类 4-1
+  btnUpload:function() {
      wx.showActionSheet({
       itemList: ['图片(GIF需要原图)', '小视频'],
-      // itemList: ['图片(GIF需要原图)'],
       success: function(res) {
         if (!res.cancel) {
           if(res.tapIndex == 0 || res.tapIndex =='0')
-            // GLOBAL_PAGE.uploadImage()
             GLOBAL_PAGE.uploadQiniuImage()
-            
           if(res.tapIndex == 1 || res.tapIndex =='1')
-            GLOBAL_PAGE.uploadQiniuVideo()
-            // GLOBAL_PAGE.uploadVideo()         
+            GLOBAL_PAGE.uploadQiniuVideo()  
         }
       }
     })
-
   },
-
+//正在上传 4-2
   btnIsUpload:function() {
     wx.showToast({
         title: '正在上传',
@@ -185,7 +109,7 @@ Page({
         duration: 700
     })
   },
-  //直传七牛云
+  //传图片 4-3
   uploadQiniuImage:function(){
       wx.chooseImage({
         count: 9, 
@@ -199,6 +123,7 @@ Page({
         }
       })
   },
+  //传视频 4-4
   uploadQiniuVideo:function(){
       wx.chooseVideo({
         sourceType: ['album','camera'],
@@ -215,6 +140,7 @@ Page({
       })
   },
 
+  //上传预处理 4-5
   uploadPrepare:function(method,path){
     var _method = method
     var _path = path
@@ -236,7 +162,7 @@ Page({
         }
       })
   },
-
+  //上传完成 4-6
   uploadCompelte:function(){
       var _uploadNum = GLOBAL_PAGE.data.uploadNum
       var _count = _uploadNum.count
@@ -247,13 +173,20 @@ Page({
         uploadNum:_uploadNum
       })
       if(_count == _finish)
-          GLOBAL_PAGE.setData({isUpload:false})
+      {
+        GLOBAL_PAGE.setData({isUpload:false})
+        wx.showToast({
+            title: '上传完成，添加至默认目录',
+            icon: 'success',
+            duration: 700
+        })
+      }
       else
         console.log( GLOBAL_PAGE.data.uploadNum)
         GLOBAL_PAGE.uploadFile( GLOBAL_PAGE.data.uploadNum.path[_finish])
         //todo 上传函数
   },
-
+  //正式上传 4-7
   uploadFile:function(file_path){
       var _type = file_path.split(".").pop()
       console.log(file_path)
@@ -278,7 +211,7 @@ Page({
                         'token': data.token,
                       },
                       success: function(res){
-                        console.log("上传七牛云成功")
+                        console.log("上传成功")
                         var data = JSON.parse(res.data);
                         console.log(data)
                         if(data.status == "true")
@@ -287,12 +220,6 @@ Page({
                           e.push(data.img)
                           wx.setStorageSync(Key.emoticon,e)
                           GLOBAL_PAGE.renderEmoticon()
-
-                          wx.showToast({
-                              title: '上传图片成功',
-                              icon: 'success',
-                              duration: 700
-                          })
                         } 
                       },
                       fail (error) {
@@ -310,7 +237,6 @@ Page({
               console.log(res)
           },
           complete:function(res) { 
-              // GLOBAL_PAGE.setData({isUpload:false})
           },
       })
   },
@@ -320,7 +246,7 @@ Page({
     //准备当前预备编辑的图片地址
     GLOBAL_PAGE.setData({
       selectEmoticon:{
-        id: e.currentTarget.dataset.id, 
+        img_id: e.currentTarget.dataset.img_id, 
         img_url:e.currentTarget.dataset.img_url,
         category_id:e.currentTarget.dataset.category_id,
         size:e.currentTarget.dataset.size,
@@ -329,21 +255,11 @@ Page({
         width:e.currentTarget.dataset.width,
         height:e.currentTarget.dataset.height,
         duration:e.currentTarget.dataset.duration,
-        }
+        },
+      menuType: e.currentTarget.dataset.menu_type
     })
-
-    
-    // 显示缩略图
-    GLOBAL_PAGE.setData({
-        menuType: e.currentTarget.dataset.menu_type
-    })
-
-    // if (e.currentTarget.offsetTop < 200)
-    //    GLOBAL_PAGE.setData({menuType:"m-down"})
-    // else
-    //    GLOBAL_PAGE.setData({menuType:"m-up"})
-
   },
+
   /** 5 菜单-分享 */
   menuShare:function(){
     // Menu.Option.Share( GLOBAL_PAGE.data.selectEmoticon )
@@ -393,7 +309,7 @@ Page({
                     method:"GET",
                     data: {
                       session: wx.getStorageSync(Key.session),
-                      img_id: GLOBAL_PAGE.data.selectEmoticon.id,
+                      img_id: GLOBAL_PAGE.data.selectEmoticon.img_id,
                       category_id:GLOBAL_PAGE.data.selectEmoticon.category_id,
                     },
                     success: function(res) {
@@ -443,7 +359,17 @@ Page({
     var list = []
     for (var i=0;i<GLOBAL_PAGE.data.category.length;i++)
       list.push(GLOBAL_PAGE.data.category[i].name)
-    
+
+    if (list.length >  1) //只有1个组，提示增加分组
+    {
+        wx.showToast({
+            title: '请按右上角 + 添加分组',
+            icon: 'loading',
+            duration: 1000
+        })
+        return 
+    }
+
     if (list.length <= 6 )
     {
         //竖排列表选取
@@ -459,19 +385,19 @@ Page({
         })
     }
     else{
-      GLOBAL_PAGE.setData({isMove:true}) 
+      GLOBAL_PAGE.setData({selectCategoryShow:true}) 
     }
    
   },
   
   closeMove:function(){
-    GLOBAL_PAGE.setData({isMove:false}) 
+    GLOBAL_PAGE.setData({selectCategoryShow:false}) 
   },
 
   buttonMove:function(e){
     var index = parseInt( e.currentTarget.dataset.index )
     GLOBAL_PAGE.moveCategory(index)
-    GLOBAL_PAGE.setData({isMove:false}) 
+    GLOBAL_PAGE.setData({selectCategoryShow:false}) 
   },
 
   moveCategory:function(tapIndex){
@@ -481,7 +407,7 @@ Page({
               method:"GET",
               data: {
                 session: wx.getStorageSync(Key.session),
-                img_id: GLOBAL_PAGE.data.selectEmoticon.id,
+                img_id: GLOBAL_PAGE.data.selectEmoticon.img_id,
                 old_category_id:GLOBAL_PAGE.data.selectEmoticon.category_id,
                 new_category_id: GLOBAL_PAGE.data.category[tapIndex].category_id,
               },
@@ -616,7 +542,6 @@ Page({
       GLOBAL_PAGE.setData({joinShow:false})
   },
   joinConfirm:function(){
-    // GLOBAL_PAGE.setData({isJoin:false}) //关闭join
     GLOBAL_PAGE.setData({isUpload:true}) //打开上传
 
     wx.request({
@@ -752,11 +677,11 @@ Page({
 
     
     // // 300ms后，隐藏loading
-    // setTimeout(function() {
-    //       GLOBAL_PAGE.setData({
-    //         hidden: true
-    //       })
-    // }, 300)
+    setTimeout(function() {
+          GLOBAL_PAGE.setData({
+            loadShow: false
+          })
+    }, 500)
   },
 
   login:function(){
@@ -886,6 +811,7 @@ Page({
   //导航：目录设置页面
   //param 当前目录
   navigateToCategory: function(e) {
+    //Todo 关闭所有页面
     var url = '../category/category'
     wx.navigateTo({
       url: url

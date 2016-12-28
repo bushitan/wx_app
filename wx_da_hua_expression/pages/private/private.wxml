@@ -1,90 +1,71 @@
 <!--latest.wxml-->
 
-<view class="page" catchtap="eventBase" data-action="all">
+<view class="page" catchtap="hiddenAll" >
+
+    <!--目录-->
     <view class="weui-flex page__bd_spacing category">
-        <!--<view class="weui-flex__item all"> -->
         <view class=""> 
-            <label catchtap="eventBase"  data-action="selectAllCategory"   class=" {{selectCategory.category_id == null ? 'select' : 'unselect'}}">全部</label> 
+            <label catchtap="selectCategory" data-select_category_id="" class=" {{selectCategory.category_id == null ? 'select' : 'unselect'}}">全部</label> 
         </view>    
         <view class="weui-flex__item"> 
             <scroll-view  scroll-x="true" >
                 <block wx:for="{{category}}" 
                     wx:for-item="c_name">
-                    <label catchtap="eventBase"  data-action="selectCategory" data-select_category_id="{{c_name.category_id}}"
+                    <label catchtap="selectCategory"  data-select_category_id="{{c_name.category_id}}"
                     class="{{selectCategory.category_id == c_name.category_id ? 'select' : 'unselect'}}">{{c_name.name}}</label>
                 </block>
-            <label catchtap="eventBase"  data-action="navigateToCategory">+</label>
-            <!--</view>-->
-        </scroll-view>
+            </scroll-view>
         </view>
-        <!--<view class="weui-flex__item intro"> 
-            <image   src="../../images/icon_intro.png" ></image> 
-        </view>    -->
+        <view class=""> 
+            <label catchtap="navigateToCategory" class="add" >+</label> 
+        </view> 
     </view>
-
-    <!--<view class="category">
-        <view catchtap="eventBase"  data-action="selectAllCategory" >
-            <label  class=" {{selectCategory.category_id == null ? 'select' : 'unselect'}}">全部</label> 
-        </view>
-        <scroll-view  scroll-x="true" >
-            <block wx:for="{{category}}" 
-                wx:for-item="c_name">
-                <label catchtap="eventBase"  data-action="selectCategory" data-select_category_id="{{c_name.category_id}}"
-                class="{{selectCategory.category_id == c_name.category_id ? 'select' : 'unselect'}}">{{c_name.name}}</label>
-            </block>
-            <label catchtap="eventBase"  data-action="navigateToCategory">+</label>
-        </scroll-view>
-        <image  src="../../images/icon_intro.png" ></image>
-    </view>-->
 
    
     <!--public Menu菜单-->  
     <view class="emoticon-menu"  hidden="{{menuType != '0' ? false:true}}">
-    <view class=" page__bd_spacing " >
-        <!--右上角菜单-->
-        <view class="weui-flex">
-            <view class="weui-flex__item"></view>
-            <view >
-                <icon type="cancel" catchtap="eventBase" data-action="menuDelete"/>
-                <!--<icon type="info"   catchtap="eventBase" data-action="menuMoveCategory"/>-->
-                <label class="category__set" catchtap="eventBase" data-action="menuMoveCategory">分组</label>
-            </view>
-        </view>
-        <!--emoticon显示框-->
-        <view class="weui-flex">
-            <view></view>
-            <view class="weui-flex__item"> 
-                <view class="placeholder">
-                        
-                    <image hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" class="weui-media-box__thumb" mode="aspectFit" src="{{selectEmoticon.img_url}}"  bindload="bindload"/>
-                    <video hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}" class="weui-media-box__thumb" src="{{selectEmoticon.img_url}}" catchtap="eventBase"></video>
-
+        <view class=" page__bd_spacing " >
+        
+            <!--右上角菜单-->
+            <view class="weui-flex">
+                <view class="weui-flex__item"></view>
+                <view >
+                    <icon type="cancel" catchtap="menuDelete"/>
+                    <label class="category__select" catchtap="menuMoveCategory" >分组</label>
                 </view>
             </view>
-            <view></view>
-        </view>
 
-        <!--按钮栏  jpg/gif-->
-        <view  hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" >
-            <view hidden="{{joinShow}}" class="weui-flex ">
-                <view class="weui-flex__item"> </view>
-                <view > 
-                    <button size="mini" catchtap="eventBase" data-action="navigateToWatermark">水印</button>
-                    <button size="mini" catchtap="eventBase" data-action="menuJoin">GIF拼接</button>
-                    <button class="" type="primary"  catchtap="eventBase"                               data-action="menuShare"size="mini" >预览(右上角分享)</button>
-                </view>
-                <view class="weui-flex__item"> </view>
-            </view>
-
-            <!--按钮栏  join拼接-->
-            <view class="join-new" hidden="{{!joinShow}}">
-                <view class="weui-flex">
-                    <view class="weui-flex__item"></view>
-                    <view >
-                        <image catchtap="joinCancel" class="back" src="../../images/ic_action_undo.png" />
+            <!--emoticon框 显示JPG或MP4-->
+            <view class="weui-flex">
+                <view class="weui-flex__item"> 
+                    <view class="placeholder">
+                        <image hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" class="weui-media-box__thumb" mode="aspectFit" src="{{selectEmoticon.img_url}}"  bindload="bindload"/>
+                        <video hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}" class="weui-media-box__thumb" src="{{selectEmoticon.img_url}}" catchtap="null"></video> <!--点击视频不关闭-->
                     </view>
                 </view>
-                    <view class="weui-flex "  >
+            </view>
+
+            <!--按钮栏  jpg/gif-->
+            <view  hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" >
+                <view class="weui-flex" hidden="{{joinShow}}" >
+                    <view class="weui-flex__item"> </view>
+                    <view > 
+                        <button size="mini" catchtap="navigateToWatermark" >水印</button>
+                        <button size="mini" catchtap="menuJoin" >GIF拼接</button>
+                        <button class="" type="primary" catchtap="menuShare" size="mini" >预览(右上角分享)</button>
+                    </view>
+                    <view class="weui-flex__item"> </view>
+                </view>
+
+                <!--按钮栏  join拼接-->
+                <view class="join-new" hidden="{{!joinShow}}">
+                    <view class="weui-flex">
+                        <view class="weui-flex__item"></view>
+                        <view >
+                            <image catchtap="joinCancel" class="back" src="../../images/ic_action_undo.png" />
+                        </view>
+                    </view>
+                    <view class="weui-flex ">
                         <view class="weui-flex__item">
                             <button size="mini" catchtap="joinSet" data-action="1">设为第一幅</button>
                         </view>
@@ -95,7 +76,7 @@
                             <button size="mini" disabled="{{isUpload}}" catchtap="joinConfirm" data-action="" type="primary" >拼接</button>
                         </view>
                     </view>
-                    <view class="weui-flex " hidden="" >
+                    <view class="weui-flex ">
                         <view class="weui-flex__item">  <image  class= "image" src="{{joinImg.first}}" mode="aspectFit" ></image> 
                         </view>
                         <view class="weui-flex__item"> 
@@ -103,74 +84,55 @@
                         </view>
                         <view class="weui-flex__item"> <image  class= "image" src="{{joinImg.resualt}}" ></image></view>
                     </view>
-                    <!--<view class="weui-flex " hidden="" >
-                        <view class="weui-flex__item">   
-                            <image class="first" src="{{joinImg.first}}" mode="aspectFit"  ></image>
-                            <image class="seconde" src="{{joinImg.seconde}}" mode="aspectFit"  ></image>
-                        </view>
-                    </view>-->
+                </view>
+            </view>
 
-                <!--<view class="join" wx:if="{{isJoin}}"  catchtap="eventBase"  data-action="joinCancel" >
-            
-                    <icon type="success" class="confirm btn" size="42" catchtap="eventBase"  data-action="joinConfirm"></icon>
-                    <image class="first" src="{{joinImg.first}}" mode="aspectFit" 
-                    ></image>
-                    <image class="seconde" src="{{joinImg.seconde}}" mode="aspectFit" 
-                    ></image>
-                </view>-->
+            <!--按钮栏  mp4-->
+            <view class="video2gif" hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}">
+                <view class="weui-flex">
+                    <view class=""> 
+                        <view class="weui-cells__title">开始时间：</view>
+                    </view>    
+                    <view class="weui-flex__item"> 
+                        <slider bindchange="starTimeChange" show-value value="0" min="0" max="{{selectEmoticon.duration}}"/>
+                    </view>
+                </view>
+                <view class="weui-flex">
+                    <view class=""> 
+                        <view class="weui-cells__title">持续时间：</view>
+                    </view>
+                    <view class="weui-flex__item"> 
+                        <view><slider bindchange="durationTimeChange" show-value value="6" min="1" max="6"/></view>
+                    </view>
+                </view>
+                <view class="weui-btn-area">
+                    <button class="weui-btn" type="primary"  catchtap="menuVideo2Gif" >视频转GIF</button>
+                </view>
+                <view class="weui-flex">
+                    <view class="weui-flex__item page__desc video2gif__des">截取视频片段，制作GIF(需设置GIF开始、持续时间)</view>
+                </view>
             </view>
         </view>
-        <!--按钮栏  mp4-->
-        <view class="video2gif" hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}">
-            <!--<view class="weui-flex">
-                <view class="page__desc">截取视频片段，制作GIF(需设置GIF开始、持续时间)</view>
-            </view>    -->
-            <view class="weui-flex">
-                <view class=""> 
-                    <view class="weui-cells__title">开始时间：</view>
-                </view>    
-                <view class="weui-flex__item"> 
-                    <slider bindchange="starTimeChange" show-value value="0" min="0" max="{{selectEmoticon.duration}}"/>
-                </view>
-            </view>
-            <view class="weui-flex">
-                <view class=""> 
-                    <view class="weui-cells__title">持续时间：</view>
-                </view>
-                <view class="weui-flex__item"> 
-                    <view><slider bindchange="durationTimeChange" show-value value="6" min="1" max="6"/></view>
-                </view>
-            </view>
-            <view class="weui-btn-area">
-                <button class="weui-btn" type="primary"  catchtap="eventBase" data-action="menuVideo2Gif">视频转GIF</button>
-            </view>
-            <view class="weui-flex">
-                <view class="weui-flex__item page__desc" style=" text-align: center;">截取视频片段，制作GIF(需设置GIF开始、持续时间)</view>
-            </view>
-            
-        </view>
-    </view>
-
     </view>  
 
 
     <!--emoticon表情显示列表-->
-    <scroll-view class="emoticon-wall" scroll-y="true" style="height:{{windowHeight}}px;" bindscrolltolower="eventBase" data-action="scrollTolower">
+    <scroll-view class="emoticon-wall" scroll-y="true" style="height:{{windowHeight}}px;" bindscrolltolower="emoticonScrollTolower" >
         <view class="weui-grids">
         <block wx:for-items="{{emoticon}}"  wx:for-item="emoticon">
-            <navigator url="" class="emoticon-grid" hover-class="weui-grid_active"
-            catchtap="eventBase" data-action="onMenu"  mode="center" data-id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}" data-category_id="{{emoticon.category_id}}"  data-size="{{emoticon.size}}" data-static_url="{{emoticon.static_url}}"   data-yun_url="{{emoticon.yun_url}}" data-menu_type="{{emoticon.menu_type}}
+            <view url="" class="emoticon-grid" hover-class="weui-grid_active"
+            catchtap="onMenu" mode="center" data-img_id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}" data-category_id="{{emoticon.category_id}}"  data-size="{{emoticon.size}}" data-static_url="{{emoticon.static_url}}"   data-yun_url="{{emoticon.yun_url}}" data-menu_type="{{emoticon.menu_type}}
             data-width="{{emoticon.width}}" data-height="{{emoticon.height}}"  data-duration="{{emoticon.duration}}"  >
             <image class="emoticon-grid__icon" src="{{emoticon.static_url}}" background-size="cover"  />
-           
                 <image wx:if="{{ emoticon.menu_type == 4 ? true :false}}" class="emoticon-grid__mark " src="../../images/mp4.png"></image>
             <image wx:if="{{ emoticon.menu_type == 1 ? true :false}}" class="emoticon-grid__mark " src="../../images/gif.png"></image>
-            </navigator>
+            </view>
         </block>
         </view>
     </scroll-view>
-    
-    <view class="page__bd" hidden="true">
+
+    <!--loading框-->
+    <view class="page__bd" hidden="{{!loadShow}}">
         <view class="weui-loadmore">
             <view class="weui-loading"></view>
             <view class="weui-loadmore__tips">正在加载</view>
@@ -182,85 +144,24 @@
             <view class="weui-loadmore__tips weui-loadmore__tips_in-line weui-loadmore__tips_in-dot"></view>
         </view>
     </view>
-        <!--图片、视频上传-->
+
+    <!--图片、视频上传-->
     <view class="upload">
         <view wx:if="{{isUpload}}">
-            <image  src="../../images/upload.gif" background-size="cover" 
-             catchtap="eventBase"  data-action="btnIsUpload"></image>
+            <image  src="../../images/upload.gif" background-size="cover" catchtap="btnIsUpload"></image>
         </view>
         <view wx:else>
-            <image  src="../../images/ic_action_add.png" background-size="cover" 
-             catchtap="eventBase"  data-action="btnUploadV2"></image>
+            <image  src="../../images/ic_action_add.png" background-size="cover" catchtap="btnUpload"></image>
         </view>
-    </view>
-    <!--gif合成-->
-    <view class="join" wx:if="{{isJoin}}"  catchtap="eventBase"  data-action="joinCancel" >
-    
-        <icon type="success" class="confirm btn" size="42" catchtap="eventBase"  data-action="joinConfirm"></icon>
-            <image class="first" src="{{joinImg.first}}" mode="aspectFit" 
-              ></image>
-            <image class="seconde" src="{{joinImg.seconde}}" mode="aspectFit" 
-              ></image>
-          <!--</view>-->
     </view>
     
     <!--目录选择列表-->
-    <scroll-view class="select-category" wx:if="{{isMove}}"
+    <scroll-view class="select-category" wx:if="{{selectCategoryShow}}"
     scroll-y="true" style="height:{{windowHeight}}px;"
-    catchtap="closeMove"  data-action=""
-    >   
+    catchtap="closeMove"  >   
         <view class="space-72"></view>
          <block wx:for="{{category}}" wx:for-index="index" wx:for-item="item">
             <button  catchtap="buttonMove"  data-index="{{index}}">{{item.name}}</button>
         </block>
     </scroll-view>
 </view>
-
-
-
-
-
-
-
-
-
-
-
-
-
-<import src="../../template/emoticon.wxml"/><!--menu模板-->
-<import src="../../template/menu.wxml"/><!--menu模板-->
-<!--<view class="mask" catchtap="eventBase" data-action="mask"  wx:if="{{displayMask}}"   ></view>-->
-<view class="container"  catchtap="eventBase" data-action="all" >
-    <!--表情目录-->
-    <!--<view class="category">
-        <view catchtap="eventBase"  data-action="selectAllCategory" >
-            <label  class=" {{selectCategory.category_id == null ? 'select' : 'unselect'}}">全部</label> 
-        </view>
-        <scroll-view  scroll-x="true" >
-            <block wx:for="{{category}}" 
-                wx:for-item="c_name">
-                <label catchtap="eventBase"  data-action="selectCategory" data-select_category_id="{{c_name.category_id}}"
-                class="{{selectCategory.category_id == c_name.category_id ? 'select' : 'unselect'}}">{{c_name.name}}</label>
-            </block>
-            <label catchtap="eventBase"  data-action="navigateToCategory">+</label>
-        
-        </scroll-view>
-    </view>-->
-    
-    <!--表情图-->
-    <!--<template is="emoticon" data="{{emoticon,windowHeight}}"></template>-->
- 
-   
-    <!--点击表情，弹出菜单-->
-    <!--<template is="menu" data="{{menuType,MENU_TYPE,menuWidth,menuHeight,selectEmoticon,pageName,windowHeight}}"></template>-->
-
-   
-  
-   
-    
-
-
-</view>
-
-

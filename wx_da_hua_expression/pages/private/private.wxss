@@ -169,7 +169,6 @@
     width:500rpx;
     white-space: nowrap; 
     display: flex;
-    
 }
 
 .category .select{
@@ -198,7 +197,15 @@
     margin-left:20px;  
 }
 
-.category__set{
+.category .add{
+    border-left: 1px solid #ffffff;
+}
+
+/*.category .l{width: 150rpx; }
+.category .m{width: 550rpx;}
+.category .r{width: 150rpx;}*/
+
+.category__select{
     margin: 5px;
     margin-top: 5px;
     padding: 2px;
@@ -206,3 +213,7 @@
     border-radius:  5px;
     color: white;
 }
+
+
+.video2gif__des{text-align: center;}
+
