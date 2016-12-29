@@ -1,17 +1,15 @@
 {
   "pages":[
-    "pages/private/private",
     "pages/watermark/watermark",
-    "pages/public/public",
+    "pages/private/private",
     "pages/category/category",
-    "pages/join/join",
-    "pages/manage/manage",
-    "pages/painter/painter"
+    "pages/public/public",
+    "pages/manage/manage"
   ],
   "window":{
     "backgroundTextStyle":"light",
     "navigationBarBackgroundColor": "#24292c",
-    "navigationBarTitleText": "表情乾坤袋",
+    "navigationBarTitleText": "表情袋",
     "navigationBarTextStyle":"white",
     "enablePullDownRefresh":"false"
   },
@@ -27,7 +25,7 @@
       "selectedIconPath":"images/icon_big_my.png"
     },{
       "pagePath": "pages/public/public",
-      "text": "热图",
+      "text": "更多",
       "iconPath":"images/icon_smile.png",
       "selectedIconPath":"images/icon_big_hot.png"
     }]

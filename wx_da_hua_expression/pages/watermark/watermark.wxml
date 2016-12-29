@@ -85,12 +85,12 @@
     catchtouchmove="touchmove"
     catchtouchend="touchend">
     <!--输入的字-->
-        <view style="font-size:{{font_size}};color:{{color}}; ">{{word_mix}}</view>
+        <view style="font-size:{{font_size}};color:{{color}}; opacity:{{dissolve}}; ">{{word_mix}}</view>
         <!--<input  id="myInput" bindchange="word_Change" value="{{word_mix}}"   />-->
     </view>
 </view>
 
-    
+ <!--Alpha(Opacity={{watermark.dissolve}}); -->
 
 <view class="container" hidden="true">
     <!--<view class="bg-box">

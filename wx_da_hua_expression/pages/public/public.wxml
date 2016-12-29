@@ -1,6 +1,7 @@
 <!--public.wxml-->
-<view class="page" catchtap="eventBase" data-action="all">
+<view class="page" catchtap="hiddenAll" >
     <view class="">
+        <!--搜索栏-->
         <view class="weui-search-bar">
             <view class="weui-search-bar__form">
                 <view class="weui-search-bar__box">
@@ -10,26 +11,21 @@
                         <icon type="clear" size="14"></icon>
                     </view>
                 </view>
-                <!--<label class="weui-search-bar__label" hidden="{{inputShowed}}" bindtap="showInput">
-                    <icon class="weui-icon-search" type="search" size="14"></icon>
-                    <view class="weui-search-bar__text">搜索</view>
-                </label>-->
             </view>
-            <!--<view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="hideInput">取消</view>-->
         </view>
 
         <!--关键字推荐栏目-->
         <view class="weui-cells searchbar-result" hidden="{{!searchResultShowed}}">
             <block wx:for="{{searchKey}}">
                 <navigator url="" class="weui-cell" hover-class="weui-cell_active"
-                catchtap="eventBase"  data-action="btnShortcut" data-keyword="{{item}}">
+                catchtap="searchShortcut" data-keyword="{{item}}">
                     <view class="weui-cell__bd">
                         <view>{{item}}</view>
                     </view>
                 </navigator>
             </block>
             <navigator url="" class="weui-cell" hover-class="weui-cell_active"
-                catchtap="eventBase"  data-action="btnShortcut" data-keyword="index">
+                catchtap="searchShortcut"  data-keyword="index">
                 <view class="weui-cell__bd">
                     <view>更多表情，尽在乾坤袋首页</view>
                 </view>
@@ -46,7 +42,7 @@
             <view class=" page__bd_spacing" >
                 <view class="weui-flex wrap">
                     <block wx:for-items="{{tag.sub}}"  wx:for-item="sub">
-                        <view  class="placeholder-1" catchtap="eventBase"  data-action="btnShortcut"
+                        <view  class="placeholder-1" catchtap="searchShortcut"
                     data-keyword="{{sub.name}}">{{sub.name}}</view>
                     </block>
                 </view>
@@ -60,11 +56,9 @@
             <view class="weui-flex">
                 <view></view>
                 <view class="weui-flex__item"> 
-                    <view class="placeholder">
-                            
+                    <view class="placeholder">  
                         <image hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" class="weui-media-box__thumb" mode="aspectFit" src="{{selectEmoticon.img_url}}"  bindload="bindload"/>
                         <video hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}" class="weui-media-box__thumb" src="{{selectEmoticon.img_url}}" catchtap="eventBase"></video>
-
                     </view>
                 </view>
                 <view></view>
@@ -72,9 +66,8 @@
             <view class="weui-flex">
                 <view class="weui-flex__item"> </view>
                 <view > 
-                    <button  catchtap="eventBase" data-action="menuCollect"
-                        size="mini"  hidden="">收藏</button>
-                    <button class="" type="primary"  catchtap="eventBase"                               data-action="menuShare"size="mini" >预览分享</button>
+                    <button  catchtap="menuCollect" size="mini"  hidden="">收藏</button>
+                    <button class="" type="primary"  catchtap="menuShare" size="mini" >预览分享</button>
                 </view>
                 <view class="weui-flex__item"> </view>
             </view>
@@ -85,8 +78,7 @@
     <view class="shortcut" hidden="{{!shortcutShow}}">
         <scroll-view scroll-x="true">
             <block wx:for="{{hotLabel}}">
-                <button size="mini" catchtap="eventBase"  data-action="btnShortcut"
-                    data-keyword="{{item}}">{{item}}</button>
+                <button size="mini" catchtap="searchShortcut" data-keyword="{{item}}">{{item}}</button>
             </block>
         </scroll-view>
     </view>
@@ -96,7 +88,7 @@
         <view class="weui-grids">
         <block wx:for-items="{{emoticon}}"  wx:for-item="emoticon">
             <navigator url="" class="emoticon-grid" hover-class="weui-grid_active"
-            catchtap="eventBase" data-action="onMenu"  mode="center" data-id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}" data-category_id="{{emoticon.category_id}}"  data-size="{{emoticon.size}}" data-static_url="{{emoticon.static_url}}"   data-yun_url="{{emoticon.yun_url}}" data-menu_type="{{emoticon.menu_type}}" >
+            catchtap="onMenu"  mode="center" data-id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}" data-category_id="{{emoticon.category_id}}"  data-size="{{emoticon.size}}" data-static_url="{{emoticon.static_url}}"   data-yun_url="{{emoticon.yun_url}}" data-menu_type="{{emoticon.menu_type}}" >
             <image class="emoticon-grid__icon" src="{{emoticon.static_url}}" background-size="cover"  />
                 <!--<view class="weui-grid__label">Grid</view>-->
                 <image wx:if="{{ emoticon.menu_type == 4 ? true :false}}" class="emoticon-grid__mark " src="../../images/mp4.png"></image>

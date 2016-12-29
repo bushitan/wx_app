@@ -235,4 +235,5 @@
     font-size: 14px;
     width: 64px;
     text-align: right;
+    filter: Alpha(Opacity=30);
 }

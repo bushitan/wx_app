@@ -31,22 +31,33 @@ Page({
   inputBlur:function(e){
       GLOBAL_PAGE.setData({addCategoryInput:e.detail.value })
   },
-  addCategory:function(){
-      GLOBAL_PAGE.setData({
-          isAdd:true,
-      })
-  },
 
-  addCategoryOK:function(){
-      if (GLOBAL_PAGE.data.addCategoryInput == "")
-      {
-         wx.showToast({
-            title: '请输入目录名称',
+  // 1 增加目录
+  addCategory:function(){
+
+    if(GLOBAL_PAGE.data.category.length <= 15)
+        GLOBAL_PAGE.setData({
+            isAdd:true,
+        })
+    else
+        wx.showToast({
+            title: '暂时支持最多15个目录',
             icon: 'loading',
             duration: 800
         })
-        return
-      }
+  },
+
+  // 2 确认增加目录
+  addCategoryOK:function(){
+        if (GLOBAL_PAGE.data.addCategoryInput == "")
+        {
+            wx.showToast({
+                title: '请输入目录名称',
+                icon: 'loading',
+                duration: 800
+            })
+            return
+        }
 
         GLOBAL_PAGE.setData({
             isAdd:false,
@@ -75,54 +86,44 @@ Page({
             }
         })
   },
-
+  
+  // 3 取消增加目录 
   addCategoryCancel:function(){
       GLOBAL_PAGE.setData({
           isAdd:false,
       })
   },
 
-
-  fixCategory:function(){
-
-
-      var _my = GLOBAL_PAGE.data.myCategory
-      var _temp = GLOBAL_PAGE.data.tempCategory
-
-      if( _my.toString() == _temp.toString())
-      {
-        wx.showToast({
-            title: '未做任何修改',
-            icon: 'loading',
-            duration: 500,
-            success:function(){}
-        })
-      }
-      else
-      {
-          //TodoTodo 上传修改书局
-          //本地Storage保存
+  // 4 目录修改
+//   fixCategory:function(){
+//       var _my = GLOBAL_PAGE.data.myCategory
+//       var _temp = GLOBAL_PAGE.data.tempCategory
+//       if( _my.toString() == _temp.toString())
+//       {
+//         wx.showToast({
+//             title: '未做任何修改',
+//             icon: 'loading',
+//             duration: 500,
+//             success:function(){}
+//         })
+//       }
+//       else
+//       {
+//           //TodoTodo 上传修改书局
+//           //本地Storage保存
 
           
-        wx.showToast({
-            title: '修改成功',
-            icon: 'success',
-            duration: 500,
-            success:function(){}
-        })
-      }
-  },
-
+//         wx.showToast({
+//             title: '修改成功',
+//             icon: 'success',
+//             duration: 500,
+//             success:function(){}
+//         })
+//       }
+//   },
+  // 5 目录删除
   deleteCategory:function(e){
-        if (e.currentTarget.dataset.has_img == "true" || e.currentTarget.dataset.has_img == true)
-        {
-        wx.showToast({
-            title: '请先移除该分类的表情图',
-            icon: 'loading',
-            duration: 800
-        })
-        return
-        }
+        //默认目录不能删除
         if (e.currentTarget.dataset.is_default == "1" || e.currentTarget.dataset.is_default == 1)
         {
             wx.showToast({
@@ -131,6 +132,17 @@ Page({
                 duration: 800
             })
             return
+        }
+
+       //目录带有 
+        if (e.currentTarget.dataset.has_img == "true" || e.currentTarget.dataset.has_img == true)
+        {
+        wx.showToast({
+            title: '需移除该目录下的表情',
+            icon: 'loading',
+            duration: 800
+        })
+        return
         }
      
         wx.request({
@@ -147,12 +159,14 @@ Page({
                     object.category_list
                 )
                 GLOBAL_PAGE.renderCategory()
+                wx.showToast({
+                    title: '目录删除成功',
+                    icon: 'success',
+                    duration: 800
+                })
             }
         })
     
-  },
-  onReady:function(){
-
   },
   
   onLoad: function (param) {

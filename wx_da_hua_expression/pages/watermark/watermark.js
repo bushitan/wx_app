@@ -6,7 +6,7 @@ var BASE64 = require('../../utils/base64.js');
 var GLOBAL_PAGE
 Page({
   data: {
-    grids: ["white","black","orangered",  "red", "blue", "yellow"],
+    grids: ["black","white","orangered",  "red", "blue", "yellow"],
 
     title: '最热话题',
     hotest: [],
@@ -15,18 +15,19 @@ Page({
     express_mix:null,
     background:"http://120.27.97.33:91/static/mix/img_word.jpg",
     
-    word_mix:"七牛云存储",
+    word_mix:"大吉拜年",
     font_size:"47rpx",
-    color:"white",
+    color:"black",
     offsetLeft: "278rpx", //增加128rpx
     offsetTop: "150rpx",
     editorSuccess:"",
+    dissolve:85,
 
     watermark:{
       img_url:"http://77fmtb.com1.z0.glb.clouddn.com/gogopher.jpg" ,
       style:"2",
       // text:"5LiD54mb5LqR5a2Y5YKo",
-      text:BASE64.encode("七牛云存储"),
+      text:BASE64.encode("大吉拜年"),
       font:"5b6u6L2v6ZuF6buR",
       fontsize:"47",
       fill:"d2hpdGU=",
@@ -148,7 +149,8 @@ Page({
 
     var watermark = GLOBAL_PAGE.data.watermark
     watermark.dissolve = e.detail.value
-    GLOBAL_PAGE.setData({watermark:watermark})
+    var dissolve = parseFloat(e.detail.value)/100
+    GLOBAL_PAGE.setData({watermark:watermark,dissolve:dissolve})
   },
   size_sliderchange: function(e) {
     console.log(e.detail.value)
@@ -161,28 +163,28 @@ Page({
     watermark.fontsize = e.detail.value
     GLOBAL_PAGE.setData({watermark:watermark})
   },
-  x_sliderchange: function(e) {
-    console.log(e.detail.value)
-    var offsetValue = e.detail.value + 128
-    GLOBAL_PAGE.setData({
-      offsetLeft:offsetValue + "rpx",
-    })
+  // x_sliderchange: function(e) {
+  //   console.log(e.detail.value)
+  //   var offsetValue = e.detail.value + 128
+  //   GLOBAL_PAGE.setData({
+  //     offsetLeft:offsetValue + "rpx",
+  //   })
 
-    var watermark = GLOBAL_PAGE.data.watermark
-    watermark.dx = e.detail.value
-    GLOBAL_PAGE.setData({watermark:watermark})
+  //   var watermark = GLOBAL_PAGE.data.watermark
+  //   watermark.dx = e.detail.value
+  //   GLOBAL_PAGE.setData({watermark:watermark})
 
-  },
-  y_sliderchange: function(e) {
-    var offsetValue = e.detail.value 
-    GLOBAL_PAGE.setData({
-      offsetTop:offsetValue + "rpx",
-    })
+  // },
+  // y_sliderchange: function(e) {
+  //   var offsetValue = e.detail.value 
+  //   GLOBAL_PAGE.setData({
+  //     offsetTop:offsetValue + "rpx",
+  //   })
 
-    var watermark = GLOBAL_PAGE.data.watermark
-    watermark.dy = e.detail.value
-    GLOBAL_PAGE.setData({watermark:watermark})
-  },
+  //   var watermark = GLOBAL_PAGE.data.watermark
+  //   watermark.dy = e.detail.value
+  //   GLOBAL_PAGE.setData({watermark:watermark})
+  // },
 
   //touch时间改变x、y位置
   touchstart:function(event){
@@ -193,7 +195,7 @@ Page({
     // console.log(globle_page.data.offsetLeft,globle_page.data.offsetTop)
 
     var watermark = GLOBAL_PAGE.data.watermark
-    var ratio = 750 / app.globalData.windowWidth 
+    // var ratio = 750 / app.globalData.windowWidth 
     // watermark.dx = parseInt( event.touches[0].clientX * ratio )
     // watermark.dy =  parseInt(event.touches[0].clientY * ratio )
     watermark.dx =event.touches[0].clientX 
@@ -245,56 +247,56 @@ Page({
         })
   },
 
-  //模态框，分享链接
-  modalShare: function(e) {
-    // app.globalData['editorSuccess']=GLOBAL_PAGE.data.editorSuccess
-   console.log("modalShare:" + GLOBAL_PAGE.data.editorSuccess)
-    wx.setStorageSync(
-        "pre_editor",
-        GLOBAL_PAGE.data.editorSuccess
-    )
-    wx.navigateBack( )
-  },
-  //模态框，返回编辑
-  modalReEditor: function(e) {
-    this.setData({
-      express_ModalHidden: true
-    })
-  },
+  // //模态框，分享链接
+  // modalShare: function(e) {
+  //   // app.globalData['editorSuccess']=GLOBAL_PAGE.data.editorSuccess
+  //  console.log("modalShare:" + GLOBAL_PAGE.data.editorSuccess)
+  //   wx.setStorageSync(
+  //       "pre_editor",
+  //       GLOBAL_PAGE.data.editorSuccess
+  //   )
+  //   wx.navigateBack( )
+  // },
+  // //模态框，返回编辑
+  // modalReEditor: function(e) {
+  //   this.setData({
+  //     express_ModalHidden: true
+  //   })
+  // },
 
-  // 事件处理函数
-  redictDetail: function(e) {
-    var id = e.currentTarget.id,
-      url = '../detail/detail?id=' + id;
+  // // 事件处理函数
+  // redictDetail: function(e) {
+  //   var id = e.currentTarget.id,
+  //     url = '../detail/detail?id=' + id;
       
-    wx.navigateTo({
-      url: url
-    })
-  },
+  //   wx.navigateTo({
+  //     url: url
+  //   })
+  // },
 
 
 
 
 
-  fetchData: function() {
-    var that = this;
-    wx.request({
-      url: Api.getHotestTopic({
-        p: null
-      }),
-      success: function(res) {
-        console.log(res);
-        that.setData({
-          hotest: res.data
-        })
-        setTimeout(function() {
-          that.setData({
-            hidden: true
-          })
-        }, 300)
-      }
-    })
-  },
+  // fetchData: function() {
+  //   var that = this;
+  //   wx.request({
+  //     url: Api.getHotestTopic({
+  //       p: null
+  //     }),
+  //     success: function(res) {
+  //       console.log(res);
+  //       that.setData({
+  //         hotest: res.data
+  //       })
+  //       setTimeout(function() {
+  //         that.setData({
+  //           hidden: true
+  //         })
+  //       }, 300)
+  //     }
+  //   })
+  // },
    onLoad: function (options) {
      
     GLOBAL_PAGE = this

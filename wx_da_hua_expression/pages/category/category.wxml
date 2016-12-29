@@ -1,8 +1,9 @@
 <!--category.wxml-->
 <view class="page">
     <view class="page__hd">
-        <view class="page__title">目录编辑</view>
-        <view class="page__desc">增加、删除目录（需清除目录包含的图片）</view>
+        <view class="page__title">目录</view>
+        <view class="page__desc">增加：暂时支持最多15个目录</view>
+        <view class="page__desc">删除：需移除该目录下的表情</view>
     </view>
 
     <view class="page__bd">
@@ -12,7 +13,7 @@
                     <view class="weui-cell__hd">
                         <view class="weui-label"  >
                             <icon class="weui-icon-checkbox_circle" type="cancel" size="23"
-                            catchtap="deleteCategory" data-category_id="{{item.category_id}}" data-has_img="{{item.hasImg}}"></icon>   <!--删除目录按钮-->
+                            catchtap="deleteCategory" data-category_id="{{item.category_id}}" data-has_img="{{item.hasImg}}"  hidden="{{item.is_default == 1 ? true:false}}" ></icon>   <!--删除目录按钮-->
                         </view>
                     </view>
                     <view class="weui-cell__bd">

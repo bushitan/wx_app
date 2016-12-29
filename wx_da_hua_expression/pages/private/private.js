@@ -360,7 +360,7 @@ Page({
     for (var i=0;i<GLOBAL_PAGE.data.category.length;i++)
       list.push(GLOBAL_PAGE.data.category[i].name)
 
-    if (list.length >  1) //只有1个组，提示增加分组
+    if (list.length ==  1) //只有1个组，提示增加分组
     {
         wx.showToast({
             title: '请按右上角 + 添加分组',
@@ -542,6 +542,16 @@ Page({
       GLOBAL_PAGE.setData({joinShow:false})
   },
   joinConfirm:function(){
+    if(GLOBAL_PAGE.data.isUpload == true)
+    {
+      wx.showToast({
+          title: '任务正在上传中，请等待',
+          icon: 'success',
+          duration: 700
+      })
+      return
+    }
+    
     GLOBAL_PAGE.setData({isUpload:true}) //打开上传
 
     wx.request({

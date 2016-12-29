@@ -73,7 +73,7 @@
                             <button size="mini" catchtap="joinSet" data-action="2">设为第二幅</button>
                         </view>
                         <view class="weui-flex__item">
-                            <button size="mini" disabled="{{isUpload}}" catchtap="joinConfirm" data-action="" type="primary" >拼接</button>
+                            <button size="mini" disabled="{{joinImg.status == 2?false:true}}" catchtap="joinConfirm" data-action="" type="primary" >拼接</button>
                         </view>
                     </view>
                     <view class="weui-flex ">
