@@ -64,6 +64,7 @@ Page({
 
   /**2 选择指定目录 */
   selectCategory:function(e){
+    
     GLOBAL_PAGE.hiddenAll()//清除屏幕框
     var c_id = e.currentTarget.dataset.select_category_id
     if (c_id == "") c_id = null  //c_id为空，全选
@@ -845,6 +846,7 @@ Page({
   bindloadHorizontal:function(e){    
     Render.menu.horizontal(GLOBAL_PAGE,e)
   },
+
 })
 
 

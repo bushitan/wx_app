@@ -152,12 +152,17 @@
      justify-content: center;align-items:center;
      text-align: center;
 }
+
 .category {
     height:42px;
     line-height:42px;
     background-color: #24292c;
     color: #ffffff;
-    font-size: 16px;
+    font-size: 14px;
+    
+}
+.category .font {
+    opacity: 0.9;
 }
 .category all{
     /*width:150rpx;*/
@@ -169,6 +174,7 @@
     width:500rpx;
     white-space: nowrap; 
     display: flex;
+    box-shadow: 2px 0  6px -4px rgba(255,255,255,1) ;
 }
 
 .category .select{
@@ -180,8 +186,8 @@
     border: 1px solid #24292c;
 }
 .category label{
-    padding-left: 12rpx;
-    padding-right: 12rpx;
+    padding-left: 6rpx;
+    padding-right: 6rpx;
     padding-top: 6rpx;
     padding-bottom: 6rpx;
     margin:2px;
@@ -213,7 +219,31 @@
     border-radius:  5px;
     color: white;
 }
+.category image{
+    width: 24px;
+    height:24px;
+    margin: 9px 0px;
+}
 
 
 .video2gif__des{text-align: center;}
 
+
+.hidden__all { 
+    width: 12px;
+    height:12px;
+    padding: 6px;
+    margin-left:6px; 
+}
+
+
+
+.image__btn button{
+    margin-left :4px;
+    margin-right:4px; 
+    /*padding: 4px;*/
+}
+
+.space-4{
+    height: 4px;
+}

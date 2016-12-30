@@ -1,6 +1,7 @@
-.bg-box{
-    margin: 5rpx;
-    padding: 0 10rpx;
+
+.stage{
+    margin: 4px;
+    /*padding: 4px;*/
     text-align: center;
     background-color: #EBEBEB;
     
@@ -9,10 +10,11 @@
     color: #cfcfcf;
 }
 
-.bg-box-img {
-    width: 550rpx;
-    height: 550rpx;
+.stage__img {
+    width: 300px;
+    height: 300px;
     vertical-align: top;
+    
 }
 
 /*.bg-box{
@@ -192,7 +194,7 @@
 
 
 
-.color{
+.fill{
     margin: 5px;
     padding: 5px 10px;
     text-align: center;
@@ -237,3 +239,12 @@
     text-align: right;
     filter: Alpha(Opacity=30);
 }
+
+.page__font-family{
+    font-family : "Microsoft YaHei";
+}
+
+
+
+
+.show__des{text-align: center;}

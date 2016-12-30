@@ -11,7 +11,7 @@
     "navigationBarBackgroundColor": "#24292c",
     "navigationBarTitleText": "表情袋",
     "navigationBarTextStyle":"white",
-    "enablePullDownRefresh":"false"
+    "enablePullDownRefresh":"true"
   },
   "tabBar": {
     "backgroundColor":"#fcfcfc",

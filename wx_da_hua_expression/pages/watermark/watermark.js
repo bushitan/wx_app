@@ -1,48 +1,53 @@
 // watermark.js
 // var Api = require('../../utils/api.js');
-var app = getApp()
+var APP = getApp()
 var Menu = require('../../utils/menu.js');
 var BASE64 = require('../../utils/base64.js');
 var GLOBAL_PAGE
 Page({
   data: {
     grids: ["black","white","orangered",  "red", "blue", "yellow"],
-
-    title: '最热话题',
-    hotest: [],
-    hidden: false,
-    express_ModalHidden:true,
-    express_mix:null,
-    background:"http://120.27.97.33:91/static/mix/img_word.jpg",
     
-    word_mix:"大吉拜年",
-    font_size:"47rpx",
-    color:"black",
-    offsetLeft: "278rpx", //增加128rpx
-    offsetTop: "150rpx",
-    editorSuccess:"",
-    dissolve:85,
-
     watermark:{
       img_url:"http://77fmtb.com1.z0.glb.clouddn.com/gogopher.jpg" ,
       style:"2",
-      // text:"5LiD54mb5LqR5a2Y5YKo",
       text:BASE64.encode("大吉拜年"),
+      wx_text:"大吉拜年",
+
       font:"5b6u6L2v6ZuF6buR",
-      fontsize:"47",
-      fill:"d2hpdGU=",
+      fontsize:"24",
+      wx_fontsize:"24px",
+
+      fill:"YmxhY2s=", //YmxhY2s=  black，  d2hpdGU= white
+      wx_fill:"black",
+
       dissolve:"85",
+      wx_dissolve:0.85,
+
       gravity:"NorthWest",
-      dx:"150",
-      dy:"150",
+      dx: 0,
+      wx_offsetLeft: "0px",
+      input_offset_x:4,
+
+      dy: 0,
+      wx_offsetTop: "0px",
+      input_offset_y:4,
     },
+
+    stageWidth:400,
+    stageHeight:300,
+    boxWidth:300,
+    boxHeight:300,
+    // ratio:1,
+    maxFontSize:30,
 
     imgWidth:640,
     imgHeight:427,
-    // imgBackground:"http://77fmtb.com1.z0.glb.clouddn.com/gogopher.jpg",
+
     imgSuccess:"http://77fmtb.com1.z0.glb.clouddn.com/gogopher.jpg?watermark/2/text/5LiD54mb5LqR5a2Y5YKo/font/5b6u6L2v6ZuF6buR/fontsize/1000/fill/d2hpdGU=/dissolve/85/gravity/NorthWest/dx/20/dy/20",
+    imgHistory:[],//历史记录
 
-
+    touchStart:{x:1,y:2} //手指touch开始的位置 
   },
 
 
@@ -66,11 +71,27 @@ Page({
     var dx = `dx/${t_dx}/`
     var dy = `dy/${t_dy}`
     var success_url = img_url + `${style}${text}${font}${fontsize}${fill}${dissolve}${gravity}${dx}${dy}`
-    GLOBAL_PAGE.setData({imgSuccess:success_url})
+
+    var imgHistory = GLOBAL_PAGE.data.imgHistory
+    if ( imgHistory.length == 0 )
+      imgHistory.push(success_url)
+    else
+      for(var i=0;i<imgHistory.length;i++) //避免重复
+        if(success_url == imgHistory[i]) break
+        else {
+          imgHistory.push(success_url)
+          break
+        }
+      
+    console.log(imgHistory)
+    GLOBAL_PAGE.setData({
+      imgSuccess:success_url,
+      imgHistory:imgHistory
+    })
 
     wx.previewImage({
       current: GLOBAL_PAGE.data.imgSuccess, // 当前显示图片的http链接
-      urls: [GLOBAL_PAGE.data.imgSuccess] // 需要预览的图片http链接列表
+      urls: GLOBAL_PAGE.data.imgHistory // 需要预览的图片http链接列表
     })
   },
 
@@ -79,44 +100,51 @@ Page({
     //以图片左上角为坐标系(0,0)
     // var bg_w = 500,bg_h = 500,bg_r = 2
     // var img_w = 640,img_h = 427
-    var img_w = parseInt(imgw)
-    var img_h = parseInt(imgh)
-    var text_x_rdp = parseInt(x)
-    var text_y_rdp = parseInt(y)
-    var fontsize_rdp = parseInt(size)
-    var rdp=500 //css中设定的固定值
+    // var ratio = 750 / APP.globalData.windowWidth,  // 1px 对应 rdp的值
+
+    var stage_w = GLOBAL_PAGE.data.stageWidth, //舞台w,h
+        stage_h = GLOBAL_PAGE.data.stageHeight
+
+    var box_w = GLOBAL_PAGE.data.boxWidth,
+        box_h = GLOBAL_PAGE.data.boxHeight
+    var box_offset_x = (stage_w-box_w)/2, //正方形image控件显示框的偏移位置
+        box_offset_y = 0 //y方向暂时不做偏移
+
+    var img_w = parseInt(imgw), //背景图片w,h
+        img_h = parseInt(imgh)
+
+    
+
+    var input_x = parseInt(x) - GLOBAL_PAGE.data.watermark.input_offset_x, //文本框计算偏移量后的位置
+        input_y = parseInt(y) - GLOBAL_PAGE.data.watermark.input_offset_y
 
     if (img_w >= img_h){
-      var bg_w = img_w, bg_h = img_w //以图片宽
-      var temp_h = img_h*bg_w/img_w
+      var ratio = img_w/box_w
+      var bg_w = box_w, bg_h = img_h/ratio //以图片宽
       var offset_x = 0
-      var offset_y = (bg_h-temp_h)/2
+      var offset_y = (box_h - bg_h)/2
     }
     else {
-      var bg_w = img_h ,bg_h = img_h //以图片高
-      var temp_w = img_w*bg_h/img_h
-      var offset_x = (bg_w-temp_w)/2
+      var ratio = img_h/box_h
+      var bg_h = box_h, bg_w = img_w/ratio //以图片宽
+      var offset_x = (box_w - bg_w)/2
       var offset_y = 0
     }
 
-    var text_x = text_x_rdp/rdp*bg_w , text_y = text_y_rdp/rdp*bg_h // 实际对应px
-    var text_x_new = parseInt(text_x - offset_x) //新x坐标
-    var text_y_new = parseInt(text_y - offset_y) //新y坐标
+    var text_x_new = parseInt(input_x - offset_x - box_offset_x)*ratio  //新X坐标，  原来坐标-图片压缩偏移量-image控件偏移量
+    var text_y_new = parseInt(input_y - offset_y - box_offset_y)*ratio //新y坐标
 
-    var fontsize = fontsize_rdp/rdp*bg_w //px
-    var qiniu_twip = 20
-    var fontsize_new = parseInt(fontsize*20) //新fontsize
+    var fontsize = parseInt(size) //px
+    var qiniu_twip = 20 //七牛转化比率 1px == 20 twip
+    var fontsize_new = fontsize*qiniu_twip*ratio//新fontsize
 
-    return {x:text_x_new,y:text_y_new,fontsize:fontsize_new}
+    console.log(  {x:text_x_new,y:text_y_new,fontsize:fontsize_new})
+    return {
+      x: parseInt(text_x_new),
+      y:parseInt(text_y_new),
+      fontsize:parseInt(fontsize_new)}
   },
-  // editorSuccess:function (){
-  //   var _url = '../private/private?editorSucess=http://alinode-assets.oss-cn-hangzhou.aliyuncs.com/4be39e00-c83b-4f8e-b4e2-76f70b009b1a.jpeg';
-  //   // wx.redirectTo({
-  //   //   url: _url
-  //   // })
-  //   app.globalData['editorSuccess']="http://alinode-assets.oss-cn-hangzhou.aliyuncs.com/4be39e00-c83b-4f8e-b4e2-76f70b009b1a.jpeg"
-  //   wx.navigateBack( )
-  // },
+
 
   inputChange: function(e) {
     console.log(e.detail.value)
@@ -127,201 +155,133 @@ Page({
 
     var watermark = GLOBAL_PAGE.data.watermark
     watermark.text = BASE64.encode(e.detail.value)
+    watermark.wx_text = e.detail.value
     GLOBAL_PAGE.setData({watermark:watermark})
 
   },
 
-  color_change:function(e){
-    var fill = e.currentTarget.dataset.color
+  fill_change:function(e){
+    var fill = e.currentTarget.dataset.fill
     var watermark = GLOBAL_PAGE.data.watermark
     watermark.fill = BASE64.encode(fill)
+    watermark.wx_fill = fill
     GLOBAL_PAGE.setData({
-      watermark:watermark,
-      color:fill
+      watermark:watermark
     })
   },
 
   dissolve_sliderchange: function(e) {
     var dissolve = e.detail.value
-    // GLOBAL_PAGE.setData({
-    //   font_size:font_size + "rpx",
-    // })
-
     var watermark = GLOBAL_PAGE.data.watermark
-    watermark.dissolve = e.detail.value
-    var dissolve = parseFloat(e.detail.value)/100
-    GLOBAL_PAGE.setData({watermark:watermark,dissolve:dissolve})
+    watermark.dissolve = dissolve
+    watermark.wx_dissolve = parseFloat(dissolve)/100
+    GLOBAL_PAGE.setData({
+      watermark:watermark
+    })
   },
   size_sliderchange: function(e) {
-    console.log(e.detail.value)
     var font_size = e.detail.value
-    GLOBAL_PAGE.setData({
-      font_size:font_size + "rpx",
-    })
 
     var watermark = GLOBAL_PAGE.data.watermark
-    watermark.fontsize = e.detail.value
-    GLOBAL_PAGE.setData({watermark:watermark})
+    watermark.fontsize = font_size
+    watermark.wx_fontsize = font_size + "px"
+    GLOBAL_PAGE.setData({
+      watermark:watermark
+    })
   },
-  // x_sliderchange: function(e) {
-  //   console.log(e.detail.value)
-  //   var offsetValue = e.detail.value + 128
-  //   GLOBAL_PAGE.setData({
-  //     offsetLeft:offsetValue + "rpx",
-  //   })
-
-  //   var watermark = GLOBAL_PAGE.data.watermark
-  //   watermark.dx = e.detail.value
-  //   GLOBAL_PAGE.setData({watermark:watermark})
-
-  // },
-  // y_sliderchange: function(e) {
-  //   var offsetValue = e.detail.value 
-  //   GLOBAL_PAGE.setData({
-  //     offsetTop:offsetValue + "rpx",
-  //   })
-
-  //   var watermark = GLOBAL_PAGE.data.watermark
-  //   watermark.dy = e.detail.value
-  //   GLOBAL_PAGE.setData({watermark:watermark})
-  // },
 
   //touch时间改变x、y位置
   touchstart:function(event){
-  
+    // GLOBAL_PAGE.touchEvent(event)
+    // console.log("start")
+    GLOBAL_PAGE.setData({
+        touchStart:{
+          x:event.touches[0].clientX ,
+          y:event.touches[0].clientY 
+        }
+    })
+    // console.log(GLOBAL_PAGE.data.touchStart.x , GLOBAL_PAGE.data.touchStart.y)
   },
   touchmove:function(event){
-    // console.log(event.currentTarget.id)
-    // console.log(globle_page.data.offsetLeft,globle_page.data.offsetTop)
-
-    var watermark = GLOBAL_PAGE.data.watermark
-    // var ratio = 750 / app.globalData.windowWidth 
-    // watermark.dx = parseInt( event.touches[0].clientX * ratio )
-    // watermark.dy =  parseInt(event.touches[0].clientY * ratio )
-    watermark.dx =event.touches[0].clientX 
-    watermark.dy = event.touches[0].clientY 
-
-    GLOBAL_PAGE.setData({
-    // isTrue : !this.data.isTrue,
-      offsetLeft:event.touches[0].clientX + "px",
-      offsetTop:event.touches[0].clientY + "px",
-      watermark:watermark
-    })
-    // console.log("m:"+event.touches[0].clientX)
-    // console.log("m:"+event.touches[0].clientY)
-
-    
+    //  console.log("move")
+    GLOBAL_PAGE.touchEvent(event)
   },
   touchend:function(event){
 
   },
+  touchEvent:function(event){
 
+    if ( event.touches[0].clientX <10 ||  event.touches[0].clientX > APP.globalData.windowWidth-10 )
+      return
+    if ( event.touches[0].clientY <10 ||  event.touches[0].clientY > 290 )
+      return
+    //touch位移
+    var move_x = event.touches[0].clientX - GLOBAL_PAGE.data.touchStart.x 
+    var move_y = event.touches[0].clientY - GLOBAL_PAGE.data.touchStart.y
 
-  /**
-   * 根据水印数据(watermarkData)，上传后台合成
-   * 成功，打开模态框，显示图片
-   * 收藏成功，跳转至private，显示
-   */
-  editorCreate: function(e) {
-    // var _word = GLOBAL_PAGE.data.word_mix
-    // var _x = parseInt(GLOBAL_PAGE.data.offsetLeft.replace("px,","")) *3 ;
-    // var _y = parseInt(GLOBAL_PAGE.data.offsetTop.replace("px,","")) * 3;
-    // var watermarkData =  {
-    //     bg_img: 'img_word.jpg' ,
-    //     word: _word,
-    //     size: 100,
-    //     x: _x,
-    //     y:_y
-    //   }
-    // Menu.Option.EditorWatermark(watermarkData,GLOBAL_PAGE.editorSuccess)
-
-
-  },
-
-  //编辑成功，显示模态框,显示图片
-  editorSuccess:function(imgUrl){
-    GLOBAL_PAGE.setData({
-          express_mix:imgUrl,
-          editorSuccess:imgUrl,
-          express_ModalHidden: false
-        })
-  },
-
-  // //模态框，分享链接
-  // modalShare: function(e) {
-  //   // app.globalData['editorSuccess']=GLOBAL_PAGE.data.editorSuccess
-  //  console.log("modalShare:" + GLOBAL_PAGE.data.editorSuccess)
-  //   wx.setStorageSync(
-  //       "pre_editor",
-  //       GLOBAL_PAGE.data.editorSuccess
-  //   )
-  //   wx.navigateBack( )
-  // },
-  // //模态框，返回编辑
-  // modalReEditor: function(e) {
-  //   this.setData({
-  //     express_ModalHidden: true
-  //   })
-  // },
-
-  // // 事件处理函数
-  // redictDetail: function(e) {
-  //   var id = e.currentTarget.id,
-  //     url = '../detail/detail?id=' + id;
-      
-  //   wx.navigateTo({
-  //     url: url
-  //   })
-  // },
-
-
-
-
-
-  // fetchData: function() {
-  //   var that = this;
-  //   wx.request({
-  //     url: Api.getHotestTopic({
-  //       p: null
-  //     }),
-  //     success: function(res) {
-  //       console.log(res);
-  //       that.setData({
-  //         hotest: res.data
-  //       })
-  //       setTimeout(function() {
-  //         that.setData({
-  //           hidden: true
-  //         })
-  //       }, 300)
-  //     }
-  //   })
-  // },
-   onLoad: function (options) {
-     
-    GLOBAL_PAGE = this
-    console.log(options.imgurl)
+    console.log(move_x ,move_y)
     var watermark = GLOBAL_PAGE.data.watermark
-    watermark.img_url = options.imgurl
-
-
+    // var ratio = 750 / app.globalData.windowWidth 
+    // watermark.dx = parseInt( event.touches[0].clientX * ratio )
+    // watermark.dy =  parseInt(event.touches[0].clientY * ratio )
+    // console.log(event.touches[0].clientX ,event.touches[0].clientY)
+    var dx = watermark.dx + move_x
+    var dy = watermark.dy + move_y
+    console.log(watermark.dx,watermark.dy,dx ,dy)
+    watermark.dx = dx 
+    watermark.dy = dy 
     
+    watermark.wx_offsetLeft = dx - watermark.input_offset_x 
+    watermark.wx_offsetLeft += "px"
+    watermark.wx_offsetTop = dy - watermark.input_offset_y 
+    watermark.wx_offsetTop += "px"
+
+    GLOBAL_PAGE.setData({
+      watermark:watermark,
+      touchStart:{
+        x:event.touches[0].clientX ,
+        y:event.touches[0].clientY 
+      }
+    })    
+  },
+
+
+  onLoad: function (options) {
+    options = {imgurl: "http://image.12xiong.top/19_20161230100647.jpg", width: "1280", height: "822"}
+    var opt_imgurl = options.imgurl
+    var opt_w = options.width
+    var opt_h = options.height
+
+    var stage_w = APP.globalData.windowWidth - 4*2,
+        stage_h = 300,
+        box_w = 300,
+        box_h = 300
+
+    if (opt_w >= opt_h){
+      var ratio = opt_w/box_w
+    }
+    else {
+      var ratio = opt_h/box_h
+    }
+    
+    var maxFontSize = parseInt(190/ratio) // 213是七牛最大字体
+
+    GLOBAL_PAGE = this
+    //初始背景地址,w,h
+    var watermark = GLOBAL_PAGE.data.watermark
+    watermark.img_url = opt_imgurl
     this.setData({
       watermark:watermark, //更改背景图
-      imgWidth:options.width,
-      imgHeight:options.height,
+      imgWidth:opt_w,
+      imgHeight:opt_h,
+
+      stageWidth:stage_w,
+      stageHeight:stage_h,
+      boxWidth:box_w,
+      boxHeight:300,
+      // ratio:1,
+      maxFontSize:maxFontSize,
     })
     
-
-    var appInstance = getApp()
-    console.log(appInstance.globalData)
-    // appInstance.setData({aa:321})
-    appInstance.globalData.aa = 1
-    console.log(appInstance.globalData)
-    // this.fetchData();
-    // this.fetchExpress()
-
-
-   
   },
 })
