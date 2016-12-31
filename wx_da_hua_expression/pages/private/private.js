@@ -23,6 +23,8 @@ Page({
     // 上传图片数量
     uploadNum:{count:9,finish:0},
 
+    // category scroll-view的宽度
+    categoryScrollWidth : 10,
     //join数据
     joinImg:{
       step:1,
@@ -30,7 +32,7 @@ Page({
       first:"http://image.12xiong.top/12_20161226084253.gif?imageMogr2/thumbnail/170x170",
       seconde:"http://image.12xiong.top/12_20161226084358.gif?imageMogr2/thumbnail/170x170",
       resualt:"http://image.12xiong.top/12_20161226084407.gif?imageMogr2/thumbnail/170x170",
-      resualt_alert:"http://image.12xiong.top/12_20161226084358.gif?imageMogr2/thumbnail/170x170",
+      // resualt_alert:"http://image.12xiong.top/12_20161226084358.gif?imageMogr2/thumbnail/170x170",
     },
 
     //video 控制
@@ -91,7 +93,7 @@ Page({
   //上传大类 4-1
   btnUpload:function() {
      wx.showActionSheet({
-      itemList: ['图片(GIF需要原图)', '小视频'],
+      itemList: ['图片', '小视频'],
       success: function(res) {
         if (!res.cancel) {
           if(res.tapIndex == 0 || res.tapIndex =='0')
@@ -231,11 +233,25 @@ Page({
                         GLOBAL_PAGE.uploadCompelte()
                       }
                   })
-              } 
+              }
+              else{
+                wx.showToast({
+                  title: '图片上传失败，可能图片太大了~~网络超时',
+                  icon: 'loading',
+                  duration: 700
+                })
+              }              
           },
+
           fail:function(res){
               var data = res.data
               console.log(res)
+
+              wx.showToast({
+                title: '图片上传失败~~可能网络超时了',
+                icon: 'loading',
+                duration: 700
+              })
           },
           complete:function(res) { 
           },
@@ -335,13 +351,30 @@ Page({
                             GLOBAL_PAGE.renderEmoticon()
 
                             wx.showToast({
-                                title: '修改分组成功',
+                                title: '删除成功',
                                 icon: 'success',
                                 duration: 700
                             })
                             GLOBAL_PAGE.setData({menuType:0})
                         }
-                    }
+                        else{
+                          wx.showToast({
+                            title: '删除失败，可能图片太大了~~网络超时',
+                            icon: 'loading',
+                            duration: 700
+                          })
+                        }
+                    },
+                    fail:function(res){
+                        console.log("chooseImage fail")
+                        var data = res.data
+                        console.log(res)
+                        wx.showToast({
+                          title: '图片删除失败~~可能网络超时了',
+                          icon: 'loading',
+                          duration: 700
+                        })
+                    },
                 })
             }
             /**
@@ -443,7 +476,17 @@ Page({
                   })
                 }
                
-              }
+              },
+              fail:function(res){
+                  console.log("chooseImage fail")
+                  var data = res.data
+                  console.log(res)
+                  wx.showToast({
+                    title: '图片移动失败~~可能网络超时了',
+                    icon: 'loading',
+                    duration: 700
+                  })
+              },
             })
   },
 
@@ -464,7 +507,12 @@ Page({
   menuVideo2Gif:function(){
       //改变上传btn状态为
       GLOBAL_PAGE.setData({isUpload:true})
-      
+      wx.showToast({
+          title: '视频正在转换',
+          icon: 'loading',
+          duration: 700
+      })
+
       wx.request({
           url: Api.imgVideo2gif(), 
           data:{
@@ -489,11 +537,23 @@ Page({
                     duration: 700
                 })
               } 
+              else{
+                wx.showToast({
+                  title: '制作GIF失败，可能视频太大了~~网络超时',
+                  icon: 'loading',
+                  duration: 700
+                })
+              }
           },
           fail:function(res){
               console.log("chooseImage fail")
               var data = res.data
               console.log(res)
+              wx.showToast({
+                title: '制作GIF失败，可能视频太大了~~网络超时',
+                icon: 'loading',
+                duration: 700
+              })
           },
           complete:function(res) { 
               GLOBAL_PAGE.setData({isUpload:false})
@@ -546,7 +606,7 @@ Page({
     if(GLOBAL_PAGE.data.isUpload == true)
     {
       wx.showToast({
-          title: '任务正在上传中，请等待',
+          title: '正在执行上传任务，请稍等',
           icon: 'success',
           duration: 700
       })
@@ -584,14 +644,21 @@ Page({
                   duration: 700
               })
             } 
+            else{
+              wx.showToast({
+                title: '拼接失败，可能图片太大了~~网络超时',
+                icon: 'loading',
+                duration: 700
+              })
+            }
         },
         fail:function(res){
             console.log("chooseImage fail")
             var data = res.data
             console.log(res)
             wx.showToast({
-                title: '网路连接失败，请重试',
-                icon: 'success',
+                title: '拼接失败，可能图片太大了~~网络超时',
+                icon: 'loading',
                 duration: 700
             })
         },
@@ -674,6 +741,7 @@ Page({
     GLOBAL_PAGE.setData({
       windowWidth:APP.globalData.windowWidth,
       windowHeight:APP.globalData.windowHeight - 42,  //category框高度42px
+      categoryScrollWidth:APP.globalData.windowWidth - 102,
       // windowHeight:APP.globalData.windowHeight - 84,  //category框高度42px
       // windowHeight:app.globalData.windowHeight - 48,
     })

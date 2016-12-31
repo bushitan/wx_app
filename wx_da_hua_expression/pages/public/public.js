@@ -35,6 +35,7 @@ Page({
     emoticon:[],
     category:[],
     tagList:[],
+    tagListDisplay:[],
 
     //touch选择对象
     selectEmoticon:{id:"",name:"",img_url:""}, //预备编辑的图片
@@ -46,7 +47,7 @@ Page({
     loadShow:true,
 
      inputShowed: false,
-     inputVal: "",
+    //  inputVal: "",
      searchKey:["搞笑","运动","笑屎了","老司机"],
      searchResultShowed:false,
   },
@@ -154,13 +155,13 @@ Page({
     Render.emoticon(GLOBAL_PAGE,emoticon)
   },
 
-  onShareAppMessage: function () {
-    return {
-      title: '自定义分享标题',
-      desc: '自定义分享描述',
-      path: '/page/user?id=123'
-    }
-  },
+//   onShareAppMessage: function () {
+//     return {
+//       title: '自定义分享标题',
+//       desc: '自定义分享描述',
+//       path: '/page/user?id=123'
+//     }
+//   },
   
   //搜索栏
   /**
@@ -174,6 +175,23 @@ Page({
       emoticonShow:false,
       loadShow:true,
     }) 
+
+    var keyword = GLOBAL_PAGE.data.keyword
+    var tagList = GLOBAL_PAGE.data.tagList
+    var hotLabel = []
+    for(var i=0;i<tagList.length;i++)
+        for(var j=0;j<tagList[i].sub.length;j++)
+        {
+            if ( keyword == tagList[i].sub[j].name )
+            {
+                for(var h=0;h<tagList[i].sub.length; h++)
+                  hotLabel.push(tagList[i].sub[h].name)
+               
+            }
+        }
+
+    GLOBAL_PAGE.setData({hotLabel:hotLabel})
+
 
     var _keyword = GLOBAL_PAGE.data.keyword
     var url = Api.tagImgQuery() 
@@ -209,23 +227,45 @@ Page({
     
     GLOBAL_PAGE.setData({
       keyword:e.currentTarget.dataset.keyword,
-      inputVal:e.currentTarget.dataset.keyword,
+      // inputVal:e.currentTarget.dataset.keyword,
       inputShowed:true,
       searchResultShowed:false,
     })
 
     //index目录列表
-    if(e.currentTarget.dataset.keyword == "index")
+    //临时建立tagListDisplay中间选项，首页查询，所有tag一起展示，
+    if(e.currentTarget.dataset.keyword == "首页")
     {
+        var tagListDisplay = GLOBAL_PAGE.data.tagList   
         GLOBAL_PAGE.setData({
           indexShow:true,
           shortcutShow:false,
           emoticonShow:false,
           loadShow:false,
+          tagListDisplay:tagListDisplay
         }) 
+        return
     }
-    else
-      GLOBAL_PAGE.searchBtn();
+    // 单项父类查询，展示长度为1的tag数组，仅有父类一个元素
+    var tagList = GLOBAL_PAGE.data.tagList
+    for(var i = 0 ; i<tagList.length;i++)
+    {
+        if( e.currentTarget.dataset.keyword == tagList[i].parent.name)
+        {
+            var tagListDisplay = [ GLOBAL_PAGE.data.tagList[i] ]
+            GLOBAL_PAGE.setData({
+              indexShow:true,
+              shortcutShow:false,
+              emoticonShow:false,
+              loadShow:false,
+              tagListDisplay:tagListDisplay
+            }) 
+            return
+        }
+    }
+    // else
+    //正常搜索
+    GLOBAL_PAGE.searchBtn();
 
   },
   //3
@@ -237,29 +277,29 @@ Page({
   //4
   hideInput: function () {
       this.setData({
-          inputVal: "",
+          keyword: "",
           inputShowed: false
       });
   },
   //5
   clearInput: function () {
       this.setData({
-          inputVal: ""
+          keyword: ""
       });
   },
   //6
   inputTyping: function (e) {
       GLOBAL_PAGE.setData({
-          inputVal: e.detail.value
+          keyword: e.detail.value
       });
 
       var category = GLOBAL_PAGE.data.category
-      var inputVal = e.detail.value
+      var keyword = e.detail.value
       var searchKey = []
       for (var i=0;i< category.length;i++)
       { 
-          console.log(inputVal,category[i].name ,  category[i].name.indexOf(inputVal))
-          if(category[i].name.indexOf(inputVal) != -1)
+          console.log(keyword,category[i].name ,  category[i].name.indexOf(keyword))
+          if(category[i].name.indexOf(keyword) != -1)
               searchKey.push(category[i].name)  
       }
 
@@ -291,10 +331,10 @@ Page({
     console.log("height:" , APP.globalData.windowHeight - 84)
     GLOBAL_PAGE.setData({
       windowWidth:APP.globalData.windowWidth,
-      windowHeight:APP.globalData.windowHeight - 84, //搜索框高度42px,短语框高度42px
+      windowHeight:APP.globalData.windowHeight - 90, //搜索框高度48px,短语框高度42px
     })
 
-    GLOBAL_PAGE.searchBtn()
+   
   
     //获取表情列表
      wx.request({
@@ -313,9 +353,10 @@ Page({
               {
                   c_list.push(res.data.category_list[i].name)  
               }
-              GLOBAL_PAGE.setData({hotLabel:c_list})
-   
+     
+              GLOBAL_PAGE.searchBtn() //搜索完成
           }
+          
         },
         complete:function(){
             GLOBAL_PAGE.setData({

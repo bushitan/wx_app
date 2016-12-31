@@ -1,12 +1,12 @@
 <!--public.wxml-->
-<view class="page" catchtap="hiddenAll" >
+<view class="page"  >
     <view class="">
         <!--搜索栏-->
         <view class="weui-search-bar">
             <view class="weui-search-bar__form">
                 <view class="weui-search-bar__box">
                     <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
-                    <input type="text" class="weui-search-bar__input" placeholder="搜索" value="{{inputVal}}" bindinput="inputTyping" bindfocus="inpuFocus" bindblur="inpuBlur"/>
+                    <input type="text" class="weui-search-bar__input" placeholder="搜索" value="{{keyword}}" bindinput="inputTyping" bindfocus="inpuFocus" bindblur="inpuBlur"/>
                     <view class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" bindtap="clearInput">
                         <icon type="clear" size="14"></icon>
                     </view>
@@ -25,9 +25,9 @@
                 </navigator>
             </block>
             <navigator url="" class="weui-cell" hover-class="weui-cell_active"
-                catchtap="searchShortcut"  data-keyword="index">
+                catchtap="searchShortcut"  data-keyword="首页">
                 <view class="weui-cell__bd">
-                    <view>更多表情，尽在乾坤袋首页</view>
+                    <view>更多表情，尽在首页</view>
                 </view>
             </navigator>
         </view>
@@ -35,7 +35,7 @@
 
     <!--首页全选项-->
     <view class="main" hidden="{{!indexShow}}">
-        <block wx:for-items="{{tagList}}"  wx:for-item="tag">
+        <block wx:for-items="{{tagListDisplay}}"  wx:for-item="tag">
             <view class="page__hd">
                 <view class="page__title">{{tag.parent.name}}</view>
             </view>
@@ -49,29 +49,41 @@
              </view>
         </block>
     </view>
+
+   
    
     <!--public Menu菜单-->
     <view class="emoticon-menu" hidden="{{menuType != '0' ? false:true}}">
-        <view class=" page__bd_spacing" >
-            <view class="weui-flex">
-                <view></view>
-                <view class="weui-flex__item"> 
-                    <view class="placeholder">  
-                        <image hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" class="weui-media-box__thumb" mode="aspectFit" src="{{selectEmoticon.img_url}}"  bindload="bindload"/>
-                        <video hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}" class="weui-media-box__thumb" src="{{selectEmoticon.img_url}}" catchtap="eventBase"></video>
-                    </view>
-                </view>
-                <view></view>
-            </view>
-            <view class="weui-flex">
-                <view class="weui-flex__item"> </view>
-                <view > 
-                    <button  catchtap="menuCollect" size="mini"  hidden="">收藏</button>
-                    <button class="" type="primary"  catchtap="menuShare" size="mini" >预览分享</button>
-                </view>
-                <view class="weui-flex__item"> </view>
+        <!--右上角菜单-->
+        <view class="weui-flex  ">
+            <view class="weui-flex__item"></view>
+            <view >
+                <label catchtap="hiddenAll">
+                    <image src="../../images/ic_action_cancel _black.png" class="hidden__all" ></image>
+                </label>
             </view>
         </view>
+        
+        <view class="weui-flex page__bd_spacing" catchtap="hiddenAll" style="background-color: #EBEBEB;">
+            <view></view>
+            <view class="weui-flex__item"> 
+                <view class="placeholder">  
+                    <image hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" class="weui-media-box__thumb" mode="aspectFit" src="{{selectEmoticon.img_url}}"  bindload="bindload"/>
+                    <video hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}" class="weui-media-box__thumb" src="{{selectEmoticon.img_url}}" catchtap="eventBase"></video>
+                </view>
+            </view>
+            <view></view>
+        </view>
+        <view class="space-4">  </view>
+        <view class="weui-flex btn_bar" >
+            <view class="weui-flex__item"> </view>
+            <view > 
+                <button  catchtap="menuCollect" size="mini"  hidden="">收藏</button>
+                <button class="" type="primary"  catchtap="menuShare" size="mini" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}">预览(右上角保存)</button>
+            </view>
+            <view class="weui-flex__item"> </view>
+        </view>
+       
     </view>
 
     <!--短语快捷键-->

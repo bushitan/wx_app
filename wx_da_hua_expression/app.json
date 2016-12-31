@@ -1,9 +1,9 @@
 {
   "pages":[
-    "pages/watermark/watermark",
     "pages/private/private",
-    "pages/category/category",
     "pages/public/public",
+    "pages/watermark/watermark",
+    "pages/category/category",
     "pages/manage/manage"
   ],
   "window":{
@@ -11,7 +11,7 @@
     "navigationBarBackgroundColor": "#24292c",
     "navigationBarTitleText": "表情袋",
     "navigationBarTextStyle":"white",
-    "enablePullDownRefresh":"true"
+    "enablePullDownRefresh":"false"
   },
   "tabBar": {
     "backgroundColor":"#fcfcfc",
@@ -25,15 +25,15 @@
       "selectedIconPath":"images/icon_big_my.png"
     },{
       "pagePath": "pages/public/public",
-      "text": "更多",
+      "text": "更多热图",
       "iconPath":"images/icon_smile.png",
       "selectedIconPath":"images/icon_big_hot.png"
     }]
   },
   "networkTimeout": {
-    "request": 120000,
-    "uploadFile":120000,
-    "downloadFile": 120000
+    "request": 300000,
+    "uploadFile":300000,
+    "downloadFile": 300000
   },
   "debug": true
 }

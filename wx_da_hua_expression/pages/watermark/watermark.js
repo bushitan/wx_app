@@ -25,12 +25,12 @@ Page({
       wx_dissolve:0.85,
 
       gravity:"NorthWest",
-      dx: 0,
-      wx_offsetLeft: "0px",
+      dx: 150,
+      wx_offsetLeft: "150px",
       input_offset_x:4,
 
-      dy: 0,
-      wx_offsetTop: "0px",
+      dy: 150,
+      wx_offsetTop: "150px",
       input_offset_y:4,
     },
 
@@ -247,7 +247,7 @@ Page({
 
 
   onLoad: function (options) {
-    options = {imgurl: "http://image.12xiong.top/19_20161230100647.jpg", width: "1280", height: "822"}
+    // options = {imgurl: "http://image.12xiong.top/19_20161230100647.jpg", width: "1280", height: "822"}
     var opt_imgurl = options.imgurl
     var opt_w = options.width
     var opt_h = options.height
