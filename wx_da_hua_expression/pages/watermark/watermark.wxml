@@ -54,7 +54,7 @@
     </view>  
 
     <view class="weui-btn-area">
-        <button class="weui-btn" type="primary"  bindtap="Create">预览（右上角保存）</button>
+        <button class="weui-btn" type="primary"  bindtap="Create">全屏预览</button>
         <view class="weui-flex">
             <view class="weui-flex__item page__desc show__des">温馨提示：文字超出图片，水印会无法显示哦</view>
         </view>

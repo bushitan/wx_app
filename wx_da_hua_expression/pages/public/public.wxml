@@ -59,7 +59,7 @@
             <view class="weui-flex__item"></view>
             <view >
                 <label catchtap="hiddenAll">
-                    <image src="../../images/ic_action_cancel _black.png" class="hidden__all" ></image>
+                    <image src="../../images/ic_action_cancel_black.png" class="hidden__all" ></image>
                 </label>
             </view>
         </view>
@@ -79,7 +79,7 @@
             <view class="weui-flex__item"> </view>
             <view > 
                 <button  catchtap="menuCollect" size="mini"  hidden="">收藏</button>
-                <button class="" type="primary"  catchtap="menuShare" size="mini" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}">预览(右上角保存)</button>
+                <button class="" type="primary"  catchtap="menuShare" size="mini" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}">全屏预览</button>
             </view>
             <view class="weui-flex__item"> </view>
         </view>

@@ -19,6 +19,44 @@
     margin-top: 5rpx;
 }
 
+/*上传图片、视频*/
+.temp{
+    position:absolute;
+    /*width:72rpx;
+    height:72rpx;*/
+    bottom: 48rpx;
+    left:48rpx;
+    background-color: #10aeff;
+    border-radius: 5rpx;
+    /*box-shadow: 0px 3px 6px -2px rgba(0,0,0,0.3);*/
+    box-shadow: 0px 2px 6px 1px rgba(0,0,0,0.2);
+    z-index: 10000;
+}
+.temp .title{
+    line-height: 72rpx;
+    color: white;
+    font-size: 14px;
+    padding: 14px;
+}
+.temp__wall {
+    position: absolute;
+    top: 0px;
+    /*background-color: rgba(237,237,237,0.4);*/
+    /*background-color: rgba(36,41,44,0.4);*/
+    background-color: #F8F8F8;
+    z-index: 1000;
+    /*#ededed;*/
+}
+
+#EBEBEB
+
+
+.upload image {
+    width: 64rpx;
+    height: 64rpx;
+    margin-left: 5rpx;
+    margin-top: 5rpx;
+}
 
 /*选择目录*/
 /*.category{

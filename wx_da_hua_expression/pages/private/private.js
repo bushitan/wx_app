@@ -29,9 +29,12 @@ Page({
     joinImg:{
       step:1,
       status:1, // 1 准备状态 2 用户已操作 3 正在上传 
-      first:"http://image.12xiong.top/12_20161226084253.gif?imageMogr2/thumbnail/170x170",
-      seconde:"http://image.12xiong.top/12_20161226084358.gif?imageMogr2/thumbnail/170x170",
+      first:"http://image.12xiong.top/12_20161226084253.gif",
+      seconde:"http://image.12xiong.top/12_20161226084358.gif",
       resualt:"http://image.12xiong.top/12_20161226084407.gif?imageMogr2/thumbnail/170x170",
+      // first:"http://image.12xiong.top/12_20161226084253.gif?imageMogr2/thumbnail/170x170",
+      // seconde:"http://image.12xiong.top/12_20161226084358.gif?imageMogr2/thumbnail/170x170",
+      // resualt:"http://image.12xiong.top/12_20161226084407.gif?imageMogr2/thumbnail/170x170",
       // resualt_alert:"http://image.12xiong.top/12_20161226084358.gif?imageMogr2/thumbnail/170x170",
     },
 
@@ -55,8 +58,18 @@ Page({
 
     //touch选择对象
     selectEmoticon:{id:"",name:"",img_url:"",size:""}, //预备编辑的图片
-    selectCategory:{id:"",name:""},
+    selectCategory:{category_id:null,name:""},
     
+
+    //临时表情
+    temp:{
+        show:false,   
+        // show:true,   
+        // num:0,
+        emoticon:[ ], //临时表情列表  // "http://image.12xiong.top/12_20161226084253.gif",
+    },
+    
+
   },
 
 
@@ -107,7 +120,7 @@ Page({
 //正在上传 4-2
   btnIsUpload:function() {
     wx.showToast({
-        title: '正在上传',
+        title: '正在执行上传任务，请稍等',
         icon: 'loading',
         duration: 700
     })
@@ -179,7 +192,7 @@ Page({
       {
         GLOBAL_PAGE.setData({isUpload:false})
         wx.showToast({
-            title: '上传完成，添加至默认目录',
+            title: '上传完成',
             icon: 'success',
             duration: 700
         })
@@ -193,11 +206,26 @@ Page({
   uploadFile:function(file_path){
       var _type = file_path.split(".").pop()
       console.log(file_path)
+
+      //全选的时候，放在默认目录里
+      var selectCategory = GLOBAL_PAGE.data.selectCategory
+      if (selectCategory.category_id == null)
+      {
+          var category = GLOBAL_PAGE.data.category
+          for(var i=0;i<category.length;i++)
+              if(category[i].is_default == 1) 
+              {
+                  selectCategory.category_id = category[i].category_id
+                  break
+              }
+      }
+          
       wx.request({
           url: Api.uploadToken(), 
           data:{
             'session': wx.getStorageSync(Key.session),
             "type":_type,
+            "category_id":selectCategory.category_id ,
           },
           success: function(res){
               var data = res.data
@@ -505,14 +533,18 @@ Page({
    
   /** 8 菜单-视频转GIF */
   menuVideo2Gif:function(){
+      if(GLOBAL_PAGE.data.isUpload == true)
+      {
+        wx.showToast({
+            title: '正在执行上传任务，请稍等',
+            icon: 'loading',
+            duration: 700
+        })
+        return
+      }
       //改变上传btn状态为
       GLOBAL_PAGE.setData({isUpload:true})
-      wx.showToast({
-          title: '视频正在转换',
-          icon: 'loading',
-          duration: 700
-      })
-
+  
       wx.request({
           url: Api.imgVideo2gif(), 
           data:{
@@ -520,21 +552,23 @@ Page({
             "video_url":GLOBAL_PAGE.data.selectEmoticon.img_url,
             "start_time":GLOBAL_PAGE.data.startTime,
             "duration_time":GLOBAL_PAGE.data.durationTime,
+            "width":GLOBAL_PAGE.data.selectEmoticon.width,
+            "height":GLOBAL_PAGE.data.selectEmoticon.height,
           },
           success: function(res){
               var data = res.data
               console.log(data)
               if(data.status == "true")
               {
-                var e = wx.getStorageSync(Key.emoticon)
-                e.push(data.img)
-                wx.setStorageSync(Key.emoticon,e)
-                GLOBAL_PAGE.renderEmoticon()
+
+                var temp = GLOBAL_PAGE.data.temp
+                temp.emoticon.push(data.local_url)
+                GLOBAL_PAGE.setData({temp:temp})
 
                 wx.showToast({
-                    title: '视频转Gif成功',
+                    title: '制作成功，左下方蓝色数字按钮打开',
                     icon: 'success',
-                    duration: 700
+                    duration: 1000
                 })
               } 
               else{
@@ -580,14 +614,14 @@ Page({
           if ( select.img_url == joinImg.seconde)
               change()
           else
-              joinImg.first = select.img_url
+              joinImg.first = select.yun_url  //joinImg.first = select.img_url
       }
           
       if (action == "2") 
           if ( select.img_url == joinImg.first)
               change()
           else
-              joinImg.seconde = select.img_url
+              joinImg.seconde = select.yun_url //joinImg.first = select.img_url
       
       GLOBAL_PAGE.setData({joinImg:joinImg})
 
@@ -607,7 +641,7 @@ Page({
     {
       wx.showToast({
           title: '正在执行上传任务，请稍等',
-          icon: 'success',
+          icon: 'loading',
           duration: 700
       })
       return
@@ -627,22 +661,15 @@ Page({
             console.log(data)
             if(data.status == "true")
             {
-              //渲染图片
-              var e = wx.getStorageSync(Key.emoticon)
-              e.push(data.img)
-              wx.setStorageSync(Key.emoticon,e)
-              GLOBAL_PAGE.renderEmoticon()
+              var temp = GLOBAL_PAGE.data.temp
+                temp.emoticon.push(data.local_url)
+                GLOBAL_PAGE.setData({temp:temp})
 
-              //成功显示图片
-              var joinImg = GLOBAL_PAGE.data.joinImg 
-              joinImg.resualt =  data.img.yun_url
-              GLOBAL_PAGE.setData({joinImg:joinImg})
-
-              wx.showToast({
-                  title: '拼接成功,保存在默认目录',
-                  icon: 'success',
-                  duration: 700
-              })
+                wx.showToast({
+                    title: '拼接成功，左下方蓝色数字按钮打开',
+                    icon: 'success',
+                    duration: 1000
+                })
             } 
             else{
               wx.showToast({
@@ -907,13 +934,57 @@ Page({
 
 
   //图片加载完毕
-  bindloadVertical:function(e){
-    Render.menu.vertical(GLOBAL_PAGE,e)
+  // bindloadVertical:function(e){
+  //   Render.menu.vertical(GLOBAL_PAGE,e)
 
+  // },
+  // bindloadHorizontal:function(e){    
+  //   Render.menu.horizontal(GLOBAL_PAGE,e)
+  // },
+
+  tempSwitch:function(){
+      var temp = GLOBAL_PAGE.data.temp
+      if(temp.show == true)
+        temp.show = false
+      else
+        temp.show = true
+
+      GLOBAL_PAGE.setData({temp:temp})
   },
-  bindloadHorizontal:function(e){    
-    Render.menu.horizontal(GLOBAL_PAGE,e)
+
+  tempPreview:function(e){
+      wx.previewImage({
+        current: e.currentTarget.dataset.src, // 当前显示图片的http链接
+        urls: GLOBAL_PAGE.data.temp.emoticon // 需要预览的图片http链接列表
+      })
   },
+
+  tempClear:function(e){
+      wx.showModal({
+        title: '是否清除临时表情？',
+        content: ' ',
+        success: function(res) {
+            if (res.confirm) {
+                var temp = GLOBAL_PAGE.data.temp
+                temp.show = false
+                temp.emoticon=[]
+                GLOBAL_PAGE.setData({temp:temp})
+
+                wx.showToast({
+                  title: '临时表情清除完成',
+                  icon: 'success',
+                  duration: 1000
+                })   
+            }
+        },
+        complete:function(res) { 
+          
+        }
+    })
+      
+  },
+  
+
 
 })
 

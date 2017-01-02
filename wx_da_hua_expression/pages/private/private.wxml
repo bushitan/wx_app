@@ -52,7 +52,7 @@
                 <label class="base_btn delete" catchtap="menuDelete" >删除</label>
                 <label class="base_btn category__select" catchtap="menuMoveCategory" >分组</label>
                 <label catchtap="hiddenAll">
-                    <image src="../../images/ic_action_cancel _black.png" class="hidden__all" ></image>
+                    <image src="../../images/ic_action_cancel_black.png" class="hidden__all" ></image>
                 </label>
             </view>
         </view>
@@ -76,7 +76,7 @@
                 <view > 
                     <button size="mini" catchtap="navigateToWatermark" >水印</button>
                     <button size="mini" catchtap="menuJoin" >GIF拼接</button>
-                    <button class="" type="primary" catchtap="menuShare" size="mini" >预览(右上角保存)</button>
+                    <button class="" type="primary" catchtap="menuShare" size="mini" >全屏预览</button>
                 </view>
                 <view class="weui-flex__item"> </view>
             </view>
@@ -134,7 +134,7 @@
                 </view>
             </view>
             <view class="weui-btn-area">
-                <button class="weui-btn" type="primary"  catchtap="menuVideo2Gif" >制作GIF</button>
+                <button class="weui-btn" type="primary" loading="{{isUpload}}" catchtap="menuVideo2Gif" >制作GIF</button>
             </view>
             <view class="weui-flex">
                 <view class="weui-flex__item page__desc video2gif__des">视频片段制作GIF(需设置GIF开始、持续时间)</view>
@@ -147,16 +147,17 @@
     <!--emoticon表情显示列表-->
     <scroll-view class="emoticon-wall" scroll-y="true" style="height:{{windowHeight}}px;" bindscrolltolower="emoticonScrollTolower" >
         <view class="weui-grids">
-        <block wx:for-items="{{emoticon}}"  wx:for-item="emoticon">
-            <navigator url="" class="emoticon-grid" hover-class="weui-grid_active"
-            catchtap="onMenu" mode="center" data-img_id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}" data-category_id="{{emoticon.category_id}}"  data-size="{{emoticon.size}}" data-static_url="{{emoticon.static_url}}"   data-yun_url="{{emoticon.yun_url}}" data-menu_type="{{emoticon.menu_type}}
-            data-width="{{emoticon.width}}" data-height="{{emoticon.height}}"  data-duration="{{emoticon.duration}}"  >
-            <image class="emoticon-grid__icon" src="{{emoticon.static_url}}" background-size="cover"  />
-                <image wx:if="{{ emoticon.menu_type == 4 ? true :false}}" class="emoticon-grid__mark " src="../../images/mp4.png"></image>
-            <image wx:if="{{ emoticon.menu_type == 1 ? true :false}}" class="emoticon-grid__mark " src="../../images/gif.png"></image>
-            </navigator>
-        </block>
+            <block wx:for-items="{{emoticon}}"  wx:for-item="emoticon">
+                <navigator url="" class="emoticon-grid" hover-class="weui-grid_active"
+                catchtap="onMenu" data-img_id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}" data-category_id="{{emoticon.category_id}}"  data-size="{{emoticon.size}}" data-static_url="{{emoticon.static_url}}"   data-yun_url="{{emoticon.yun_url}}" data-menu_type="{{emoticon.menu_type}}
+                data-width="{{emoticon.width}}" data-height="{{emoticon.height}}"  data-duration="{{emoticon.duration}}"  >
+                <image class="emoticon-grid__icon" src="{{emoticon.static_url}}" background-size="cover" mode="center"  />
+                    <image wx:if="{{ emoticon.menu_type == 4 ? true :false}}" class="emoticon-grid__mark " src="../../images/mp4.png"></image>
+                <image wx:if="{{ emoticon.menu_type == 1 ? true :false}}" class="emoticon-grid__mark " src="../../images/gif.png"></image>
+                </navigator>
+            </block>
         </view>
+        <view class="space-64"></view>
     </scroll-view>
 
     <!--loading框-->
@@ -182,7 +183,45 @@
             <image  src="../../images/ic_action_add.png" background-size="cover" catchtap="btnUpload"></image>
         </view>
     </view>
-    
+
+    <!--临时文件 按钮-->
+    <view class="temp" catchtap="tempSwitch" wx:if="{{temp.emoticon.length>0}}">
+        <label class="title" wx:if="{{temp.show}}">关闭</label>
+        <label class="title" wx:else>{{temp.emoticon.length}}</label>
+    </view>
+
+    <!--临时文件  显示列表-->
+    <scroll-view class="temp__wall" hidden="{{!temp.show}}"
+    scroll-y="true" style="height:{{windowHeight+42}}px;"
+    >   
+        <view class="page__hd">
+            <view class="page__title">临时表情</view>
+            <view class="page__desc">退出表情袋，临时表情会消失，请及时保存</view>
+            <view class="page__desc">保存方法：点击表情->右上角按钮->保存图片</view>
+        </view>
+        <view class="weui-grids">
+            <block wx:for="{{temp.emoticon}}" wx:for-index="index" wx:for-item="item">
+                <navigator url="" class="emoticon-grid-3" hover-class="weui-grid_active"
+                catchtap="tempPreview"  data-src="{{item}}" >
+                <image class="emoticon-grid__icon-3" src="{{item}}" background-size="cover" mode="aspectFit" />
+                </navigator>
+             </block>
+        </view>
+        <view class="weui-btn-area">
+            <button class="weui-btn" catchtap="tempClear">清除</button>
+        </view>
+        <view class="space-64"></view>
+    </scroll-view>
+
+
+
+
+
+
+
+
+
+
     <!--目录选择列表-->
     <scroll-view class="select-category" wx:if="{{selectCategoryShow}}"
     scroll-y="true" style="height:{{windowHeight}}px;"
