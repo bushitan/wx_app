@@ -11,8 +11,8 @@ Page({
     watermark:{
       img_url:"http://77fmtb.com1.z0.glb.clouddn.com/gogopher.jpg" ,
       style:"2",
-      text:BASE64.encode("大吉拜年"),
-      wx_text:"大吉拜年",
+      text:BASE64.encode("上车"),
+      wx_text:"上车",
 
       font:"5b6u6L2v6ZuF6buR",
       fontsize:"24",
@@ -245,6 +245,7 @@ Page({
     })    
   },
 
+  
 
   onLoad: function (options) {
     // options = {imgurl: "http://image.12xiong.top/19_20161230100647.jpg", width: "1280", height: "822"}

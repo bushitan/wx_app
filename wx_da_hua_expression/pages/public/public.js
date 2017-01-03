@@ -16,7 +16,8 @@ Page({
     displayLoading: true,
     keyword:"老司机", //搜索关键字
     // emoticon: [],
-    hotLabel:["金馆长","我想静静","意外","疼！"],  
+    // hotLabel:["金馆长","我想静静","意外","疼！"],  
+    hotLabel:[],  
     hidden: false,
     //点击弹出菜单
     displayMenu:false,
@@ -117,9 +118,17 @@ Page({
                       duration: 700
                   })
               }
+              else
+                wx.showModal({
+                    title: '网络连接失败，请重试',
+                    showCancel:false,
+                })
           },
           fail:function(res){
-            console.log("collect fail:",res.data)
+            wx.showModal({
+                title: '网络连接失败，请重试',
+                showCancel:false,
+            })
           }
       })
   },
@@ -155,13 +164,7 @@ Page({
     Render.emoticon(GLOBAL_PAGE,emoticon)
   },
 
-//   onShareAppMessage: function () {
-//     return {
-//       title: '自定义分享标题',
-//       desc: '自定义分享描述',
-//       path: '/page/user?id=123'
-//     }
-//   },
+
   
   //搜索栏
   /**
@@ -186,7 +189,6 @@ Page({
             {
                 for(var h=0;h<tagList[i].sub.length; h++)
                   hotLabel.push(tagList[i].sub[h].name)
-               
             }
         }
 
@@ -198,7 +200,7 @@ Page({
     var session = wx.getStorageSync(KEY.session) 
     //获取表情列表
      wx.request({
-        url: url, //仅为示例，并非真实的接口地址
+        url: url, 
         method:"GET",
         data: {
           session: session,
@@ -207,8 +209,23 @@ Page({
           // category_name: _keyword,
         },
         success: function(res) {
-          var object = res.data
-          GLOBAL_PAGE.renderEmoticon(object.img_list)
+            var object = res.data
+            
+            if (object.status == "true")
+            {
+                GLOBAL_PAGE.renderEmoticon(object.img_list)
+            }
+            else
+            wx.showModal({
+                title: '网络连接失败，请重试',
+                showCancel:false,
+            })
+        },
+        fail:function(res){
+            wx.showModal({
+                title: '网络连接失败，请重试',
+                showCancel:false,
+            })
         },
         complete:function(){
             GLOBAL_PAGE.setData({
@@ -323,8 +340,16 @@ Page({
     })
   },
 
+  onShareAppMessage: function () {
+      
+      return {
+        title: '表情袋',
+        desc: '这有很多《'+GLOBAL_PAGE.data.keyword+'》的表情唷,(~˘▾˘)~',
+        path: '/pages/public/public?keyword='+GLOBAL_PAGE.data.keyword
+      }
+  },
   
-  onLoad: function () {
+  onLoad: function (options) {
     GLOBAL_PAGE = this
     //1 page初始化高宽
     console.log("width:" , APP.globalData.windowWidth)
@@ -334,7 +359,11 @@ Page({
       windowHeight:APP.globalData.windowHeight - 90, //搜索框高度48px,短语框高度42px
     })
 
-   
+    if( options.keyword != null && options.keyword != "" && options.keyword != undefined )
+        GLOBAL_PAGE.setData({
+            keyword:options.keyword,
+        })
+
   
     //获取表情列表
      wx.request({
@@ -356,7 +385,18 @@ Page({
      
               GLOBAL_PAGE.searchBtn() //搜索完成
           }
+          else
+            wx.showModal({
+                title: '网络连接失败，请重试',
+                showCancel:false,
+            })
           
+        },
+        fail:function(res){
+            wx.showModal({
+                title: '网络连接失败，请重试',
+                showCancel:false,
+            })
         },
         complete:function(){
             GLOBAL_PAGE.setData({

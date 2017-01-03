@@ -168,7 +168,7 @@ Page({
         _count = 1
         _path = [_path] //视频、图片地址，均按数组传递
     }
-     if(_count <= 0)  console.log("上传数量出错")  
+    //  if(_count <= 0)  console.log("上传数量出错")  
      GLOBAL_PAGE.setData({
         isUpload:true,//设置上传状态
         uploadNum:{
@@ -251,37 +251,48 @@ Page({
                           e.push(data.img)
                           wx.setStorageSync(Key.emoticon,e)
                           GLOBAL_PAGE.renderEmoticon()
+
+                          GLOBAL_PAGE.uploadCompelte()//上传成功，继续上传
                         } 
+                        else{
+                            wx.showModal({
+                              title: '网络连接失败，请重试',
+                              showCancel:false,
+                            })
+                            GLOBAL_PAGE.setData({isUpload:false})
+                        }    
                       },
                       fail (error) {
                         console.log(error)
+                        wx.showModal({
+                          title: '网络连接失败，请重试',
+                          showCancel:false,
+                        })
+                        GLOBAL_PAGE.setData({isUpload:false})
                       },
                       complete (res) {
                         console.log(res)
-                        GLOBAL_PAGE.uploadCompelte()
+                        
                       }
                   })
               }
               else{
-                wx.showToast({
-                  title: '图片上传失败，可能图片太大了~~网络超时',
-                  icon: 'loading',
-                  duration: 700
+                wx.showModal({
+                  title: '网络连接失败，请重试',
+                  showCancel:false,
                 })
+                GLOBAL_PAGE.setData({isUpload:false})
               }              
           },
-
           fail:function(res){
-              var data = res.data
-              console.log(res)
-
-              wx.showToast({
-                title: '图片上传失败~~可能网络超时了',
-                icon: 'loading',
-                duration: 700
+              wx.showModal({
+                title: '网络连接失败，请重试',
+                showCancel:false,
               })
+              GLOBAL_PAGE.setData({isUpload:false})
           },
           complete:function(res) { 
+              GLOBAL_PAGE.setData({isUpload:false})
           },
       })
   },
@@ -319,26 +330,6 @@ Page({
       urls.push(e[i].yun_url)
     }
     Render.share(current,urls)
-  },
-
-  /** 6 菜单-裁剪 */
-  menuResizeV2:function(){
-    wx.showActionSheet({
-      itemList: ['大图(170x170)', '中图(128x128)', '小图(96x96)', '炒鸡小(48x48)'],
-      success: function(res) {
-        if (!res.cancel) {
-          wx.showToast({
-              title: '压缩成功，分享试试',
-              icon: 'success',
-              duration: 700
-          })
-          // console.log(res.tapIndex)
-          //Todo 上传
-          var _new_img = GLOBAL_PAGE.data.selectEmoticon
-          GLOBAL_PAGE.emoticonUpdate(_new_img)
-        }
-      }
-    })
   },
 
   /** 7 菜单-删除 */
@@ -386,21 +377,16 @@ Page({
                             GLOBAL_PAGE.setData({menuType:0})
                         }
                         else{
-                          wx.showToast({
-                            title: '删除失败，可能图片太大了~~网络超时',
-                            icon: 'loading',
-                            duration: 700
+                          wx.showModal({
+                            title: '网络连接失败，请重试',
+                            showCancel:false,
                           })
                         }
                     },
                     fail:function(res){
-                        console.log("chooseImage fail")
-                        var data = res.data
-                        console.log(res)
-                        wx.showToast({
-                          title: '图片删除失败~~可能网络超时了',
-                          icon: 'loading',
-                          duration: 700
+                        wx.showModal({
+                          title: '网络连接失败，请重试',
+                          showCancel:false,
                         })
                     },
                 })
@@ -493,7 +479,7 @@ Page({
                    wx.showToast({
                       title: '修改分组成功',
                       icon: 'success',
-                      duration: 500
+                      duration: 700
                   })
                 }
                 else{
@@ -506,13 +492,9 @@ Page({
                
               },
               fail:function(res){
-                  console.log("chooseImage fail")
-                  var data = res.data
-                  console.log(res)
-                  wx.showToast({
-                    title: '图片移动失败~~可能网络超时了',
-                    icon: 'loading',
-                    duration: 700
+                  wx.showModal({
+                    title: '网络连接失败，请重试',
+                    showCancel:false,
                   })
               },
             })
@@ -572,25 +554,20 @@ Page({
                 })
               } 
               else{
-                wx.showToast({
-                  title: '制作GIF失败，可能视频太大了~~网络超时',
-                  icon: 'loading',
-                  duration: 700
-                })
+                wx.showModal({
+                title: '网络连接失败，请重试',
+                showCancel:false,
+              })
               }
           },
           fail:function(res){
-              console.log("chooseImage fail")
-              var data = res.data
-              console.log(res)
-              wx.showToast({
-                title: '制作GIF失败，可能视频太大了~~网络超时',
-                icon: 'loading',
-                duration: 700
+              wx.showModal({
+                title: '网络连接失败，请重试',
+                showCancel:false,
               })
           },
           complete:function(res) { 
-              GLOBAL_PAGE.setData({isUpload:false})
+            GLOBAL_PAGE.setData({isUpload:false})
           },
       })
   },
@@ -672,10 +649,9 @@ Page({
                 })
             } 
             else{
-              wx.showToast({
-                title: '拼接失败，可能图片太大了~~网络超时',
-                icon: 'loading',
-                duration: 700
+              wx.showModal({
+                title: '网络连接失败，请重试',
+                showCancel:false,
               })
             }
         },
@@ -683,11 +659,11 @@ Page({
             console.log("chooseImage fail")
             var data = res.data
             console.log(res)
-            wx.showToast({
-                title: '拼接失败，可能图片太大了~~网络超时',
-                icon: 'loading',
-                duration: 700
-            })
+
+            wx.showModal({
+              title: '网络连接失败，请重试',
+              showCancel:false,
+            })         
         },
         complete:function(res) { 
             GLOBAL_PAGE.setData({isUpload:false})
@@ -756,11 +732,20 @@ Page({
     
   },
 
+  // 分享页面
+  onShareAppMessage: function () { 
+      return {
+        title: '表情袋',
+        desc: '这是我的表情袋，ヽ(°◇° )ノ',
+        path: '/pages/private/private'
+      }
+  },
 
   /**
    *  页面加载
    */
-  onLoad: function (param) {    
+  onLoad: function (param) {   
+
     GLOBAL_PAGE = this
     //1 page初始化高宽
     console.log("width:" , APP.globalData.windowWidth)
@@ -798,6 +783,7 @@ Page({
     ({
         success: function (res) 
         {
+          
           var _session = wx.getStorageSync('session') 
           if (! _session  ) //检查session,不存在，为false
             _session = "false"
@@ -822,26 +808,18 @@ Page({
                 //Todo 初始化页面、目录
                 GLOBAL_PAGE.onInit()
               }
-                
               else
-                wx.showToast({
+                wx.showModal({
                   title: '登陆失败',
-                  icon: 'loading',
-                  duration: 1000
-                })              
+                  content:"请联系管理员（微信号:bushitan）",
+                  showCancel:false,
+                })                
             },
             fail:function(res) { 
-              
-              console.log("fail:",res)
-             wx.showToast({
-                  title: '网络连接失败',
-                  icon: 'loading',
-                  duration: 1000
-                })    
-            },
-            complete:function(res) { 
-              console.log("private complete")
-              console.log(res)
+                // wx.showModal({
+                //   title: '网络连接失败，请检查网络',
+                //   showCancel:false,
+                // }) 
             },
           })
         }
@@ -867,12 +845,27 @@ Page({
         },
         success: function(res) {
           var object = res.data
-          wx.setStorageSync(
-              Key.emoticon,
-              object.img_list
-          )
-          GLOBAL_PAGE.renderEmoticon()
-        }
+          if (object.status == "true")
+          {
+              wx.setStorageSync(
+                  Key.emoticon,
+                  object.img_list
+              )
+              GLOBAL_PAGE.renderEmoticon()
+          }
+          else
+            wx.showModal({
+                title: '网络连接失败，请重试',
+                showCancel:false,
+            })
+        },
+        fail:function(res){
+            wx.showModal({
+                title: '网络连接失败，请重试',
+                showCancel:false,
+            })
+        },
+
       })
 
      //数据初始化 目录
@@ -885,12 +878,26 @@ Page({
         },
         success: function(res) {
           var object = res.data
-          wx.setStorageSync(
-              Key.category,
-              object.category_list
-          )
+          if (object.status == "true")
+          {
+              wx.setStorageSync(
+                  Key.category,
+                  object.category_list
+              )
           GLOBAL_PAGE.renderCategory()
-        }
+          }
+          else
+            wx.showModal({
+                title: '网络连接失败，请重试',
+                showCancel:false,
+            })
+        },
+        fail:function(res){
+            wx.showModal({
+                title: '网络连接失败，请重试',
+                showCancel:false,
+            })
+        },
       })
     
   },

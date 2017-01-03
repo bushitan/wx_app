@@ -40,10 +40,10 @@ Page({
             isAdd:true,
         })
     else
-        wx.showToast({
-            title: '暂时支持最多15个目录',
-            icon: 'loading',
-            duration: 800
+        wx.showModal({
+            title: '无法增加目录',
+            content: '暂时支持最多15个目录',
+            showCancel:false,
         })
   },
 
@@ -51,10 +51,9 @@ Page({
   addCategoryOK:function(){
         if (GLOBAL_PAGE.data.addCategoryInput == "")
         {
-            wx.showToast({
+            wx.showModal({
                 title: '请输入目录名称',
-                icon: 'loading',
-                duration: 800
+                showCancel:false,
             })
             return
         }
@@ -126,10 +125,10 @@ Page({
         //默认目录不能删除
         if (e.currentTarget.dataset.is_default == "1" || e.currentTarget.dataset.is_default == 1)
         {
-            wx.showToast({
-                title: '默认目录不能删除',
-                icon: 'loading',
-                duration: 800
+             wx.showModal({
+                title: '无法删除目录',
+                content: '默认目录不能删除',
+                showCancel:false,
             })
             return
         }
@@ -137,12 +136,12 @@ Page({
        //目录带有 
         if (e.currentTarget.dataset.has_img == "true" || e.currentTarget.dataset.has_img == true)
         {
-        wx.showToast({
-            title: '需移除该目录下的表情',
-            icon: 'loading',
-            duration: 800
-        })
-        return
+            wx.showModal({
+                title: '无法删除目录',
+                content: '需移除该目录下的表情',
+                showCancel:false,
+            })
+            return
         }
      
         wx.request({
@@ -162,7 +161,7 @@ Page({
                 wx.showToast({
                     title: '目录删除成功',
                     icon: 'success',
-                    duration: 800
+                    duration: 700
                 })
             }
         })

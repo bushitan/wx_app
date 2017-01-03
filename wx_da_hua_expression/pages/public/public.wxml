@@ -98,16 +98,17 @@
     <!--emoticon表情显示列表-->
     <scroll-view class="emoticon-wall" scroll-y="true" style="height:{{windowHeight}}px;" bindscrolltolower="eventBase" data-action="scrollTolower"  hidden="{{!emoticonShow}}">
         <view class="weui-grids">
-        <block wx:for-items="{{emoticon}}"  wx:for-item="emoticon">
-            <navigator url="" class="emoticon-grid" hover-class="weui-grid_active"
-            catchtap="onMenu"  mode="center" data-id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}" data-category_id="{{emoticon.category_id}}"  data-size="{{emoticon.size}}" data-static_url="{{emoticon.static_url}}"   data-yun_url="{{emoticon.yun_url}}" data-menu_type="{{emoticon.menu_type}}" >
-            <image class="emoticon-grid__icon" src="{{emoticon.static_url}}" background-size="cover"  />
-                <!--<view class="weui-grid__label">Grid</view>-->
-                <image wx:if="{{ emoticon.menu_type == 4 ? true :false}}" class="emoticon-grid__mark " src="../../images/mp4.png"></image>
-            <image wx:if="{{ emoticon.menu_type == 1 ? true :false}}" class="emoticon-grid__mark " src="../../images/gif.png"></image>
-            </navigator>
-        </block>
+            <block wx:for-items="{{emoticon}}"  wx:for-item="emoticon">
+                <navigator url="" class="emoticon-grid" hover-class="weui-grid_active"
+                catchtap="onMenu"  mode="center" data-id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}" data-category_id="{{emoticon.category_id}}"  data-size="{{emoticon.size}}" data-static_url="{{emoticon.static_url}}"   data-yun_url="{{emoticon.yun_url}}" data-menu_type="{{emoticon.menu_type}}" >
+                <image class="emoticon-grid__icon" src="{{emoticon.static_url}}" background-size="cover" mode="center" />
+                    <!--<view class="weui-grid__label">Grid</view>-->
+                    <image wx:if="{{ emoticon.menu_type == 4 ? true :false}}" class="emoticon-grid__mark " src="../../images/mp4.png"></image>
+                <image wx:if="{{ emoticon.menu_type == 1 ? true :false}}" class="emoticon-grid__mark " src="../../images/gif.png"></image>
+                </navigator>
+            </block>
         </view>
+        <view class="space-64"></view>
     </scroll-view>
 
     <view class="page__bd" hidden="{{!loadShow}}">
@@ -122,4 +123,11 @@
             <view class="weui-loadmore__tips weui-loadmore__tips_in-line weui-loadmore__tips_in-dot"></view>
         </view>
     </view>
+     <!--weui-footer_fixed-bottom-->
+        <view class="weui-footer weui-footer_fixed-bottom"> 
+            <view class="weui-footer__links">
+                <!--<navigator url="" class="weui-footer__link">WeUI首页</navigator>-->
+            </view>
+            <view class="weui-footer__text">素材可投稿（管理员微信号：bushitan）</view>
+        </view>
 </view>
