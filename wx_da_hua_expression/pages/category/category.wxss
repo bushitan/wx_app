@@ -13,30 +13,6 @@
     
 }
 
-/*表情show*/
-.category .content{
-    display:flex;
-    flex-wrap: wrap;
-    width:100%;
-    margin-top:48rpx;
-    /*padding: 24rpx; */
-}
-.category label{
-    width:100rpx;
-    /*font-size: 30rpx;*/
-    text-align: right;
-    line-height:52rpx;
-    padding-right:24rpx;
-}
-.category input {
-    width:460rpx;
-    background-color: #ffffff;
-}
-.category icon {
-    /*width:200rpx;*/
-    padding-left:24rpx;
-    /*background-color: #ffffff;*/
-}
-.category button{
-    margin: 48rpx;
+.btn{
+    padding: 0px 10px;
 }

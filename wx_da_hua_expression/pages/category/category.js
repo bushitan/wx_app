@@ -80,9 +80,26 @@ Page({
                         c
                     )
                     GLOBAL_PAGE.renderCategory()
+                     wx.showToast({
+                        title: '添加目录成功',
+                        icon: 'success',
+                        duration: 700
+                    })
+                    GLOBAL_PAGE.setData({menuType:0})
                 }
-                 
-            }
+                else{
+                    wx.showModal({
+                    title: '网络连接失败，请重试',
+                    showCancel:false,
+                    })
+                }
+            },
+            fail:function(res){
+                wx.showModal({
+                    title: '网络连接失败，请重试',
+                    showCancel:false,
+                })
+            },
         })
   },
   
@@ -120,8 +137,18 @@ Page({
 //         })
 //       }
 //   },
-  // 5 目录删除
+  // 5 目录删除 ,模态框显示，怕用户点错
   deleteCategory:function(e){
+      wx.showModal({
+        title: '是否删除目录:' + e.currentTarget.dataset.name,
+        success: function(res) {
+            if (res.confirm) {
+                GLOBAL_PAGE.Delete(e)
+            }
+        }
+    })
+  },
+  Delete:function(e){
         //默认目录不能删除
         if (e.currentTarget.dataset.is_default == "1" || e.currentTarget.dataset.is_default == 1)
         {
@@ -138,7 +165,7 @@ Page({
         {
             wx.showModal({
                 title: '无法删除目录',
-                content: '需移除该目录下的表情',
+                content: '需移除该目录"'+ e.currentTarget.dataset.name +'"下的表情',
                 showCancel:false,
             })
             return
