@@ -78,8 +78,8 @@
         <view class="weui-flex btn_bar" >
             <view class="weui-flex__item"> </view>
             <view > 
-                <button  catchtap="menuCollect" size="mini"  hidden="">收藏</button>
-                <button class="" type="primary"  catchtap="menuShare" size="mini" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}">全屏预览</button>
+                <button  catchtap="menuCollect" type="primary" size="mini"  hidden="">收藏</button>
+                <button class=""   catchtap="menuShare" size="mini" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}">全屏预览</button>
             </view>
             <view class="weui-flex__item"> </view>
         </view>

@@ -19,7 +19,7 @@
     
     <!--input文本输入-->
     <view class="tool-left">
-            <input class="layer-input-input"  value="{{watermark.wx_text}}" bindinput="inputChange" auto-focus="true"  />            
+            <input class="layer-input-input"  value="{{watermark.wx_text}}" bindinput="inputChange" focus="true"  />            
     </view>
 
     <view class="page__bd_spacing">

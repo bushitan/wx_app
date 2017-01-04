@@ -49,8 +49,14 @@
             <view class="weui-flex__item"></view>
             <view >
                 <!--<icon type="cancel" catchtap="menuDelete"/>-->
-                <label class="base_btn delete" catchtap="menuDelete" >删除</label>
-                <label class="base_btn category__select" catchtap="menuMoveCategory" >分组</label>
+                <label class="category__select" catchtap="menuDelete" >删除</label>
+                <label class=" category__select" catchtap="menuMoveCategory" >分组</label>
+                <label  hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" > 
+                    <label class="  category__select" catchtap="navigateToWatermark">水印</label>
+                </label>
+                <label  hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" > 
+                    <label class=" category__select" catchtap="menuShare" >全屏预览</label>
+                </label>
                 <label catchtap="hiddenAll">
                     <image src="../../images/ic_action_cancel_black.png" class="hidden__all" ></image>
                 </label>
@@ -71,7 +77,7 @@
         <view class="space-4">  </view>
         <!--按钮栏  jpg/gif-->
         <view  hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" >
-            <view class="weui-flex page__bd_spacing btn_bar " hidden="{{joinShow}}" >
+            <!--<view class="weui-flex page__bd_spacing btn_bar " hidden="{{joinShow}}" >
                 <view class="weui-flex__item"> </view>
                 <view > 
                     <button size="mini" catchtap="navigateToWatermark" >水印</button>
@@ -79,16 +85,16 @@
                     <button class="" type="primary" catchtap="menuShare" size="mini" >全屏预览</button>
                 </view>
                 <view class="weui-flex__item"> </view>
-            </view>
+            </view>-->
             
-            <!--按钮栏  join拼接-->
-            <view class="join-new page__bd_spacing" hidden="{{!joinShow}}">
-                <view class="weui-flex">
+            <!--按钮栏  join拼接   hidden="{{!joinShow}}"-->
+            <view class="join-new page__bd_spacing">
+                <!--<view class="weui-flex">
                     <view class="weui-flex__item"></view>
                     <view >
                         <image catchtap="joinCancel" class="back" src="../../images/ic_action_undo.png" />
                     </view>
-                </view>
+                </view>-->
                 <view class="weui-flex ">
                     <view class="weui-flex__item">
                         <button size="mini" catchtap="joinSet" data-action="1">第一幅</button>
@@ -214,13 +220,21 @@
         <view class="space-64"></view>
     </scroll-view>
 
-
-
-
-
-
-
-
+    <!--<view class="join__v2">
+    
+        <view class="weui-flex center">
+            <view class="weui-flex__item center"> 
+                 <view><icon type="cancel"></icon></view> 
+                 <view><image ></image></view>
+            </view>    
+            <view class="weui-flex__item center"> 
+                 <image ></image>
+            </view>    
+         
+          
+        </view>
+        
+    </view>-->
 
 
     <!--目录选择列表-->
