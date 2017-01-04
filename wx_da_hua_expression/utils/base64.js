@@ -111,7 +111,8 @@ function utf8to16(str) {
 
 function encode(en_str){
     //七牛云字符串编码规则：字符串中的加号+换成中划线-，并且将斜杠/换成下划线_。
-    return encode64(utf16to8(en_str)).replace("+", "-").replace("/", "_")
+    // return encode64(utf16to8(en_str)).replace(/+/g, "-").replace("///g", "_") 
+	return encode64(utf16to8(en_str)).replace(/\+/g, "-").replace(/\//g, "_")
 }
 function decode(de_str){
     return utf8to16(decode64(de_str))
