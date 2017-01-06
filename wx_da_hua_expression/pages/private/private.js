@@ -18,7 +18,7 @@ Page({
     //显示控制
     isUpload:false,
     selectCategoryShow:false,
-    joinShow:false, //显示拼接框
+    joinShow:true, //显示拼接框
 
     // 上传图片数量
     uploadNum:{count:9,finish:0},
@@ -105,8 +105,10 @@ Page({
 
   //上传大类 4-1
   btnUpload:function() {
+     GLOBAL_PAGE.hiddenAll() //关闭表情框
      wx.showActionSheet({
       itemList: ['图片', '小视频'],
+      // itemList: ['图片'],
       success: function(res) {
         if (!res.cancel) {
           if(res.tapIndex == 0 || res.tapIndex =='0')
@@ -129,6 +131,7 @@ Page({
   uploadQiniuImage:function(){
       wx.chooseImage({
         count: 9, 
+        sizeType: ['compressed'], 
         success: function(res) {
             GLOBAL_PAGE.uploadPrepare(1,res.tempFilePaths)
             var tempFilePath = res.tempFilePaths[0] //图片            
@@ -576,7 +579,19 @@ Page({
   menuJoin:function(){
       GLOBAL_PAGE.setData({joinShow:true})
   },
-
+  
+  //拼接3幅图预览
+  joinPreview:function(e){
+      wx.previewImage({
+        current: e.currentTarget.dataset.img_url, // 当前显示图片的http链接
+        urls: [
+          GLOBAL_PAGE.data.joinImg.first,
+          GLOBAL_PAGE.data.joinImg.seconde,
+          GLOBAL_PAGE.data.joinImg.resualt,
+        ] // 需要预览的图片http链接列表
+      })
+  },
+   
   //10 设置join的的1，2幅图片
   joinSet:function(e){
       var action  = e.currentTarget.dataset.action
@@ -638,9 +653,18 @@ Page({
             console.log(data)
             if(data.status == "true")
             {
-              var temp = GLOBAL_PAGE.data.temp
+               //预览图
+                var joinImg = GLOBAL_PAGE.data.joinImg
+                joinImg.resualt = data.local_url
+
+                //临时保存
+                var temp = GLOBAL_PAGE.data.temp
                 temp.emoticon.push(data.local_url)
-                GLOBAL_PAGE.setData({temp:temp})
+
+                GLOBAL_PAGE.setData({
+                  temp:temp,
+                  joinImg:joinImg
+                })
 
                 wx.showToast({
                     title: '拼接成功，左下方蓝色数字按钮打开',
@@ -950,6 +974,7 @@ Page({
   // },
 
   tempSwitch:function(){
+      GLOBAL_PAGE.hiddenAll() //关闭表情框
       var temp = GLOBAL_PAGE.data.temp
       if(temp.show == true)
         temp.show = false

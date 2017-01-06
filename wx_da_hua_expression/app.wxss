@@ -383,16 +383,31 @@ input{
 
 /* emoticon 右上角x，隐藏onMenu菜单 */
 .hidden__all { 
-    width: 14px;
-    height:14px;
-    padding: 6px;
-    margin-left:10px; 
+    width: 23px;
+    height:23px;
+    margin: 0px 10px 5px 8px; 
+    /*padding: 0 7px ;*/
+    /*margin-top:12px; */
+    /*margin-left:10px; */
 }
+
+.cancel {
+    width: 23px;
+    height:23px;
+    margin: 11px 10px 5px 8px; 
+}
+
 .space-4{
     height: 4px;
 }
+.space-6{
+    height: 6px;
+}
 .space-64{
     height: 64px;
+}
+.space-35{
+    height: 35px;
 }
 .btn_bar button{
     margin-left :4px;

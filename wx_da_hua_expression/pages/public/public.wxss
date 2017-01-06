@@ -43,3 +43,11 @@
 .shortcut button{
     margin: 0px 4px ; 
 }
+
+
+
+.cancel {
+    width: 23px;
+    height:23px;
+    margin: 6px 10px 0px 8px; 
+}
