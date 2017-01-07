@@ -115,10 +115,10 @@
                 <view class="space-6">  </view>
                 <view class="weui-flex ">
                     <view class="weui-flex__item">
-                        <button size="mini" catchtap="joinSet" data-action="1">第一幅</button>
+                        <button size="mini" catchtap="joinSet" data-action="1">表情一</button>
                     </view>
                     <view class="weui-flex__item"> 
-                        <button size="mini" catchtap="joinSet" data-action="2">第二幅</button>
+                        <button size="mini" catchtap="joinSet" data-action="2">表情二</button>
                     </view>
                     <view class="weui-flex__item">
                         <button size="mini" loading="{{isUpload}}" catchtap="joinConfirm" data-action="" type="primary" >拼接</button>
@@ -135,9 +135,9 @@
                     <view class="weui-flex__item"> 
                         <image  class= "image" src="{{joinImg.resualt}}" catchtap="joinPreview" data-img_url="{{joinImg.resualt}}"></image></view>
                 </view>
-                <view class="weui-flex">
+                <!--<view class="weui-flex">
                     <view class="weui-flex__item page__desc video2gif__des">把两个表情按顺序接一起喔</view>
-                </view>
+                </view>-->
                 <view class="weui-flex">
                     <view class="weui-flex__item"></view>
                     <view >
@@ -191,7 +191,6 @@
             </block>
         </view>
         <view class="space-64"></view>
-            
     </scroll-view>
 
     <!--loading框-->

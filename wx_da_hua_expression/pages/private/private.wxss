@@ -188,6 +188,7 @@
     width:150rpx;
     height:150rpx;
     background-color: #EBEBEB;
+    padding:4px;
 }
 
 .join-new view{

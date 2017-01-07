@@ -63,7 +63,8 @@ Page({
 
     //临时表情
     temp:{
-        show:false,   
+        show:false, 
+        log:[]  ,
         // show:true,   
         // num:0,
         emoticon:[ ], //临时表情列表  // "http://image.12xiong.top/12_20161226084253.gif",
@@ -628,72 +629,263 @@ Page({
   joinCancel:function(){
       GLOBAL_PAGE.setData({joinShow:false})
   },
+
+
+ 
+  
+
+  //join按钮
+  // 1 正在上中,return
+  // 2 status == 1 ，请增加图片
+  // 3 重复点击，提示图片加载成功，
+  // 4 增加新图片，上传完成，提示成功；失败，提示网络失败
   joinConfirm:function(){
-    if(GLOBAL_PAGE.data.isUpload == true)
-    {
-      wx.showToast({
-          title: '正在执行上传任务，请稍等',
-          icon: 'loading',
-          duration: 700
-      })
-      return
-    }
     
-    GLOBAL_PAGE.setData({isUpload:true}) //打开上传
+      //1 正上传
+      if(GLOBAL_PAGE.data.isUpload == true)
+      {
+          wx.showToast({
+              title: '正在执行上传任务，请稍等',
+              icon: 'loading',
+              duration: 700
+          })
+          return
+      }
 
-    wx.request({
-        url: Api.editorJoin(), 
-        data:{
-          'session': wx.getStorageSync(Key.session),
-          "first":GLOBAL_PAGE.data.joinImg.first,
-          "seconde":GLOBAL_PAGE.data.joinImg.seconde,
-        },
-        success: function(res){
-            var data = res.data
-            console.log(data)
-            if(data.status == "true")
-            {
-               //预览图
-                var joinImg = GLOBAL_PAGE.data.joinImg
-                joinImg.resualt = data.local_url
+      //2 初始状态，还未拼接
+      var joinImg = GLOBAL_PAGE.data.joinImg
+      if (joinImg.status == 1) 
+      {
+          wx.showModal({
+              title: '请设置表情顺序',
+              content:'先点击"表情一"或"表情二"按钮，再点击"拼接"',
+              showCancel:false,
+          }) 
+          return
+      }
 
-                //临时保存
-                var temp = GLOBAL_PAGE.data.temp
-                temp.emoticon.push(data.local_url)
+      //3 存在临时表情中中，重复点击
+      var joinImg = GLOBAL_PAGE.data.joinImg
+      var hasLog = GLOBAL_PAGE.tempLogExists(joinImg.first,joinImg.seconde)
+      if (hasLog.status)
+      {
+          joinImg.resualt = hasLog.resualt
+          GLOBAL_PAGE.setData({
+              joinImg:joinImg,  //设置上传loading图片
+          })
+          wx.showToast({
+              title: '拼接已完成，点击图片预览',
+              icon: 'success',
+              duration: 1000
+          })
+          return 
+      }
+        
+      //4 发起join请求
+      //4.1 设置loading图片 打开上传限制
+      var origin_resualt = joinImg.resualt
+      joinImg.resualt = "../../images/upload.gif"
+      GLOBAL_PAGE.setData({
+        joinImg:joinImg,  //设置上传loading图片
+        isUpload:true  //打开上传
+      })
+    
+      //4.2 发起join请求
+      var first = GLOBAL_PAGE.data.joinImg.first
+      var seconde = GLOBAL_PAGE.data.joinImg.seconde
+      wx.request({
+          url: Api.editorJoin(), 
+          data:{
+            'session': wx.getStorageSync(Key.session),
+            "first":first,
+            "seconde":seconde,
+          },
+          success: function(res){
+              var data = res.data
+              console.log(data)
+              if(data.status == "true")
+              {
+                  //预览图
+                  var joinImg = GLOBAL_PAGE.data.joinImg
+                  joinImg.resualt = data.local_url
 
-                GLOBAL_PAGE.setData({
-                  temp:temp,
-                  joinImg:joinImg
-                })
+                  //保存至临时文件夹
+                  GLOBAL_PAGE.tempAdd(first,seconde,data.local_url)
+                  //更新join图片，关闭上传限制
+                  GLOBAL_PAGE.setData({
+                    joinImg:joinImg,  //设置上传loading图片
+                    isUpload:false  //打开上传
+                  })
+                
+                  wx.showToast({
+                      title: '拼接成功，点击图片预览',
+                      icon: 'success',
+                      duration: 1000
+                  })
+              } 
+              else{
+                  var joinImg = GLOBAL_PAGE.data.joinImg
+                  joinImg.resualt =  "../../images/cancel.png"
+                  GLOBAL_PAGE.setData({
+                    joinImg:joinImg,  //设置上传loading图片
+                    isUpload:false  //打开上传
+                  })
+                  wx.showModal({
+                    title: '网络连接失败，请重试',
+                    showCancel:false,
+                  })
+              }
+          },
+          fail:function(res){
+              var joinImg = GLOBAL_PAGE.data.joinImg
+              joinImg.resualt =  "../../images/cancel.png"
+              GLOBAL_PAGE.setData({
+                joinImg:joinImg,  //设置上传loading图片
+                isUpload:false  //打开上传
+              })
 
-                wx.showToast({
-                    title: '拼接成功，左下方蓝色数字按钮打开',
-                    icon: 'success',
-                    duration: 1000
-                })
-            } 
-            else{
               wx.showModal({
                 title: '网络连接失败，请重试',
                 showCancel:false,
-              })
-            }
-        },
-        fail:function(res){
-            console.log("chooseImage fail")
-            var data = res.data
-            console.log(res)
-
-            wx.showModal({
-              title: '网络连接失败，请重试',
-              showCancel:false,
-            })         
-        },
-        complete:function(res) { 
-            GLOBAL_PAGE.setData({isUpload:false})
-        },
-    })
+              })         
+          },
+          complete:function(res) { 
+              GLOBAL_PAGE.setData({isUpload:false})
+          },
+      })
   },
+  // joinConfirm:function(){
+    
+  //   //正上传
+  //   if(GLOBAL_PAGE.data.isUpload == true)
+  //   {
+  //     wx.showToast({
+  //         title: '正在执行上传任务，请稍等',
+  //         icon: 'loading',
+  //         duration: 700
+  //     })
+  //     return
+  //   }
+  //   var joinImg = GLOBAL_PAGE.data.joinImg
+
+  //     //2 验证在临时文件夹temp中是否存在，存在读取，完成
+  //     var isInLog = GLOBAL_PAGE.tempLogExists(joinImg.first,joinImg.seconde)
+  //     if( isInLog.status){
+  //       joinImg.resualt = isInLog.resualt
+  //       GLOBAL_PAGE.setData({
+  //         joinImg:joinImg,  //设置上传loading图片
+  //         isUpload:false  //关闭开上传
+  //       })
+  //       wx.showToast({
+  //           title: '图片已拼接，请点击预览',
+  //           icon: 'success',
+  //           duration: 1000
+  //       })
+  //       return 
+  //     }
+
+  //     //3 设置上传图片
+  //     var origin_resualt = joinImg.resualt
+  //     joinImg.resualt = "../../images/upload.gif"
+  //     GLOBAL_PAGE.setData({
+  //       joinImg:joinImg,  //设置上传loading图片
+  //       isUpload:true  //打开上传
+  //     })
+  //     if (joinImg.status == 1) //初始状态，还未拼接
+  //     {
+  //         setTimeout(function() {
+  //               var joinImg = GLOBAL_PAGE.data.joinImg
+  //               joinImg.resualt = origin_resualt
+                
+  //               //保存至临时文件夹
+  //               GLOBAL_PAGE.tempAdd(joinImg.first,joinImg.seconde,joinImg.resualt)
+  //               //更新join图片，关闭上传限制
+  //               GLOBAL_PAGE.setData({
+  //                 joinImg:joinImg,  //设置上传loading图片
+  //                 isUpload:false  //打开上传
+  //               })
+               
+  //               wx.showToast({
+  //                   title: '拼接成功，点击图片预览',
+  //                   icon: 'success',
+  //                   duration: 1000
+  //               })
+  //         }, 500)
+          
+  //         return
+  //     }
+
+
+  //   //4  临时文件temp没有，也不是默认的，发起join请求
+  //   var first = GLOBAL_PAGE.data.joinImg.first
+  //   var seconde = GLOBAL_PAGE.data.joinImg.seconde
+  //   wx.request({
+  //       url: Api.editorJoin(), 
+  //       data:{
+  //         'session': wx.getStorageSync(Key.session),
+  //         "first":first,
+  //         "seconde":seconde,
+  //       },
+  //       success: function(res){
+  //           var data = res.data
+  //           console.log(data)
+  //           if(data.status == "true")
+  //           {
+  //              //预览图
+  //               var joinImg = GLOBAL_PAGE.data.joinImg
+  //               joinImg.resualt = data.local_url
+
+  //               //保存至临时文件夹
+  //               GLOBAL_PAGE.tempAdd(first,seconde,data.local_url)
+  //               //更新join图片，关闭上传限制
+  //               GLOBAL_PAGE.setData({
+  //                 joinImg:joinImg,  //设置上传loading图片
+  //                 isUpload:false  //打开上传
+  //               })
+               
+  //               wx.showToast({
+  //                   title: '拼接成功，点击图片预览',
+  //                   icon: 'success',
+  //                   duration: 1000
+  //               })
+
+  //               // //临时保存
+  //               // var temp = GLOBAL_PAGE.data.temp
+  //               // temp.emoticon.push(data.local_url)
+
+  //               // GLOBAL_PAGE.setData({
+  //               //   temp:temp,
+  //               //   joinImg:joinImg
+  //               // })
+
+  //               // wx.showToast({
+  //               //     title: '拼接成功，请点击预览',
+  //               //     icon: 'success',
+  //               //     duration: 1000
+  //               // })
+  //           } 
+  //           else{
+  //             wx.showModal({
+  //               title: '网络连接失败，请重试',
+  //               showCancel:false,
+  //             })
+  //           }
+  //       },
+  //       fail:function(res){
+  //           console.log("chooseImage fail")
+  //           var data = res.data
+  //           console.log(res)
+
+  //           wx.showModal({
+  //             title: '网络连接失败，请重试',
+  //             showCancel:false,
+  //           })         
+  //       },
+  //       complete:function(res) { 
+  //           GLOBAL_PAGE.setData({isUpload:false})
+  //       },
+  //   })
+  // },
 
 
   onHide:function(){
@@ -963,15 +1155,40 @@ Page({
     })
   },
 
+  //临时文件是否存在join的log记录
+  tempLogExists:function(first,seconde){
+    var _first = first
+    var _seconde = seconde
+    var temp = GLOBAL_PAGE.data.temp
+    var log = temp.log
+    for (var i=0;i<log.length;i++)
+      if( _first == log[i].first  && _seconde == log[i].seconde)
+          return {status:true,resualt:log[i].resualt}
 
-  //图片加载完毕
-  // bindloadVertical:function(e){
-  //   Render.menu.vertical(GLOBAL_PAGE,e)
+    return {status:false}
+      // {first:"",seconde:"",resualt:""}
+  },
 
-  // },
-  // bindloadHorizontal:function(e){    
-  //   Render.menu.horizontal(GLOBAL_PAGE,e)
-  // },
+  //增加临时文件
+  tempAdd:function(first,seconde,resualt){
+
+
+      var _resualt = resualt
+      var temp = GLOBAL_PAGE.data.temp
+      var log_list = temp.log
+      var e_list = temp.emoticon
+      log_list.push({
+          first:first,
+          seconde:seconde,
+          resualt:resualt,
+      })
+      e_list.push(resualt)
+
+      GLOBAL_PAGE.setData({
+          temp:temp
+      })
+         
+  },
 
   tempSwitch:function(){
       GLOBAL_PAGE.hiddenAll() //关闭表情框
@@ -999,6 +1216,7 @@ Page({
             if (res.confirm) {
                 var temp = GLOBAL_PAGE.data.temp
                 temp.show = false
+                temp.log = []
                 temp.emoticon=[]
                 GLOBAL_PAGE.setData({temp:temp})
 
@@ -1015,7 +1233,6 @@ Page({
     })
       
   },
-  
 
 
 })
