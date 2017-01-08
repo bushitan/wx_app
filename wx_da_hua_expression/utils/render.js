@@ -11,7 +11,7 @@
  *  thumbnail_url  缩略图
  * }]
  */
-function emoticon(page,emoticon){
+function emoticon(page,emoticon,add){
     if (emoticon){
         var _list = emoticon //浅拷贝，最好深拷
 
@@ -52,7 +52,13 @@ function emoticon(page,emoticon){
                 // case 4:break;
             }
         }
-        page.setData({emoticon:_list})  
+        if(add)
+        {
+            var _list_add = page.data.emoticon.concat(_list)
+            page.setData({emoticon:_list_add})  
+        }
+        else
+            page.setData({emoticon:_list})  
     }
     
     //Todo 增加多种数据

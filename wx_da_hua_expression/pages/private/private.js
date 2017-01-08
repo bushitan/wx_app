@@ -12,6 +12,7 @@ var i = 0
 Page({
   data: {
     pageName: "private",
+    loginStatus:true,
     //loading框
     loadShow: true,
     
@@ -604,14 +605,14 @@ Page({
       if (joinImg.status == 1)
           joinImg.status = 2
       if (action == "1"){
-          if ( select.img_url == joinImg.seconde)
+          if ( select.yun_url == joinImg.seconde)
               change()
           else
               joinImg.first = select.yun_url  //joinImg.first = select.img_url
       }
           
       if (action == "2") 
-          if ( select.img_url == joinImg.first)
+          if ( select.yun_url == joinImg.first)
               change()
           else
               joinImg.seconde = select.yun_url //joinImg.first = select.img_url
@@ -684,7 +685,7 @@ Page({
       //4 发起join请求
       //4.1 设置loading图片 打开上传限制
       var origin_resualt = joinImg.resualt
-      joinImg.resualt = "../../images/upload.gif"
+      joinImg.resualt = "../../images/pinjie_loading.gif"
       GLOBAL_PAGE.setData({
         joinImg:joinImg,  //设置上传loading图片
         isUpload:true  //打开上传
@@ -725,7 +726,7 @@ Page({
               } 
               else{
                   var joinImg = GLOBAL_PAGE.data.joinImg
-                  joinImg.resualt =  "../../images/cancel.png"
+                  joinImg.resualt =  "http://image.12xiong.top/wx_app/web_error.png"
                   GLOBAL_PAGE.setData({
                     joinImg:joinImg,  //设置上传loading图片
                     isUpload:false  //打开上传
@@ -738,7 +739,7 @@ Page({
           },
           fail:function(res){
               var joinImg = GLOBAL_PAGE.data.joinImg
-              joinImg.resualt =  "../../images/cancel.png"
+              joinImg.resualt =  "http://image.12xiong.top/wx_app/web_error.png"
               GLOBAL_PAGE.setData({
                 joinImg:joinImg,  //设置上传loading图片
                 isUpload:false  //打开上传
@@ -957,6 +958,12 @@ Page({
       }
   },
 
+  // onShow: function (param) {  
+  //    wx.previewImage({
+  //       current: "http://image.12xiong.top/wx_app/1.gif", // 当前显示图片的http链接
+  //       urls:["http://image.12xiong.top/wx_app/1.gif"] // 需要预览的图片http链接列表
+  //     })
+  //  },
   /**
    *  页面加载
    */
@@ -991,6 +998,12 @@ Page({
     }, 500)
   },
 
+  reLogin:function(){
+      GLOBAL_PAGE.setData({
+          loginStatus:true
+      }) 
+      GLOBAL_PAGE.login()
+  },
   login:function(){
      //2 user loginlogin
      
@@ -1026,16 +1039,37 @@ Page({
               }
               else
                 wx.showModal({
-                  title: '登陆失败',
-                  content:"请联系管理员（微信号:bushitan）",
-                  showCancel:false,
+                  title: '网络连接失败，是否重新登陆？',
+                  content:"请确认网络是否正常",
+                  confirmText:"重新登陆",
+                  success: function(res) {
+                      if (res.confirm) {
+                          GLOBAL_PAGE.login()
+                      }
+                      else{
+                          GLOBAL_PAGE.setData({
+                              loginStatus:false
+                          }) 
+                      }
+                  }
                 })                
             },
             fail:function(res) { 
-                // wx.showModal({
-                //   title: '网络连接失败，请检查网络',
-                //   showCancel:false,
-                // }) 
+                wx.showModal({
+                  title: '网络连接失败，是否重新登陆？',
+                  content:'请确认网络是否正常',
+                  confirmText:"重新登陆",
+                  success: function(res) {
+                      if (res.confirm) {
+                          GLOBAL_PAGE.login()
+                      }
+                       else{
+                          GLOBAL_PAGE.setData({
+                              loginStatus:false
+                          }) 
+                      }
+                  }
+                }) 
             },
           })
         }

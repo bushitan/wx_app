@@ -51,3 +51,15 @@
     height:23px;
     margin: 6px 10px 0px 8px; 
 }
+
+.footer__bottom {
+  /*position: fixed;*/
+  bottom: .52em;
+  left: 0;
+  right: 0;
+  margin: .52em;
+}
+
+.scroll-load .nav__index {
+    color:#576b95
+}

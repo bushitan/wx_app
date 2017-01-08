@@ -12,9 +12,11 @@ var GLOBAL_PAGE
 Page({
   data: {
     pageName: "public",
+    titleText: "斗图加群（管理员微信号：bushitan）",
 
     displayLoading: true,
     keyword:"老司机", //搜索关键字
+    page_num:1 , //分页，查询第一页
     // emoticon: [],
     // hotLabel:["金馆长","我想静静","意外","疼！"],  
     hotLabel:[],  
@@ -51,6 +53,9 @@ Page({
     //  inputVal: "",
      searchKey:["搞笑","运动","笑屎了","老司机"],
      searchResultShowed:false,
+
+     scrollTolowerStatus:1, // 1 初始状态，全部隐藏  2、正在loading 3、返回首页 
+
   },
 
   //1 关闭所有悬浮框
@@ -94,7 +99,21 @@ Page({
 
   // 5 菜单收藏按钮，可以收藏多张 
   menuCollect:function(){
-   // Todo 去除重复搜藏
+    // Todo 去除重复搜藏
+    var select_id = GLOBAL_PAGE.data.selectEmoticon.id
+    var emoticon = wx.getStorageSync(KEY.emoticon)
+    for(var i=0;i<emoticon.length;i++)
+    {
+        if (select_id == emoticon[i].img_id)
+        {
+            wx.showModal({
+                title: "请勿重复收藏",
+                showCancel:false,
+            })
+            return
+        }
+    }
+
       wx.request({
           url: Api.imgAdd() , 
           method:"GET",
@@ -160,18 +179,92 @@ Page({
   },
 
  
-  renderEmoticon:function(emoticon){
-    Render.emoticon(GLOBAL_PAGE,emoticon)
+  renderEmoticon:function(emoticon,add){
+    Render.emoticon(GLOBAL_PAGE,emoticon,add)
   },
 
+  //111 滚动条到底，追加图片
+  scrollTolower:function(){
+        console.log("scrollTolower")
 
+        //非初始状态下，避免疯狂下拉发出无数请求
+        //scrollTolowerStatus:1  // 1 初始状态，全部隐藏  2、正在loading 3、返回首页 
+        if(GLOBAL_PAGE.data.scrollTolowerStatus != 1 ) 
+            return
+   
+        console.log("not lock")
+        GLOBAL_PAGE.setData({
+            scrollTolowerStatus:2
+        })
+
+        var _keyword = GLOBAL_PAGE.data.keyword
+        var url = Api.tagImgQuery() 
+        var session = wx.getStorageSync(KEY.session) 
+        //获取表情列表
+        wx.request({
+            url: url, 
+            method:"GET",
+            data: {
+                session: session,
+                tag_name : _keyword,
+                page_num:GLOBAL_PAGE.data.page_num //从第二页开始查
+            },
+            success: function(res) {
+                var object = res.data
+                
+                if (object.status == "true")
+                {
+                   
+                   
+                    
+                    //页数相同，没有下文，不追加更新
+                    if (object.page_num == GLOBAL_PAGE.data.page_num)
+                        GLOBAL_PAGE.setData({
+                            scrollTolowerStatus:3, //加载成功，返回初始状态
+                            page_num:object.page_num //更新page_num 查询页
+                        })
+                    //有新的页数，追加更新
+                    else
+                    {
+                        GLOBAL_PAGE.renderEmoticon(object.img_list,true)
+                        GLOBAL_PAGE.setData({
+                            scrollTolowerStatus:1, //加载成功，返回初始状态
+                            page_num:object.page_num //更新page_num 查询页
+                        })
+                    }
+                       
+                }
+                else
+                GLOBAL_PAGE.setData({
+                    scrollTolowerStatus:3  //错误，提示回到首页
+                })
+            },
+            fail:function(res){
+                GLOBAL_PAGE.setData({
+                    scrollTolowerStatus:3 //错误，提示回到首页
+                })
+            },
+            complete:function(){
+                GLOBAL_PAGE.setData({
+                indexShow:false,
+                shortcutShow:true,
+                emoticonShow:true,
+                loadShow:false,
+                }) 
+            }
+        })
+
+  },
   
   //搜索栏
   /**
   * 1 根据keyword，搜索
   */
   searchBtn:function(){
+      
+    GLOBAL_PAGE.hiddenAll() //隐藏表情框
     //开启loading
+   
     GLOBAL_PAGE.setData({
       indexShow:false,
       shortcutShow:true,
@@ -194,7 +287,17 @@ Page({
 
     GLOBAL_PAGE.setData({hotLabel:hotLabel})
 
+    GLOBAL_PAGE.TagImgQueryRequst()
+  },
 
+  //图片tag查询
+  TagImgQueryRequst:function(){
+
+    //切换tag，返回初始状态
+    GLOBAL_PAGE.setData({
+        scrollTolowerStatus:1
+    })
+    
     var _keyword = GLOBAL_PAGE.data.keyword
     var url = Api.tagImgQuery() 
     var session = wx.getStorageSync(KEY.session) 
@@ -205,6 +308,7 @@ Page({
         data: {
           session: session,
           tag_name : _keyword,
+          page_num:GLOBAL_PAGE.data.page_num //默认查询第一页
           // category_id: '1',
           // category_name: _keyword,
         },
@@ -214,6 +318,10 @@ Page({
             if (object.status == "true")
             {
                 GLOBAL_PAGE.renderEmoticon(object.img_list)
+
+                GLOBAL_PAGE.setData({
+                    page_num:object.page_num //更新page_num 查询页
+                })
             }
             else
             wx.showModal({
@@ -241,6 +349,8 @@ Page({
    * 更新keyword
    */
   searchShortcut:function(e){
+     
+    GLOBAL_PAGE.hiddenAll() //隐藏表情框
     
     GLOBAL_PAGE.setData({
       keyword:e.currentTarget.dataset.keyword,
@@ -349,6 +459,22 @@ Page({
       }
   },
   
+  //后台更新页脚
+  adTitleText:function(){
+      wx.request({
+        url: Api.adTitle(), //查询Tag
+        method:"GET",
+        success: function(res) {
+          var object = res.data
+          if(object.status == "true"){
+                GLOBAL_PAGE.setData({
+                    titleText:object.text
+                })
+          }
+        },
+    })
+  },
+
   onLoad: function (options) {
     GLOBAL_PAGE = this
     //1 page初始化高宽
@@ -363,7 +489,8 @@ Page({
         GLOBAL_PAGE.setData({
             keyword:options.keyword,
         })
-
+    
+    GLOBAL_PAGE.adTitleText() //获取广告信息
   
     //获取表情列表
      wx.request({

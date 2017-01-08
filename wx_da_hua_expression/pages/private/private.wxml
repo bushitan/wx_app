@@ -55,7 +55,7 @@
                 <image catchtap="hiddenAll" src="../../images/cancel.png" class="hidden__all" ></image>-->
                 <button size="mini" catchtap="menuDelete"> 删除 </button>
                 <button size="mini" catchtap="menuMoveCategory"> 分组 </button>
-                <button size="mini" catchtap="navigateToWatermark"> 水印 </button>
+                <button size="mini" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" catchtap="navigateToWatermark"> 水印 </button>
                 <image catchtap="hiddenAll" src="../../images/cancel.png" class="cancel" ></image>
             </view>
         </view>
@@ -75,7 +75,7 @@
         <view class="weui-flex" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}"  catchtap="menuShare" style="background-color: #EBEBEB;">
             <view class="weui-flex__item page__bd_spacing"> 
                 <view class="placeholder">
-                    <image  class="weui-media-box__thumb" mode="aspectFit" src="{{selectEmoticon.img_url}}"  bindload="bindload"/>
+                    <image  class="weui-media-box__thumb" mode="aspectFit" src="{{selectEmoticon.yun_url}}"  bindload="bindload"/>
                 </view>
             </view>
         </view>
@@ -217,6 +217,7 @@
         </view>
     </view>
 
+<!--data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGgxMDB2MTAwSDB6Ii8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjRTlFOUU5IiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTMwKSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iIzk4OTY5NyIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgzMCAxMDUuOTggNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjOUI5OTlBIiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKDYwIDc1Ljk4IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0EzQTFBMiIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSg5MCA2NSA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNBQkE5QUEiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoMTIwIDU4LjY2IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0IyQjJCMiIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgxNTAgNTQuMDIgNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjQkFCOEI5IiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKDE4MCA1MCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNDMkMwQzEiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTE1MCA0NS45OCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNDQkNCQ0IiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTEyMCA0MS4zNCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNEMkQyRDIiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTkwIDM1IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0RBREFEQSIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgtNjAgMjQuMDIgNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjRTJFMkUyIiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKC0zMCAtNS45OCA2NSkiLz48L3N2Zz4=-->
 
 
     <!--临时文件  显示列表-->
@@ -245,6 +246,13 @@
     <view class="temp" catchtap="tempSwitch" wx:if="{{temp.emoticon.length>0}}">
         <label class="title" wx:if="{{temp.show}}">关闭</label>
         <label class="title" wx:else>{{temp.emoticon.length}}</label>
+    </view>
+
+
+    <view class="weui-footer weui-footer_fixed-bottom" wx:if="{{!loginStatus}}"> 
+        <view class="weui-footer__links ">      
+        </view>
+        <view class="weui-footer__text"> <button size="mini" type="primary" catchtap="reLogin">重新登陆</button></view>
     </view>
 
 

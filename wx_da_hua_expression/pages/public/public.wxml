@@ -115,8 +115,15 @@
     </view>
 
     <!--emoticon表情显示列表-->
-    <scroll-view class="emoticon-wall" scroll-y="true" style="height:{{windowHeight}}px;" bindscrolltolower="eventBase" data-action="scrollTolower"  hidden="{{!emoticonShow}}">
+    <scroll-view class="emoticon-wall" scroll-y="true" style="height:{{windowHeight}}px;" bindscrolltolower="scrollTolower" data-action="scrollTolower"  hidden="{{!emoticonShow}}">
         <view class="weui-grids">
+            <!--页眉-->
+            <view class="weui-footer footer__bottom"> 
+                <view class="weui-footer__links">      
+                </view>
+                <view class="weui-footer__text">{{titleText}}</view>
+                <view class="weui-footer__text"></view>
+            </view>
             <block wx:for-items="{{emoticon}}"  wx:for-item="emoticon">
                 <navigator url="" class="emoticon-grid" hover-class="weui-grid_active"
                 catchtap="onMenu"  mode="center" data-id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}" data-category_id="{{emoticon.category_id}}"  data-size="{{emoticon.size}}" data-static_url="{{emoticon.static_url}}"   data-yun_url="{{emoticon.yun_url}}" data-menu_type="{{emoticon.menu_type}}" >
@@ -127,7 +134,26 @@
                 </navigator>
             </block>
         </view>
-        <view class="space-64"></view>
+        <!--<view class="space-64"></view>-->
+
+    <!--下拉加载数据-->
+    <view class="scroll-load" >
+        <view class="weui-loadmore" wx:if="{{scrollTolowerStatus == 2}}">
+            <view class="weui-loading"></view>
+            <view class="weui-loadmore__tips">正在加载</view>
+        </view>
+        <view wx:if="{{scrollTolowerStatus == 3}}">
+            <view class="weui-loadmore weui-loadmore_line" >
+                <view class="weui-loadmore__tips weui-loadmore__tips_in-line">更多表情，尽在<label class="nav__index"  catchtap="searchShortcut"  data-keyword="首页">首页</label></view>
+                
+            </view>
+            <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot">
+                <view class="weui-loadmore__tips weui-loadmore__tips_in-line weui-loadmore__tips_in-dot"></view>
+            </view>
+        </view>
+    </view>
+
+
     </scroll-view>
 
     <view class="page__bd" hidden="{{!loadShow}}">
@@ -136,17 +162,17 @@
             <view class="weui-loadmore__tips">正在加载</view>
         </view>
         <view class="weui-loadmore weui-loadmore_line">
-            <view class="weui-loadmore__tips weui-loadmore__tips_in-line">暂无数据</view>
+            <view class="weui-loadmore__tips weui-loadmore__tips_in-line">暂无表情</view>
         </view>
         <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot">
             <view class="weui-loadmore__tips weui-loadmore__tips_in-line weui-loadmore__tips_in-dot"></view>
         </view>
     </view>
      <!--weui-footer_fixed-bottom-->
-        <view class="weui-footer weui-footer_fixed-bottom"> 
-            <view class="weui-footer__links">
-                <!--<navigator url="" class="weui-footer__link">WeUI首页</navigator>-->
+     <!--<navigator url="" class="weui-footer__link">WeUI首页</navigator>-->
+        <!--<view class="weui-footer weui-footer_fixed-bottom"> 
+            <view class="weui-footer__links">      
             </view>
             <view class="weui-footer__text">素材可投稿（管理员微信号：bushitan）</view>
-        </view>
+        </view>-->
 </view>

@@ -4,9 +4,9 @@
     小程序的api接口集合 
  */ 
 
-var host_url = 'http://127.0.0.1:8000/'; 
+// var host_url = 'http://127.0.0.1:8000/'; 
 // var host_url = 'https://www.12xiong.top/wx_app/';
-// var host_url = 'https://www.12xiong.top/';
+var host_url = 'https://www.12xiong.top/';
 // var host_url = 'http://www.12xiong.top/';
 
 /*
@@ -233,6 +233,15 @@ function _tagImgAdd(){
 	return host_url+tag_img_add;
 }	
 
+/*
+	广告信息查询
+
+ */
+var ad_title = 'ad/title/';
+function _adTitle(){
+	return host_url+ad_title;
+}	
+
 
 
 
@@ -297,6 +306,7 @@ module.exports = {
 	userAdd:_userAdd,
 	userLogin:_userLogin,
 
+	adTitle:_adTitle,
 	//Post请求请求，要把json变form
 	json2Form:json2Form,  
 };
