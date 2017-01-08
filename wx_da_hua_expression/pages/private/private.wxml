@@ -237,8 +237,8 @@
                 </navigator>
              </block>
         </view>
-        <view class="weui-btn-area">
-            <button class="weui-btn" catchtap="tempClear">清除</button>
+        <view class="temp__button_area">
+            <button class="weui-btn temp__button" catchtap="tempClear">清除</button>
         </view>
         <view class="space-64"></view>
     </scroll-view>

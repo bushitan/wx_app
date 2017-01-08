@@ -48,7 +48,14 @@
     /*#ededed;*/
 }
 
-#EBEBEB
+.temp__button_area{
+    margin: 1.17647059em 90px 0.3em;
+}
+.temp__button{
+    /*width: 150px;*/
+    /*margin: 0px 0px;*/
+    /*padding: 40px 0px;*/
+}
 
 
 .upload image {

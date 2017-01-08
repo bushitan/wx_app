@@ -15,7 +15,7 @@ Page({
     titleText: "斗图加群（管理员微信号：bushitan）",
 
     displayLoading: true,
-    keyword:"老司机", //搜索关键字
+    keyword:"今日斗图", //搜索关键字
     page_num:1 , //分页，查询第一页
     // emoticon: [],
     // hotLabel:["金馆长","我想静静","意外","疼！"],  
@@ -468,10 +468,14 @@ Page({
           var object = res.data
           if(object.status == "true"){
                 GLOBAL_PAGE.setData({
-                    titleText:object.text
+                    titleText:object.title,
+                    keyword:object.keyword
                 })
           }
         },
+        complete:function(){
+             GLOBAL_PAGE.searchBtn() //搜索完成
+        }
     })
   },
 
@@ -490,7 +494,7 @@ Page({
             keyword:options.keyword,
         })
     
-    GLOBAL_PAGE.adTitleText() //获取广告信息
+    
   
     //获取表情列表
      wx.request({
@@ -509,8 +513,9 @@ Page({
               {
                   c_list.push(res.data.category_list[i].name)  
               }
-     
-              GLOBAL_PAGE.searchBtn() //搜索完成
+              
+              GLOBAL_PAGE.adTitleText() //获取广告信息
+              
           }
           else
             wx.showModal({

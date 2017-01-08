@@ -1,10 +1,10 @@
 {
   "pages":[
     "pages/private/private",
+    "pages/manage/manage",
     "pages/public/public",
     "pages/watermark/watermark",
-    "pages/category/category",
-    "pages/manage/manage"
+    "pages/category/category"
   ],
   "window":{
     "backgroundTextStyle":"light",

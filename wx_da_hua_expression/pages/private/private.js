@@ -68,7 +68,7 @@ Page({
         log:[]  ,
         // show:true,   
         // num:0,
-        emoticon:[ ], //临时表情列表  // "http://image.12xiong.top/12_20161226084253.gif",
+        emoticon:[], //临时表情列表  // "http://image.12xiong.top/12_20161226084253.gif",
     },
     
 
