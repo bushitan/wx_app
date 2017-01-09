@@ -1149,6 +1149,24 @@ Page({
             })
         },
       })
+
+
+      //Todo 目录和图片共同获取，如果失败，执行下边重新登操作
+      //  wx.showModal({
+      //     title: '网络连接失败，是否重新登陆？',
+      //     content:"请确认网络是否正常",
+      //     confirmText:"重新登陆",
+      //     success: function(res) {
+      //         if (res.confirm) {
+      //             GLOBAL_PAGE.login()
+      //         }
+      //         else{
+      //             GLOBAL_PAGE.setData({
+      //                 loginStatus:false
+      //             }) 
+      //         }
+      //     }
+      //   })   
     
   },
 

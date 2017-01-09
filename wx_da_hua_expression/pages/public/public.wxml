@@ -12,6 +12,7 @@
                     </view>
                 </view>
             </view>
+            <view class="weui-search-bar__cancel-btn" hidden="{{!searchResultShowed}}" bindtap="hideInput">取消</view>
         </view>
 
         <!--关键字推荐栏目-->

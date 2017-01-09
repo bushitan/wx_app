@@ -12,6 +12,7 @@ var GLOBAL_PAGE
 Page({
   data: {
     pageName: "public",
+
     titleText: "斗图加群（管理员微信号：bushitan）",
 
     displayLoading: true,
@@ -99,7 +100,16 @@ Page({
 
   // 5 菜单收藏按钮，可以收藏多张 
   menuCollect:function(){
-    // Todo 去除重复搜藏
+    
+    if( wx.getStorageSync('session') == ""  )
+    {
+        wx.showModal({
+            title: "登录失败，请先登录“我的”标签，再回来收藏",
+            showCancel:false,
+        })
+        return
+    }
+    // 5.1 去除重复搜藏
     var select_id = GLOBAL_PAGE.data.selectEmoticon.id
     var emoticon = wx.getStorageSync(KEY.emoticon)
     for(var i=0;i<emoticon.length;i++)
@@ -404,8 +414,8 @@ Page({
   //4
   hideInput: function () {
       this.setData({
-          keyword: "",
-          inputShowed: false
+        //   keyword: "",
+          searchResultShowed: false
       });
   },
   //5
@@ -494,6 +504,11 @@ Page({
             keyword:options.keyword,
         })
     
+
+    //从分享页面进入public，session为空，先登录
+    var session = wx.getStorageSync(KEY.session) 
+    if(session == "")
+         GLOBAL_PAGE.login()
     
   
     //获取表情列表
@@ -541,4 +556,65 @@ Page({
     })
   },
   
+  login:function(){
+     //2 user loginlogin
+     
+    console.log("session:", wx.getStorageSync('session') )
+    wx.login
+    ({
+        success: function (res) 
+        {
+          
+          var _session = wx.getStorageSync('session') 
+          if (! _session  ) //检查session,不存在，为false
+            _session = "false"
+         
+          var url = Api.userLogin()
+          console.log(res.code)
+          wx.request
+          ({  
+            url: url, 
+            method:"GET",
+            data:{
+              js_code:res.code,
+              session:_session,
+            },
+            success: function(res)
+            {
+              console.log("success:")
+              console.log(res)
+              if (res.data.status == "true") //登陆成功
+              {
+                wx.setStorageSync('session', res.data.session)
+                //Todo 初始化页面、目录
+                // GLOBAL_PAGE.onInit()
+              }
+              else
+                wx.showModal({
+                  title: '网络连接失败，是否重新登陆？',
+                  content:"请确认网络是否正常,可进入“我的”重新登录",
+                  confirmText:"重新登陆",
+                  success: function(res) {
+                      if (res.confirm) {
+                          GLOBAL_PAGE.login()
+                      }
+                  }
+                })                
+            },
+            fail:function(res) { 
+                wx.showModal({
+                  title: '网络连接失败，是否重新登陆？',
+                  content:'请确认网络是否正常,可进入“我的”重新登录',
+                  confirmText:"重新登陆",
+                  success: function(res) {
+                      if (res.confirm) {
+                          GLOBAL_PAGE.login()
+                      }
+                  }
+                }) 
+            },
+          })
+        }
+    });
+  },
 })
