@@ -52,7 +52,7 @@ Page({
 
      inputShowed: false,
     //  inputVal: "",
-     searchKey:["搞笑","运动","笑屎了","老司机"],
+     searchKey:[],//"搞笑","运动","笑屎了","老司机"
      searchResultShowed:false,
 
      scrollTolowerStatus:1, // 1 初始状态，全部隐藏  2、正在loading 3、返回首页 
@@ -479,7 +479,8 @@ Page({
           if(object.status == "true"){
                 GLOBAL_PAGE.setData({
                     titleText:object.title,
-                    keyword:object.keyword
+                    keyword:object.keyword,
+                    searchKey:object.search_key
                 })
           }
         },
