@@ -7,19 +7,34 @@ var KEY = require('../../utils/storage_key.js');
 
 Page({
   data: {
-    emoticon:[{static_url:"http://image.12xiong.top/9_20161118171253.jpg"}],
+    emoticon:[{
+      static_url:"http://image.12xiong.top/9_20161118171253.jpg",
+      img_id:1,
+      is_select:false,
+      }],
     tag:[
       {parent:"运动",parent_id:1,sub:["老司机","玩"]},
       {parent:"搞笑",parent_id:1,sub:["哈哈","玩1"]},
     ],
 
     selectEmoticon:{img_id:1,img_url:"http://7xsark.com1.z0.glb.clouddn.com/12_20161205115232.gif"},
+
+
+    preEmoticon:[],
   },
 
   choiceTag:function(e){
     var tag_id = parseInt(e.currentTarget.dataset.tag_id)
-    var img_id = GLOBAL_PAGE.data.selectEmoticon.img_id
-    console.log(tag_id,img_id)
+    // var img_id = GLOBAL_PAGE.data.selectEmoticon.img_id
+
+
+
+    var img_id_list = ""
+    var emoticon = GLOBAL_PAGE.data.emoticon
+    for(var i=0;i<emoticon.length;i++)
+          if(emoticon[i].is_select == true )
+              img_id_list += emoticon[i].img_id + ","
+    img_id_list = img_id_list.substring(0,img_id_list.length-1) //删除最后的逗号,
 
     wx.request({
         url: API.tagImgAdd() , //仅为示例，并非真实的接口地址
@@ -27,7 +42,7 @@ Page({
         data: {
           session: wx.getStorageSync(KEY.session),
           tag_id:tag_id,
-          img_id:img_id,
+          img_id_list:img_id_list,
         },
         success: function(res) {
           var object = res.data
@@ -41,8 +56,30 @@ Page({
     })
 
   },
+  selectAll:function(e){
+      var emoticon = GLOBAL_PAGE.data.emoticon
+      for(var i=0;i<emoticon.length;i++)
+            emoticon[i].is_select = !emoticon[i].is_select
+      GLOBAL_PAGE.setData({
+        emoticon:emoticon,
+      })
+  },
   choiceEmoticon:function(e){
+    
+    // var preEmoticon =  GLOBAL_PAGE.data.preEmoticon
+    var emoticon = GLOBAL_PAGE.data.emoticon
+    for(var i=0;i<emoticon.length;i++)
+      if(emoticon[i].img_id == e.currentTarget.dataset.img_id)
+      {
+          emoticon[i].is_select = !emoticon[i].is_select
+          // preEmoticon.push(emoticon[i])
+      }
+          
+
+    // console.log(preEmoticon)
      GLOBAL_PAGE.setData({
+       emoticon:emoticon,
+      //  preEmoticon:preEmoticon,
       selectEmoticon:{
           img_id: parseInt(e.currentTarget.dataset.img_id), 
           img_url:e.currentTarget.dataset.static_url,
@@ -61,6 +98,7 @@ Page({
           e_list.push({
             img_id: img_list[i].img_id,
             static_url: static_url,
+            is_select:false,
           })
       }
       GLOBAL_PAGE.setData({emoticon:e_list})
@@ -103,7 +141,8 @@ Page({
         method:"GET",
         data: {
           session: wx.getStorageSync(KEY.session) ,
-          category_id: 'null',
+          category_id: '17', //全部 null
+          category_name :'斗鸡',
         },
         success: function(res) {
           var object = res.data
@@ -134,5 +173,37 @@ Page({
           // GLOBAL_PAGE.renderEmoticon(object.img_list)
         }
       })
+
+      // //数据初始化 目录
+      // url = Api.categoryQuery() 
+      // wx.request({
+      //   url: url, //仅为示例，并非真实的接口地址
+      //   method:"GET",
+      //   data: {
+      //     session: session,
+      //   },
+      //   success: function(res) {
+      //     var object = res.data
+      //     if (object.status == "true")
+      //     {
+      //         // wx.setStorageSync(
+      //         //     KEY.category,
+      //         //     object.category_list
+      //         // )
+      //     GLOBAL_PAGE.renderCategory()
+      //     }
+      //     else
+      //       wx.showModal({
+      //           title: '网络连接失败，请重试',
+      //           showCancel:false,
+      //       })
+      //   },
+      //   fail:function(res){
+      //       wx.showModal({
+      //           title: '网络连接失败，请重试',
+      //           showCancel:false,
+      //       })
+      //   },
+      // })
   }
 })
