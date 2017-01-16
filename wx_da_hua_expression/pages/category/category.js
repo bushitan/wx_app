@@ -194,7 +194,14 @@ Page({
         })
     
   },
-  
+
+    onShareAppMessage: function () { 
+        return {
+            title: '表情袋',
+            desc: '海量表情天天让你惊喜，斗图乐趣无限，ヽ(°◇° )ノ',
+            path: '/pages/private/private'
+        }
+    },
   onLoad: function (param) {
     GLOBAL_PAGE = this
     console.log(param["category"])

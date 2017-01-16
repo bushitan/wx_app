@@ -20,26 +20,28 @@ function emoticon(page,emoticon,add){
             //临时将地址指向image.12xiong.top
             _list[i]["yun_url"] = "http://image.12xiong.top/" + _list[i]["yun_url"].split("/").pop()
             //静态压缩图
-            _list[i]["static_url"] = _list[i]["yun_url"] + "?imageMogr2/thumbnail/96x96/format/jpg" 
+            _list[i]["static_url"] = _list[i]["yun_url"] + "?imageMogr2/thumbnail/72x72/format/jpg" 
 
             //Todo 根据size 拿缩略图
             var _size =  _list[i]["size"]
             var thumbnail_url = ''
             switch(_size){
                 case 1:
-                 _list[i]["thumbnail_url"]  = _list[i]["yun_url"] + "?imageMogr2/thumbnail/170x170"
+                //  _list[i]["thumbnail_url"]  = _list[i]["yun_url"] + "?imageMogr2/thumbnail/170x170"
+                 _list[i]["thumbnail_url"]  = _list[i]["yun_url"] + "?imageMogr2/thumbnail/124x124"
                  _list[i]["menu_type"] =  menu.TYPE.SQUARE
                  break;
-                case 170:
-                 _list[i]["thumbnail_url"]  = _list[i]["yun_url"] + "?imageMogr2/thumbnail/"+_size+"x"+_size
+                // case 170:
+                //  _list[i]["thumbnail_url"]  = _list[i]["yun_url"] + "?imageMogr2/thumbnail/"+_size+"x"+_size
+                _list[i]["thumbnail_url"]  = _list[i]["yun_url"] + "?imageMogr2/thumbnail/124x124"
                  _list[i]["menu_type"] =  menu.TYPE.SQUARE
-                 break;
+                //  break;
                 case 2:   //竖图
                 _list[i]["thumbnail_url"]  = _list[i]["yun_url"] ;
                 _list[i]["menu_type"] =  menu.TYPE.VERTICAL
                 break;
                 case 3:   //横图
-                _list[i]["thumbnail_url"]  = _list[i]["yun_url"] +"" ;
+                _list[i]["thumbnail_url"]  = _list[i]["yun_url"]  ;
                 _list[i]["menu_type"] =  menu.TYPE.HORIZONTAL
                 break;
                 case 4:   //视频

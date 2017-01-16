@@ -55,6 +55,7 @@ page{
   /*border-right: 1rpx solid #D9D9D9;
   border-bottom: 1rpx solid #D9D9D9;*/
 }
+
 .emoticon-grid__icon {
   display: block;
   /*width: 64px;
@@ -73,6 +74,10 @@ page{
     height:32rpx;
 }
 
+
+.emoticon-grids{
+    overflow: hidden;
+}
 /*3格子*/
 .emoticon-grid-3 {
   position: relative;
@@ -173,6 +178,9 @@ page{
     /*position:absolute;*/
     width:100%;
 }
+.emoticon-wall .emoticon-image{
+    background-color: #EBEBEB;
+}
 /*.header {
     height: 80rpx;
     display: flex;
@@ -182,6 +190,8 @@ page{
     background-color: #56abe4;
     border-bottom: 1px solid #eee;
 }*/
+
+
 
 .bar , .search{
     background-color: #24292c;
@@ -415,3 +425,12 @@ input{
     margin-right:4px; 
     /*padding: 4px;*/
 }
+
+
+/*button[size="mini"] {
+display:inline-block;
+line-height:2.3;
+font-size:13px;
+padding:0 1.34em;
+
+}*/

@@ -319,22 +319,50 @@ Page({
         },
       menuType: e.currentTarget.dataset.menu_type
     })
+    if( wx.getStorageSync('is_onmenu_info') == "")
+    {
+        wx.showModal({
+            title: '拼接提示',
+            content:'点击“表情二”，可制作GIF图',
+            showCancel:false,
+            confirmText:"知道了",
+            success: function(res) {
+                wx.setStorageSync('is_onmenu_info',true)
+            }
+        }) 
+    }
   },
 
   /** 5 菜单-分享 */
   menuShare:function(){
     // Menu.Option.Share( GLOBAL_PAGE.data.selectEmoticon )
 
-    var current = GLOBAL_PAGE.data.selectEmoticon.yun_url
-    var urls = []
-    var e = GLOBAL_PAGE.data.emoticon
-    for ( var i = 0;i<e.length;i++)
-    {
-      if( e[i].menu_type == GLOBAL_PAGE.data.MENU_TYPE.VIDEO)
-          continue
-      urls.push(e[i].yun_url)
-    }
-    Render.share(current,urls)
+      var current = GLOBAL_PAGE.data.selectEmoticon.yun_url
+      var urls = []
+      var e = GLOBAL_PAGE.data.emoticon
+      for ( var i = 0;i<e.length;i++)
+      {
+        if( e[i].menu_type == GLOBAL_PAGE.data.MENU_TYPE.VIDEO)
+            continue
+        urls.push(e[i].yun_url)
+      }
+
+      if( wx.getStorageSync('is_share_info') == "")
+      {
+          wx.showModal({
+              title: '分享提示',
+              content:'点击右上角"⋮"，发送给朋友',
+              showCancel:false,
+              confirmText:"知道了",
+              success: function(res) {
+                  Render.share(current,urls)
+                  wx.setStorageSync('is_share_info',true)
+              }
+          }) 
+      }
+      else{
+          Render.share(current,urls)
+      }
   },
 
   /** 7 菜单-删除 */
@@ -625,6 +653,19 @@ Page({
           joinImg.first = joinImg.seconde
           joinImg.seconde = temp
       }
+
+      if( wx.getStorageSync('is_joinset_info') == "")
+      {
+          wx.showModal({
+              title: '拼接提示',
+              content:'点击“拼接”，获取新GIF表情',
+              showCancel:false,
+              confirmText:"知道了",
+              success: function(res) {
+                  wx.setStorageSync('is_joinset_info',true)
+              }
+          }) 
+      }
   },
 
   joinCancel:function(){
@@ -674,11 +715,23 @@ Page({
           GLOBAL_PAGE.setData({
               joinImg:joinImg,  //设置上传loading图片
           })
-          wx.showToast({
-              title: '拼接已完成，点击图片预览',
-              icon: 'success',
-              duration: 1000
+          wx.showModal({
+              title: '拼接成功',
+              content:'现在预览表情么？（点击右上角"⋮"，分享给朋友）',
+              success: function(res) {
+                  if (res.confirm) {
+                      wx.previewImage({
+                        current: joinImg.resualt, // 当前显示图片的http链接
+                        urls: GLOBAL_PAGE.data.temp.emoticon // 需要预览的图片http链接列表
+                      })
+                  }
+              }
           })
+          // wx.showToast({
+          //     title: '拼接已完成，点击图片预览',
+          //     icon: 'success',
+          //     duration: 1000
+          // })
           return 
       }
         
@@ -718,10 +771,17 @@ Page({
                     isUpload:false  //打开上传
                   })
                 
-                  wx.showToast({
-                      title: '拼接成功，点击图片预览',
-                      icon: 'success',
-                      duration: 1000
+                   wx.showModal({
+                      title: '拼接成功',
+                      content:'现在预览表情么？（点击右上角"⋮"，分享给朋友）',
+                      success: function(res) {
+                          if (res.confirm) {
+                              wx.previewImage({
+                                current: joinImg.resualt, // 当前显示图片的http链接
+                                urls: GLOBAL_PAGE.data.temp.emoticon // 需要预览的图片http链接列表
+                              })
+                          }
+                      }
                   })
               } 
               else{
@@ -953,7 +1013,7 @@ Page({
   onShareAppMessage: function () { 
       return {
         title: '表情袋',
-        desc: '这是我的表情袋，ヽ(°◇° )ノ',
+        desc: '海量表情天天让你惊喜，斗图乐趣无限，ヽ(°◇° )ノ',
         path: '/pages/private/private'
       }
   },

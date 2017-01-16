@@ -385,10 +385,12 @@
 
 }
 .emoticon-menu .tool button{
-    margin: 6px 6px 0px;
+    margin: 6px 4px 0px;
+    padding: 0 15px;
     /*padding: 0px 2px; */
     overflow:auto;
 }
+
 
 .cancel { 
     width: 23px;

@@ -89,10 +89,45 @@ Page({
       imgHistory:imgHistory
     })
 
-    wx.previewImage({
-      current: GLOBAL_PAGE.data.imgSuccess, // 当前显示图片的http链接
-      urls: GLOBAL_PAGE.data.imgHistory // 需要预览的图片http链接列表
-    })
+     if( wx.getStorageSync('is_water_share_info') == "")
+      {
+          wx.showModal({
+              title: '分享提示',
+              content:'点击右上角"⋮"，发送给朋友',
+              showCancel:false,
+              confirmText:"知道了",
+              success: function(res) {
+                  wx.previewImage({
+                    current: GLOBAL_PAGE.data.imgSuccess, // 当前显示图片的http链接
+                    urls: GLOBAL_PAGE.data.imgHistory // 需要预览的图片http链接列表
+                  })
+                  wx.setStorageSync('is_water_share_info',1)
+              }
+          }) 
+      }
+      else if( wx.getStorageSync('is_water_share_info') == 1 && GLOBAL_PAGE.data.imgHistory.length > 1)
+      {
+           wx.showModal({
+              title: '提示',
+              content:'可左右滑动，查看临时记录，中意请及时保存',
+              showCancel:false,
+              confirmText:"知道了",
+              success: function(res) {
+                  wx.previewImage({
+                    current: GLOBAL_PAGE.data.imgSuccess, // 当前显示图片的http链接
+                    urls: GLOBAL_PAGE.data.imgHistory // 需要预览的图片http链接列表
+                  })
+                  wx.setStorageSync('is_water_share_info',2)
+              }
+          }) 
+      }
+      else {
+          wx.previewImage({
+            current: GLOBAL_PAGE.data.imgSuccess, // 当前显示图片的http链接
+            urls: GLOBAL_PAGE.data.imgHistory // 需要预览的图片http链接列表
+          })
+      }
+      
   },
 
 
@@ -245,7 +280,13 @@ Page({
     })    
   },
 
-  
+    onShareAppMessage: function () { 
+        return {
+            title: '表情袋',
+            desc: '海量表情天天让你惊喜，斗图乐趣无限，ヽ(°◇° )ノ',
+            path: '/pages/private/private'
+        }
+    },
 
   onLoad: function (options) {
     // options = {imgurl: "http://image.12xiong.top/19_20161230100647.jpg", width: "1280", height: "822"}

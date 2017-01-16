@@ -141,8 +141,8 @@ Page({
         method:"GET",
         data: {
           session: wx.getStorageSync(KEY.session) ,
-          category_id: '17', //全部 null
-          category_name :'斗鸡',
+          category_id: '2', //全部 null
+          category_name :'今日斗图',
         },
         success: function(res) {
           var object = res.data

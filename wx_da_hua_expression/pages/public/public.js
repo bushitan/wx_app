@@ -86,16 +86,32 @@ Page({
 
   // 4 图片分享
   menuShare:function(){
-    var current = GLOBAL_PAGE.data.selectEmoticon.yun_url
-    var urls = []
-    var e = GLOBAL_PAGE.data.emoticon
-    for ( var i = 0;i<e.length;i++)
-    {
-      if( e[i].menu_type == GLOBAL_PAGE.data.MENU_TYPE.VIDEO)
-          continue
-      urls.push(e[i].yun_url)
-    }
-    Render.share(current,urls)
+
+        var current = GLOBAL_PAGE.data.selectEmoticon.yun_url
+        var urls = []
+        var e = GLOBAL_PAGE.data.emoticon
+        for ( var i = 0;i<e.length;i++)
+        {
+        if( e[i].menu_type == GLOBAL_PAGE.data.MENU_TYPE.VIDEO)
+            continue
+        urls.push(e[i].yun_url)
+        }
+        if( wx.getStorageSync('is_share_info') == "")
+        {
+            wx.showModal({
+                title: '分享提示',
+                content:'点击右上角"⋮"，发送给朋友',
+                showCancel:false,
+                confirmText:"知道了",
+                success: function(res) {
+                    Render.share(current,urls)
+                    wx.setStorageSync('is_share_info',true)
+                }
+            }) 
+        }
+        else{
+            Render.share(current,urls)
+        }
   },
 
   // 5 菜单收藏按钮，可以收藏多张 
@@ -109,6 +125,7 @@ Page({
         })
         return
     }
+
     // 5.1 去除重复搜藏
     var select_id = GLOBAL_PAGE.data.selectEmoticon.id
     var emoticon = wx.getStorageSync(KEY.emoticon)
@@ -140,12 +157,27 @@ Page({
                   var e = wx.getStorageSync(KEY.emoticon)
                   e.push(object.img)
                   wx.setStorageSync(KEY.emoticon,e)
-
-                  wx.showToast({
-                      title: '收藏成功',
-                      icon: 'success',
-                      duration: 700
-                  })
+                
+                    if( wx.getStorageSync('is_collect_info') == "")
+                    {
+                        wx.showModal({
+                            title: '收藏成功',
+                            content:'点击左下角“我的”，进入专属表情袋',
+                            showCancel:false,
+                            confirmText:"知道了",
+                            success: function(res) {
+                                wx.setStorageSync('is_collect_info',true)
+                            }
+                        }) 
+                    }
+                    else{
+                        wx.showToast({
+                            title: '收藏成功',
+                            icon: 'success',
+                            duration: 700
+                        })
+                    }
+                  
               }
               else
                 wx.showModal({
@@ -371,7 +403,7 @@ Page({
 
     //index目录列表
     //临时建立tagListDisplay中间选项，首页查询，所有tag一起展示，
-    if(e.currentTarget.dataset.keyword == "首页")
+    if(e.currentTarget.dataset.keyword == "目录导航")
     {
         var tagListDisplay = GLOBAL_PAGE.data.tagList   
         GLOBAL_PAGE.setData({
@@ -460,8 +492,7 @@ Page({
     })
   },
 
-  onShareAppMessage: function () {
-      
+  onShareAppMessage: function () { 
       return {
         title: '表情袋',
         desc: '这有很多《'+GLOBAL_PAGE.data.keyword+'》的表情唷,(~˘▾˘)~',

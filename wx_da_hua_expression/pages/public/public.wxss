@@ -29,19 +29,32 @@
 
 
 .shortcut {
-
+    /*border-bottom: 1rpx solid #D9D9D9;*/
+    background-color:#ffffff; 
+    /*padding:7px 0px;*/
 }
 .shortcut scroll-view{
     width:750rpx;
+    height:42px;
+    line-height: 42px;
     white-space: nowrap; 
     display: flex;    
     text-align: center;
-    padding-top: 7px;
+    
     /*padding-left: 15px;
     padding-right: 15px;*/
 }
-.shortcut button{
-    margin: 0px 4px ; 
+.shortcut .word{
+    font-size:14px;
+    padding: 8px 12px ; 
+}
+.shortcut .select{
+    color: #09bb09;
+    border-bottom:1px solid #09bb09;
+}
+.shortcut .unselect{
+    color: #888888;
+    border-bottom: 0px;
 }
 
 
