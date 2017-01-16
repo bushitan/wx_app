@@ -56,7 +56,7 @@ Page({
      searchResultShowed:false,
 
      scrollTolowerStatus:1, // 1 初始状态，全部隐藏  2、正在loading 3、返回首页 
-
+     emoticonScrollTop:0 , //表情滚条位置
   },
 
   //1 关闭所有悬浮框
@@ -262,18 +262,18 @@ Page({
                     //页数相同，没有下文，不追加更新
                     if (object.page_num == GLOBAL_PAGE.data.page_num)
                         GLOBAL_PAGE.setData({
-                            scrollTolowerStatus:3, //加载成功，返回初始状态
+                            scrollTolowerStatus:3, //没有图片，返回导航
                             page_num:object.page_num //更新page_num 查询页
                         })
                     //有新的页数，追加更新
                     else
                     {
-                        GLOBAL_PAGE.renderEmoticon(object.img_list,true)
                         GLOBAL_PAGE.setData({
                             scrollTolowerStatus:1, //加载成功，返回初始状态
                             page_num:object.page_num //更新page_num 查询页
                         })
                     }
+                    GLOBAL_PAGE.renderEmoticon(object.img_list,true)
                        
                 }
                 else
@@ -337,7 +337,9 @@ Page({
 
     //切换tag，返回初始状态
     GLOBAL_PAGE.setData({
-        scrollTolowerStatus:1
+        scrollTolowerStatus:1,
+        emoticonScrollTop:0,
+        page_num:1
     })
     
     var _keyword = GLOBAL_PAGE.data.keyword
@@ -350,7 +352,7 @@ Page({
         data: {
           session: session,
           tag_name : _keyword,
-          page_num:GLOBAL_PAGE.data.page_num //默认查询第一页
+          page_num:GLOBAL_PAGE.data.page_num//默认查询第一页
           // category_id: '1',
           // category_name: _keyword,
         },
