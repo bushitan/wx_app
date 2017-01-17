@@ -193,6 +193,7 @@ Page({
       GLOBAL_PAGE.setData({
         uploadNum:_uploadNum
       })
+      console.log(_count,_finish)
       if(_count == _finish)
       {
         GLOBAL_PAGE.setData({isUpload:false})
@@ -203,8 +204,11 @@ Page({
         })
       }
       else
-        console.log( GLOBAL_PAGE.data.uploadNum)
-        GLOBAL_PAGE.uploadFile( GLOBAL_PAGE.data.uploadNum.path[_finish])
+      {
+          console.log( GLOBAL_PAGE.data.uploadNum)
+          GLOBAL_PAGE.uploadFile( GLOBAL_PAGE.data.uploadNum.path[_finish])
+      }
+        
         //todo 上传函数
   },
   //正式上传 4-7
@@ -212,25 +216,29 @@ Page({
       var _type = file_path.split(".").pop()
       console.log(file_path)
 
-      //全选的时候，放在默认目录里
+      //全选的时候catId == null，选择默认目录的id存放
+      //不改变当前selectCat的id，上传后就不会跳转
       var selectCategory = GLOBAL_PAGE.data.selectCategory
+      var _tempCatId = null
       if (selectCategory.category_id == null)
       {
           var category = GLOBAL_PAGE.data.category
           for(var i=0;i<category.length;i++)
               if(category[i].is_default == 1) 
               {
-                  selectCategory.category_id = category[i].category_id
+                  _tempCatId = category[i].category_id
                   break
               }
       }
+      else
+        var _tempCatId = selectCategory.category_id 
           
       wx.request({
           url: Api.uploadToken(), 
           data:{
             'session': wx.getStorageSync(Key.session),
             "type":_type,
-            "category_id":selectCategory.category_id ,
+            "category_id":_tempCatId ,
           },
           success: function(res){
               var data = res.data
@@ -253,7 +261,8 @@ Page({
                         if(data.status == "true")
                         {
                           var e = wx.getStorageSync(Key.emoticon)
-                          e.push(data.img)
+                          e.splice(0, 0, data.img); //从第一位插入
+                          // e.push(data.img)
                           wx.setStorageSync(Key.emoticon,e)
                           GLOBAL_PAGE.renderEmoticon()
 
@@ -297,7 +306,7 @@ Page({
               GLOBAL_PAGE.setData({isUpload:false})
           },
           complete:function(res) { 
-              GLOBAL_PAGE.setData({isUpload:false})
+              // GLOBAL_PAGE.setData({isUpload:false})
           },
       })
   },

@@ -1,0 +1,5 @@
+<!--pages/together/together.wxml-->
+<view class="page"  >
+    <button catchtap="navigateToPainter">开始画</button>
+   
+</view>
