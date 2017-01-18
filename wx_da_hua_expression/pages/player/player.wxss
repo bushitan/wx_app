@@ -1,0 +1,13 @@
+/* pages/together/together.wxss */
+
+.player{
+    position: relative;
+}
+
+.player image{
+    position: absolute;
+    margin-top:25px; 
+    width:320px;
+    height:320px;
+    background-color: #fff;
+}

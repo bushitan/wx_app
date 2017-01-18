@@ -29,7 +29,9 @@ App({
       }
     })
     },
+
 })
+
 
 // ,{
 //       "pagePath": "pages/manage/manage",

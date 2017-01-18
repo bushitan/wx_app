@@ -22,6 +22,8 @@ Page({
         displayLancet:true,
         tempImage:null,
         isUpload:null,
+
+        imgUpload:"",
     },
 
     eventBase:function(e){
@@ -74,62 +76,62 @@ Page({
         global_page.setData({ paintColor });
     },
 
-    onTouchStart({ touches }) {
-        //  global_page.setData({
-        //     displayLancet:true
-        // })
-        const  clientX = touches[0]['x'];
-        const  clientY = touches[0]['y'];
+    // onTouchStart({ touches }) {
+    //     //  global_page.setData({
+    //     //     displayLancet:true
+    //     // })
+    //     const  clientX = touches[0]['x'];
+    //     const  clientY = touches[0]['y'];
 
-        this.startX = clientX
-        this.startY = clientY
-        this.movements = [clientX, clientY];
+    //     this.startX = clientX
+    //     this.startY = clientY
+    //     this.movements = [clientX, clientY];
 
-        var that = this
-        this.context = wx.createContext()
-        this.context.beginPath()
-        this.context.setFillStyle (that.data.paintColor) ;
-        // this.context.setStrokeStyle (that.data.paintColor) ;
-        // this.context.setLineWidth (2)
-        this.context.moveTo(that.startX,that.startY)
-        this.context.setGlobalAlpha(0.9)
-        this.context.lineTo(that.movements[0],that.movements[1])
+    //     var that = this
+    //     this.context = wx.createContext()
+    //     this.context.beginPath()
+    //     this.context.setFillStyle (that.data.paintColor) ;
+    //     // this.context.setStrokeStyle (that.data.paintColor) ;
+    //     // this.context.setLineWidth (2)
+    //     this.context.moveTo(that.startX,that.startY)
+    //     this.context.setGlobalAlpha(0.9)
+    //     this.context.lineTo(that.movements[0],that.movements[1])
        
-    },
+    // },
     
-    onTouchMove({ touches }) {
-        const  clientX = touches[0]['x'];
-        const  clientY = touches[0]['y'];
+    // onTouchMove({ touches }) {
+    //     const  clientX = touches[0]['x'];
+    //     const  clientY = touches[0]['y'];
              
-        global_page.modePecile(this,clientX,clientY)
-        //仿画吧，柳叶刀
-        // switch(global_page.data.mode){
-        // case "pecile":global_page.modePecile(this,clientX,clientY);break;
-        // case "lancet":global_page.modeLancet(this,clientX,clientY);break;
-        // case "eraser":global_page.modeEraser(this);break;
-        // }
-        var that = this
-        that.context.lineTo(clientX,clientY)
-        // that.context.setLineCap("round")
-        // that.context.setLineJoin("miter")
-        // that.context.setMiterLimit(10)
-        // this.context.setGlobalAlpha(0.8)
+    //     global_page.modePecile(this,clientX,clientY)
+    //     //仿画吧，柳叶刀
+    //     // switch(global_page.data.mode){
+    //     // case "pecile":global_page.modePecile(this,clientX,clientY);break;
+    //     // case "lancet":global_page.modeLancet(this,clientX,clientY);break;
+    //     // case "eraser":global_page.modeEraser(this);break;
+    //     // }
+    //     var that = this
+    //     that.context.lineTo(clientX,clientY)
+    //     // that.context.setLineCap("round")
+    //     // that.context.setLineJoin("miter")
+    //     // that.context.setMiterLimit(10)
+    //     // this.context.setGlobalAlpha(0.8)
        
-        // context.stroke();  
-        that.movements = [clientX, clientY];
+    //     // context.stroke();  
+    //     that.movements = [clientX, clientY];
 
-    },
+    // },
 
-    onTouchEnd() {
-        var that = this
-         that.context.fill()
-        that.context.closePath()
+    // onTouchEnd() {
+    //     var that = this
+    //      that.context.fill()
+    //     that.context.closePath()
         
-        global_page.setData({context:that.context})
+    //     global_page.setData({context:that.context})
 
-        this.lastActions = that.context.getActions();
-        global_page.updateCanvas("paper",this._lastActions,"true");//更新画布，得出一条线
-    },
+    //     this.lastActions = that.context.getActions();
+    //     global_page.updateCanvas("paper",this._lastActions,"true");//更新画布，得出一条线
+    // },
    
      onLancetStart({ touches }) {
 
@@ -324,47 +326,7 @@ Page({
     //         }
     //     })
     // },
-     save:function(){
-        wx.canvasToTempFilePath({
-            canvasId: 'paper',
-            success: function success(res) {
-                wx.showToast({
-                    title: '成功',
-                    icon: 'success',
-                    duration: 2000
-                })
-                GLOBAL_PAGE.data.tempImage = res.tempFilePath
-                console.log("save:",GLOBAL_PAGE.data.tempImage )
-                wx.previewImage({
-                    current: res.tempFilePath, // 当前显示图片的http链接
-                    urls: [res.tempFilePath] // 需要预览的图片http链接列表
-                })
-                // wx.saveFile({
-                //     tempFilePath: res.tempFilePath,
-                //     success: function success(res) {
-                //         console.log('saved::' + res.savedFilePath);
-                //         GLOBAL_PAGE.data.tempImage = res.savedFilePath
-                //         wx.previewImage({
-                //             current: res.savedFilePath, // 当前显示图片的http链接
-                //             urls: [res.savedFilePath] // 需要预览的图片http链接列表
-                //         })
-                //     },
-                //     complete: function fail(e) {
-
-                //         console.log(e.errMsg);
-                //     }
-                // });
-            },
-            complete: function complete(e) {
-                // wx.showToast({
-                //   title: '完成',
-                //   icon: 'success',
-                //   duration: 2000
-                // })
-                console.log(e.errMsg);
-            }
-        });
-    },
+     
 
     reDraw:function(){
         const ctx = wx.createCanvasContext('paper')
@@ -409,23 +371,28 @@ Page({
                             console.log("上传成功")
                             var data = JSON.parse(res.data);
                             console.log(data)
-                            // if(data.status == "true")
-                            // {
-                            //     var e = wx.getStorageSync(Key.emoticon)
-                            //     e.splice(0, 0, data.img); //从第一位插入
-                            //     // e.push(data.img)
-                            //     wx.setStorageSync(Key.emoticon,e)
-                            //     GLOBAL_PAGE.renderEmoticon()
+                            if(data.status == "true")
+                            {   
+                                // 上传成功，更新本地库
+                                var e = wx.getStorageSync(Key.emoticon)
+                                e.splice(0, 0, data.img); //从第一位插入
+                                // e.push(data.img)
+                                wx.setStorageSync(Key.emoticon,e)
+                                // GLOBAL_PAGE.renderEmoticon()
+                                GLOBAL_PAGE.setData({
+                                    imgUpload:data.img.img_url
+                                })    
 
-                            //     GLOBAL_PAGE.uploadCompelte()//上传成功，继续上传
-                            // } 
-                            // else{
-                            //     wx.showModal({
-                            //     title: '网络连接失败，请重试',
-                            //     showCancel:false,
-                            //     })
-                            //     GLOBAL_PAGE.setData({isUpload:false})
-                            // }    
+                                GLOBAL_PAGE.navigateToPlayer()
+
+                            } 
+                            else{
+                                wx.showModal({
+                                title: '网络连接失败，请重试',
+                                showCancel:false,
+                                })
+                                GLOBAL_PAGE.setData({isUpload:false})
+                            }    
                         },
                         fail (error) {
                             console.log(error)
@@ -538,7 +505,53 @@ Page({
         context_lancet = wx.createContext() 
         // const context = wx.createContext();//创建空白画布
     },
-    
+
+    save:function(){
+        wx.canvasToTempFilePath({
+            canvasId: 'paper',
+            success: function success(res) {
+                wx.showToast({
+                    title: '导出图片成功',
+                    icon: 'success',
+                    duration: 2000
+                })
+                
+                //上传云后台
+                GLOBAL_PAGE.uploadFile(res.tempFilePath)
+
+                //预览显示
+                GLOBAL_PAGE.data.tempImage = res.tempFilePath
+                console.log("save:",GLOBAL_PAGE.data.tempImage )
+
+                wx.previewImage({
+                    current: res.tempFilePath, // 当前显示图片的http链接
+                    urls: [res.tempFilePath] // 需要预览的图片http链接列表
+                })
+            },
+            complete: function complete(e) {
+
+                console.log(e.errMsg);
+            }
+        });
+    },
+    saveToPlayer:function(){
+        // GLOBAL_PAGE.save()
+        GLOBAL_PAGE.navigateToPlayer()
+        // var url = '../player/player'
+        // wx.redirectTo({
+        //     url: url
+        // })  
+    },
+
+
+         //导航：播放器 
+    navigateToPlayer: function(e) {
+        var url = '../player/player?img_url=' + GLOBAL_PAGE.data.imgUpload
+        var url = '../player/player?img_url=http://image.12xiong.top/1_20170118133253.png'
+        wx.redirectTo({
+            url: url
+        })
+    },
     // onReady: function (e) {
     // // //使用wx.createContext获取绘图上下文context
     // // var context = wx.createContext();
@@ -582,72 +595,46 @@ Page({
 
 
 
-    //[start, ...moves] 
-    //http://www.jdon.com/idea/js/ecmascript-rest-spread.html
-
-    // (x) => x + 6
-    // 相当于
-    // function(x){
-    //     return x + 6;
-    // }
-
-    //let 允许把变量的作用域限制在块级域中。
-    //与 var 不同处是：var 申明变量要么是全局的，要么是函数级的，而无法是块级的
-    //https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/let
-
-    
-    //const 声明创建一个只读的常量。这不意味着常量指向的值不可变，而是变量标识符的值只能赋值一次。
-    //JavaScript中的常量和Java，C++中的常量一个意思。注意区分常量的值和常量指向的值的不同
-    //https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Statements/const
 
 
 
+// save:function(){
+//         wx.canvasToTempFilePath({
+//             canvasId: 'paper',
+//             success: function success(res) {
+//                 wx.showToast({
+//                     title: '成功',
+//                     icon: 'success',
+//                     duration: 2000
+//                 })
+//                 GLOBAL_PAGE.data.tempImage = res.tempFilePath
+//                 console.log("save:",GLOBAL_PAGE.data.tempImage )
+//                 wx.previewImage({
+//                     current: res.tempFilePath, // 当前显示图片的http链接
+//                     urls: [res.tempFilePath] // 需要预览的图片http链接列表
+//                 })
+//                 // wx.saveFile({
+//                 //     tempFilePath: res.tempFilePath,
+//                 //     success: function success(res) {
+//                 //         console.log('saved::' + res.savedFilePath);
+//                 //         GLOBAL_PAGE.data.tempImage = res.savedFilePath
+//                 //         wx.previewImage({
+//                 //             current: res.savedFilePath, // 当前显示图片的http链接
+//                 //             urls: [res.savedFilePath] // 需要预览的图片http链接列表
+//                 //         })
+//                 //     },
+//                 //     complete: function fail(e) {
 
-
-
-
-
-
-    //  onTouchStart({ touches }) {
-    //     const  clientX = touches[0]['x'];
-    //     const  clientY = touches[0]['y'];
-    //     this.movements = [clientX, clientY];
-        
-    //     // context.beginPath()
-    //     // context.moveTo(this.movements[0],this.movements[1]);
-    // },
-    
-    // onTouchMove({ touches }) {
-    //     // const { clientX, clientY } = touches[0]; 
-    //     const  clientX = touches[0]['x'];
-    //     const  clientY = touches[0]['y'];
-    //     // this.movements.push([clientX, clientY]); //this.movements记录所有touch数据
-    //     const [start, ...moves] = this.movements; 
-        
-    //     // context = global_page.data.context
-    //     // context.save();
-
-        
-
-    //     context.moveTo(this.movements[0],this.movements[1]);
-    //     context.lineTo(clientX,clientY);
-    //     console.log(this.data.paintColor);
-    //     context.setStrokeStyle(this.data.paintColor);
-    //     context.setLineWidth(5);
-    //     context.setLineCap("round")
-    //     context.stroke();
-    //     context.restore();
-        
-        
-
-        
-        
-    //     this.movements = [clientX, clientY];
-    //     this.lastActions = context.getActions();
-    //     this.updateCanvas(this.lastActions);//更新画布，得出一条线
-    // },
-
-    // onTouchEnd() {
-        
-    // },
-   
+//                 //         console.log(e.errMsg);
+//                 //     }
+//                 // });
+//             },
+//             complete: function complete(e) {
+//                 // wx.showToast({
+//                 //   title: '完成',
+//                 //   icon: 'success',
+//                 //   duration: 2000
+//                 // })
+//                 console.log(e.errMsg);
+//             }
+//         });

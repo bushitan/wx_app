@@ -1,6 +1,8 @@
 // pages/together/together.js
 Page({
-  data:{},
+  data:{
+      
+  },
   onLoad:function(options){
     // 页面初始化 options为页面跳转所带来的参数
   },
@@ -17,9 +19,16 @@ Page({
     // 页面关闭
   },
 
-    //导航：gif拼接页面
+    //导航：画布页面
   navigateToPainter: function(e) {
     var url = '../painter/painter'
+    wx.navigateTo({
+      url: url
+    })
+  }, 
+     //导航：播放器 
+  navigateToPlayer: function(e) {
+    var url = '../player/player'
     wx.navigateTo({
       url: url
     })

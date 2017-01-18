@@ -1,0 +1,26 @@
+
+<view class="page"  >
+    <view>
+        <navigator url="../painter/painter" open-type="redirect" hover-class="other-navigator-hover">
+            <button >抢画！</button>
+        </navigator>
+    </view>
+    <view >
+        <navigator url="../together/together" open-type="switchTab" hover-class="other-navigator-hover">
+             <button >主页</button>
+        </navigator>
+    </view>
+    <!--<button catchtap="click">as</button>-->
+    <view class="player">
+        <image class="bg" src="{{playerImageBg}}"  mode="aspectFit" style="" ></image>
+        <image animation="{{animationData}}" src="{{playerImage}}" mode="aspectFit" ></image>
+
+        <image hidden="true" src="{{playerImagePre}}" mode="aspectFit" ></image>
+        <!--<image animation="{{animationData1}}" src="{{playerImage1}}"  mode="aspectFit" style="" bindload="bindload"></image>
+        <image animation="{{animationData}}" src="{{playerImage2}}" mode="aspectFit" bindload="bindload"></image>-->
+        <!--<image animation="{{animationData1}}" src="../../images/2.jpg"  mode="aspectFit" style=""></image>
+        <image animation="{{animationData}}" src="../../images/1.jpg" mode="aspectFit"></image>-->
+    </view>
+
+ 
+</view>

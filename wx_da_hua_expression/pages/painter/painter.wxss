@@ -8,25 +8,15 @@
     background: #f0f0f0;
 }
 
-canvas.paper {
+canvas.paper-background {
     background: white;
-    width: 30px;
-    position: absolute;
-    left: 1rem;
-    top: 1rem;
-    width: 18rem;
-    height: 26rem;
     box-shadow: 1px 1px 5px rgba(0, 0, 0, .3);
 }
-canvas.paper-lancet {
-    /*background: white;*/
-    width: 30px;
+canvas.paper {
     position: absolute;
-    left: 1rem;
-    top: 1rem;
-    width: 18rem;
-    height: 26rem;
-    box-shadow: 1px 1px 5px rgba(0, 0, 0, .3);
+    left: 30rpx;
+    width: 690rpx;
+    height: 900rpx;
 }
 
 
@@ -54,7 +44,7 @@ view.color-item.selected {
 
 view.tool-picker {
     position: absolute;
-    bottom: 1rem;
+    bottom: 1.5rem;
     left: 1rem;
     right: 1rem;
     height: 2rem;
@@ -72,4 +62,11 @@ view.tool-item {
 
 view.tool-item.selected {
     border-color: black;
+}
+
+.title{
+    margin: 8px;
+}
+.board {
+    position: relative
 }

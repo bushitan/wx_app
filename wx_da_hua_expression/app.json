@@ -1,10 +1,11 @@
 {
   "pages":[
-    "pages/private/private",
+    "pages/player/player",
     "pages/painter/painter",
     "pages/together/together",
-    "pages/public/public",
     "pages/manage/manage",
+    "pages/private/private",
+    "pages/public/public",
     "pages/watermark/watermark",
     "pages/category/category"
   ],

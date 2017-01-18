@@ -1,51 +1,73 @@
-<view class="root">
-
-    <canvas class="paper" canvas-id="paper" 
-        bindtouchstart="onTouchStart"  
-        bindtouchmove="onTouchMove"   
-        bindtouchend="onTouchEnd">    <!--触发触摸 事件--> <!--触摸移动 事件--> <!--触摸结束 事件-->
-    </canvas>
-    <canvas class="paper-lancet" canvas-id="paper-lancet" 
-        bindtouchstart="onLancetStart"  
-       bindtouchmove="onLancetMove"   
-        bindtouchend="onLancetEnd" wx:if="{{displayLancet}}">    
-    </canvas>
-     
-    <!--<view>
-        透明度（画笔、柳叶刀、橡皮）:
-        <slider bindchange="slider3change" show-value/>
-        大小（画笔、橡皮）:
-        <slider bindchange="slider3change" show-value/>
-    </view>-->
+<view class="page"  >
     
-    <view class="color-picker">
-        <view
-            wx:for-items="{{colors}}"
-            wx:for-item="color"
-            class="color-item {{paintColor == color ? 'selected' : ''}}"
-            data-color="{{color}}"
-            style="background-color: {{color}}"  
-            bindtap="chooseColor">     <!--选择颜色 事件-->
+        <view class="title" >
+            <view class="weui-flex">
+                <view class="weui-flex__item"></view>
+                <view  >题目：</view>
+                <view ><input value="一起画表情" placeholder="请输入题目"/></view>
+                <view class="weui-flex__item"></view>
+            </view>
+            
+        </view>
+        <!--<view class="root">-->
+            <view class="board">
+                <canvas class="paper paper-background" canvas-id="paper" 
+                    bindtouchstart="onTouchStart"  
+                    bindtouchmove="onTouchMove"   
+                    bindtouchend="onTouchEnd">    <!--触发触摸 事件--> <!--触摸移动 事件--> <!--触摸结束 事件-->
+                </canvas>
+                <canvas class="paper" canvas-id="paper-lancet" 
+                    bindtouchstart="onLancetStart"  
+                bindtouchmove="onLancetMove"   
+                    bindtouchend="onLancetEnd" wx:if="{{displayLancet}}">    
+                </canvas>
+            </view>
+        <!--</view> -->
+        <!--<view>
+            透明度（画笔、柳叶刀、橡皮）:
+            <slider bindchange="slider3change" show-value/>
+            大小（画笔、橡皮）:
+            <slider bindchange="slider3change" show-value/>
+        </view>-->
+        
+        <view class="color-picker">
+            <view
+                wx:for-items="{{colors}}"
+                wx:for-item="color"
+                class="color-item {{paintColor == color ? 'selected' : ''}}"
+                data-color="{{color}}"
+                style="background-color: {{color}}"  
+                bindtap="chooseColor">     <!--选择颜色 事件-->
+            </view>
+            
         </view>
         
-    </view>
-    
-    <view class="tool-picker">
-        <view class="tool-item selected"  catchtap="eventBase"  data-action="modeChange"  data-mode="pecile">铅笔</view>
-        <!--<view class="tool-item selected" catchtap="eventBase"  data-action="modeChange"  data-mode="lancet">柳叶刀</view>-->
-        <!--<view class="tool-item selected" style="background-color: red"   >颜色</view>-->
-        <!--<view class="tool-item selected" catchtap="eventBase" data-action="modeChange"  data-mode="eraser">橡皮</view>-->
+        <view class="tool-picker">
+             <view class="tool-item selected" style="background-color: red"   >颜色</view>
+            <view class="tool-item selected"  catchtap="eventBase"  data-action="modeChange"  data-mode="pecile">铅笔</view>
+            <!--<view class="tool-item selected" catchtap="eventBase"  data-action="modeChange"  data-mode="lancet">柳叶刀</view>-->
+            <view class="tool-item selected" catchtap="eventBase" data-action="modeChange"  data-mode="eraser">橡皮</view>
+            <view class="tool-item selected" catchtap="saveToPlayer" style="background-color: #FF0000" >
+                    保存
+            </view>
+            <view class="tool-item selected" style="background-color: #FF0000" >
+                <navigator url="../together/together" open-type="switchTab" hover-class="other-navigator-hover">
+                    主页
+                </navigator>
+            </view>
+            <view class="tool-item selected" catchtap="size" >大小</view>
+            <view class="tool-item selected" catchtap="clear" >还原</view>
+            <!--<view class="tool-item selected" catchtap="save" >保存</view>
+            <view class="tool-item selected" catchtap="reDraw">粘贴</view>
+            <view class="tool-item selected" catchtap="down">下载</view>
+            <view class="tool-item selected" catchtap="up" >上传</view>-->
+            
+            <!--<view class="tool-item selected" >外链资源</view>-->
+            <!--<view class="tool-item selected" >长按取色</view>-->
+            
+        </view>
+        <!--<button catchtap="save" >保存</button>-->
 
-        <view class="tool-item selected" catchtap="save" >保存</view>
-         <view class="tool-item selected" catchtap="reDraw">粘贴</view>
-         <view class="tool-item selected" catchtap="down">下载</view>
-        <view class="tool-item selected" catchtap="up" >上传</view>
-         
-        <!--<view class="tool-item selected" >外链资源</view>-->
-        <!--<view class="tool-item selected" >长按取色</view>-->
-        
-    </view>
-    <!--<button catchtap="save" >保存</button>-->
 </view>
 
 <!--<button catchtap="save">save</button>
