@@ -4,9 +4,9 @@
     小程序的api接口集合 
  */ 
 
-// var host_url = 'http://127.0.0.1:8000/'; 
+var host_url = 'http://127.0.0.1:8000/'; 
 // var host_url = 'https://www.12xiong.top/wx_app/';
-var host_url = 'https://www.12xiong.top/';
+// var host_url = 'https://www.12xiong.top/';
 // var host_url = 'http://www.12xiong.top/';
 
 /*
@@ -269,7 +269,43 @@ function json2Form(json) {
     }  
     return str.join("&");  
 }  
+
+/***一起画****/
+//1、创建主题，生成第一步
+function _painterStart(){
+	return host_url+'painter/start/';
+}	
+//2、添加主题步骤
+function _painterContinue(){
+	return host_url+'painter/continue/';
+}	
+//3、抢步骤抢画
+function _painterSnatch(){
+	return host_url+'painter/snatch/';
+}	
+//4、查询用户参与的主题
+function _painterThemeQuery(){
+	return host_url+'painter/theme_query/';
+}	
+//5、查询主题包含的步骤内容
+function _painterStepQuery(){
+	return host_url+'painter/step_query/';
+}	
+//5、判断用户是否正在参加活动
+function _painterJoinLatest(){
+	return host_url+'painter/join_latest/';
+}	
+
 module.exports = {
+	//一起画
+	PAINTER_START:_painterStart,
+	PAINTER_CONTINUE:_painterContinue,
+	PAINTER_SNATCH:_painterSnatch,
+	PAINTER_THEME_QUERY:_painterThemeQuery,
+	PAINTER_STEP_QUERY:_painterStepQuery,
+	PAINTER_JOIN_LATEST:_painterJoinLatest,
+
+
 	//上传接口
 	uploadImg:_uploadImg,
 	uploadVideo:_uploadVideo,

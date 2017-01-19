@@ -1,14 +1,17 @@
 
 <view class="page"  >
     <view>
-        <navigator url="../painter/painter" open-type="redirect" hover-class="other-navigator-hover">
-            <button >抢画！</button>
-        </navigator>
+        <!--<navigator url="../painter/painter" open-type="redirect" hover-class="other-navigator-hover">-->
+            <button catchtap="snatch" >抢画！</button>
+        <!--</navigator>-->
     </view>
     <view >
         <navigator url="../together/together" open-type="switchTab" hover-class="other-navigator-hover">
              <button >主页</button>
         </navigator>
+    </view>
+    <view>
+        <label>{{themeName}}</label>
     </view>
     <!--<button catchtap="click">as</button>-->
     <view class="player">

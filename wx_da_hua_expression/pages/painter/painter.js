@@ -1,5 +1,6 @@
-var Api = require('../../utils/api.js');
-var Key = require('../../utils/storage_key.js');
+/** painter.js */  
+var API = require('../../utils/api.js');
+var KEY = require('../../utils/storage_key.js');
 // var View = require('../../utils/view.js');
 // var Menu = require('../../utils/menu.js');
 var GLOBAL_PAGE
@@ -23,30 +24,18 @@ Page({
         tempImage:null,
         isUpload:null,
 
+        themeName:"一起画表情",
         imgUpload:"",
+
+        uploadStatus: 0 , // 0 未上传上传  1 上传成功
+
+        themeId:null,
+        stepId:null,
+        stepNumber:null,
+        
+        imgUrl:"", //下载的图片
     },
 
-    eventBase:function(e){
-        global_page.eventListen(e)
-        global_page.eventDisplay(e.currentTarget.dataset.action)
-    },
-
-    eventDisplay:function(action){
-        var _display = {
-            }
-        if (_display.hasOwnProperty(action))
-            _display[action]()
-        // View.Switch.Work() //触发效果
-    },
-
-    eventListen:function(e){
-        var _eventDict = {
-            "modeChange":global_page.modeChange,
-            "save":global_page.save,
-        }
-        if (_eventDict.hasOwnProperty(e.currentTarget.dataset.action))
-            _eventDict[e.currentTarget.dataset.action](e) 
-    },
     modeChange:function(e){
         var _mode = e.currentTarget.dataset.mode
         global_page.setData({
@@ -76,63 +65,6 @@ Page({
         global_page.setData({ paintColor });
     },
 
-    // onTouchStart({ touches }) {
-    //     //  global_page.setData({
-    //     //     displayLancet:true
-    //     // })
-    //     const  clientX = touches[0]['x'];
-    //     const  clientY = touches[0]['y'];
-
-    //     this.startX = clientX
-    //     this.startY = clientY
-    //     this.movements = [clientX, clientY];
-
-    //     var that = this
-    //     this.context = wx.createContext()
-    //     this.context.beginPath()
-    //     this.context.setFillStyle (that.data.paintColor) ;
-    //     // this.context.setStrokeStyle (that.data.paintColor) ;
-    //     // this.context.setLineWidth (2)
-    //     this.context.moveTo(that.startX,that.startY)
-    //     this.context.setGlobalAlpha(0.9)
-    //     this.context.lineTo(that.movements[0],that.movements[1])
-       
-    // },
-    
-    // onTouchMove({ touches }) {
-    //     const  clientX = touches[0]['x'];
-    //     const  clientY = touches[0]['y'];
-             
-    //     global_page.modePecile(this,clientX,clientY)
-    //     //仿画吧，柳叶刀
-    //     // switch(global_page.data.mode){
-    //     // case "pecile":global_page.modePecile(this,clientX,clientY);break;
-    //     // case "lancet":global_page.modeLancet(this,clientX,clientY);break;
-    //     // case "eraser":global_page.modeEraser(this);break;
-    //     // }
-    //     var that = this
-    //     that.context.lineTo(clientX,clientY)
-    //     // that.context.setLineCap("round")
-    //     // that.context.setLineJoin("miter")
-    //     // that.context.setMiterLimit(10)
-    //     // this.context.setGlobalAlpha(0.8)
-       
-    //     // context.stroke();  
-    //     that.movements = [clientX, clientY];
-
-    // },
-
-    // onTouchEnd() {
-    //     var that = this
-    //      that.context.fill()
-    //     that.context.closePath()
-        
-    //     global_page.setData({context:that.context})
-
-    //     this.lastActions = that.context.getActions();
-    //     global_page.updateCanvas("paper",this._lastActions,"true");//更新画布，得出一条线
-    // },
-   
      onLancetStart({ touches }) {
 
         const  clientX = touches[0]['x'];
@@ -146,21 +78,6 @@ Page({
         point_lancet.push([this.startX, this.startY])
         point_lancet.push([clientX, clientY])
 
-        // global_page.setData({
-        //     displayLancet:true
-        // })
- 
-        // console.log(clientX, clientY)
-        
-        // context_1 = wx.createContext()
-        // context_1.beginPath()
-        // // context_1.setFillStyle ('#008000') ;
-        // // context_1.setStrokeStyle ('#008000') ;
-        // context_1.setGlobalAlpha(0.5)
-        // context_1.setLineWidth (2)
-        // context_1.moveTo(point_lancet[0][0],point_lancet[0][1])
-        // context_1.fill()
-        // context_1.stroke()
     },
     
     onLancetMove({ touches }) {
@@ -169,27 +86,6 @@ Page({
         // console.log(clientX, clientY)
         global_page.modeLancet(this,context_lancet,clientX,clientY)
 
-        //第三种方法
-        // context_1.lineTo(point_lancet[i][0],point_lancet[i][1])
-        // context_1.closePath()
-
-        // 把当前的记录全画出来
-        // var _context = wx.createContext()
-        // _context.beginPath()
-        // _context.setFillStyle ('#008000') ;
-        // _context.setStrokeStyle ('#008000') ;
-        // _context.setGlobalAlpha(0.5)
-        // _context.setLineWidth (2)
-        // _context.moveTo(point_lancet[0][0],point_lancet[0][1])
-        // for (var i=1;i<point_lancet.length;i++)
-        //     _context.lineTo(point_lancet[i][0],point_lancet[i][1])
-        // _context.fill()
-        // _context.stroke();  
-        // _context.closePath()
-        // this.movements = [clientX, clientY];//记录上一个点
-        // this.lastActions = _context.getActions();
-        // context_lancet.stroke()
-        // context_lancet.closePath()
 
         this.movements = [clientX, clientY];//记录上一个点
         this.lastActions = context_lancet.getActions();
@@ -202,26 +98,7 @@ Page({
 
     onLancetEnd() {   
         var that = this
-        // var _context = wx.createContext()
-        // _context.beginPath()
-        // // _context.setFillStyle ('#008000') ;
-        // // _context.setStrokeStyle (that.data.paintColor) ;
-        // _context.setFillStyle (that.data.paintColor) ;
-        // _context.setStrokeStyle (that.data.paintColor) ;
-        // _context.setGlobalAlpha(1)
-        // _context.setLineWidth (10)
-        // _context.setLineCap("round")
-        // _context.setLineJoin("miter")
-        // _context.setMiterLimit(10)
-        // _context.moveTo(point_lancet[0][0],point_lancet[0][1])
-        // for (var i=1;i<point_lancet.length;i++)
-        //     _context.lineTo(point_lancet[i][0],point_lancet[i][1])
-        // // _context.setStrokeStyle()
-        // _context.stroke()
-        // _context.fill()
-        // _context.stroke();  
-        // _context.closePath()
-        // var that = event
+     
         var _context = wx.createContext()
         for (var i=1;i<point_lancet.length-1;i++)
         {
@@ -245,7 +122,6 @@ Page({
         }
         
 
-
         var _lastActions = _context.getActions();
         global_page.updateCanvas("paper",_lastActions,true);//更新画布，得出一条线
 
@@ -259,26 +135,6 @@ Page({
 
     //柳叶笔模式
     modeLancet(event,_context_,clientX,clientY){
-       
-
-                //仿画吧，柳叶刀
-        // var that = event
-        // var _context = _context_
-        // _context.beginPath()
-        // _context.setFillStyle (that.data.paintColor) ;
-        // _context.setStrokeStyle (that.data.paintColor) ;
-        // _context.setLineWidth (10)
-        // _context.moveTo(that.startX,that.startY)
-        // _context.setGlobalAlpha(0.2)
-        // _context.lineTo(that.movements[0],that.movements[1])
-        // _context.lineTo(clientX,clientY)
-        // _context.setLineCap("round")
-        // _context.setLineJoin("miter")
-        // _context.setMiterLimit(10)
-        // _context.fill()
-        // _context.stroke();  
-        // _context.closePath()
-        // that.movements = [clientX, clientY];
 
          //仿画吧，柳叶刀
         var that = event
@@ -347,9 +203,9 @@ Page({
         var _type = file_path.split(".").pop()
         var _tempCatId = 1
         wx.request({
-            url: Api.uploadToken(), 
+            url: API.uploadToken(), 
             data:{
-                'session': wx.getStorageSync(Key.session),
+                'session': wx.getStorageSync(KEY.session),
                 "type":_type,
                 "category_id":_tempCatId ,
             },
@@ -374,16 +230,17 @@ Page({
                             if(data.status == "true")
                             {   
                                 // 上传成功，更新本地库
-                                var e = wx.getStorageSync(Key.emoticon)
+                                var e = wx.getStorageSync(KEY.emoticon)
                                 e.splice(0, 0, data.img); //从第一位插入
                                 // e.push(data.img)
-                                wx.setStorageSync(Key.emoticon,e)
+                                wx.setStorageSync(KEY.emoticon,e)
                                 // GLOBAL_PAGE.renderEmoticon()
                                 GLOBAL_PAGE.setData({
-                                    imgUpload:data.img.img_url
+                                    imgUpload:data.img.img_url,
+                                    uploadStatus:1 //上传成功
                                 })    
 
-                                GLOBAL_PAGE.navigateToPlayer()
+                                GLOBAL_PAGE.uploadImgSuccess()
 
                             } 
                             else{
@@ -431,10 +288,9 @@ Page({
 
     down:function(){
         const ctx = wx.createCanvasContext('paper')
-        // var url = "http://image.12xiong.top/1_20170115231702.jpg"
-        // var url = "https://www.12xiong.top/static/magick/upload/180_1_20170113173415.jpg"
-        // var url = "https://www.12xiong.top/static/magick/upload/20161018173657.png"
-        var url = "http://www.12xiong.top/static/magick/upload/20161018173657.png"
+
+        // var url = "http://www.12xiong.top/static/magick/upload/20161018173657.png"
+        var url = GLOBAL_PAGE.data.imgUrl
         console.log(url)
         //下载
         wx.downloadFile({
@@ -455,39 +311,6 @@ Page({
                 console.log(res)
             },
         })
-
-        //保存
-        // wx.saveFile({
-        //     tempFilePath: url,
-        //     success: function success(res) {
-        //         console.log('saved::' + res.savedFilePath);
-        //         GLOBAL_PAGE.data.tempImage = res.savedFilePath
-        //         wx.previewImage({
-        //             current: res.savedFilePath, // 当前显示图片的http链接
-        //             urls: [res.savedFilePath] // 需要预览的图片http链接列表
-        //         })
-        //     },
-        //     complete: function fail(e) {
-
-        //         console.log(e.errMsg);
-        //     }
-        // });
-
-
-
-        
-        // ctx.drawImage(url, 0, 0, 250, 250)
-        // ctx.draw()
-        // console.log("OK")
-        // console.log(ctx)
-
-
-        // wx.chooseImage({
-        //   success: function(res){
-            // ctx.drawImage(res.tempFilePaths[0], 0, 0, 150, 100)
-            // ctx.draw()
-        //   }
-        // })
     },
 
     onShareAppMessage: function () { 
@@ -498,9 +321,22 @@ Page({
         }
     },
     
-    onLoad({ paintId }) {
+    downloadImg:function(){},
+    onLoad(option) {
         global_page = this
         GLOBAL_PAGE = this
+        console.log("painter:",option.aa)
+
+        if (option.step_id){  //有themeID，已经抢到画
+            GLOBAL_PAGE.setData({
+                stepId:option.step_id,
+                imgUrl:option.img_url,
+                themeName:option.theme_name,
+            })
+            //下载画
+            GLOBAL_PAGE.down()
+        }
+         
         // context = wx.createContext()
         context_lancet = wx.createContext() 
         // const context = wx.createContext();//创建空白画布
@@ -534,61 +370,97 @@ Page({
             }
         });
     },
+
+    uploadImgSuccess:function(){
+        
+        wx.request({
+        url: API.PAINTER_START(), 
+        method:"GET",
+        data: {
+            session: wx.getStorageSync(KEY.session),
+            theme_name:GLOBAL_PAGE.data.themeName,
+            //   img_url:GLOBAL_PAGE.data.imgUpload,
+            img_url:"http://image.12xiong.top/1_20170118133253.png",
+        },
+        success: function(res) {
+            var object = res.data
+            if (object.status == "true")
+            {
+                console.log(object)
+                var _share = object.share
+                GLOBAL_PAGE.setData({
+                    themeId:object.theme_id,
+                    stepId:object.step_id,
+                    stepNumber:object.step_number,
+                })
+
+                GLOBAL_PAGE.navigateToPlayer()
+            }
+            else
+            wx.showModal({
+                title: '网络连接失败，请重试',
+                showCancel:false,
+            })
+        },
+        fail:function(res){
+            wx.showModal({
+                title: '网络连接失败，请重试',
+                showCancel:false,
+            })
+        },
+
+      })
+    },
+
+    //题目内容输入
+    inputChange: function(e) {
+        GLOBAL_PAGE.setData({
+            themeName:e.detail.value,
+        })
+    },
+
+    //完成并跳转到播放器
     saveToPlayer:function(){
-        // GLOBAL_PAGE.save()
-        GLOBAL_PAGE.navigateToPlayer()
+        //检测主题是否为空
+        if( GLOBAL_PAGE.data.themeName == ""){
+            wx.showModal({
+              title: '请输入主题',
+              showCancel:false,
+            })
+            return
+        }
+            
+        GLOBAL_PAGE.uploadImgSuccess()
+
+
+        // GLOBAL_PAGE.save() 保存
+
         // var url = '../player/player'
         // wx.redirectTo({
         //     url: url
         // })  
+
+
+        /**
+         * 1 点击保存，上传图片，获取img_url
+         * name img_url 上传 start
+         * 跳转至payer
+         */
     },
-
-
          //导航：播放器 
-    navigateToPlayer: function(e) {
-        var url = '../player/player?img_url=' + GLOBAL_PAGE.data.imgUpload
-        var url = '../player/player?img_url=http://image.12xiong.top/1_20170118133253.png'
+    navigateToPlayer: function() {
+        // var url = '../player/player?img_url=' + GLOBAL_PAGE.data.imgUpload
+        // var url = '../player/player?img_url=http://image.12xiong.top/1_20170118133253.png'
+        // GLOBAL_PAGE.setData({
+        //             themeId:object.theme_id,
+        //             stepId:object.step_id,
+        //             stepNumber:object.step_number,
+        //         })
+        var url = '../player/player?theme_id='+GLOBAL_PAGE.themeId+ "&step_id="+GLOBAL_PAGE.stepId + "&step_number="+GLOBAL_PAGE.stepNumber
         wx.redirectTo({
             url: url
         })
     },
-    // onReady: function (e) {
-    // // //使用wx.createContext获取绘图上下文context
-    // // var context = wx.createContext();
-    //     context.beginPath()
-
-    //     // context.stroke()
-    //     context.setFillStyle ("#ff0000") ;
-    //     context.setGlobalAlpha(0.4)
-    //     // context.setStrokeStyle ("#ff0000") ;
-    //     // context.setLineWidth (20)
-    //     context.moveTo(160,100)
-    //     context.lineTo(200,100)
-    //     context.lineTo(200,200)
-    //     context.lineTo(220,300)
-    //     context.lineTo(230,210)
-
-    // //     // context.arc(100,100,20,
-    // //     // global_page.getAngle(100), global_page.getAngle(200),
-    // //     //     true);  
-    // //     // context.moveTo(140,100);  
-    // //     // context.arc(100,100,40,0,Math.PI,false);  
-    // //     // context.moveTo(85,80);  
-    // //     // context.arc(80,80,5,0,2*Math.PI,true);  
-    // //     // context.moveTo(125,80);  
-    // //     // context.arc(120,80,5,0,2*Math.PI,true);  
-    //     context.fill()
-    // //     // context.stroke();  
-    //     context.closePath()
-    // //     //调用wx.drawCanvas，通过canvasId指定在哪张画布上绘制，通过actions指定绘制行为
-    // //     wx.drawCanvas({
-    // //     canvasId: "paper",
-    // //     actions: context.getActions() //获取绘图动作数组
-    // //     });
-    // },
-
-
-
 });
 
 
@@ -596,45 +468,3 @@ Page({
 
 
 
-
-
-// save:function(){
-//         wx.canvasToTempFilePath({
-//             canvasId: 'paper',
-//             success: function success(res) {
-//                 wx.showToast({
-//                     title: '成功',
-//                     icon: 'success',
-//                     duration: 2000
-//                 })
-//                 GLOBAL_PAGE.data.tempImage = res.tempFilePath
-//                 console.log("save:",GLOBAL_PAGE.data.tempImage )
-//                 wx.previewImage({
-//                     current: res.tempFilePath, // 当前显示图片的http链接
-//                     urls: [res.tempFilePath] // 需要预览的图片http链接列表
-//                 })
-//                 // wx.saveFile({
-//                 //     tempFilePath: res.tempFilePath,
-//                 //     success: function success(res) {
-//                 //         console.log('saved::' + res.savedFilePath);
-//                 //         GLOBAL_PAGE.data.tempImage = res.savedFilePath
-//                 //         wx.previewImage({
-//                 //             current: res.savedFilePath, // 当前显示图片的http链接
-//                 //             urls: [res.savedFilePath] // 需要预览的图片http链接列表
-//                 //         })
-//                 //     },
-//                 //     complete: function fail(e) {
-
-//                 //         console.log(e.errMsg);
-//                 //     }
-//                 // });
-//             },
-//             complete: function complete(e) {
-//                 // wx.showToast({
-//                 //   title: '完成',
-//                 //   icon: 'success',
-//                 //   duration: 2000
-//                 // })
-//                 console.log(e.errMsg);
-//             }
-//         });

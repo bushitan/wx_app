@@ -3,8 +3,8 @@
         <view class="title" >
             <view class="weui-flex">
                 <view class="weui-flex__item"></view>
-                <view  >题目：</view>
-                <view ><input value="一起画表情" placeholder="请输入题目"/></view>
+                <view  >主题：</view>
+                <view ><input value="{{themeName}}" placeholder="请输入主题" bindinput="inputChange"/></view>
                 <view class="weui-flex__item"></view>
             </view>
             

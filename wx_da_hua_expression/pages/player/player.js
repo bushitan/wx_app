@@ -1,3 +1,5 @@
+
+var API = require('../../utils/api.js');
 var KEY = require('../../utils/storage_key.js');
 var G
 var GLOBAL_PAGE
@@ -13,7 +15,10 @@ Page({
     // playerImage1:"",
     playerImage:"",
     playerImagePre:"",
-    emoticon:[],
+    emoticon:[],       
+    themeName:"",
+    themeId:null,
+    stepId:null,
   },
   show:function (){
       animation.opacity(1).step()
@@ -29,20 +34,31 @@ Page({
   },
   setImage:function (){
       var emoticon = GLOBAL_PAGE.data.emoticon
+      if ( i == emoticon.length )
+      {
+        i = 0
+      //   GLOBAL_PAGE.hide()
+      // GLOBAL_PAGE.click()
+      }
+        
+      var next = i+1
+      if ( i == emoticon.length -1 )
+        next = 0
+      
       GLOBAL_PAGE.setData({
-        // playerImageBg:emoticon[i].yun_url,
-        playerImage:emoticon[i].yun_url,
-        playerImagePre:emoticon[i+1].yun_url,
+        // playerImageBg:emoticon[i].img_url,
+        playerImage:emoticon[i].img_url,
+        playerImagePre:emoticon[next].img_url,
       })
       
   },
   same: function (){
       var emoticon = GLOBAL_PAGE.data.emoticon
       GLOBAL_PAGE.setData({
-        playerImageBg:emoticon[i].yun_url,
+        playerImageBg:emoticon[i].img_url,
       })
   },
-  onShow:function(){
+  onPlayer:function(){
     animation = wx.createAnimation({
       duration: 700,
         timingFunction: 'ease',
@@ -56,7 +72,6 @@ Page({
 
     // GLOBAL_PAGE.same()
     GLOBAL_PAGE.hide()
-    // i++
     GLOBAL_PAGE.click()
   },
   click: function(){
@@ -64,7 +79,7 @@ Page({
     {
       interval = setInterval(function() {
 
-        console.log(j,j %2)
+        // console.log(j,j %2)
         if( j %2 == 0)
         {
             GLOBAL_PAGE.setImage()
@@ -84,38 +99,66 @@ Page({
 
   
 
-  rotateAndScale: function () {
-    // 旋转同时放大
-    this.animation.rotate(45).scale(2, 2).step()
-    this.setData({
-      animationData: this.animation.export()
-    })
-  },
-  rotateThenScale: function () {
-    // 先旋转后放大
-    this.animation.rotate(45).step()
-    this.animation.scale(2, 2).step()
-    this.setData({
-      animationData: this.animation.export()
-    })
-  },
-  rotateAndScaleThenTranslate: function () {
-    // 先旋转同时放大，然后平移
-    this.animation.rotate(45).scale(2, 2).step()
-    this.animation.translate(100, 100).step({ duration: 1000 })
-    this.setData({
-      animationData: this.animation.export()
-    })
+
+  getStepList:function(theme_id){
+      wx.request({
+        url: API.PAINTER_STEP_QUERY(), 
+        method:"GET",
+        data: {
+            session: wx.getStorageSync(KEY.session),
+            theme_id:theme_id,
+        },
+        success: function(res) {
+            var object = res.data
+            if (object.status == "true")
+            {
+                console.log(object)
+                //设置播放step
+                GLOBAL_PAGE.setData({
+                    emoticon: object.step_list,
+                    themeName:object.theme_name,
+                })
+
+                //开始播放
+                // GLOBAL_PAGE.onPlayer()
+            }
+            else
+            wx.showModal({
+                title: '网络连接失败，请重试',
+                showCancel:false,
+            })
+        },
+        fail:function(res){
+            wx.showModal({
+                title: '网络连接失败，请重试',
+                showCancel:false,
+            })
+        },
+
+      })
   },
 
-  
   onLoad:function(option){
     GLOBAL_PAGE = this
 
-    //测试数据
+    console.log(option)
+
+    //模拟第一个主题创立
+    option = {
+        theme_id:5,
+        step_id:3,
+        step_number:1
+    }
     GLOBAL_PAGE.setData({
-        emoticon:wx.getStorageSync(KEY.emoticon)
+        themeId:option.theme_id,
+        stepId:option.step_id,
     })
+
+    GLOBAL_PAGE.getStepList(option.theme_id)
+    //测试数据
+    // GLOBAL_PAGE.setData({
+    //     emoticon:wx.getStorageSync(KEY.emoticon)
+    // })
     
 
     // console.log("onLoad:",e)
@@ -140,15 +183,69 @@ Page({
   },
 
 
-
+  //抢画
   snatch:function(){
-      GLOBAL_PAGE.navigateToPainter()
+      wx.request({
+        url: API.PAINTER_SNATCH(), 
+        method:"GET",
+        data: {
+            session: wx.getStorageSync(KEY.session),
+            theme_id:GLOBAL_PAGE.data.themeId,
+            step_id:GLOBAL_PAGE.data.stepId,
+        },
+        success: function(res) {
+            var object = res.data
+            if (object.status == "true")
+            {
+                console.log(object)
+                //设置播放step
+                // GLOBAL_PAGE.setData({
+                //     emoticon: object.step_list,
+                //     themeName:object.theme_name,
+                // })
+                if( object.is_success== "true")
+                {
+                    wx.setStorageSync(KEY.PAINTER_STEP_INFO,{
+                        step_id:object.step_id,
+                        img_url:object.img_url,
+                        theme_name:object.theme_name
+                    }),
+                    
+                    GLOBAL_PAGE.navigateToPainter(object.step_id,object.img_url,object.theme_name)
+
+                }
+                   
+                else 
+                    wx.showModal({
+                        title: object.title,
+                        content:object.is_success,
+                        showCancel:false,
+                    })
+                //开始播放
+                // GLOBAL_PAGE.onPlayer()
+                
+            }
+            else
+            wx.showModal({
+                title: '网络连接失败，请重试',
+                showCancel:false,
+            })
+        },
+        fail:function(res){
+            wx.showModal({
+                title: '网络连接失败，请重试',
+                showCancel:false,
+            })
+        },
+
+      })
+     
   },
 
     //导航：画布页面
-  navigateToPainter: function(e) {
-    var url = '../painter/painter'
-    wx.navigateTo({
+  navigateToPainter: function(step_id,img_url,theme_name) {
+    var url = '../painter/painter?step_id='+step_id+'&img_url='+img_url+'&theme_name='+theme_name
+    wx.redirectTo({
       url: url
     })
   }, 
