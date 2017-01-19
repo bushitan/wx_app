@@ -120,7 +120,7 @@ Page({
                 })
 
                 //开始播放
-                // GLOBAL_PAGE.onPlayer()
+                GLOBAL_PAGE.onPlayer()
             }
             else
             wx.showModal({
@@ -144,11 +144,11 @@ Page({
     console.log(option)
 
     //模拟第一个主题创立
-    option = {
-        theme_id:5,
-        step_id:3,
-        step_number:1
-    }
+    // option = {
+    //     theme_id:5,
+    //     step_id:3,
+    //     step_number:1
+    // }
     GLOBAL_PAGE.setData({
         themeId:option.theme_id,
         stepId:option.step_id,

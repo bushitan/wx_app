@@ -9,6 +9,9 @@ var global_page
 var context_lancet
 var context_1
 var point_lancet = []
+
+var PAINTER_STEP_FREE = 1; //未参与，创建新的
+var PAINTER_STEP_BUSY = 2; //正在参与，down上step的
 Page({
     data: {
         //调色盘列表
@@ -24,7 +27,7 @@ Page({
         tempImage:null,
         isUpload:null,
 
-        themeName:"一起画表情",
+        themeName:"",
         imgUpload:"",
 
         uploadStatus: 0 , // 0 未上传上传  1 上传成功
@@ -34,6 +37,16 @@ Page({
         stepNumber:null,
         
         imgUrl:"", //下载的图片
+
+
+        userStatus: 1 , //  1 未参与 ， 2正在参与
+    },
+
+     //题目内容输入
+    inputChange: function(e) {
+        GLOBAL_PAGE.setData({
+            themeName:e.detail.value,
+        })
     },
 
     modeChange:function(e){
@@ -194,97 +207,10 @@ Page({
 
     up:function(){
         console.log(GLOBAL_PAGE.data.tempImage)
-        GLOBAL_PAGE.uploadFile(GLOBAL_PAGE.data.tempImage)
+        GLOBAL_PAGE.saveYun(GLOBAL_PAGE.data.tempImage)
     },
 
     
-  //正式上传 4-7
-    uploadFile:function(file_path){
-        var _type = file_path.split(".").pop()
-        var _tempCatId = 1
-        wx.request({
-            url: API.uploadToken(), 
-            data:{
-                'session': wx.getStorageSync(KEY.session),
-                "type":_type,
-                "category_id":_tempCatId ,
-            },
-            success: function(res){
-                var data = res.data
-                console.log(data)
-                if(data.status == "true")
-                {
-                    wx.uploadFile({
-                        url: 'https://up.qbox.me',
-                        // filePath: tempFilePaths[0],//图片
-                        filePath: file_path,//小视频
-                        name: 'file',
-                        formData:{
-                            'key': data.key,
-                            'token': data.token,
-                        },
-                        success: function(res){
-                            console.log("上传成功")
-                            var data = JSON.parse(res.data);
-                            console.log(data)
-                            if(data.status == "true")
-                            {   
-                                // 上传成功，更新本地库
-                                var e = wx.getStorageSync(KEY.emoticon)
-                                e.splice(0, 0, data.img); //从第一位插入
-                                // e.push(data.img)
-                                wx.setStorageSync(KEY.emoticon,e)
-                                // GLOBAL_PAGE.renderEmoticon()
-                                GLOBAL_PAGE.setData({
-                                    imgUpload:data.img.img_url,
-                                    uploadStatus:1 //上传成功
-                                })    
-
-                                GLOBAL_PAGE.uploadImgSuccess()
-
-                            } 
-                            else{
-                                wx.showModal({
-                                title: '网络连接失败，请重试',
-                                showCancel:false,
-                                })
-                                GLOBAL_PAGE.setData({isUpload:false})
-                            }    
-                        },
-                        fail (error) {
-                            console.log(error)
-                            wx.showModal({
-                            title: '网络连接失败，请重试',
-                            showCancel:false,
-                            })
-                            GLOBAL_PAGE.setData({isUpload:false})
-                        },
-                        complete (res) {
-                            console.log(res)
-                            
-                        }
-                    })
-                }
-                else{
-                    wx.showModal({
-                    title: '网络连接失败，请重试',
-                    showCancel:false,
-                    })
-                    GLOBAL_PAGE.setData({isUpload:false})
-                }              
-            },
-            fail:function(res){
-                wx.showModal({
-                    title: '网络连接失败，请重试',
-                    showCancel:false,
-                })
-                GLOBAL_PAGE.setData({isUpload:false})
-            },
-            complete:function(res) { 
-
-            },
-        })
-    },
 
     down:function(){
         const ctx = wx.createCanvasContext('paper')
@@ -327,8 +253,17 @@ Page({
         GLOBAL_PAGE = this
         console.log("painter:",option.aa)
 
+        //模拟，继续画的状态
+        // option = {
+        //     step_id:3,
+        //     img_url:"http://image.12xiong.top/1_20170118133253.png",
+        //     theme_name:"一起画表情"
+        // }
+
+
         if (option.step_id){  //有themeID，已经抢到画
             GLOBAL_PAGE.setData({
+                userStatus:PAINTER_STEP_BUSY, 
                 stepId:option.step_id,
                 imgUrl:option.img_url,
                 themeName:option.theme_name,
@@ -342,7 +277,31 @@ Page({
         // const context = wx.createContext();//创建空白画布
     },
 
-    save:function(){
+    //完成并跳转到播放器
+    saveToPlayer:function(){
+        //检测主题是否为空
+        if( GLOBAL_PAGE.data.themeName == ""){
+            wx.showModal({
+              title: '请输入主题',
+              showCancel:false,
+            })
+            return
+        }
+            
+        //测试函数
+        if(GLOBAL_PAGE.data.userStatus == 1)
+            // console.log("未参与")
+            GLOBAL_PAGE.saveStart()
+        else   
+            // console.log("正在参与") 
+            GLOBAL_PAGE.saveContinue()
+
+         //正式函数   
+        // GLOBAL_PAGE.saveTempFile()
+    },
+    //1 保存为临时文件
+    saveTempFile:function(){
+        console.log("1 保存为临时文件")
         wx.canvasToTempFilePath({
             canvasId: 'paper',
             success: function success(res) {
@@ -351,18 +310,11 @@ Page({
                     icon: 'success',
                     duration: 2000
                 })
-                
                 //上传云后台
-                GLOBAL_PAGE.uploadFile(res.tempFilePath)
-
+                GLOBAL_PAGE.saveYun(res.tempFilePath)
                 //预览显示
-                GLOBAL_PAGE.data.tempImage = res.tempFilePath
-                console.log("save:",GLOBAL_PAGE.data.tempImage )
-
-                wx.previewImage({
-                    current: res.tempFilePath, // 当前显示图片的http链接
-                    urls: [res.tempFilePath] // 需要预览的图片http链接列表
-                })
+                // GLOBAL_PAGE.data.tempImage = res.tempFilePath
+ 
             },
             complete: function complete(e) {
 
@@ -371,7 +323,100 @@ Page({
         });
     },
 
-    uploadImgSuccess:function(){
+
+    //2 上传到云服务器
+    saveYun:function(file_path){
+        console.log("2 上传到云服务器")
+        var _type = file_path.split(".").pop()
+        var _tempCatId = 1
+        wx.request({
+            url: API.uploadToken(), 
+            data:{
+                'session': wx.getStorageSync(KEY.session),
+                "type":_type,
+                "category_id":_tempCatId ,
+            },
+            success: function(res){
+                var data = res.data
+                console.log(data)
+                if(data.status == "true")
+                {
+                    wx.uploadFile({
+                        url: 'https://up.qbox.me',
+                        // filePath: tempFilePaths[0],//图片
+                        filePath: file_path,//小视频
+                        name: 'file',
+                        formData:{
+                            'key': data.key,
+                            'token': data.token,
+                        },
+                        success: function(res){
+                            console.log("3 上传成功")
+                            var data = JSON.parse(res.data);
+                            console.log(data)
+                            if(data.status == "true")
+                            {   
+                                // 上传成功，更新本地库
+                                var e = wx.getStorageSync(KEY.emoticon)
+                                e.splice(0, 0, data.img); //从第一位插入
+                                // e.push(data.img)
+                                wx.setStorageSync(KEY.emoticon,e)
+                                // GLOBAL_PAGE.renderEmoticon()
+                                GLOBAL_PAGE.setData({
+                                    imgUpload:data.img.img_url,
+                                    uploadStatus:1 //上传成功
+                                })    
+                                if(GLOBAL_PAGE.data.userStatus == 1)
+                                    console.log("未参与")
+                                    // GLOBAL_PAGE.saveStart()
+                                else   
+                                     console.log("正在参与") 
+                                    // GLOBAL_PAGE.saveContinue()
+                            } 
+                            else{
+                                wx.showModal({
+                                title: '网络连接失败，请重试',
+                                showCancel:false,
+                                })
+                                GLOBAL_PAGE.setData({isUpload:false})
+                            }    
+                        },
+                        fail (error) {
+                            console.log(error)
+                            wx.showModal({
+                            title: '网络连接失败，请重试',
+                            showCancel:false,
+                            })
+                            GLOBAL_PAGE.setData({isUpload:false})
+                        },
+                        complete (res) {
+                            console.log(res) 
+                        }
+                    })
+                }
+                else{
+                    wx.showModal({
+                    title: '网络连接失败，请重试',
+                    showCancel:false,
+                    })
+                    GLOBAL_PAGE.setData({isUpload:false})
+                }              
+            },
+            fail:function(res){
+                wx.showModal({
+                    title: '网络连接失败，请重试',
+                    showCancel:false,
+                })
+                GLOBAL_PAGE.setData({isUpload:false})
+            },
+            complete:function(res) { 
+
+            },
+        })
+    },
+
+    // 3.1 创建新画
+    saveStart:function(){
         
         wx.request({
         url: API.PAINTER_START(), 
@@ -412,42 +457,56 @@ Page({
       })
     },
 
-    //题目内容输入
-    inputChange: function(e) {
-        GLOBAL_PAGE.setData({
-            themeName:e.detail.value,
-        })
-    },
-
-    //完成并跳转到播放器
-    saveToPlayer:function(){
-        //检测主题是否为空
-        if( GLOBAL_PAGE.data.themeName == ""){
+    // 3.2 创建新画
+    saveContinue:function(){
+        
+        wx.request({
+        url: API.PAINTER_CONTINUE(), 
+        method:"GET",
+        data: {
+            session: wx.getStorageSync(KEY.session),
+            // theme_name:GLOBAL_PAGE.data.themeName,
+            //   img_url:GLOBAL_PAGE.data.imgUpload,
+            step_id:GLOBAL_PAGE.data.stepId,
+            img_url:"http://image.12xiong.top/1_20170118133253.png",
+        },
+        success: function(res) {
+            var object = res.data
+            if (object.status == "true")
+            {
+                if( object.is_success== "true"){
+                    GLOBAL_PAGE.setData({
+                        themeId:object.theme_id,
+                        stepId:object.step_id,
+                        stepNumber:object.step_number,
+                    })
+                     GLOBAL_PAGE.navigateToPlayer()
+                }
+                else{
+                    wx.showModal({
+                        title: object.title,
+                        content:object.content,
+                        showCancel:false,
+                    })
+                }
+            }
+            else
             wx.showModal({
-              title: '请输入主题',
-              showCancel:false,
+                title: '网络连接失败，请重试',
+                showCancel:false,
             })
-            return
-        }
-            
-        GLOBAL_PAGE.uploadImgSuccess()
+        },
+        fail:function(res){
+            wx.showModal({
+                title: '网络连接失败，请重试',
+                showCancel:false,
+            })
+        },
 
-
-        // GLOBAL_PAGE.save() 保存
-
-        // var url = '../player/player'
-        // wx.redirectTo({
-        //     url: url
-        // })  
-
-
-        /**
-         * 1 点击保存，上传图片，获取img_url
-         * name img_url 上传 start
-         * 跳转至payer
-         */
+      })
     },
-         //导航：播放器 
+    
+    //4 导航：播放器 
     navigateToPlayer: function() {
         // var url = '../player/player?img_url=' + GLOBAL_PAGE.data.imgUpload
         // var url = '../player/player?img_url=http://image.12xiong.top/1_20170118133253.png'
@@ -456,7 +515,7 @@ Page({
         //             stepId:object.step_id,
         //             stepNumber:object.step_number,
         //         })
-        var url = '../player/player?theme_id='+GLOBAL_PAGE.themeId+ "&step_id="+GLOBAL_PAGE.stepId + "&step_number="+GLOBAL_PAGE.stepNumber
+        var url = '../player/player?theme_id='+GLOBAL_PAGE.data.themeId+ "&step_id="+GLOBAL_PAGE.data.stepId + "&step_number="+GLOBAL_PAGE.data.stepNumber
         wx.redirectTo({
             url: url
         })

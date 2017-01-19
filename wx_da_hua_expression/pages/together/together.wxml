@@ -3,15 +3,18 @@
     <view class="start">
         <view wx:if="{{userStatus==0}}">loading</view>
         <view wx:elif="{{userStatus==1}}">
-            <button catchtap="navigateToPainter">开始画</button>
+            <button catchtap="startToPainter">开始画</button>
         </view>
         <view wx:else>
-            <button catchtap="navigateToPainter">继续画</button>
+            <button catchtap="continueToPainter">继续画</button>
         </view>
     </view>
     
-    <view class="order" catchtap="navigateToPlayer">
-        <view>主题：我想要个霸气的表情，你能帮我画么？</view>
-        <view>创立者：丰兄</view>
-    </view>
+    <block wx:for="{{selfThemeList}}"  wx:for-item="theme" >
+        <view class="order" catchtap="navigateToPlayer" data-theme_id="{{theme.theme_id}}">
+            <view>序号：{{theme.theme_id}}</view>
+            <view>主题：{{theme.theme_name}}</view>
+        </view>
+    </block>
+    
 </view>

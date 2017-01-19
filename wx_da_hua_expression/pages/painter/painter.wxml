@@ -4,7 +4,12 @@
             <view class="weui-flex">
                 <view class="weui-flex__item"></view>
                 <view  >主题：</view>
-                <view ><input value="{{themeName}}" placeholder="请输入主题" bindinput="inputChange"/></view>
+                <view wx:if="{{userStatus==1}}">
+                    <input value="{{themeName}}" placeholder="请输入主题" bindinput="inputChange"/>
+                </view>
+                <view wx:else>
+                    <label>{{themeName}}</label>
+                </view>
                 <view class="weui-flex__item"></view>
             </view>
             
