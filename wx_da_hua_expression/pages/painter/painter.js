@@ -210,10 +210,12 @@ Page({
         const ctx = wx.createCanvasContext('paper')
         // var url = "http://www.12xiong.top/static/magick/upload/20161018173657.png"
         var url = GLOBAL_PAGE.data.imgUrl
+
+        var https_url = "https://oje4rojkn.qnssl.com/" + url.split("/").pop()
         console.log(url)
         //下载
         wx.downloadFile({
-            url: url, //仅为示例，并非真实的资源
+            url: https_url, //仅为示例，并非真实的资源
             success: function(res) {
                 console.log(res)
                 // GLOBAL_PAGE.data.tempImage = res.tempFilePath
@@ -291,7 +293,7 @@ Page({
             method:"GET",
             data: {
                 session: wx.getStorageSync(KEY.session),
-                // theme_id:GLOBAL_PAGE.data.themeId,
+                theme_id:'',
                 step_id:GLOBAL_PAGE.data.stepId,
             },
             success: function(res) {
@@ -340,9 +342,7 @@ Page({
                     showCancel:false,
                 })
             },
-
         })
-        
     },
 
 
@@ -368,7 +368,7 @@ Page({
         //     GLOBAL_PAGE.saveContinue()
 
          //正式函数   
-        // GLOBAL_PAGE.saveTempFile()
+        GLOBAL_PAGE.saveTempFile()
     },
     //1 保存为临时文件
     saveTempFile:function(){
@@ -434,9 +434,12 @@ Page({
                                 wx.setStorageSync(KEY.emoticon,e)
                                 // GLOBAL_PAGE.renderEmoticon()
                                 GLOBAL_PAGE.setData({
-                                    imgUpload:data.img.img_url,
+                                    imgUpload:data.img.yun_url,
                                     uploadStatus:1 //上传成功
                                 })    
+                                
+                                console.log(data)
+                                console.log(data.img.yun_url)
 
                                 if(GLOBAL_PAGE.data.joinStatus == PAINTER_STEP_FREE){
                                     console.log("未参与")
@@ -494,19 +497,21 @@ Page({
     // 3.1 创建新画
     saveStart:function(){
         
+        console.log(GLOBAL_PAGE.data.imgUpload)
         wx.request({
         url: API.PAINTER_START(), 
         method:"GET",
         data: {
             session: wx.getStorageSync(KEY.session),
             theme_name:GLOBAL_PAGE.data.themeName,
-            //   img_url:GLOBAL_PAGE.data.imgUpload,
-            img_url:"http://image.12xiong.top/1_20170118133253.png",
+              img_url:GLOBAL_PAGE.data.imgUpload,
+            // img_url:"http://image.12xiong.top/1_20170118133253.png",
         },
         success: function(res) {
             var object = res.data
             if (object.status == "true")
             {
+                console.log(object.img_url)
                 GLOBAL_PAGE.setData({
                     joinStatus:PAINTER_STEP_SHARE,
                     themeName:object.theme_name ,
@@ -549,10 +554,10 @@ Page({
         data: {
             session: wx.getStorageSync(KEY.session),
             // theme_name:GLOBAL_PAGE.data.themeName,
-            //   img_url:GLOBAL_PAGE.data.imgUpload,
+            img_url:GLOBAL_PAGE.data.imgUpload,
             step_id:GLOBAL_PAGE.data.stepId,
             // img_url:"http://image.12xiong.top/1_20170118133253.png", //图1
-            img_url:"http://image.12xiong.top/1_20170114161832.jpg", //图图2
+            // img_url:"http://image.12xiong.top/1_20170114161832.jpg", //图图2
         },
         success: function(res) {
             var object = res.data

@@ -13,7 +13,6 @@ Page({
       joinThemeID:null,
 
       joinStatus: PAINTER_STEP_LOAD , // 0 加载中 1 未参与 ， 2正在参与
-
       themeName:"一起画表情",
       stepId:null,
       imgUrl:"", //下载的图片

@@ -8,6 +8,12 @@ var j;
 var animation;
 var lock = false;
 var interval ;
+
+
+var PAINTER_STEP_LOAD = 0;
+var PAINTER_STEP_FREE = 1; //未参与，创建新的
+var PAINTER_STEP_BUSY = 2; //正在参与，down上step的
+var PAINTER_STEP_SHARE = 3; //待分享
 Page({
   data: {
     animationData: {},
@@ -16,9 +22,12 @@ Page({
     playerImage:"",
     playerImagePre:"",
     emoticon:[],       
-    themeName:"",
     themeId:null,
+
+    joinStatus: PAINTER_STEP_LOAD , // 0 加载中 1 未参与 ， 2正在参与
+    themeName:"一起画表情",
     stepId:null,
+    imgUrl:"", //下载的图片
   },
   show:function (){
       animation.opacity(1).step()
@@ -182,73 +191,92 @@ Page({
     clearInterval(interval)
   },
 
-
-  //抢画
-  snatch:function(){
-      wx.request({
-        url: API.PAINTER_SNATCH(), 
-        method:"GET",
-        data: {
-            session: wx.getStorageSync(KEY.session),
-            theme_id:GLOBAL_PAGE.data.themeId,
-            step_id:GLOBAL_PAGE.data.stepId,
-        },
-        success: function(res) {
-            var object = res.data
-            if (object.status == "true")
-            {
-                console.log(object)
-                //设置播放step
-                // GLOBAL_PAGE.setData({
-                //     emoticon: object.step_list,
-                //     themeName:object.theme_name,
-                // })
-                if( object.is_success== "true")
+    //111 抢画 
+    snatch:function(){
+        wx.request({
+            url: API.PAINTER_SNATCH(), 
+            method:"GET",
+            data: {
+                session: wx.getStorageSync(KEY.session),
+                theme_id:GLOBAL_PAGE.data.themeId,
+                step_id:'',
+            },
+            success: function(res) {
+                var object = res.data
+                if (object.status == "true")
                 {
-                    wx.setStorageSync(KEY.PAINTER_STEP_INFO,{
-                        step_id:object.step_id,
-                        img_url:object.img_url,
-                        theme_name:object.theme_name
-                    }),
+                    console.log(object)
+                    //设置播放step
                     
-                    GLOBAL_PAGE.navigateToPainter(object.step_id,object.img_url,object.theme_name)
-
+                    if( object.is_success== "true")
+                    {
+                        wx.showModal({
+                            title: object.title,
+                            content:object.content,
+                            showCancel:false,
+                        })
+                        // wx.showToast({
+                        //     title: '',
+                        //     icon: 'loading',
+                        //     duration: 1500
+                        // })
+                        GLOBAL_PAGE.setData({
+                            joinStatus:PAINTER_STEP_BUSY,
+                            themeName:object.theme_name ,
+                            stepId: object.step_id,
+                            imgUrl:object.img_url, 
+                        })
+                        GLOBAL_PAGE.continueToPainter()
+                    }
+                    
+                    else  //抢画失败，继续
+                        wx.showModal({
+                            title: object.title,
+                            content:object.content,
+                            confirmText:"画一幅",
+                            // showCancel:false,
+                            success: function(res) {
+                                if (res.confirm) {
+                                    wx.redirectTo({
+                                    url: '../painter/painter'
+                                    })
+                                }
+                            }
+                        })
                 }
-                   
-                else 
-                    wx.showModal({
-                        title: object.title,
-                        content:object.is_success,
-                        showCancel:false,
-                    })
-                //开始播放
-                // GLOBAL_PAGE.onPlayer()
-                
-            }
-            else
-            wx.showModal({
-                title: '网络连接失败，请重试',
-                showCancel:false,
-            })
-        },
-        fail:function(res){
-            wx.showModal({
-                title: '网络连接失败，请重试',
-                showCancel:false,
-            })
-        },
+                else
+                wx.showModal({
+                    title: '网络连接失败，请重试',
+                    showCancel:false,
+                })
+            },
+            fail:function(res){
+                wx.showModal({
+                    title: '网络连接失败，请重试',
+                    showCancel:false,
+                })
+            },
+        })
+    },
 
-      })
-     
-  },
+    continueToPainter: function(e) {
+        var url = '../painter/painter?step_id='+GLOBAL_PAGE.data.stepId+'&img_url='+GLOBAL_PAGE.data.imgUrl+'&theme_name='+GLOBAL_PAGE.data.themeName +'&join_status='+PAINTER_STEP_BUSY
+        wx.navigateTo({
+            url: url
+        })
+    },  
 
-    //导航：画布页面
-  navigateToPainter: function(step_id,img_url,theme_name) {
-    var url = '../painter/painter?step_id='+step_id+'&img_url='+img_url+'&theme_name='+theme_name
-    wx.redirectTo({
-      url: url
-    })
-  }, 
+
+
+//     //导航：画布页面
+//   navigateToPainter: function(step_id,img_url,theme_name) {
+//     var url = '../painter/painter?step_id='+step_id+'&img_url='+img_url+'&theme_name='+theme_name
+//     wx.redirectTo({
+//       url: url
+//     })
+//   }, 
+
+
 
   
     bindload:function(e){

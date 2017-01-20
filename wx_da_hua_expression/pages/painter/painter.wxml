@@ -2,7 +2,7 @@
     <view class="title" >
         <view class="weui-flex">
             <view class="weui-flex__item"></view>
-            <view  >主题：</view>
+            <view  wx:if="{{joinStatus==1}}">主题：</view>
             <view wx:if="{{joinStatus==1}}">
                 <input value="{{themeName}}" placeholder="请输入主题" bindinput="inputChange"/>
             </view>
@@ -77,6 +77,14 @@
         </view>
         <!--<button catchtap="save" >保存</button>-->
     </view>
+        <!--画布工具区域-->
+    <!--<view class="canvas_tools">
+        <view class="box box1" bindtap="penSelect" data-param="5"></view>
+        <view class="box box2" bindtap="penSelect" data-param="15"></view>
+        <view class="box box3" bindtap="colorSelect" data-param="#cc0033"></view>
+        <view class="box box4" bindtap="colorSelect" data-param="#ff9900"></view>
+        <view class="box box5" bindtap="clearCanvas"></view>
+    </view>-->
 </view>
 
 <!--<button catchtap="save">save</button>
