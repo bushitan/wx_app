@@ -1,40 +1,44 @@
 <view class="page"  >
-    
-        <view class="title" >
-            <view class="weui-flex">
-                <view class="weui-flex__item"></view>
-                <view  >主题：</view>
-                <view wx:if="{{userStatus==1}}">
-                    <input value="{{themeName}}" placeholder="请输入主题" bindinput="inputChange"/>
-                </view>
-                <view wx:else>
-                    <label>{{themeName}}</label>
-                </view>
-                <view class="weui-flex__item"></view>
+    <view class="title" >
+        <view class="weui-flex">
+            <view class="weui-flex__item"></view>
+            <view  >主题：</view>
+            <view wx:if="{{joinStatus==1}}">
+                <input value="{{themeName}}" placeholder="请输入主题" bindinput="inputChange"/>
             </view>
-            
+            <view wx:else>
+                <label>{{themeName}}</label>
+            </view>
+            <view class="weui-flex__item"></view>
         </view>
-        <!--<view class="root">-->
-            <view class="board">
-                <canvas class="paper paper-background" canvas-id="paper" 
-                    bindtouchstart="onTouchStart"  
-                    bindtouchmove="onTouchMove"   
-                    bindtouchend="onTouchEnd">    <!--触发触摸 事件--> <!--触摸移动 事件--> <!--触摸结束 事件-->
-                </canvas>
-                <canvas class="paper" canvas-id="paper-lancet" 
-                    bindtouchstart="onLancetStart"  
-                bindtouchmove="onLancetMove"   
-                    bindtouchend="onLancetEnd" wx:if="{{displayLancet}}">    
-                </canvas>
-            </view>
-        <!--</view> -->
-        <!--<view>
-            透明度（画笔、柳叶刀、橡皮）:
-            <slider bindchange="slider3change" show-value/>
-            大小（画笔、橡皮）:
-            <slider bindchange="slider3change" show-value/>
-        </view>-->
-        
+        <button wx:if="{{ joinStatus == 3 }}" catchtap="snatch">抢</button>
+    </view>
+    <!--<view class="root">-->
+        <view class="board">
+            <canvas class="paper paper-background" canvas-id="paper" 
+                bindtouchstart="onTouchStart"  
+                bindtouchmove="onTouchMove"   
+                bindtouchend="onTouchEnd">    <!--触发触摸 事件--> <!--触摸移动 事件--> <!--触摸结束 事件-->
+            </canvas>
+            <canvas class="paper" canvas-id="paper-lancet" 
+                bindtouchstart="onLancetStart"  
+            bindtouchmove="onLancetMove"   
+                bindtouchend="onLancetEnd" wx:if="{{displayLancet}}">    
+            </canvas>
+        </view>
+    <!--</view> -->
+    <!--<view>
+        透明度（画笔、柳叶刀、橡皮）:
+        <slider bindchange="slider3change" show-value/>
+        大小（画笔、橡皮）:
+        <slider bindchange="slider3change" show-value/>
+    </view>-->
+    
+    <!--joinStatus遮罩层-->
+    <view class="btn-share" wx:if="{{joinStatus == 3 }}">
+         <button catchtap="shareInfo" >分享</button>
+    </view>
+    <view class="paint-tool" wx:else>
         <view class="color-picker">
             <view
                 wx:for-items="{{colors}}"
@@ -47,13 +51,13 @@
             
         </view>
         
-        <view class="tool-picker">
-             <view class="tool-item selected" style="background-color: red"   >颜色</view>
+        <view class="tool-picker" >
+                <view class="tool-item selected" style="background-color: red"   >颜色</view>
             <view class="tool-item selected"  catchtap="eventBase"  data-action="modeChange"  data-mode="pecile">铅笔</view>
             <!--<view class="tool-item selected" catchtap="eventBase"  data-action="modeChange"  data-mode="lancet">柳叶刀</view>-->
             <view class="tool-item selected" catchtap="eventBase" data-action="modeChange"  data-mode="eraser">橡皮</view>
-            <view class="tool-item selected" catchtap="saveToPlayer" style="background-color: #FF0000" >
-                    保存
+            <view class="tool-item selected" catchtap="saveToShare" style="background-color: #FF0000" >
+                    help
             </view>
             <view class="tool-item selected" style="background-color: #FF0000" >
                 <navigator url="../together/together" open-type="switchTab" hover-class="other-navigator-hover">
@@ -72,7 +76,7 @@
             
         </view>
         <!--<button catchtap="save" >保存</button>-->
-
+    </view>
 </view>
 
 <!--<button catchtap="save">save</button>

@@ -1020,11 +1020,17 @@ Page({
 
   // 分享页面
   onShareAppMessage: function () { 
-      return {
-        title: '表情袋',
-        desc: '海量表情天天让你惊喜，斗图乐趣无限，ヽ(°◇° )ノ',
-        path: '/pages/private/private'
-      }
+      wx.showModal({
+        title: '请点点"帮抢"，保存',
+        showCancel:false,
+      }) 
+      return
+
+      // return {
+      //   title: '表情袋',
+      //   desc: '海量表情天天让你惊喜，斗图乐趣无限，ヽ(°◇° )ノ',
+      //   path: '/pages/private/private'
+      // }
   },
 
   // onShow: function (param) {  

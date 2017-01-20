@@ -15,8 +15,10 @@ canvas.paper-background {
 canvas.paper {
     position: absolute;
     left: 30rpx;
-    width: 690rpx;
-    height: 900rpx;
+    /*width: 690rpx;
+    height: 900rpx;*/
+    width: 320px;
+    height: 430px;
 }
 
 
@@ -69,4 +71,12 @@ view.tool-item.selected {
 }
 .board {
     position: relative
+}
+
+.btn-share{
+    position: absolute;
+    bottom: 1.5rem;
+    left: 1rem;
+    right: 1rem;
+    height: 2rem;
 }

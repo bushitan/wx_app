@@ -1,12 +1,15 @@
 <!--pages/together/together.wxml-->
 <view class="page"  >
     <view class="start">
-        <view wx:if="{{userStatus==0}}">loading</view>
-        <view wx:elif="{{userStatus==1}}">
+        <view wx:if="{{joinStatus==0}}">loading</view>
+        <view wx:elif="{{joinStatus==1}}">
             <button catchtap="startToPainter">开始画</button>
         </view>
-        <view wx:else>
+        <view wx:elif="{{joinStatus==2}}">
             <button catchtap="continueToPainter">继续画</button>
+        </view>
+        <view wx:else>
+            <button catchtap="shareToPainter">待分享</button>
         </view>
     </view>
     

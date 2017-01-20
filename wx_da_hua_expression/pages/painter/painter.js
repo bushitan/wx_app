@@ -10,8 +10,10 @@ var context_lancet
 var context_1
 var point_lancet = []
 
+var PAINTER_STEP_LOAD = 0;
 var PAINTER_STEP_FREE = 1; //未参与，创建新的
 var PAINTER_STEP_BUSY = 2; //正在参与，down上step的
+var PAINTER_STEP_SHARE = 3; //待分享
 Page({
     data: {
         //调色盘列表
@@ -27,7 +29,7 @@ Page({
         tempImage:null,
         isUpload:null,
 
-        themeName:"",
+        themeName:"一起画表情",
         imgUpload:"",
 
         uploadStatus: 0 , // 0 未上传上传  1 上传成功
@@ -39,9 +41,16 @@ Page({
         imgUrl:"", //下载的图片
 
 
-        userStatus: 1 , //  1 未参与 ， 2正在参与
+        joinStatus: 1 , //  1 未参与 ， 2正在参与
     },
-
+    shareInfo:function(){
+        wx.showModal({
+            title: '分享提示',
+            content:'点击右上角"⋮"，发送给朋友',
+            showCancel:false,
+            confirmText:"知道了",
+        }) 
+    },
      //题目内容输入
     inputChange: function(e) {
         GLOBAL_PAGE.setData({
@@ -182,21 +191,6 @@ Page({
         console.error(e.detail.errMsg);
     },
 
-    //  save(){
-    //     // var src = wx.canvasToTempFilePath({ canvasId: 'paper'})
-    //     // console.log(src)
-    //     wx.toTempFilePath({
-    //         canvasId: 'paper',
-    //         success: function (res) {
-    //             console.log(res)
-    //         },
-    //         fail: function (res) {
-    //             console.log(res)
-    //         }
-    //     })
-    // },
-     
-
     reDraw:function(){
         const ctx = wx.createCanvasContext('paper')
         ctx.drawImage(GLOBAL_PAGE.data.tempImage, 0, 0, 250, 250)
@@ -214,7 +208,6 @@ Page({
 
     down:function(){
         const ctx = wx.createCanvasContext('paper')
-
         // var url = "http://www.12xiong.top/static/magick/upload/20161018173657.png"
         var url = GLOBAL_PAGE.data.imgUrl
         console.log(url)
@@ -240,14 +233,26 @@ Page({
     },
 
     onShareAppMessage: function () { 
-        return {
-            title: '大家一起画',
-            desc: '你的好友邀请你来画画',
-            path: '/pages/painter/painter'
+        var status = GLOBAL_PAGE.data.joinStatus 
+
+        //抢画分享，stepId已改变，进入新的step直接抢 ；
+        //画到一半，未保存分享，stepId为改变，进入之前抢的界面；用户抢失败
+        if( status == PAINTER_STEP_SHARE || status == PAINTER_STEP_BUSY) {
+            return {
+                title: '大家一起画',
+                desc: '你的好友邀请你来画画',
+                path: '/pages/painter/painter?step_id='+GLOBAL_PAGE.data.stepId+'&img_url='+GLOBAL_PAGE.data.imgUrl+'&theme_name='+GLOBAL_PAGE.data.themeName +'&join_status='+PAINTER_STEP_SHARE
+            }
+        }
+        else {
+            return {
+                title: '大家一起画',
+                desc: '你的好友邀请你来画画',
+                path: '/pages/painter/painter'
+            }
         }
     },
-    
-    downloadImg:function(){},
+        
     onLoad(option) {
         global_page = this
         GLOBAL_PAGE = this
@@ -263,22 +268,88 @@ Page({
 
         if (option.step_id){  //有themeID，已经抢到画
             GLOBAL_PAGE.setData({
-                userStatus:PAINTER_STEP_BUSY, 
+                joinStatus:option.join_status, 
                 stepId:option.step_id,
                 imgUrl:option.img_url,
                 themeName:option.theme_name,
             })
             //下载画
             GLOBAL_PAGE.down()
+            //Todo 查询这幅画是可抢，还是继续画
+        }
+        else{ //未传入step_id，能创建新的画
+             GLOBAL_PAGE.setData({ joinStatus:PAINTER_STEP_FREE, })
         }
          
-        // context = wx.createContext()
-        context_lancet = wx.createContext() 
-        // const context = wx.createContext();//创建空白画布
+        context_lancet = wx.createContext() //创建模拟画布
     },
 
+    //111 抢画 
+    snatch:function(){
+        wx.request({
+            url: API.PAINTER_SNATCH(), 
+            method:"GET",
+            data: {
+                session: wx.getStorageSync(KEY.session),
+                // theme_id:GLOBAL_PAGE.data.themeId,
+                step_id:GLOBAL_PAGE.data.stepId,
+            },
+            success: function(res) {
+                var object = res.data
+                if (object.status == "true")
+                {
+                    console.log(object)
+                    //设置播放step
+                    
+                    if( object.is_success== "true")
+                    {
+                        wx.showModal({
+                            title: object.title,
+                            content:object.content,
+                            showCancel:false,
+                        })
+                        GLOBAL_PAGE.setData({
+                            joinStatus: PAINTER_STEP_BUSY,
+                        })
+                    }
+                    
+                    else  //抢画失败，继续
+                        wx.showModal({
+                            title: object.title,
+                            content:object.content,
+                            confirmText:"画一幅",
+                            showCancel:false,
+                            success: function(res) {
+                                if (res.confirm) {
+                                    wx.redirectTo({
+                                    url: '../painter/painter'
+                                    })
+                                }
+                            }
+                        })
+                }
+                else
+                wx.showModal({
+                    title: '网络连接失败，请重试',
+                    showCancel:false,
+                })
+            },
+            fail:function(res){
+                wx.showModal({
+                    title: '网络连接失败，请重试',
+                    showCancel:false,
+                })
+            },
+
+        })
+        
+    },
+
+
+
+
     //完成并跳转到播放器
-    saveToPlayer:function(){
+    saveToShare:function(){
         //检测主题是否为空
         if( GLOBAL_PAGE.data.themeName == ""){
             wx.showModal({
@@ -289,12 +360,12 @@ Page({
         }
             
         //测试函数
-        if(GLOBAL_PAGE.data.userStatus == 1)
-            // console.log("未参与")
-            GLOBAL_PAGE.saveStart()
-        else   
-            // console.log("正在参与") 
-            GLOBAL_PAGE.saveContinue()
+        // if(GLOBAL_PAGE.data.joinStatus == PAINTER_STEP_FREE)
+        //     // console.log("未参与")
+        //     GLOBAL_PAGE.saveStart()
+        // else if(GLOBAL_PAGE.data.joinStatus == PAINTER_STEP_BUSY)  
+        //     // console.log("正在参与") 
+        //     GLOBAL_PAGE.saveContinue()
 
          //正式函数   
         // GLOBAL_PAGE.saveTempFile()
@@ -366,12 +437,17 @@ Page({
                                     imgUpload:data.img.img_url,
                                     uploadStatus:1 //上传成功
                                 })    
-                                if(GLOBAL_PAGE.data.userStatus == 1)
+
+                                if(GLOBAL_PAGE.data.joinStatus == PAINTER_STEP_FREE){
                                     console.log("未参与")
-                                    // GLOBAL_PAGE.saveStart()
-                                else   
-                                     console.log("正在参与") 
-                                    // GLOBAL_PAGE.saveContinue()
+                                    GLOBAL_PAGE.saveStart()
+                                }
+                                else if(GLOBAL_PAGE.data.joinStatus == PAINTER_STEP_BUSY) {
+                                    console.log("正在参与") 
+                                    GLOBAL_PAGE.saveContinue()
+                                } 
+                                   
+                                   
                             } 
                             else{
                                 wx.showModal({
@@ -431,15 +507,22 @@ Page({
             var object = res.data
             if (object.status == "true")
             {
-                console.log(object)
-                var _share = object.share
                 GLOBAL_PAGE.setData({
-                    themeId:object.theme_id,
-                    stepId:object.step_id,
-                    stepNumber:object.step_number,
+                    joinStatus:PAINTER_STEP_SHARE,
+                    themeName:object.theme_name ,
+                    stepId: object.step_id,
+                    imgUrl:object.img_url, 
                 })
+                GLOBAL_PAGE.down()
+                // console.log(object)
+                // var _share = object.share
+                // GLOBAL_PAGE.setData({
+                //     themeId:object.theme_id,
+                //     stepId:object.step_id,
+                //     stepNumber:object.step_number,
+                // })
 
-                GLOBAL_PAGE.navigateToPlayer()
+                // GLOBAL_PAGE.navigateToPlayer()
             }
             else
             wx.showModal({
@@ -468,19 +551,26 @@ Page({
             // theme_name:GLOBAL_PAGE.data.themeName,
             //   img_url:GLOBAL_PAGE.data.imgUpload,
             step_id:GLOBAL_PAGE.data.stepId,
-            img_url:"http://image.12xiong.top/1_20170118133253.png",
+            // img_url:"http://image.12xiong.top/1_20170118133253.png", //图1
+            img_url:"http://image.12xiong.top/1_20170114161832.jpg", //图图2
         },
         success: function(res) {
             var object = res.data
             if (object.status == "true")
             {
                 if( object.is_success== "true"){
+                    // GLOBAL_PAGE.setData({
+                    //     themeId:object.theme_id,
+                    //     stepId:object.step_id,
+                    //     stepNumber:object.step_number,
+                    // })
                     GLOBAL_PAGE.setData({
-                        themeId:object.theme_id,
-                        stepId:object.step_id,
-                        stepNumber:object.step_number,
+                        joinStatus:PAINTER_STEP_SHARE,
+                        themeName:object.theme_name ,
+                        stepId: object.step_id,
+                        imgUrl:object.img_url, 
                     })
-                     GLOBAL_PAGE.navigateToPlayer()
+                    GLOBAL_PAGE.down()
                 }
                 else{
                     wx.showModal({
