@@ -47,21 +47,20 @@
         <!--右上角菜单-->
         <view class="weui-flex tool ">
             <view class="weui-flex__item" ></view>
-            <view><button size="mini" catchtap="menuDelete"> 删除 </button></view>
-            <view> <button size="mini"  catchtap="menuMoveCategory"> 分组 </button></view>
-            <view><button size="mini" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" catchtap="navigateToWatermark"> 水印 </button></view>
-            <view >
-                <!--<label class="category__select" catchtap="menuDelete" >删除</label>
-                <label class=" category__select" catchtap="menuMoveCategory" >分组</label>
-           
-                <label  hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" class="  category__select" catchtap="navigateToWatermark">水印</label>
-                <image catchtap="hiddenAll" src="../../images/cancel.png" class="hidden__all" ></image>-->
-                
-               
-                
-                <button size="mini" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" catchtap="menuShare">分享</button>
-                <image catchtap="hiddenAll" src="../../images/cancel.png" class="cancel" ></image>
+            <view>
+                <button size="mini" catchtap="menuDelete"> 删除 </button>
             </view>
+            <view> 
+                <button size="mini"  catchtap="menuMoveCategory"> 分组 </button>
+                 <image catchtap="hiddenAll" src="../../images/cancel.png" class="cancel" ></image>
+            </view>
+            <!--<view>
+                <button size="mini" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" catchtap="navigateToWatermark"> 水印 </button>
+            </view>-->
+            <!--<view >
+                <button size="mini" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" catchtap="menuShare">分享</button>
+               
+            </view>-->
         </view>
 
         <!--<view class="space-4">  </view>-->
@@ -113,9 +112,25 @@
                 </view>
             </view>
             
-            <!--按钮栏  join拼接  disabled="{{joinImg.status == 2?false:true}}" -->
-            
-            <view class="join-new "  hidden="{{!joinShow}}">
+             <!--按钮栏  水印  分享 -->
+             <view class="space-4">  </view>
+            <!--菜单-->
+                <view class="weui-flex btn_bar" >
+                    <view class="weui-flex__item"></view>
+                    <view > 
+                        <button size="mini" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" catchtap="navigateToWatermark"> 水印 </button>
+                        <button size="mini" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" catchtap="menuShare" type="primary">分享</button>
+                        <!--<button class=""   catchtap="menuShare" size="mini" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}">全屏预览</button>-->
+                    </view>
+                    <view class="weui-flex__item"> </view>
+                </view>
+
+
+
+
+
+            <!--按钮栏  join拼接 临时取消  disabled="{{joinImg.status == 2?false:true}}" -->
+            <!--<view class="join-new "  hidden="{{!joinShow}}">
                 <view class="space-6">  </view>
                 <view class="weui-flex ">
                     <view class="weui-flex__item">
@@ -139,16 +154,13 @@
                     <view class="weui-flex__item"> 
                         <image  class= "image" src="{{joinImg.resualt}}" catchtap="joinPreview" data-img_url="{{joinImg.resualt}}"></image></view>
                 </view>
-                <!--<view class="weui-flex">
-                    <view class="weui-flex__item page__desc video2gif__des">把两个表情按顺序接一起喔</view>
-                </view>-->
                 <view class="weui-flex">
                     <view class="weui-flex__item"></view>
                     <view >
                         <image catchtap="joinCancel" class="back"  src="../../images/up.png" />
                     </view>
                 </view>
-            </view>
+            </view>-->
         </view>
 
         <!--按钮栏  mp4-->

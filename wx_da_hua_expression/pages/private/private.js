@@ -328,18 +328,18 @@ Page({
         },
       menuType: e.currentTarget.dataset.menu_type
     })
-    if( wx.getStorageSync('is_onmenu_info') == "")
-    {
-        wx.showModal({
-            title: '拼接提示',
-            content:'点击“表情二”，可制作GIF图',
-            showCancel:false,
-            confirmText:"知道了",
-            success: function(res) {
-                wx.setStorageSync('is_onmenu_info',true)
-            }
-        }) 
-    }
+    // if( wx.getStorageSync('is_onmenu_info') == "")
+    // {
+    //     wx.showModal({
+    //         title: '拼接提示',
+    //         content:'点击“表情二”，可制作GIF图',
+    //         showCancel:false,
+    //         confirmText:"知道了",
+    //         success: function(res) {
+    //             wx.setStorageSync('is_onmenu_info',true)
+    //         }
+    //     }) 
+    // }
   },
 
   /** 5 菜单-分享 */
