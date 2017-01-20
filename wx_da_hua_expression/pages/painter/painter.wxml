@@ -1,3 +1,4 @@
+<image catchtap="navigateToSwitch" class="back__switch"  src="/images/left.png"></image>
 <view class="page"  >
     <view class="title" >
         <view class="weui-flex">
@@ -9,36 +10,35 @@
             <view wx:else>
                 <label>{{themeName}}</label>
             </view>
-            <view class="weui-flex__item"></view>
-        </view>
-        <button wx:if="{{ joinStatus == 3 }}" catchtap="snatch">抢</button>
+            <!--保存图片，进入下一轮分享-->
+            <view wx:if="{{joinStatus==1 ||joinStatus==2 }}" class="weui-flex__item complete" catchtap="saveToShare" >
+                完成
+            </view>
+            <view wx:else class="weui-flex__item share" catchtap="shareInfo">
+                分享
+            </view>
+        </view>  
     </view>
+     <view class="snatch"  wx:if="{{ joinStatus == 3 }}" catchtap="snatch">抢画</view>
     <!--<view class="root">-->
-        <view class="board">
-            <canvas class="paper paper-background" canvas-id="paper" 
+        <!--<view class="board">-->
+        <!--2层画板-->
+        <view>
+            <canvas class="paper paper-background" canvas-id="paper" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;left:{{canvasLeft}}px;" 
                 bindtouchstart="onTouchStart"  
                 bindtouchmove="onTouchMove"   
                 bindtouchend="onTouchEnd">    <!--触发触摸 事件--> <!--触摸移动 事件--> <!--触摸结束 事件-->
             </canvas>
-            <canvas class="paper" canvas-id="paper-lancet" 
+            <canvas class="paper" canvas-id="paper-lancet" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;left:{{canvasLeft}}px;" 
                 bindtouchstart="onLancetStart"  
             bindtouchmove="onLancetMove"   
                 bindtouchend="onLancetEnd" wx:if="{{displayLancet}}">    
             </canvas>
         </view>
-    <!--</view> -->
-    <!--<view>
-        透明度（画笔、柳叶刀、橡皮）:
-        <slider bindchange="slider3change" show-value/>
-        大小（画笔、橡皮）:
-        <slider bindchange="slider3change" show-value/>
-    </view>-->
+
     
-    <!--joinStatus遮罩层-->
-    <view class="btn-share" wx:if="{{joinStatus == 3 }}">
-         <button catchtap="shareInfo" >分享</button>
-    </view>
-    <view class="paint-tool" wx:else>
+    
+    <view hidden="true" class="paint-tool" >
         <view class="color-picker">
             <view
                 wx:for-items="{{colors}}"
@@ -66,26 +66,29 @@
             </view>
             <view class="tool-item selected" catchtap="size" >大小</view>
             <view class="tool-item selected" catchtap="clear" >还原</view>
-            <!--<view class="tool-item selected" catchtap="save" >保存</view>
-            <view class="tool-item selected" catchtap="reDraw">粘贴</view>
-            <view class="tool-item selected" catchtap="down">下载</view>
-            <view class="tool-item selected" catchtap="up" >上传</view>-->
-            
-            <!--<view class="tool-item selected" >外链资源</view>-->
-            <!--<view class="tool-item selected" >长按取色</view>-->
             
         </view>
-        <!--<button catchtap="save" >保存</button>-->
+
     </view>
-        <!--画布工具区域-->
-    <!--<view class="canvas_tools">
-        <view class="box box1" bindtap="penSelect" data-param="5"></view>
-        <view class="box box2" bindtap="penSelect" data-param="15"></view>
-        <view class="box box3" bindtap="colorSelect" data-param="#cc0033"></view>
-        <view class="box box4" bindtap="colorSelect" data-param="#ff9900"></view>
-        <view class="box box5" bindtap="clearCanvas"></view>
+    <!--joinStatus遮罩层-->
+    <!--<view class="btn-share" >
+         <button catchtap="shareInfo" >分享</button>
     </view>-->
+        <!--画布工具区域-->
+    <view class="canvas_tools" wx:if="{{joinStatus != 3 }}">
+        <!--<view class="box box1" bindtap="penSelect" data-param="5"></view>
+        <view class="box box1" bindtap="penSelect" data-param="5"></view>-->
+        <view class="box box-color" bindtap="colorSelect" data-param="#cc0033"></view>
+        <view class="box box-pencil" bindtap="penSelect" data-param="15"></view>
+        <view class="box box-earse" bindtap="clearCanvas"></view>
+        <view class="box box-reset" bindtap="colorSelect" data-param="#ff9900"></view>
+        <view class="box box-image" bindtap="colorSelect" data-param="#ff9900"></view>
+        <!--<view class="box-large box-complete" catchtap="saveToShare" data-param="#ff9900">完成</view>-->
+    </view>
+
+    
 </view>
+
 
 <!--<button catchtap="save">save</button>
     <button catchtap="reDraw">reDraw</button>-->

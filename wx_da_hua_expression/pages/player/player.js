@@ -1,6 +1,7 @@
 
 var API = require('../../utils/api.js');
 var KEY = require('../../utils/storage_key.js');
+var APP = getApp()
 var G
 var GLOBAL_PAGE
 var i;
@@ -28,6 +29,11 @@ Page({
     themeName:"一起画表情",
     stepId:null,
     imgUrl:"", //下载的图片
+
+    
+    playerWidth:0,  //播放器左边偏移量
+    playerHeight:0,  //播放器左边偏移量
+    playerLeft:0,  //播放器左边偏移量
   },
   show:function (){
       animation.opacity(1).step()
@@ -159,6 +165,9 @@ Page({
     //     step_number:1
     // }
     GLOBAL_PAGE.setData({
+        // playerWidth:APP.globalData.windowWidth,  //播放器左边偏移量
+        // playerHeight: parseInt( APP.globalData.windowWidth*0.75 ),  //播放器左边偏移量
+        // playerLeft: (APP.globalData.windowWidth-300)/2,
         themeId:option.theme_id,
         stepId:option.step_id,
     })
@@ -275,7 +284,12 @@ Page({
 //       url: url
 //     })
 //   }, 
-
+    // 5 返回一起画主页
+    navigateToSwitch: function() {
+        wx.switchTab({
+            url: "../together/together"
+        })
+    },
 
 
   

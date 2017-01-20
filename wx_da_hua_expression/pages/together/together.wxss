@@ -4,3 +4,32 @@
     background-color: gainsboro;
     margin: 15px;
 }
+
+
+.circle{
+    margin: 50px auto 50px;
+    padding: auto;
+    width: 100px;
+    height: 100px;
+
+}
+.circle .word{
+    color: #fff;
+    font-size: 18px;
+    line-height: 100px;
+    margin: auto;
+    padding: auto;
+    text-align: center;
+}
+.circle .load{
+    border-radius: 50%;
+    background-color: #888888;
+}
+.circle .start{
+    border-radius: 50%;
+    background-color: #09bb07;
+}
+.circle .goon{
+    border-radius: 50%;
+    background-color: #e64340;
+}

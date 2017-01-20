@@ -65,49 +65,6 @@
     margin-top: 5rpx;
 }
 
-/*选择目录*/
-/*.category{
-    width:100%;
-    height:42px;
-    line-height:42px;
-    background-color: #24292c;
-    color: #ffffff;
-    font-size: 16px;
-    display: flex
-}
-.category view{
-    width:100rpx;
-    margin-left:75rpx;
-}
-
-.category scroll-view{
-    width:500rpx;
-    white-space: nowrap; 
-    display: flex
-}
-
-.category .select{
-    border-radius: 5rpx;
-    border: 1px solid #ffffff;
-}
-.category .unselect{
-    border-radius: 5rpx;
-    border: 1px solid #24292c;
-}
-.category label{
-    padding-left: 12rpx;
-    padding-right: 12rpx;
-    padding-top: 6rpx;
-    padding-bottom: 6rpx;
-    margin:2px;
-}
-
-.category image{
-    width: 16px;
-    height:16px;
-}*/
-
-
 
 .select-category {
     position: absolute;
@@ -202,75 +159,6 @@
      justify-content: center;align-items:center;
      text-align: center;
 }
-/*
-.category {
-    height:42px;
-    line-height:42px;
-    background-color: #24292c;
-    color: #ffffff;
-    font-size: 14px;
-    
-}
-.category .font {
-    opacity: 0.9;
-}
-.category all{
-    text-align: right;
-    padding-left:30rpx;
-}
-
-.category scroll-view{
-    width:500rpx;
-    white-space: nowrap; 
-    display: flex;
-    box-shadow: 2px 0  6px -4px rgba(255,255,255,1) ;
-}
-
-.category .select{
-    border-radius: 5rpx;
-    border: 1px solid #ffffff;
-}
-.category .unselect{
-    border-radius: 5rpx;
-    border: 1px solid #24292c;
-}
-.category label{
-    padding-left: 6rpx;
-    padding-right: 6rpx;
-    padding-top: 6rpx;
-    padding-bottom: 6rpx;
-    margin:2px;
-}
-.category .intro{
-    width: 20rpx;
-   
-}
-.category .intro image{
-    width: 20px;
-    height:20px;
-    margin: 11px 0px;
-    margin-left:20px;  
-}
-
-.category .add{
-    border-left: 1px solid #ffffff;
-}
-
-.category__select{
-    margin: 5px;
-    margin-top: 5px;
-    padding: 2px;
-    background-color: #10aeff;
-    border-radius:  5px;
-    color: white;
-}
-.category image{
-    width: 24px;
-    height:24px;
-    margin: 9px 0px;
-}*/
-
-
 
 .category {
     display: -webkit-box;

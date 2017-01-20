@@ -1,21 +1,27 @@
-
+<image catchtap="navigateToSwitch" class="back__switch"  src="/images/left.png"></image>
 <view class="page"  >
-    <view>
-        <!--<navigator url="../painter/painter" open-type="redirect" hover-class="other-navigator-hover">-->
+    <!--<view>
             <button catchtap="snatch" >抢画！</button>
-        <!--</navigator>-->
+    </view>-->
+
+    <view class="title" >
+        <view class="weui-flex">
+            <view class="weui-flex__item"></view>
+            <view >
+                <label>{{themeName}}</label>
+            </view>
+            <!--保存图片，进入下一轮分享-->
+            <view wx:if="{{joinStatus==1 ||joinStatus==2 }}" class="weui-flex__item complete" catchtap="saveToShare" >
+                完成 
+            </view>
+            <view wx:else class="weui-flex__item share" catchtap="shareInfo">
+                分享
+            </view>
+        </view>  
     </view>
-    <view >
-        <navigator url="../together/together" open-type="switchTab" hover-class="other-navigator-hover">
-             <button >主页</button>
-        </navigator>
-    </view>
-    <view>
-        <label>{{themeName}}</label>
-    </view>
-    <!--<button catchtap="click">as</button>-->
-    <view class="player">
-        <image class="bg" src="{{playerImageBg}}"  mode="aspectFit" style="" ></image>
+    <!--<view class="snatch" catchtap="snatch">抢画</view>-->
+    <view class="player" >
+        <image class="bg" src="{{playerImageBg}}"  mode="aspectFit" ></image>
         <image animation="{{animationData}}" src="{{playerImage}}" mode="aspectFit" ></image>
 
         <image hidden="true" src="{{playerImagePre}}" mode="aspectFit" ></image>
@@ -23,7 +29,25 @@
         <image animation="{{animationData}}" src="{{playerImage2}}" mode="aspectFit" bindload="bindload"></image>-->
         <!--<image animation="{{animationData1}}" src="../../images/2.jpg"  mode="aspectFit" style=""></image>
         <image animation="{{animationData}}" src="../../images/1.jpg" mode="aspectFit"></image>-->
+        
+    </view>
+    <!--<view class="weui-flex">
+        <view class="weui-flex__item"></view>
+        <view class="">
+            <image src="/images/up.png" class="mark"></image>
+        </view>
+        <view class="weui-flex__item"></view>
+    </view>-->
+    
+    <view class="frame">
+        <scroll-view  scroll-x="true">
+            <block wx:for="{{emoticon}}"  wx:for-item="image">
+                <image class="emoticon" src="{{image.img_url}}" mode="aspectFit"></image>
+            </block>
+        </scroll-view>
     </view>
 
- 
 </view>
+
+<!--
+  <label catchtap="selectCategory"  data-select_category_id="{{c_name.category_id}}" class="{{selectCategory.category_id == c_name.category_id ? 'select' : 'unselect'}} font">{{c_name.name}}</label>-->

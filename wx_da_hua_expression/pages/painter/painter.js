@@ -10,6 +10,7 @@ var context_lancet
 var context_1
 var point_lancet = []
 
+var APP = getApp()
 var PAINTER_STEP_LOAD = 0;
 var PAINTER_STEP_FREE = 1; //未参与，创建新的
 var PAINTER_STEP_BUSY = 2; //正在参与，down上step的
@@ -40,8 +41,11 @@ Page({
         
         imgUrl:"", //下载的图片
 
+        joinStatus: 1 , // 用户参加活动状态 1 未参与 ， 2正在参与
 
-        joinStatus: 1 , //  1 未参与 ， 2正在参与
+        canvasWidth:320,
+        canvasHeight:400,
+        canvasLeft:0,
     },
     shareInfo:function(){
         wx.showModal({
@@ -267,6 +271,21 @@ Page({
         //     theme_name:"一起画表情"
         // }
 
+        //设置画布大小，左偏移
+        var canvasWidth , canvasHeight
+        var canvasWidth = APP.globalData.windowWidth
+        var canvasHeight = APP.globalData.windowHeight - 42 - 60
+        if ( canvasWidth >= canvasHeight*0.75 )
+            canvasWidth = parseInt(canvasHeight*0.75 )
+        else
+            canvasHeight = canvasWidth*4/3
+            
+        GLOBAL_PAGE.setData({
+            canvasWidth: canvasWidth,
+            canvasHeight: canvasHeight,
+           canvasLeft: (APP.globalData.windowWidth-canvasWidth)/2,
+        })
+        
 
         if (option.step_id){  //有themeID，已经抢到画
             GLOBAL_PAGE.setData({
@@ -360,15 +379,15 @@ Page({
         }
             
         //测试函数
-        // if(GLOBAL_PAGE.data.joinStatus == PAINTER_STEP_FREE)
-        //     // console.log("未参与")
-        //     GLOBAL_PAGE.saveStart()
-        // else if(GLOBAL_PAGE.data.joinStatus == PAINTER_STEP_BUSY)  
-        //     // console.log("正在参与") 
-        //     GLOBAL_PAGE.saveContinue()
+        if(GLOBAL_PAGE.data.joinStatus == PAINTER_STEP_FREE)
+            // console.log("未参与")
+            GLOBAL_PAGE.saveStart()
+        else if(GLOBAL_PAGE.data.joinStatus == PAINTER_STEP_BUSY)  
+            // console.log("正在参与") 
+            GLOBAL_PAGE.saveContinue()
 
          //正式函数   
-        GLOBAL_PAGE.saveTempFile()
+        // GLOBAL_PAGE.saveTempFile()
     },
     //1 保存为临时文件
     saveTempFile:function(){
@@ -504,8 +523,8 @@ Page({
         data: {
             session: wx.getStorageSync(KEY.session),
             theme_name:GLOBAL_PAGE.data.themeName,
-              img_url:GLOBAL_PAGE.data.imgUpload,
-            // img_url:"http://image.12xiong.top/1_20170118133253.png",
+            // img_url:GLOBAL_PAGE.data.imgUpload,
+            img_url:"http://image.12xiong.top/1_20170118133253.png",
         },
         success: function(res) {
             var object = res.data
@@ -554,10 +573,10 @@ Page({
         data: {
             session: wx.getStorageSync(KEY.session),
             // theme_name:GLOBAL_PAGE.data.themeName,
-            img_url:GLOBAL_PAGE.data.imgUpload,
             step_id:GLOBAL_PAGE.data.stepId,
+            // img_url:GLOBAL_PAGE.data.imgUpload,
             // img_url:"http://image.12xiong.top/1_20170118133253.png", //图1
-            // img_url:"http://image.12xiong.top/1_20170114161832.jpg", //图图2
+            img_url:"http://image.12xiong.top/1_20170114161832.jpg", //图图2
         },
         success: function(res) {
             var object = res.data
@@ -615,6 +634,13 @@ Page({
             url: url
         })
     },
+
+    // 5 返回一起画主页
+    navigateToSwitch: function() {
+        wx.switchTab({
+            url: "../together/together"
+        })
+    }
 });
 
 
