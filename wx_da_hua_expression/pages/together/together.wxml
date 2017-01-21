@@ -6,16 +6,14 @@
             <view class="word start" wx:elif="{{joinStatus==1}}" catchtap="startToPainter">开始画</view> 
             <view class="word goon" wx:else catchtap="continueToPainter">继续画</view> 
         </view>
-        <!--<view wx:if="{{joinStatus==0}}">loading</view>
-        <view wx:elif="{{joinStatus==1}}">
-            <button catchtap="startToPainter">开始画</button>
+        <view class="user-info">
+            <view class="name">
+                <label class="key">ID：</label><label class="value">{{userId}}</label>
+            </view>
+            <view class="call">
+                <label class="key">称号：</label><label class="value">绘画小白</label>
+            </view>
         </view>
-        <view wx:elif="{{joinStatus==2}}">
-            <button catchtap="continueToPainter">继续画</button>
-        </view>
-        <view wx:else>
-            <button catchtap="shareToPainter">待分享</button>
-        </view>-->
     </view>
     
     <!--<block wx:for="{{selfThemeList}}"  wx:for-item="theme" >

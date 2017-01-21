@@ -9,7 +9,7 @@ var PAINTER_STEP_BUSY = 2;
 var PAINTER_STEP_SHARE = 3;
 Page({
   data:{
-      
+      userId:"",
       joinThemeID:null,
 
       joinStatus: PAINTER_STEP_LOAD , // 0 加载中 1 未参与 ， 2正在参与
@@ -31,7 +31,11 @@ Page({
           success: function(res) {
               var object = res.data
               if (object.status == "true")
-              {
+              { 
+                //设置用户名称，等级
+                  GLOBAL_PAGE.setData({ 
+                    userId:object.user_id
+                  })
                   //未加入游戏
                   if (object.join_status == PAINTER_STEP_FREE){ 
                       GLOBAL_PAGE.setData({ joinStatus:PAINTER_STEP_FREE,})

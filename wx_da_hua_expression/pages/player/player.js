@@ -22,10 +22,13 @@ Page({
     // playerImage1:"",
     playerImage:"",
     playerImagePre:"",
-    emoticon:[],       
-    themeId:null,
-
+    stepList:[], 
+    creatUserId:null, //创建者
+    joinUserId:null, //当前用户
+    nextUserId:null, //下一个用户
+    modeUser:1, // 1 别人在画  2继续画   3抢 
     joinStatus: PAINTER_STEP_LOAD , // 0 加载中 1 未参与 ， 2正在参与
+    themeId:null,
     themeName:"一起画表情",
     stepId:null,
     imgUrl:"", //下载的图片
@@ -48,8 +51,8 @@ Page({
       })
   },
   setImage:function (){
-      var emoticon = GLOBAL_PAGE.data.emoticon
-      if ( i == emoticon.length )
+      var stepList = GLOBAL_PAGE.data.stepList
+      if ( i == stepList.length )
       {
         i = 0
       //   GLOBAL_PAGE.hide()
@@ -57,20 +60,20 @@ Page({
       }
         
       var next = i+1
-      if ( i == emoticon.length -1 )
+      if ( i == stepList.length -1 )
         next = 0
       
       GLOBAL_PAGE.setData({
-        // playerImageBg:emoticon[i].img_url,
-        playerImage:emoticon[i].img_url,
-        playerImagePre:emoticon[next].img_url,
+        // playerImageBg:stepList[i].img_url,
+        playerImage:stepList[i].img_url,
+        playerImagePre:stepList[next].img_url,
       })
       
   },
   same: function (){
-      var emoticon = GLOBAL_PAGE.data.emoticon
+      var stepList = GLOBAL_PAGE.data.stepList
       GLOBAL_PAGE.setData({
-        playerImageBg:emoticon[i].img_url,
+        playerImageBg:stepList[i].img_url,
       })
   },
   onPlayer:function(){
@@ -127,11 +130,32 @@ Page({
             var object = res.data
             if (object.status == "true")
             {
-                console.log(object)
+                // 判断用户当前状态
+                var _creat_user_id = object.step_list[object.step_list.length-1].user_id
+                var _join_user_id = object.step_list[0].user_id
+                var _next_user_id = object.step_list[0].next_user_id
+
+                var _modeUser = 1 // 1 别人在画  2继续画   3抢
+                if ( _next_user_id==null ) 
+                    _modeUser = 3
+                else if(_join_user_id == _next_user_id)
+                    _modeUser = 2
+                else
+                    _modeUser = 1
+
+                //如果是继续画，提前给stepId和imgUrl,可以直接跳转了
+                var _step_id = object.step_list[object.step_list.length-1].step_id
+                var _img_url =  object.step_list[object.step_list.length-1].img_url
                 //设置播放step
                 GLOBAL_PAGE.setData({
-                    emoticon: object.step_list,
+                    stepList: object.step_list,       
+                    creatUserId:_creat_user_id, //创建者id
+                    joinUserId:_join_user_id,  //已参与用户id
+                    nextUserId:_next_user_id, //下一个用户
+                    modeUser:_modeUser,
                     themeName:object.theme_name,
+                    stepId: _step_id,
+                    imgUrl: _img_url, 
                 })
 
                 //开始播放
@@ -175,7 +199,7 @@ Page({
     GLOBAL_PAGE.getStepList(option.theme_id)
     //测试数据
     // GLOBAL_PAGE.setData({
-    //     emoticon:wx.getStorageSync(KEY.emoticon)
+    //     stepList:wx.getStorageSync(KEY.stepList)
     // })
     
 
@@ -270,7 +294,7 @@ Page({
 
     continueToPainter: function(e) {
         var url = '../painter/painter?step_id='+GLOBAL_PAGE.data.stepId+'&img_url='+GLOBAL_PAGE.data.imgUrl+'&theme_name='+GLOBAL_PAGE.data.themeName +'&join_status='+PAINTER_STEP_BUSY
-        wx.navigateTo({
+        wx.redirectTo({
             url: url
         })
     },  
@@ -293,7 +317,10 @@ Page({
 
 
   
-    bindload:function(e){
-      console.log(e)
+    previewStep:function(event){
+        wx.previewImage({
+        current: event.currentTarget.dataset.img_url, // 当前显示图片的http链接
+        urls: [event.currentTarget.dataset.img_url] // 需要预览的图片http链接列表
+      })
     },
 })

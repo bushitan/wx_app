@@ -7,7 +7,7 @@
 
 
 .circle{
-    margin: 50px auto 50px;
+    margin: 50px auto 0px;
     padding: auto;
     width: 100px;
     height: 100px;
@@ -31,5 +31,24 @@
 }
 .circle .goon{
     border-radius: 50%;
-    background-color: #e64340;
+    background-color: #ffbe00;
+}
+
+.user-info{
+    margin: 20px auto 40px;
+    padding: auto;
+    width: 200px;
+    text-align: center;
+    color: #888888;
+}
+.user-info .name{
+    /*margin-right:20px; */
+}
+
+.user-info .key{
+    font-size: 11px;
+}
+.user-info .value{
+    font-size: 14px;
+    color:#353535;
 }

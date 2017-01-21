@@ -8,41 +8,63 @@
         <view class="weui-flex">
             <view class="weui-flex__item"></view>
             <view >
-                <label>{{themeName}}</label>
+                <label >{{themeName}}
+                <label class="user">(绘画小白:{{creatUserId}})</label></label>
             </view>
-            <!--保存图片，进入下一轮分享-->
-            <view wx:if="{{joinStatus==1 ||joinStatus==2 }}" class="weui-flex__item complete" catchtap="saveToShare" >
-                完成 
-            </view>
-            <view wx:else class="weui-flex__item share" catchtap="shareInfo">
-                分享
-            </view>
+            <view class="weui-flex__item share">            </view>
+        </view>
+    </view>
+
+    <!--1、下一个用户null，可以抢抢
+    2、参与用户 == 下一个用户 ,
+    3、下一个用户 非null ，提示nextId正在作画-->
+    <!--<view class="snatch 1{{creatUserId}} 2{{currentUserId}}  3{{nextUserId}}  " wx:if="{{nextUserId==null}}"  catchtap="snatch">画两笔</view>
+    <view class="goon  1{{creatUserId}} 2{{currentUserId}}  3{{nextUserId}}" wx:elif="{{ currentUserId == nextUserId}}"  catchtap="snatch">继续画</view>
+    <view class="title  1{{creatUserId}} 2{{currentUserId}}  3{{nextUserId}}" wx:else >
+        <view class="weui-flex">
+        <view class="weui-flex__item"></view>
+            <view >
+            <label class="user">绘画小白:{{nextUserId}} 正在作画...</label>
+        </view>
+        <view  class="weui-flex__item "></view>
+        </view>  
+    </view>-->
+
+    <view class="title " wx:if="{{ modeUser == 1  }}" >
+        <view class="weui-flex">
+        <view class="weui-flex__item"></view>
+            <view >
+            <label class="user">绘画小白:{{nextUserId}} 正在作画...</label>
+        </view>
+        <view  class="weui-flex__item "></view>
         </view>  
     </view>
+    <view class="goon " wx:elif="{{modeUser == 2}}"  catchtap="continueToPainter">继续画</view>
+     <view class="snatch " wx:if="{{modeUser == 3}}"  catchtap="snatch">画两笔</view>
+    
+
+
     <!--<view class="snatch" catchtap="snatch">抢画</view>-->
     <view class="player" >
         <image class="bg" src="{{playerImageBg}}"  mode="aspectFit" ></image>
         <image animation="{{animationData}}" src="{{playerImage}}" mode="aspectFit" ></image>
 
-        <image hidden="true" src="{{playerImagePre}}" mode="aspectFit" ></image>
-        <!--<image animation="{{animationData1}}" src="{{playerImage1}}"  mode="aspectFit" style="" bindload="bindload"></image>
-        <image animation="{{animationData}}" src="{{playerImage2}}" mode="aspectFit" bindload="bindload"></image>-->
-        <!--<image animation="{{animationData1}}" src="../../images/2.jpg"  mode="aspectFit" style=""></image>
-        <image animation="{{animationData}}" src="../../images/1.jpg" mode="aspectFit"></image>-->
-        
+        <image hidden="true" src="{{playerImagePre}}" mode="aspectFit" ></image>       
     </view>
-    <!--<view class="weui-flex">
-        <view class="weui-flex__item"></view>
-        <view class="">
-            <image src="/images/up.png" class="mark"></image>
-        </view>
-        <view class="weui-flex__item"></view>
-    </view>-->
-    
+
+    <!--动画逐帧显示-->
     <view class="frame">
         <scroll-view  scroll-x="true">
-            <block wx:for="{{emoticon}}"  wx:for-item="image">
-                <image class="emoticon" src="{{image.img_url}}" mode="aspectFit"></image>
+            <block wx:for="{{stepList}}"  wx:for-item="image">
+                <view class="step">
+                    <view> 
+                        <image class="img" src="{{image.img_url}}" mode="aspectFit"></image>
+                    </view>
+                    <view class="preview" > 
+                        <navigator url="" catchtap="previewStep" data-img_url="{{image.img_url}}">预览</navigator>
+                    
+                    </view>                
+               </view>
             </block>
         </scroll-view>
     </view>

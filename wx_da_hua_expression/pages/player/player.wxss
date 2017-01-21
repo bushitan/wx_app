@@ -13,6 +13,7 @@
 
 .title{
     margin: 6px;
+ 
 }
 .title .complete{
     color: #09bb07;
@@ -25,6 +26,16 @@
     margin-right:4px;
 }
 
+.title .user{
+    height: 11px;
+    line-height:11px;
+    /*margin: auto;*/
+    font-size:11px;
+    color:#b2b2b2; 
+}
+
+
+
 .snatch{
     position: absolute;
     width: 60px;
@@ -32,13 +43,29 @@
     right:70px;
     top: 20px;
     color: #fff;
-    font-size: 20px;
+    font-size: 16px;
     line-height: 60px;
     text-align: center;
     border-radius: 50%;
     background-color: #e64340;
     z-index: 1000;
 }
+.goon{
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    right:70px;
+    top: 20px;
+    color: #fff;
+    font-size: 16px;
+    line-height: 60px;
+    text-align: center;
+    border-radius: 50%;
+    background-color: #ffbe00;
+    z-index: 1000;
+}
+
+
 .player{
     position: relative;
     height: 1000rpx;
@@ -69,12 +96,13 @@
     display: -webkit-flex;
     display: flex;
     justify-content:center;
-    height:96px;
+    /*height:96px;*/
     /*background-color: #888888;*/
-    color: #ffffff;
+    color: #888888;
     font-size: 14px;
     
 }
+
 .frame .font {
     opacity: 0.9;
     /*margin: 10px;*/
@@ -90,8 +118,15 @@
     display: flex;
     box-shadow: 2px 0  6px -4px rgba(255,255,255,1) ;
 }
-
-.frame .emoticon{
+.frame .step{
+    display: inline-block;
+    margin: 0 4px;
+}
+.frame .preview{
+    margin: 4px auto 20px;
+    text-align: center;
+}
+.frame .img{
     width:72px;
     height:96px;
     /*background-color: rebeccapurple;*/

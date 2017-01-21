@@ -1,8 +1,8 @@
 {
   "pages":[
+    "pages/painter/painter", 
     "pages/together/together",
     "pages/player/player",
-    "pages/painter/painter", 
     "pages/private/private",
     "pages/manage/manage",
     "pages/public/public",
