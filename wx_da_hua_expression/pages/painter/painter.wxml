@@ -24,7 +24,7 @@
         <!--<view class="board">-->
         <!--2层画板-->
      <view wx:if="{{joinStatus==3?true:false}}">
-        <image src="{{imgUpload}}" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;left:{{canvasLeft}}px;"  ></image>
+        <image class="paper paper-background" src="{{imgUpload}}" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;left:{{canvasLeft}}px;"  ></image>
     </view>
    
     <view class="canvas-index"  wx:else>

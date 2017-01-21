@@ -492,15 +492,15 @@ Page({
         }
             
         //测试函数
-        if(GLOBAL_PAGE.data.joinStatus == PAINTER_STEP_FREE)
-            // console.log("未参与")
-            GLOBAL_PAGE.saveStart()
-        else if(GLOBAL_PAGE.data.joinStatus == PAINTER_STEP_BUSY)  
-            // console.log("正在参与") 
-            GLOBAL_PAGE.saveContinue()
+        // if(GLOBAL_PAGE.data.joinStatus == PAINTER_STEP_FREE)
+        //     // console.log("未参与")
+        //     GLOBAL_PAGE.saveStart()
+        // else if(GLOBAL_PAGE.data.joinStatus == PAINTER_STEP_BUSY)  
+        //     // console.log("正在参与") 
+        //     GLOBAL_PAGE.saveContinue()
 
          //正式函数   
-        // GLOBAL_PAGE.saveTempFile()
+        GLOBAL_PAGE.saveTempFile()
     },
     //1 保存为临时文件
     saveTempFile:function(){
@@ -532,7 +532,7 @@ Page({
     saveYun:function(file_path){
         console.log("2 上传到云服务器")
         var _type = file_path.split(".").pop()
-        var _tempCatId = 1
+        var _tempCatId = 1  // 需要根据storage拿到默认目录id
         wx.request({
             url: API.uploadToken(), 
             data:{
