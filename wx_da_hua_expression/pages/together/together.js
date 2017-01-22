@@ -1,7 +1,7 @@
 // pages/together/together.js
 var API = require('../../utils/api.js');
 var KEY = require('../../utils/storage_key.js');
-
+var APP = getApp()
 var GLOBAL_PAGE;
 var PAINTER_STEP_LOAD = 0;
 var PAINTER_STEP_FREE = 1;
@@ -115,8 +115,19 @@ Page({
     // 页面初始化 options为页面跳转所带来的参数
       GLOBAL_PAGE = this
     //   GLOBAL_PAGE.init()
+        //必须要登陆以后再做的事情
+      if(APP.globalData.isLogin == true)
+          GLOBAL_PAGE.onInit(option)
+      else
+          APP.login(option)
 
   },
+
+    //必须要登陆以后发起的请求，在这里完成
+    onInit:function(option){
+       //Todo 登陆过后做的请求
+    },
+
   onShow:function(options){
     // 页面初始化 options为页面跳转所带来的参数
       GLOBAL_PAGE.init()

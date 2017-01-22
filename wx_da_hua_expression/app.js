@@ -1,13 +1,16 @@
 //app.js
 var Api = require('utils/api.js');
+var Key = require('utils/storage_key.js');
 var g
+var GLOBAL_PAGE
 App({
   globalData:{
     pagePrivate:null,
     pagePublic:null,
     windowWidth:null,
     windowHeight:null,
-  },
+    isLogin:false,
+  }, 
   onLaunch: function () {
     //调用API从本地缓存中获取数据
     // var logs = wx.getStorageSync('logs') || []
@@ -15,20 +18,213 @@ App({
     // wx.setStorageSync('logs', logs)
     // this.getUserInfo()
 
-    var that =this
-    var _pixelRatio,_windowWidth,_windowHeight
-    
-    wx.getSystemInfo({
-      success: function(res) {
-        //设置屏幕宽/高
-        // console.log(res)
-        that.globalData.windowWidth = res.windowWidth
-        that.globalData.windowHeight = res.windowHeight
+        var that =this
+        GLOBAL_PAGE = this
+        var _pixelRatio,_windowWidth,_windowHeight
+        
+        wx.getSystemInfo({
+          success: function(res) {
+            //设置屏幕宽/高
+            // console.log(res)
+            that.globalData.windowWidth = res.windowWidth
+            that.globalData.windowHeight = res.windowHeight
 
-        console.log(res.windowWidth,res.windowHeight,res.pixelRatio)
-      }
-    })
+            console.log(res.windowWidth,res.windowHeight,res.pixelRatio)
+          }
+        })
+
+        // that.login()
     },
+
+    login:function(option){
+        console.log("session:", wx.getStorageSync('session') )
+        wx.login
+        ({
+            success: function (res) 
+            {
+              var _session = wx.getStorageSync('session') 
+              if (! _session  ) //检查session,不存在，为false
+                _session = "false"
+              var url = Api.userLogin()
+              console.log(res.code)
+              wx.request
+              ({  
+                url: url, 
+                method:"GET",
+                data:{
+                  js_code:res.code,
+                  session:_session,
+                },
+                success: function(res)
+                {
+                  console.log("success:")
+                  console.log(res)
+                  if (res.data.status == "true") //登陆成功
+                  {
+                      wx.setStorageSync('session', res.data.session)
+                      //Todo 初始化页面、目录
+                      // GLOBAL_PAGE.onInit()
+                      getCurrentPages()[0].onInit(option)
+
+                      //暂时专供抢画后保存图片用，日后与login合体
+                      GLOBAL_PAGE.getUserInfoRequest()
+                  }
+                  else
+                    wx.showModal({
+                      title: '网络连接失败，是否重新登陆？',
+                      content:"请确认网络是否正常",
+                      confirmText:"重新登陆",
+                      success: function(res) {
+                          if (res.confirm) {
+                              GLOBAL_PAGE.login()
+                          }
+                          else{
+                              GLOBAL_PAGE.setData({
+                                  loginStatus:false
+                              }) 
+                          }
+                      }
+                    })                
+                },
+                fail:function(res) { 
+                    wx.showModal({
+                      title: '网络连接失败，是否重新登陆？',
+                      content:'请确认网络是否正常',
+                      confirmText:"重新登陆",
+                      success: function(res) {
+                          if (res.confirm) {
+                              GLOBAL_PAGE.login()
+                          }
+                          else{
+                              GLOBAL_PAGE.setData({
+                                  loginStatus:false
+                              }) 
+                          }
+                      }
+                    }) 
+                },
+              })
+            }
+        });
+    },
+
+    getUserInfoRequest:function(){
+
+        GLOBAL_PAGE.globalData.isLogin = true
+        var url = Api.USER_INFO() 
+
+        var session = wx.getStorageSync(Key.session) 
+        if (! session  ) //检查session,不存在，为false
+        session = "false"
+        wx.request({
+            url: url, //仅为示例，并非真实的接口地址
+            method:"GET",
+            data: {
+              session: session,
+            },
+            success: function(res) {
+              var object = res.data
+              if (object.status == "true")
+              {
+                //设置selecCategory == 默认目录。
+                  wx.setStorageSync(
+                      Key.USER_INFO,
+                      object.user_info
+                  )
+              // GLOBAL_PAGE.renderCategory()
+              }
+              else
+                wx.showModal({
+                    title: '网络连接失败，请重试',
+                    showCancel:false,
+                })
+            },
+            fail:function(res){
+                wx.showModal({
+                    title: '网络连接失败，请重试',
+                    showCancel:false,
+                })
+            },
+          })
+      },
+
+  //Page：private  初始化页面的钩子
+    onInit:function( ){
+      //数据初始化 图片
+      var that = this;
+      var url = Api.imgQuery() 
+
+      var session = wx.getStorageSync(Key.session) 
+      if (! session  ) //检查session,不存在，为false
+        session = "false"
+
+      //获取表情列表
+      wx.request({
+          url: url, //仅为示例，并非真实的接口地址
+          method:"GET",
+          data: {
+            session: session,
+            category_id: 'null',
+          },
+          success: function(res) {
+            var object = res.data
+            if (object.status == "true")
+            {
+                wx.setStorageSync(
+                    Key.emoticon,
+                    object.img_list
+                )
+                // GLOBAL_PAGE.renderEmoticon()
+            }
+            else
+              wx.showModal({
+                  title: '网络连接失败，请重试',
+                  showCancel:false,
+              })
+          },
+          fail:function(res){
+              wx.showModal({
+                  title: '网络连接失败，请重试',
+                  showCancel:false,
+              })
+          },
+
+        })
+
+      //数据初始化 目录
+        url = Api.categoryQuery() 
+        wx.request({
+          url: url, //仅为示例，并非真实的接口地址
+          method:"GET",
+          data: {
+            session: session,
+          },
+          success: function(res) {
+            var object = res.data
+            if (object.status == "true")
+            {
+              //设置selecCategory == 默认目录。
+                wx.setStorageSync(
+                    Key.category,
+                    object.category_list
+                )
+            // GLOBAL_PAGE.renderCategory()
+            }
+            else
+              wx.showModal({
+                  title: '网络连接失败，请重试',
+                  showCancel:false,
+              })
+          },
+          fail:function(res){
+              wx.showModal({
+                  title: '网络连接失败，请重试',
+                  showCancel:false,
+              })
+          },
+        })
+    },
+
 
 })
 

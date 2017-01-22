@@ -202,31 +202,40 @@ Page({
             path: '/pages/private/private'
         }
     },
-  onLoad: function (param) {
+  onLoad: function (option) {
     GLOBAL_PAGE = this
-    console.log(param["category"])
+    console.log(option["category"])
   
 
-    //数据初始化 目录
-    var url = Api.categoryQuery() 
-    wx.request({
-        url: Api.categoryQuery(), //仅为示例，并非真实的接口地址
-        method:"GET",
-        data: {
-            session:  wx.getStorageSync(KEY.session),
-        },
-        success: function(res) {
-            var object = res.data
-            wx.setStorageSync(
-                KEY.category,
-                object.category_list
-            )
-            GLOBAL_PAGE.renderCategory()
-        }
-    })
-    
-    
+   
+    if(APP.globalData.isLogin == true)
+        GLOBAL_PAGE.onInit(option)
+    else
+        APP.login(option)
+
   },
+
+    //必须要登陆以后发起的请求，在这里完成
+    onInit:function(option){
+       //Todo 登陆过后做的请求
+        //数据初始化 目录
+        var url = Api.categoryQuery() 
+        wx.request({
+            url: Api.categoryQuery(), //仅为示例，并非真实的接口地址
+            method:"GET",
+            data: {
+                session:  wx.getStorageSync(KEY.session),
+            },
+            success: function(res) {
+                var object = res.data
+                wx.setStorageSync(
+                    KEY.category,
+                    object.category_list
+                )
+                GLOBAL_PAGE.renderCategory()
+            }
+        })
+        },
 
   renderCategory:function(){
     GLOBAL_PAGE.setData({category:wx.getStorageSync(KEY.category)})

@@ -9,6 +9,8 @@
 
 .title{
     margin: 6px;
+    height: 25px;
+    overflow: hidden;
 }
 .title .complete{
     color: #09bb07;
@@ -20,7 +22,9 @@
     text-align: right;
     margin-right:4px;
 }
-
+.title input{
+    width: 300rpx;
+}
 
 .snatch{
     position: absolute;
@@ -175,13 +179,16 @@ view.tool-item.selected {
     background-repeat:no-repeat;
     background-position: center;
 }
-/* 4 重新加载*/
-.box-reset{
-    background-color: #09abb2;
-}
-/* 5 添加图片*/
+
+/* 4 添加图片*/
 .box-image{
     background-color: #023b22;
+    background-image: url('../../images/gif.png')
+}
+/* 5 重新加载*/
+.box-reset{
+    background-color: #09abb2;
+    background-image: url('../../images/cancel.png')    
 }
 /* 6 完成*/
 .box-complete{
@@ -288,4 +295,31 @@ view.tool-item.selected {
     margin: 10px auto;    
     background-color: #023b22;
     border-radius: 50%;
+}
+
+
+
+/*增加选择的图片*/
+.add-paint-img{
+
+}
+.add-paint-img icon{
+    /*margin: 6px*/
+}
+.add-paint-img .bg-cache{
+    background: white;
+    box-shadow: 1px 1px 5px rgba(0, 0, 0, .3); 
+    position: absolute;
+}
+.add-paint-img .img-select{
+    /*position: absolute;*/
+    border:1px dashed black;
+}
+
+.add-paint-img .resize{
+    /*margin-right:-23px; */
+    width: 17px;
+    height:17px;
+    margin-top: 3px;
+    margin-bottom: 3px;
 }

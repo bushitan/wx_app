@@ -1,13 +1,14 @@
 {
   "pages":[
-    "pages/private/private",
-    "pages/together/together",
-    "pages/painter/painter", 
+    "pages/category/category",
     "pages/player/player",
+    "pages/painter/painter", 
+    "pages/together/together",
+    "pages/gallery/gallery",
+    "pages/private/private",
     "pages/manage/manage",
     "pages/public/public",
-    "pages/watermark/watermark",
-    "pages/category/category"
+    "pages/watermark/watermark"
   ],
   "window":{
     "backgroundTextStyle":"light",

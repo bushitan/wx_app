@@ -183,11 +183,11 @@ Page({
     console.log(option)
 
     //模拟第一个主题创立
-    // option = {
-    //     theme_id:5,
-    //     step_id:3,
-    //     step_number:1
-    // }
+    option = {
+        theme_id:11,
+        step_id:3,
+        step_number:1
+    }
     GLOBAL_PAGE.setData({
         // playerWidth:APP.globalData.windowWidth,  //播放器左边偏移量
         // playerHeight: parseInt( APP.globalData.windowWidth*0.75 ),  //播放器左边偏移量
@@ -195,30 +195,28 @@ Page({
         themeId:option.theme_id,
         stepId:option.step_id,
     })
-
-    GLOBAL_PAGE.getStepList(option.theme_id)
-    //测试数据
-    // GLOBAL_PAGE.setData({
-    //     stepList:wx.getStorageSync(KEY.stepList)
-    // })
-    
-
-    // console.log("onLoad:",e)
-
     
     wx.showNavigationBarLoading()
     wx.setNavigationBarTitle({
       title: '抢画啦',
       success:function(){
           wx.hideNavigationBarLoading()
-
-          // GLOBAL_PAGE.setData({
-          //     playerImage:option.img_url
-          // })
       }
     })
-    
+
+       
+    //必须要登陆以后再做的事情
+    if(APP.globalData.isLogin == true)
+        GLOBAL_PAGE.onInit(option)
+    else
+        APP.login(option)
   },
+
+  //必须要登陆以后发起的请求，在这里完成
+    onInit:function(option){
+        console.log("painter onInit()")
+        GLOBAL_PAGE.getStepList(option.theme_id)
+    },
   onUnload:function(){
     // 页面关闭
     clearInterval(interval)

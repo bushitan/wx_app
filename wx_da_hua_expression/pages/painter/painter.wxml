@@ -5,7 +5,7 @@
             <view class="weui-flex__item"></view>
             <view  wx:if="{{joinStatus==1}}">主题：</view>
             <view wx:if="{{joinStatus==1}}">
-                <input value="{{themeName}}" placeholder="请输入主题" bindinput="inputChange"/>
+                <input value="{{themeName}}" placeholder="请输入主题(8个字以内)" bindinput="inputChange" maxlength="8"/>
             </view>
             <view wx:else>
                 <label>{{themeName}}</label>
@@ -27,7 +27,7 @@
         <image class="paper paper-background" src="{{imgUpload}}" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;left:{{canvasLeft}}px;"  ></image>
     </view>
    
-    <view class="canvas-index"  wx:else>
+    <view class="canvas-index" hidden="{{isAddPaintImg}}"  wx:else>
         <canvas class="paper paper-background" canvas-id="paper" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;left:{{canvasLeft}}px;"  >  
         </canvas>
        
@@ -38,10 +38,39 @@
         </canvas>
     </view>
 
+    <view class="add-paint-img" hidden="{{!isAddPaintImg}}">
+
+        <!--背景图     -->
+        <image class="bg-cache" src="{{paintImgCache}}" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;left:{{canvasLeft}}px;"  ></image>
+        加载能移动的图片
+        <view id="input_view" style="position:absolute;left:{{selectOject.left}}px;top:{{selectOject.top}}px; border:1px dashed white;" >
+            <image class="img-select" src="{{paintImgSelectUrl}}" style="width:{{paintImgSelectWidth}}px;height:{{paintImgSelectHeight}}px;left:{{canvasLeft}}px;" mode="scaleToFill" 
+                catchtouchstart="touchstart" 
+                catchtouchmove="touchmove"></image>
+            <view class="weui-flex"> 
+                <view class="weui-flex__item">
+                     <icon type="cancel" catchtap="imgSelectCancle"></icon>
+                </view>
+                <view class="weui-flex__item">
+                   
+                    <icon type="success" catchtap="imgSelectDraw"></icon>
+                </view>
+                <view class="">
+                    <image  src="../../images/resize.png" class="resize" 
+                        catchtouchstart="resizeStart" 
+                        catchtouchmove="resizeMove"
+                    ></image>
+                </view>
+            </view>
+        </view>
+
+             
+     
+    </view>
+   
     <view class="snatch"  wx:if="{{ joinStatus == 3 }}" catchtap="snatch">
         画两笔      
     </view>
-    
     <view hidden="true" class="paint-tool" >
         <view class="color-picker">
             <view
@@ -139,7 +168,7 @@
         <view class="box box-color " catchtap="switchColor"  style="background-color: {{ paintColor}}"  data-param="#cc0033"></view>
         <view class="box box-pencil {{mode==1? 'box-select':''}}" catchtap="switchPencil" data-param="15"></view>
         <view class="box box-earser {{mode==2? 'box-select':''}}" bindtap="switchEraser"></view>
-        <!--<view class="box box-image" bindtap="colorSelect" data-param="#ff9900"></view>-->
+        <view class="box box-image" bindtap="imgSelect" data-param="#ff9900"></view>
         <view class="box box-reset" bindtap="resetCanvas" data-param="#ff9900"></view>
         <!--<view class="box-large box-complete" catchtap="saveToShare" data-param="#ff9900">完成</view>-->
     </view>

@@ -63,11 +63,270 @@ Page({
         canvasHeight:400,
         canvasLeft:0,
 
+        //工具栏选择详情
         colorShow:false,
         pencilShow:false,//false true
         eraserShow:false,//false true
+
+
+        //加载图片
+        paintImgCache:"",
+
+        
+        paintImgSelectUrl:"",//
+        paintImgSelectWidth:"",//
+        paintImgSelectHeight:"",//
+        ratioWH:"",//
+        isAddPaintImg:false, //是否正在增加图片，是是，隐藏canvas
+
+        selectOject:{
+            dx:0,
+            dy:0,
+            left:50,
+            top:50,
+            input_offset_x:0,
+            input_offset_y:0,
+        },
+        touchStart:{x:1,y:2}, //手指touch开始的位置 
+
+        
+        resizeStartPoint:{x:1,y:2}, //手指touch开始的位置 
+        resizeMovePoint:{x:1,y:2}, //手指touch开始的位置 
+        tempWidth:0,
+        tempHeight:0,
+    },
+
+   
+
+    onShow:function(){
+        var _img_select = wx.getStorageSync(KEY.PAINTER_IMAGE_SELECT) 
+        if( _img_select == "" ) //没有选择图片
+            return
+        else
+            wx.setStorageSync(KEY.PAINTER_IMAGE_SELECT,"")  //立马清除缓存~~避免出错
+            GLOBAL_PAGE.imgSelectMode(_img_select)
+        //正式内容
+        // var _img_select = wx.getStorageSync(KEY.PAINTER_IMAGE_SELECT) 
+        // if( _img_select == "" ) //没有选择图片
+        //     return
+        // var _ratio = parseFloat(_img_select.height / _img_select.width)
+        // var _width = 200
+        // var _height = parseInt( _width * _ratio )
+        // wx.canvasToTempFilePath({
+        //     canvasId: 'paper',
+        //     success: function success(res) {
+
+        //         GLOBAL_PAGE.setData({
+        //             isAddPaintImg:true,
+        //             paintImgCache:res.tempFilePath,
+        //             paintImgSelectUrl:_img_select.img_url,
+        //             paintImgSelectWidth:_img_select.width,
+        //             paintImgSelectHeight:_img_select.height,
+        //             ratioWH: parseFloat(_img_select.height / _img_select.width)
+        //         })
+        //     },
+        //     fail: function complete(e) {
+        //         wx.showModal({
+        //             title: '请重试',
+        //             content:'加载图片错误',
+        //             showCancel:false,
+        //             confirmText:"知道了",
+        //         }) 
+        //     },
+        //     complete: function complete(e) {
+        //        wx.showToast({
+        //             title: '添加成功',
+        //             icon: 'success',
+        //             duration: 1000
+        //         })
+        //     },
+        // });
+        //清除选择缓存
+        // wx.setStorageSync(KEY.PAINTER_IMAGE_SELECT,"") 
+       
+
+// PAINTER_IMAGE_CACHE
+//         PAINTER_IMAGE_SELECT
+    },
+
+    imgSelectMode:function(img_select){
+        var _img_select = img_select
+        var _img_url = _img_select.img_url
+        var _ratio = parseFloat(_img_select.height / _img_select.width)
+        var _width = 200
+        var _height = parseInt( _width * _ratio )
+
+        //  GLOBAL_PAGE.setData({
+        //     isAddPaintImg:true,
+        //     paintImgCache:'http://image.12xiong.top/1_20170118133000.png',
+        //     paintImgSelectUrl:_img_url,
+        //     paintImgSelectWidth:_width,
+        //     paintImgSelectHeight:_width*_ratio,
+        //     ratioWH: _ratio
+        // })
+
+        wx.canvasToTempFilePath({
+            canvasId: 'paper',
+            success: function success(res) {
+
+                // GLOBAL_PAGE.setData({
+                //     isAddPaintImg:true,
+                //     paintImgCache:res.tempFilePath,
+                //     paintImgSelectUrl:_img_select.img_url,
+                //     paintImgSelectWidth:_img_select.width,
+                //     paintImgSelectHeight:_img_select.height,
+                //     ratioWH: parseFloat(_img_select.height / _img_select.width)
+                // })
+                wx.showToast({
+                    title: '添加成功',
+                    icon: 'success',
+                    duration: 1000
+                })
+                GLOBAL_PAGE.setData({
+                    isAddPaintImg:true,           
+                    paintImgCache:res.tempFilePath,
+                    paintImgSelectUrl:_img_url,
+                    paintImgSelectWidth:_width,
+                    paintImgSelectHeight:_width*_ratio,
+                    ratioWH: _ratio
+                })
+            },
+            fail: function complete(e) {
+                wx.showModal({
+                    title: '请重试',
+                    content:'加载图片错误',
+                    showCancel:false,
+                    confirmText:"知道了",
+                }) 
+            },
+            complete: function complete(e) {
+              
+            },
+        });
+
+
+       
+    },
+     
+    //btn4_1   为画布增加图片
+    imgSelect:function(){
+        wx.navigateTo({
+            url: '../gallery/gallery'
+        })
+    },
+
+    //btn4_2  将图画到canvas
+    imgSelectDraw:function(){
+        // 下载图片
+        var img_url = GLOBAL_PAGE.data.paintImgSelectUrl
+        var https_url = "https://image.12xiong.top/" + img_url.split("/").pop()
+        wx.downloadFile({
+            url: https_url, //仅为示例，并非真实的资源
+            success: function(res) {
+                console.log(res)
+
+                const ctx = wx.createCanvasContext('paper')
+                var _canvasLeft = GLOBAL_PAGE.data.canvasLeft
+                var _titleHeight = 37  //标题固定高度
+                
+                ctx.drawImage(GLOBAL_PAGE.data.paintImgCache, 0,0,
+                    GLOBAL_PAGE.data.canvasWidth,
+                    GLOBAL_PAGE.data.canvasHeight 
+                )
+                ctx.drawImage(res.tempFilePath, 
+                    GLOBAL_PAGE.data.selectOject.left - _canvasLeft, 
+                    GLOBAL_PAGE.data.selectOject.top - _titleHeight,
+                    GLOBAL_PAGE.data.paintImgSelectWidth,
+                    GLOBAL_PAGE.data.paintImgSelectHeight 
+                )
+                ctx.draw()
+
+                 GLOBAL_PAGE.setData({
+                    isAddPaintImg:false,
+                 })
+            },
+            complete:function(res){
+                console.log(res)
+            },
+        })
+
     },
     
+    //btn4_3  取消操作
+    imgSelectCancle:function(){
+        GLOBAL_PAGE.setData({
+            isAddPaintImg:false,
+        })
+        console.log(GLOBAL_PAGE,GLOBAL_PAGE.data.isAddPaintImg)
+    },
+
+    //btn4_4  移动图片
+    touchstart:function(event){
+        GLOBAL_PAGE.setData({
+            touchStart:{
+            x:event.touches[0].clientX ,
+            y:event.touches[0].clientY 
+            }
+        })
+    },
+    //btn4_4  移动图片
+    touchmove:function(event){
+        var move_x = event.touches[0].clientX - GLOBAL_PAGE.data.touchStart.x 
+        var move_y = event.touches[0].clientY - GLOBAL_PAGE.data.touchStart.y
+
+        console.log(move_x ,move_y)
+        var watermark = GLOBAL_PAGE.data.selectOject 
+    
+        var dx = watermark.dx + move_x
+        var dy = watermark.dy + move_y
+        console.log(watermark.dx,watermark.dy,dx ,dy)
+        watermark.dx = dx 
+        watermark.dy = dy 
+        
+        watermark.left = dx - watermark.input_offset_x 
+        watermark.top = dy - watermark.input_offset_y 
+
+        GLOBAL_PAGE.setData({
+        selectOject:watermark,
+        touchStart:{
+            x:event.touches[0].clientX ,
+            y:event.touches[0].clientY 
+        }
+        })    
+    },
+
+    //btn4_5  图片缩放
+    resizeStart:function(event){
+        GLOBAL_PAGE.setData({
+            resizeStartPoint:{
+            x:event.touches[0].clientX ,
+            y:event.touches[0].clientY 
+            },
+            tempWidth:GLOBAL_PAGE.data.paintImgSelectWidth,
+            tempHeight:GLOBAL_PAGE.data.paintImgSelectHeight,
+        })
+        
+       console.log(event.touches[0].clientX,event.touches[0].clientY)
+    },
+    //btn4_6  图片缩放
+    resizeMove:function(event){
+        var start = GLOBAL_PAGE.data.resizeStartPoint
+
+        var dx = event.touches[0].clientX - start.x
+        var dy = event.touches[0].clientY - start.y
+
+        console.log(event.touches[0].clientX,event.touches[0].clientY)
+        var w = GLOBAL_PAGE.data.tempWidth + dx 
+        GLOBAL_PAGE.setData({
+           paintImgSelectWidth: w ,
+           paintImgSelectHeight: w*GLOBAL_PAGE.data.ratioWH,
+        })
+
+
+    },
+    
+
+
     //选择颜色
     chooseColor(event) {
         let paintColor = event.currentTarget.dataset.color;
@@ -120,7 +379,9 @@ Page({
         }
     },
 
-    //将画布返回初始状态
+
+
+    //btn5 将画布返回初始状态
     resetCanvas:function(){       
         wx.showModal({
             title: '画布重置',
@@ -367,22 +628,22 @@ Page({
         GLOBAL_PAGE = this
         console.log("painter:",option.aa)
 
-        //模拟，继续画的状态
-        // option = {
-        //     step_id:3,
-        //     img_url:"http://image.12xiong.top/1_20170118133253.png",
-        //     theme_name:"一起画表情"
-        // }
-
-        //设置画布大小，左偏移
+        // mode 1 长画布 设置画布大小，左偏移 
         var canvasWidth , canvasHeight
         var canvasWidth = APP.globalData.windowWidth
+        var _ratio = 0.75
         var canvasHeight = APP.globalData.windowHeight - 42 - 60
         if ( canvasWidth >= canvasHeight*0.75 )
             canvasWidth = parseInt(canvasHeight*0.75 )
         else
             canvasHeight = canvasWidth*4/3
             
+        //mode 2 方形画布
+        // var canvasWidth , canvasHeight
+        // var canvasWidth = APP.globalData.windowWidth
+        // var canvasHeight = APP.globalData.windowWidth
+        
+
         GLOBAL_PAGE.setData({
             canvasWidth: canvasWidth,
             canvasHeight: canvasHeight,
@@ -397,8 +658,6 @@ Page({
         ctx.setFillStyle('white')
         ctx.fill()
         ctx.draw()
-        // var _lastActions = ctx.getActions();
-        // global_page.updateCanvas("paper",_lastActions,true);//更新画布，得出一条线
 
         if (option.step_id){  //有themeID，已经抢到画
             GLOBAL_PAGE.setData({
@@ -413,10 +672,22 @@ Page({
         }
         else{ //未传入step_id，能创建新的画
              GLOBAL_PAGE.setData({ joinStatus:PAINTER_STEP_FREE, })
-        }
-         
+        }   
         
+        
+        //必须要登陆以后再做的事情
+        if(APP.globalData.isLogin == true)
+            GLOBAL_PAGE.onInit(option)
+        else
+            APP.login(option)
+
     },
+
+    //必须要登陆以后发起的请求，在这里完成
+    onInit:function(option){
+       //Todo 登陆过后做的请求
+    },
+
 
     //111 抢画 
     snatch:function(){
@@ -532,13 +803,32 @@ Page({
     saveYun:function(file_path){
         console.log("2 上传到云服务器")
         var _type = file_path.split(".").pop()
+
+        //获取默认目录
+        var _category_id;
+        var user_info = wx.getStorageSync('USER_INFO')
+        
+        if (user_info == ""){ //登陆失败，重新登录
+            wx.showModal({
+                title: '登陆失败',
+                content:'请重新登录',
+                showCancel:false,
+                success: function(res) {
+                    APP.login()
+                }
+            }) 
+            return
+        }else{ // 默认目录
+            _category_id = user_info.default_category_id
+        }
+
         var _tempCatId = 1  // 需要根据storage拿到默认目录id
         wx.request({
             url: API.uploadToken(), 
             data:{
                 'session': wx.getStorageSync(KEY.session),
                 "type":_type,
-                "category_id":_tempCatId ,
+                "category_id":_category_id ,
             },
             success: function(res){
                 var data = res.data
