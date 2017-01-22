@@ -14,7 +14,7 @@
             <view class="weui-flex__item share">            </view>
         </view>
     </view>
-
+    
     <!--1、下一个用户null，可以抢抢
     2、参与用户 == 下一个用户 ,
     3、下一个用户 非null ，提示nextId正在作画-->
@@ -40,7 +40,7 @@
         </view>  
     </view>
     <view class="goon " wx:elif="{{modeUser == 2}}"  catchtap="continueToPainter">继续画</view>
-     <view class="snatch " wx:if="{{modeUser == 3}}"  catchtap="snatch">画两笔</view>
+     <view class="snatch " wx:if="{{modeUser == 3}}"  catchtap="snatch">我来画</view>
     
 
 
@@ -48,10 +48,8 @@
     <view class="player" >
         <image class="bg" src="{{playerImageBg}}"  mode="aspectFit" ></image>
         <image animation="{{animationData}}" src="{{playerImage}}" mode="aspectFit" ></image>
-
         <image hidden="true" src="{{playerImagePre}}" mode="aspectFit" ></image>       
     </view>
-
     <!--动画逐帧显示-->
     <view class="frame">
         <scroll-view  scroll-x="true">

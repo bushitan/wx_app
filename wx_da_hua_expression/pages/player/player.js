@@ -68,6 +68,7 @@ Page({
         playerImage:stepList[i].img_url,
         playerImagePre:stepList[next].img_url,
       })
+      console.log(GLOBAL_PAGE.data.playerImage,GLOBAL_PAGE.data.playerImagePre)
       
   },
   same: function (){
@@ -93,11 +94,11 @@ Page({
     GLOBAL_PAGE.click()
   },
   click: function(){
-    if(lock == false)
-    {
+    // if(lock == false)
+    // {
       interval = setInterval(function() {
 
-        // console.log(j,j %2)
+        console.log(j,j %2)
         if( j %2 == 0)
         {
             GLOBAL_PAGE.setImage()
@@ -110,8 +111,8 @@ Page({
         }
         j++
     }.bind(this), 1000)
-      lock = true
-    }
+    //   lock = true
+    // }
     
   },
 
@@ -128,6 +129,7 @@ Page({
         },
         success: function(res) {
             var object = res.data
+            console.log("getStepList:",res.data)
             if (object.status == "true")
             {
                 // 判断用户当前状态
@@ -161,13 +163,17 @@ Page({
                 //开始播放
                 GLOBAL_PAGE.onPlayer()
             }
-            else
-            wx.showModal({
-                title: '网络连接失败，请重试',
-                showCancel:false,
-            })
+            else{
+                console.log("getStepList status false")
+                wx.showModal({
+                    title: '网络连接失败，请重试',
+                    showCancel:false,
+                })
+            }
+            
         },
         fail:function(res){
+            console.log("getStepList fail")
             wx.showModal({
                 title: '网络连接失败，请重试',
                 showCancel:false,
@@ -183,11 +189,7 @@ Page({
     console.log(option)
 
     //模拟第一个主题创立
-    option = {
-        theme_id:11,
-        step_id:3,
-        step_number:1
-    }
+  
     GLOBAL_PAGE.setData({
         // playerWidth:APP.globalData.windowWidth,  //播放器左边偏移量
         // playerHeight: parseInt( APP.globalData.windowWidth*0.75 ),  //播放器左边偏移量
@@ -217,6 +219,7 @@ Page({
         console.log("painter onInit()")
         GLOBAL_PAGE.getStepList(option.theme_id)
     },
+
   onUnload:function(){
     // 页面关闭
     clearInterval(interval)
@@ -246,11 +249,10 @@ Page({
                             content:object.content,
                             showCancel:false,
                         })
-                        // wx.showToast({
-                        //     title: '',
-                        //     icon: 'loading',
-                        //     duration: 1500
-                        // })
+                        
+                        //TODO 改变用户状态
+                        wx.setStorageSync(KEY.PAINTER_USER_IS_FREE,false)
+                        
                         GLOBAL_PAGE.setData({
                             joinStatus:PAINTER_STEP_BUSY,
                             themeName:object.theme_name ,
@@ -275,13 +277,18 @@ Page({
                             }
                         })
                 }
-                else
-                wx.showModal({
+                else{
+                      console.log("snatch  status false")
+                       wx.showModal({
                     title: '网络连接失败，请重试',
                     showCancel:false,
                 })
+
+                }
+               
             },
             fail:function(res){
+                console.log("snatch fail")
                 wx.showModal({
                     title: '网络连接失败，请重试',
                     showCancel:false,

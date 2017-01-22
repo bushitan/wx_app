@@ -69,7 +69,7 @@
     </view>
    
     <view class="snatch"  wx:if="{{ joinStatus == 3 }}" catchtap="snatch">
-        画两笔      
+        我来画      
     </view>
     <view hidden="true" class="paint-tool" >
         <view class="color-picker">

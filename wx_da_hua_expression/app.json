@@ -1,13 +1,13 @@
 {
   "pages":[
     "pages/together/together",
+    "pages/painter/painter", 
     "pages/private/private",
     "pages/watermark/watermark",
     "pages/public/public",
     "pages/gallery/gallery",
     "pages/category/category",
     "pages/player/player",
-    "pages/painter/painter", 
     "pages/manage/manage"
   ],
   "window":{

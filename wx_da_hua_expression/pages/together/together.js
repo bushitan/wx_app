@@ -111,7 +111,7 @@ Page({
 
       })
   },
-  onLoad:function(options){
+  onLoad:function(option){
     // 页面初始化 options为页面跳转所带来的参数
       GLOBAL_PAGE = this
     //   GLOBAL_PAGE.init()
@@ -126,12 +126,14 @@ Page({
     //必须要登陆以后发起的请求，在这里完成
     onInit:function(option){
        //Todo 登陆过后做的请求
+       GLOBAL_PAGE.init()   //更新状态
     },
 
   onShow:function(options){
     // 页面初始化 options为页面跳转所带来的参数
+    if(APP.globalData.isLogin == true) //用户登陆以后，onshow页面自动刷新
       GLOBAL_PAGE.init()
-
+   
   },
   //页面初始化
   init:function(){ 
@@ -190,73 +192,3 @@ Page({
   },
 
 })
-
-
-
-// joinRequest:function(){
-//       wx.request({
-//         url: API.PAINTER_JOIN_LATEST(), 
-//         method:"GET",
-//         data: {
-//           session: wx.getStorageSync(KEY.session),
-//         },
-//         success: function(res) {
-//           var object = res.data
-//           if (object.status == "true")
-//           {
-//               //正在加入游戏
-//               if (object.is_join == "true"){
-//                   GLOBAL_PAGE.setData({
-//                     userStatus:1,
-//                     joinThemeID:object.theme_id, //正在参加的主题id
-//                   })
-//                   wx.setStorageSync(
-//                       KEY.PAINTER_USER_STATUS,
-//                       {
-//                         userStatus:1,
-//                         joinThemeID:object.theme_id, 
-//                       }
-//                   )
-//               }
-//               else{ //未加入游戏
-//                   GLOBAL_PAGE.setData({
-//                     userStatus:0, 
-//                   })
-//                   wx.setStorageSync(
-//                       KEY.PAINTER_USER_STATUS,
-//                       {
-//                         userStatus:0,
-//                         joinThemeID:null, 
-//                       }
-//                   )
-//               }
-
-//               //TOdo 设置可画按钮
-//           }
-//           else
-//           wx.showModal({
-//               title: '网络连接失败，请重试',
-//               showCancel:false,
-//           })
-//         },
-//         fail:function(res){
-//             wx.showModal({
-//                 title: '网络连接失败，请重试',
-//                 showCancel:false,
-//             })
-//         },
-
-//       })
-//   },
-
-
-
-// wx.setStorageSync(
-//     KEY.PAINTER_STEP_CURRENT_INFO,
-//     {
-//         status:PAINTER_STEP_BUSY,
-//         theme_name:object.theme_name ,
-//         step_id: object.step_id,
-//         img_url:object.img_url,
-//     }
-// )

@@ -44,10 +44,10 @@ Page({
 
         themeName:"一起画表情",
         // imgUpload:"", 
-        imgUpload:"http://image.12xiong.top/1_20170114161832.jpg", 
+        imgUpload:"", 
+        // imgUpload:"http://image.12xiong.top/1_20170114161832.jpg", 
         // imgUpload:"http://image.12xiong.top/1_20170114161832.png", 
-        //
-        // sharePreview
+
 
         uploadStatus: 0 , // 0 未上传上传  1 上传成功
 
@@ -72,7 +72,6 @@ Page({
         //加载图片
         paintImgCache:"",
 
-        
         paintImgSelectUrl:"",//
         paintImgSelectWidth:"",//
         paintImgSelectHeight:"",//
@@ -89,11 +88,12 @@ Page({
         },
         touchStart:{x:1,y:2}, //手指touch开始的位置 
 
-        
         resizeStartPoint:{x:1,y:2}, //手指touch开始的位置 
         resizeMovePoint:{x:1,y:2}, //手指touch开始的位置 
         tempWidth:0,
         tempHeight:0,
+
+        isDraw:false, //是否画过，没画过无法保存
     },
 
    
@@ -441,7 +441,10 @@ Page({
 
 
      onLancetStart({ touches }) {
+         GLOBAL_PAGE.setData({isDraw:true}) //已经画过
 
+
+        console.log("onLancetStart")
         const  clientX = touches[0]['x'];
         const  clientY = touches[0]['y'];
         this.startX = clientX
@@ -453,14 +456,21 @@ Page({
         point_lancet.push([this.startX, this.startY])
         point_lancet.push([clientX, clientY])
 
+        //点击画点
+        this.movements = [clientX, clientY];//记录上一个点
+        this.lastActions = context_lancet.getActions();
+        point_lancet.push([clientX, clientY])//柳叶刀记录
+        // wx.drawCanvas({ canvasId: "paper-lancet", actions:this.lastActions});
+        // this.updateCanvas("paper-lancet",this.lastActions,"false");//更新画布，得出一条线
+        // this.updateCanvas("paper-lancet",this.lastActions,true);//更新画布，得出一条线
     },
     
     onLancetMove({ touches }) {
         const  clientX = touches[0]['x'];
         const  clientY = touches[0]['y'];
-        // console.log(clientX, clientY)
+        
+        console.log("onLancetMove")
         global_page.modeLancet(this,context_lancet,clientX,clientY)
-
 
         this.movements = [clientX, clientY];//记录上一个点
         this.lastActions = context_lancet.getActions();
@@ -473,7 +483,7 @@ Page({
 
     onLancetEnd() {   
         var that = this
-     
+        console.log("onLancetEnd")
         var paintColor ,paintSize
         if (GLOBAL_PAGE.data.mode == MODE_PENCIL){
             paintColor = GLOBAL_PAGE.data.paintColor
@@ -627,66 +637,80 @@ Page({
         global_page = this
         GLOBAL_PAGE = this
         console.log("painter:",option.aa)
-
-        // mode 1 长画布 设置画布大小，左偏移 
-        var canvasWidth , canvasHeight
-        var canvasWidth = APP.globalData.windowWidth
-        // var _ratio = 0.75
-        // var canvasHeight = APP.globalData.windowHeight - 42 - 60
-        var canvasHeight = APP.globalData.windowHeight - 31 - 60
-        if ( canvasWidth >= canvasHeight*0.75 )
-            canvasWidth = parseInt(canvasHeight*0.75 )
-        else
-            canvasHeight = canvasWidth*4/3
-            
-        //mode 2 方形画布
-        // var canvasWidth , canvasHeight
-        // var canvasWidth = APP.globalData.windowWidth
-        // var canvasHeight = APP.globalData.windowWidth
         
-
-        GLOBAL_PAGE.setData({
-            canvasWidth: canvasWidth,
-            canvasHeight: canvasHeight,
-            canvasLeft: (APP.globalData.windowWidth-canvasWidth)/2,
+        wx.getSystemInfo({
+          success: function(res) {
+            //设置屏幕宽/高
+            // console.log(res)
+            // that.globalData.windowWidth = res.windowWidth
+            // that.globalData.windowHeight = res.windowHeight
+            load(res.windowWidth,res.windowHeight)
+          }
         })
-        
-        context_lancet = wx.createContext() //创建模拟画布
 
-        //填充画布 为白色
-        const ctx = wx.createCanvasContext('paper')
-        ctx.rect(0,0, canvasWidth,canvasHeight)
-        ctx.setFillStyle('white')
-        ctx.fill()
-        ctx.draw()
+        function load(windowWidth,windowHeight){
+            // mode 1 长画布 设置画布大小，左偏移 
+            var canvasWidth , canvasHeight
+            var canvasWidth = windowWidth
+            // var _ratio = 0.75
+            // var canvasHeight = APP.globalData.windowHeight - 42 - 60
+            // var canvasHeight = APP.globalData.windowHeight - 37 - 60
+            var canvasHeight = windowHeight- 45 - 60 //width全部铺满
+            if ( canvasWidth >= canvasHeight*0.75 )
+                canvasWidth = parseInt(canvasHeight*0.75 )
+            else
+                canvasHeight = canvasWidth*4/3
+                
+            //mode 2 方形画布
+            // var canvasWidth , canvasHeight
+            // var canvasWidth = APP.globalData.windowWidth
+            // var canvasHeight = APP.globalData.windowWidth
+            
 
-        if (option.step_id){  //有themeID，已经抢到画
             GLOBAL_PAGE.setData({
-                joinStatus:option.join_status, 
-                stepId:option.step_id,
-                imgUrl:option.img_url,
-                themeName:option.theme_name,
+                canvasWidth: canvasWidth,
+                canvasHeight: canvasHeight,
+                canvasLeft: (windowWidth-canvasWidth)/2,
             })
-            //下载画
-            GLOBAL_PAGE.down()
-            //Todo 查询这幅画是可抢，还是继续画
+            
+            context_lancet = wx.createContext() //创建模拟画布
+
+            //填充画布 为白色
+            const ctx = wx.createCanvasContext('paper')
+            ctx.rect(0,0, canvasWidth,canvasHeight)
+            ctx.setFillStyle('white')
+            ctx.fill()
+            ctx.draw()
+
+            if (option.step_id){  //有themeID，已经抢到画
+                GLOBAL_PAGE.setData({
+                    joinStatus:option.join_status, 
+                    stepId:option.step_id,
+                    imgUrl:option.img_url,
+                    themeName:option.theme_name,
+                })
+                //下载画
+                GLOBAL_PAGE.down()
+                //Todo 查询这幅画是可抢，还是继续画
+            }
+            else{ //未传入step_id，能创建新的画
+                GLOBAL_PAGE.setData({ joinStatus:PAINTER_STEP_FREE, })
+            }   
+            
+            
+            //必须要登陆以后再做的事情
+            if(APP.globalData.isLogin == true)
+                GLOBAL_PAGE.onInit(option)
+            else
+                APP.login(option)
         }
-        else{ //未传入step_id，能创建新的画
-             GLOBAL_PAGE.setData({ joinStatus:PAINTER_STEP_FREE, })
-        }   
-        
-        
-        //必须要登陆以后再做的事情
-        if(APP.globalData.isLogin == true)
-            GLOBAL_PAGE.onInit(option)
-        else
-            APP.login(option)
 
     },
 
     //必须要登陆以后发起的请求，在这里完成
     onInit:function(option){
        //Todo 登陆过后做的请求
+       
     },
 
 
@@ -714,9 +738,14 @@ Page({
                             content:object.content,
                             showCancel:false,
                         })
+                        
+                        //Todo 改变用户状态 
+                        wx.setStorageSync(KEY.PAINTER_USER_IS_FREE,false)
                         GLOBAL_PAGE.setData({
                             joinStatus: PAINTER_STEP_BUSY,
+                           
                         })
+                      
                     }
                     
                     else  //抢画失败，继续
@@ -857,16 +886,19 @@ Page({
                                     duration: 2000
                                 })
                                 // 上传成功，更新本地库
+                                console.log("emoticon:")
                                 var e = wx.getStorageSync(KEY.emoticon)
-                                e.splice(0, 0, data.img); //从第一位插入
-                                // e.push(data.img)
-                                wx.setStorageSync(KEY.emoticon,e)
-                                // GLOBAL_PAGE.renderEmoticon()
+                                if(e != ""){ //本地有emoticon 的缓存
+                                    e.splice(0, 0, data.img); //从第一位插入
+                                    wx.setStorageSync(KEY.emoticon,e)
+                                }
+                                  
                                 GLOBAL_PAGE.setData({
                                     imgUpload:data.img.yun_url,
-                                    uploadStatus:1 //上传成功
+                                    uploadStatus:1, //上传成功
+                                    isDraw:false  //,用户又回到没画过的状态
                                 })    
-                                
+                                  // console.log("isDraw:",GLOBAL_PAGE.data.isDraw)
                                 if(GLOBAL_PAGE.data.joinStatus == PAINTER_STEP_FREE){
                                     console.log("未参与")
                                     GLOBAL_PAGE.saveStart()
@@ -928,13 +960,14 @@ Page({
         data: {
             session: wx.getStorageSync(KEY.session),
             theme_name:GLOBAL_PAGE.data.themeName,
-            // img_url:GLOBAL_PAGE.data.imgUpload,
-            img_url:"http://image.12xiong.top/1_20170118133253.png",
+            img_url:GLOBAL_PAGE.data.imgUpload,
+            // img_url:"http://image.12xiong.top/1_20170118133253.png",
         },
         success: function(res) {
             var object = res.data
             if (object.status == "true")
             {
+                //Todo 改变状态为free
                 console.log(object.img_url)
                 GLOBAL_PAGE.setData({
                     joinStatus:PAINTER_STEP_SHARE,
@@ -979,9 +1012,8 @@ Page({
             session: wx.getStorageSync(KEY.session),
             // theme_name:GLOBAL_PAGE.data.themeName,
             step_id:GLOBAL_PAGE.data.stepId,
-            // img_url:GLOBAL_PAGE.data.imgUpload,
-            // img_url:"http://image.12xiong.top/1_20170118133253.png", //图1
-            img_url:"http://image.12xiong.top/1_20170114161832.jpg", //图图2
+            img_url:GLOBAL_PAGE.data.imgUpload,
+            // img_url:"http://image.12xiong.top/1_20170114161832.jpg", //图图2
         },
         success: function(res) {
             var object = res.data
@@ -993,6 +1025,8 @@ Page({
                     //     stepId:object.step_id,
                     //     stepNumber:object.step_number,
                     // })
+                    //Todo 改变状态为free
+                    wx.setStorageSync(KEY.PAINTER_USER_IS_FREE,true)
                     GLOBAL_PAGE.setData({
                         joinStatus:PAINTER_STEP_SHARE,
                         themeName:object.theme_name ,
@@ -1025,26 +1059,39 @@ Page({
       })
     },
     
-    //4 导航：播放器 
-    navigateToPlayer: function() {
-        // var url = '../player/player?img_url=' + GLOBAL_PAGE.data.imgUpload
-        // var url = '../player/player?img_url=http://image.12xiong.top/1_20170118133253.png'
-        // GLOBAL_PAGE.setData({
-        //             themeId:object.theme_id,
-        //             stepId:object.step_id,
-        //             stepNumber:object.step_number,
-        //         })
-        var url = '../player/player?theme_id='+GLOBAL_PAGE.data.themeId+ "&step_id="+GLOBAL_PAGE.data.stepId + "&step_number="+GLOBAL_PAGE.data.stepNumber
-        wx.redirectTo({
-            url: url
-        })
-    },
+    // //4 导航：播放器 
+    // navigateToPlayer: function() {
+    //     // var url = '../player/player?img_url=' + GLOBAL_PAGE.data.imgUpload
+    //     // var url = '../player/player?img_url=http://image.12xiong.top/1_20170118133253.png'
+    //     // GLOBAL_PAGE.setData({
+    //     //             themeId:object.theme_id,
+    //     //             stepId:object.step_id,
+    //     //             stepNumber:object.step_number,
+    //     //         })
+    //     var url = '../player/player?theme_id='+GLOBAL_PAGE.data.themeId+ "&step_id="+GLOBAL_PAGE.data.stepId + "&step_number="+GLOBAL_PAGE.data.stepNumber
+    //     wx.redirectTo({
+    //         url: url
+    //     })
+    // },
 
     // 5 返回一起画主页
     navigateToSwitch: function() {
-        wx.switchTab({
-            url: "../together/together"
-        })
+        if(GLOBAL_PAGE.data.isDraw) //已开始画，返回首页做提示
+            wx.showModal({
+                title: '温馨提示',
+                content:'未“完成”的作品无法保存，确定离开画板？',
+                success: function(res) {
+                    if (res.confirm) {
+                        wx.switchTab({
+                            url: "../together/together"
+                        })
+                    }
+                }
+            }) 
+        else
+            wx.switchTab({
+                url: "../together/together"
+            })
     },
 });
 
