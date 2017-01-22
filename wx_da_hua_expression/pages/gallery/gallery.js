@@ -83,8 +83,7 @@ Page({
     var _view = {
       displayMenu:false,
     }
-    View.Switch.Init(this,_view)
-    View.Switch.Work()
+
 
     //渲染表情和目录
     GLOBAL_PAGE.renderEmoticon()
@@ -112,7 +111,7 @@ Page({
   /**
    *  页面加载
    */
-  onLoad: function (param) {   
+  onLoad: function (option) {   
 
     GLOBAL_PAGE = this
     //1 page初始化高宽
@@ -126,15 +125,12 @@ Page({
 
     console.log("session:", wx.getStorageSync('session') )
 
-    if(wx.getStorageSync(KEY.emoticon)=="" || wx.getStorageSync(KEY.emoticon)==""  ){
-        //加载图片
-        GLOBAL_PAGE.onInit()
-    }else{
-        //直接
-        GLOBAL_PAGE.renderEmoticon()
-        GLOBAL_PAGE.renderCategory()
-    }
-    
+    //必须要登陆以后再做的事情
+    if(APP.globalData.isLogin == true)
+        GLOBAL_PAGE.onInit(option)
+    else
+        APP.login(option)
+  
     // // 300ms后，隐藏loading
     setTimeout(function() {
           GLOBAL_PAGE.setData({
@@ -143,9 +139,23 @@ Page({
     }, 500)
   },
 
-  
+    //必须要登陆以后发起的请求，在这里完成
+  onInit:function(option){
+      //Todo 登陆过后做的请求
+      if(wx.getStorageSync(KEY.emoticon)=="" || wx.getStorageSync(KEY.emoticon)==""  ){
+          //加载图片
+          GLOBAL_PAGE.init()
+      }else{
+          //直接
+          GLOBAL_PAGE.renderEmoticon()
+          GLOBAL_PAGE.renderCategory()
+      }
+    
+  },
+
+
   //Page：private  初始化页面的钩子
-  onInit:function( ){
+  init:function( ){
     //数据初始化 图片
     var that = this;
     var url = Api.imgQuery() 

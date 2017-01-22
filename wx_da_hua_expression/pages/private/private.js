@@ -1042,7 +1042,7 @@ Page({
   /**
    *  页面加载
    */
-  onLoad: function (param) {   
+  onLoad: function (option) {   
 
     GLOBAL_PAGE = this
     //1 page初始化高宽
@@ -1061,9 +1061,13 @@ Page({
     console.log("session:", wx.getStorageSync('session') )
 
     //正式登陆
-    GLOBAL_PAGE.login()
+    // GLOBAL_PAGE.login()
 
-
+    //必须要登陆以后再做的事情
+      if(APP.globalData.isLogin == true)
+          GLOBAL_PAGE.onInit(option)
+      else
+          APP.login(option)
     
     // // 300ms后，隐藏loading
     setTimeout(function() {
@@ -1073,85 +1077,13 @@ Page({
     }, 500)
   },
 
-  reLogin:function(){
-      GLOBAL_PAGE.setData({
-          loginStatus:true
-      }) 
-      GLOBAL_PAGE.login()
-  },
-  login:function(){
-     //2 user loginlogin
-     
-    console.log("session:", wx.getStorageSync('session') )
-    wx.login
-    ({
-        success: function (res) 
-        {
-          
-          var _session = wx.getStorageSync('session') 
-          if (! _session  ) //检查session,不存在，为false
-            _session = "false"
-         
-          var url = Api.userLogin()
-          console.log(res.code)
-          wx.request
-          ({  
-            url: url, 
-            method:"GET",
-            data:{
-              js_code:res.code,
-              session:_session,
-            },
-            success: function(res)
-            {
-              console.log("success:")
-              console.log(res)
-              if (res.data.status == "true") //登陆成功
-              {
-                wx.setStorageSync('session', res.data.session)
-                //Todo 初始化页面、目录
-                GLOBAL_PAGE.onInit()
-              }
-              else
-                wx.showModal({
-                  title: '网络连接失败，是否重新登陆？',
-                  content:"请确认网络是否正常",
-                  confirmText:"重新登陆",
-                  success: function(res) {
-                      if (res.confirm) {
-                          GLOBAL_PAGE.login()
-                      }
-                      else{
-                          GLOBAL_PAGE.setData({
-                              loginStatus:false
-                          }) 
-                      }
-                  }
-                })                
-            },
-            fail:function(res) { 
-                wx.showModal({
-                  title: '网络连接失败，是否重新登陆？',
-                  content:'请确认网络是否正常',
-                  confirmText:"重新登陆",
-                  success: function(res) {
-                      if (res.confirm) {
-                          GLOBAL_PAGE.login()
-                      }
-                       else{
-                          GLOBAL_PAGE.setData({
-                              loginStatus:false
-                          }) 
-                      }
-                  }
-                }) 
-            },
-          })
-        }
-    });
+  //必须要登陆以后发起的请求，在这里完成
+  onInit:function(option){
+      //Todo 登陆过后做的请求
+      GLOBAL_PAGE.init()
   },
   //Page：private  初始化页面的钩子
-  onInit:function( ){
+  init:function( ){
     //数据初始化 图片
     var that = this;
     var url = Api.imgQuery() 
@@ -1225,25 +1157,6 @@ Page({
             })
         },
       })
-
-
-      //Todo 目录和图片共同获取，如果失败，执行下边重新登操作
-      //  wx.showModal({
-      //     title: '网络连接失败，是否重新登陆？',
-      //     content:"请确认网络是否正常",
-      //     confirmText:"重新登陆",
-      //     success: function(res) {
-      //         if (res.confirm) {
-      //             GLOBAL_PAGE.login()
-      //         }
-      //         else{
-      //             GLOBAL_PAGE.setData({
-      //                 loginStatus:false
-      //             }) 
-      //         }
-      //     }
-      //   })   
-    
   },
 
    //导航：水印页面

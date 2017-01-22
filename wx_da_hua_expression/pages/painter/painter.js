@@ -631,8 +631,9 @@ Page({
         // mode 1 长画布 设置画布大小，左偏移 
         var canvasWidth , canvasHeight
         var canvasWidth = APP.globalData.windowWidth
-        var _ratio = 0.75
-        var canvasHeight = APP.globalData.windowHeight - 42 - 60
+        // var _ratio = 0.75
+        // var canvasHeight = APP.globalData.windowHeight - 42 - 60
+        var canvasHeight = APP.globalData.windowHeight - 31 - 60
         if ( canvasWidth >= canvasHeight*0.75 )
             canvasWidth = parseInt(canvasHeight*0.75 )
         else

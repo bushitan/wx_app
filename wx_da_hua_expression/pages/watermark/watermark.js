@@ -288,11 +288,11 @@ Page({
         }
     },
 
-  onLoad: function (options) {
+  onLoad: function (option) {
     // options = {imgurl: "http://image.12xiong.top/19_20161230100647.jpg", width: "1280", height: "822"}
-    var opt_imgurl = options.imgurl
-    var opt_w = options.width
-    var opt_h = options.height
+    var opt_imgurl = option.imgurl
+    var opt_w = option.width
+    var opt_h = option.height
 
     var stage_w = APP.globalData.windowWidth - 4*2,
         stage_h = 300,
@@ -325,5 +325,16 @@ Page({
       maxFontSize:maxFontSize,
     })
     
+      //必须要登陆以后再做的事情
+      if(APP.globalData.isLogin == true)
+          GLOBAL_PAGE.onInit(option)
+      else
+          APP.login(option)
   },
+
+  //必须要登陆以后发起的请求，在这里完成
+    onInit:function(option){
+       //Todo 登陆过后做的请求
+    },
+
 })

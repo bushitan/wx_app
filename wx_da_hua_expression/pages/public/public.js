@@ -523,7 +523,7 @@ Page({
     })
   },
 
-  onLoad: function (options) {
+  onLoad: function (option) {
     GLOBAL_PAGE = this
     //1 page初始化高宽
     console.log("width:" , APP.globalData.windowWidth)
@@ -533,122 +533,73 @@ Page({
       windowHeight:APP.globalData.windowHeight - 90, //搜索框高度48px,短语框高度42px
     })
 
-    if( options.keyword != null && options.keyword != "" && options.keyword != undefined )
+    if( option.keyword != null && option.keyword != "" && option.keyword != undefined )
         GLOBAL_PAGE.setData({
-            keyword:options.keyword,
+            keyword:option.keyword,
         })
     
 
     //从分享页面进入public，session为空，先登录
-    var session = wx.getStorageSync(KEY.session) 
-    if(session == "")
-         GLOBAL_PAGE.login()
-    
-  
-    //获取表情列表
-     wx.request({
-        url: Api.tagQuery(), //查询Tag
-        method:"GET",
-        data: {
-          session: "ds9"
-        },
-        success: function(res) {
-          var object = res.data
-          if(object.status == "true"){
-              GLOBAL_PAGE.setData({category:res.data.category_list})
-              GLOBAL_PAGE.createTag(res.data.category_list)
-              var c_list = []
-              for (var i=0;i< res.data.category_list.length;i++)
-              {
-                  c_list.push(res.data.category_list[i].name)  
-              }
-              
-              GLOBAL_PAGE.adTitleText() //获取广告信息
-              
-          }
-          else
-            wx.showModal({
-                title: '网络连接失败，请重试',
-                showCancel:false,
-            })
-          
-        },
-        fail:function(res){
-            wx.showModal({
-                title: '网络连接失败，请重试',
-                showCancel:false,
-            })
-        },
-        complete:function(){
-            GLOBAL_PAGE.setData({
-              indexShow:false,
-              shortcutShow:true,
-              emoticonShow:true,
-              loadShow:false,
-            }) 
-        }
-    })
+    // var session = wx.getStorageSync(KEY.session) 
+    // if(session == "")
+    //      GLOBAL_PAGE.login()
+
+    //  必须要登陆以后再做的事情
+        if(APP.globalData.isLogin == true)
+            GLOBAL_PAGE.onInit(option)
+        else
+            APP.login(option)
   },
   
-  login:function(){
-     //2 user loginlogin
-     
-    console.log("session:", wx.getStorageSync('session') )
-    wx.login
-    ({
-        success: function (res) 
-        {
-          
-          var _session = wx.getStorageSync('session') 
-          if (! _session  ) //检查session,不存在，为false
-            _session = "false"
-         
-          var url = Api.userLogin()
-          console.log(res.code)
-          wx.request
-          ({  
-            url: url, 
+
+  //必须要登陆以后发起的请求，在这里完成
+    onInit:function(option){
+       //Todo 登陆过后做的请求
+       
+        //获取表情列表
+        wx.request({
+            url: Api.tagQuery(), //查询Tag
             method:"GET",
-            data:{
-              js_code:res.code,
-              session:_session,
+            data: {
+            session: "ds9"
             },
-            success: function(res)
-            {
-              console.log("success:")
-              console.log(res)
-              if (res.data.status == "true") //登陆成功
-              {
-                wx.setStorageSync('session', res.data.session)
-                //Todo 初始化页面、目录
-                // GLOBAL_PAGE.onInit()
-              }
-              else
+            success: function(res) {
+            var object = res.data
+            if(object.status == "true"){
+                GLOBAL_PAGE.setData({category:res.data.category_list})
+                GLOBAL_PAGE.createTag(res.data.category_list)
+                var c_list = []
+                for (var i=0;i< res.data.category_list.length;i++)
+                {
+                    c_list.push(res.data.category_list[i].name)  
+                }
+                
+                GLOBAL_PAGE.adTitleText() //获取广告信息
+                
+            }
+            else
                 wx.showModal({
-                  title: '网络连接失败，是否重新登陆？',
-                  content:"请确认网络是否正常,可进入“我的”重新登录",
-                  confirmText:"重新登陆",
-                  success: function(res) {
-                      if (res.confirm) {
-                          GLOBAL_PAGE.login()
-                      }
-                  }
-                })                
+                    title: '网络连接失败，请重试',
+                    showCancel:false,
+                })
+            
             },
-            fail:function(res) { 
+            fail:function(res){
                 wx.showModal({
-                  title: '网络连接失败，是否重新登陆？',
-                  content:'请确认网络是否正常,可进入“我的”重新登录',
-                  confirmText:"重新登陆",
-                  success: function(res) {
-                      if (res.confirm) {
-                          GLOBAL_PAGE.login()
-                      }
-                  }
+                    title: '网络连接失败，请重试',
+                    showCancel:false,
+                })
+            },
+            complete:function(){
+                GLOBAL_PAGE.setData({
+                indexShow:false,
+                shortcutShow:true,
+                emoticonShow:true,
+                loadShow:false,
                 }) 
-            },
-          })
-        }
-    });
-  },
+            }
+        })
+    },
+
+    
 })
