@@ -102,9 +102,11 @@ Page({
         var _img_select = wx.getStorageSync(KEY.PAINTER_IMAGE_SELECT) 
         if( _img_select == "" ) //没有选择图片
             return
-        else
+        else{
             wx.setStorageSync(KEY.PAINTER_IMAGE_SELECT,"")  //立马清除缓存~~避免出错
             GLOBAL_PAGE.imgSelectMode(_img_select)
+        }
+           
         //正式内容
         // var _img_select = wx.getStorageSync(KEY.PAINTER_IMAGE_SELECT) 
         // if( _img_select == "" ) //没有选择图片
@@ -156,32 +158,16 @@ Page({
         var _width = 200
         var _height = parseInt( _width * _ratio )
 
-        //  GLOBAL_PAGE.setData({
-        //     isAddPaintImg:true,
-        //     paintImgCache:'http://image.12xiong.top/1_20170118133000.png',
-        //     paintImgSelectUrl:_img_url,
-        //     paintImgSelectWidth:_width,
-        //     paintImgSelectHeight:_width*_ratio,
-        //     ratioWH: _ratio
-        // })
-
+        
+        //保存当前画布，加载新图片的时候，要画作背景
         wx.canvasToTempFilePath({
             canvasId: 'paper',
             success: function success(res) {
-
-                // GLOBAL_PAGE.setData({
-                //     isAddPaintImg:true,
-                //     paintImgCache:res.tempFilePath,
-                //     paintImgSelectUrl:_img_select.img_url,
-                //     paintImgSelectWidth:_img_select.width,
-                //     paintImgSelectHeight:_img_select.height,
-                //     ratioWH: parseFloat(_img_select.height / _img_select.width)
+                // wx.showToast({
+                //     title: '添加成功',
+                //     icon: 'success',
+                //     duration: 2000
                 // })
-                wx.showToast({
-                    title: '添加成功',
-                    icon: 'success',
-                    duration: 1000
-                })
                 GLOBAL_PAGE.setData({
                     isAddPaintImg:true,           
                     paintImgCache:res.tempFilePath,
@@ -203,9 +189,6 @@ Page({
               
             },
         });
-
-
-       
     },
      
     //btn4_1   为画布增加图片
@@ -215,16 +198,25 @@ Page({
         })
     },
 
-    //btn4_2  将图画到canvas
+    //btn4_2 确认 将图画到canvas
     imgSelectDraw:function(){
         // 下载图片
+        wx.showToast({
+            title: '图片正在下载...',
+            icon: 'loading',
+            duration: 2000
+        })
         var img_url = GLOBAL_PAGE.data.paintImgSelectUrl
         var https_url = "https://image.12xiong.top/" + img_url.split("/").pop()
         wx.downloadFile({
             url: https_url, //仅为示例，并非真实的资源
             success: function(res) {
                 console.log(res)
-
+                wx.showToast({
+                    title: '图片下载成功',
+                    icon: 'success',
+                    duration: 2000
+                })
                 const ctx = wx.createCanvasContext('paper')
                 var _canvasLeft = GLOBAL_PAGE.data.canvasLeft
                 var _titleHeight = 37  //标题固定高度
@@ -244,6 +236,16 @@ Page({
                  GLOBAL_PAGE.setData({
                     isAddPaintImg:false,
                  })
+            },
+            fail:function(res){
+                wx.showModal({
+                    title: '下载图片失败',
+                    content:'请重新选择图片',
+                    showCancel:false,
+                }) 
+                GLOBAL_PAGE.setData({
+                    isAddPaintImg:false,
+                })
             },
             complete:function(res){
                 console.log(res)
@@ -599,12 +601,40 @@ Page({
          
         console.log(url)
         //下载
+        wx.showToast({
+            title: '图片正在下载...',
+            icon: 'loading',
+            duration: 2000
+        })
         wx.downloadFile({
             url: https_url, //仅为示例，并非真实的资源
             success: function(res) {
                 console.log(res)
+                wx.showToast({
+                    title: '图片下载成功',
+                    icon: 'success',
+                    duration: 2000
+                })
                 ctx.drawImage(res.tempFilePath, 0, 0,GLOBAL_PAGE.data.canvasWidth, GLOBAL_PAGE.data.canvasHeight)
                 ctx.draw()
+            },
+            fail:function(res){
+                wx.showModal({
+                    title: '下载图片失败',
+                    content:'请点击“继续画”，重新进入',
+                    showCancel:false,
+                    success:function(){
+                        wx.switchTab({
+                            url: "../together/together",
+                            success: function (e) {  
+                                var page = getCurrentPages().pop();  
+                                if (page == undefined || page == null) return;  
+                                page.onShow();  
+                            }  
+                        })
+                    },
+                }) 
+                
             },
             complete:function(res){
                 console.log(res)
@@ -730,24 +760,38 @@ Page({
                 {
                     console.log(object)
                     //设置播放step
-                    
-                    if( object.is_success== "true")
+                    // 已经抢过画了，不能抢，要继续画
+                     if(object.is_success== "no_snatch"){
+                        wx.showModal({
+                            title: object.title,
+                            content:object.content,
+                            confirmText:"继续画",
+                            success: function(res) {
+                                if (res.confirm) {
+                                    var _join_status = object.join_status
+                                    var _step_id = object.step_id
+                                    var _img_url = object.img_url
+                                    var _theme_name = object.theme_name
+                                    var url = '../painter/painter?step_id='+_step_id+'&img_url='+_img_url+'&theme_name='+_theme_name +'&join_status='+_join_status
+                                    wx.redirectTo({
+                                         url: url
+                                    })
+                                }
+                            }
+                        })
+                    }
+                    // 抢画成功
+                    else  if( object.is_success== "true")
                     {
                         wx.showModal({
                             title: object.title,
                             content:object.content,
                             showCancel:false,
                         })
-                        
-                        //Todo 改变用户状态 
-                        wx.setStorageSync(KEY.PAINTER_USER_IS_FREE,false)
                         GLOBAL_PAGE.setData({
                             joinStatus: PAINTER_STEP_BUSY,
-                           
                         })
-                      
                     }
-                    
                     else  //抢画失败，继续
                         wx.showModal({
                             title: object.title,
@@ -1026,7 +1070,7 @@ Page({
                     //     stepNumber:object.step_number,
                     // })
                     //Todo 改变状态为free
-                    wx.setStorageSync(KEY.PAINTER_USER_IS_FREE,true)
+                    // wx.setStorageSync(KEY.PAINTER_USER_IS_FREE,true)
                     GLOBAL_PAGE.setData({
                         joinStatus:PAINTER_STEP_SHARE,
                         themeName:object.theme_name ,
@@ -1083,16 +1127,27 @@ Page({
                 success: function(res) {
                     if (res.confirm) {
                         wx.switchTab({
-                            url: "../together/together"
+                            url: "../together/together",
+                            success: function (e) {  
+                                var page = getCurrentPages().pop();  
+                                if (page == undefined || page == null) return;  
+                                page.onShow();  
+                            }  
                         })
                     }
                 }
             }) 
         else
             wx.switchTab({
-                url: "../together/together"
+                url: "../together/together",
+                success: function (e) {  
+                    var page = getCurrentPages().pop();  
+                    if (page == undefined || page == null) return;  
+                    page.onShow();  
+                }  
             })
     },
+    
 });
 
 

@@ -22,6 +22,7 @@ Page({
 
   //判断用户是否正在参与活动
   joinRequest:function(){
+      console.log("together joinRequest")
       wx.request({
           url: API.PAINTER_JOIN_LATEST(), 
           method:"GET",
@@ -30,6 +31,7 @@ Page({
           },
           success: function(res) {
               var object = res.data
+              console.log("together joinRequest success" , object)
               if (object.status == "true")
               { 
                 //设置用户名称，等级
@@ -80,7 +82,8 @@ Page({
 
   //参与过的活动
   selfThemeQuery:function(){
-          wx.request({
+    console.log("together selfThemeQuery ")
+      wx.request({
         url: API.PAINTER_THEME_QUERY(), 
         method:"GET",
         data: {
@@ -88,6 +91,7 @@ Page({
         },
         success: function(res) {
           var object = res.data
+          console.log("together selfThemeQuery success" , object)
           if (object.status == "true")
           {
               console.log(object)
@@ -131,9 +135,10 @@ Page({
 
   onShow:function(options){
     // 页面初始化 options为页面跳转所带来的参数
+    console.log("together onShow")
     if(APP.globalData.isLogin == true) //用户登陆以后，onshow页面自动刷新
       GLOBAL_PAGE.init()
-   
+      
   },
   //页面初始化
   init:function(){ 

@@ -132,7 +132,7 @@ Page({
             console.log("getStepList:",res.data)
             if (object.status == "true")
             {
-                // 判断用户当前状态
+                // 判断用户当前状态，这里的step_list没有逆序- - 
                 var _creat_user_id = object.step_list[object.step_list.length-1].user_id
                 var _join_user_id = object.step_list[0].user_id
                 var _next_user_id = object.step_list[0].next_user_id
@@ -147,10 +147,10 @@ Page({
 
                 //如果是继续画，提前给stepId和imgUrl,可以直接跳转了
                 var _step_id = object.step_list[object.step_list.length-1].step_id
-                var _img_url =  object.step_list[object.step_list.length-1].img_url
+                var _img_url =  object.step_list[object.step_list.length-1].img_url 
                 //设置播放step
                 GLOBAL_PAGE.setData({
-                    stepList: object.step_list,       
+                    stepList: object.step_list.reverse(), //逆序~~要统一      
                     creatUserId:_creat_user_id, //创建者id
                     joinUserId:_join_user_id,  //已参与用户id
                     nextUserId:_next_user_id, //下一个用户
@@ -241,18 +241,32 @@ Page({
                 {
                     console.log(object)
                     //设置播放step
-                    
-                    if( object.is_success== "true")
+                    if(object.is_success== "no_snatch"){
+                        wx.showModal({
+                            title: object.title,
+                            content:object.content,
+                            confirmText:"继续画",
+                            success: function(res) {
+                                if (res.confirm) {
+                                    var _join_status = object.join_status
+                                    var _step_id = object.step_id
+                                    var _img_url = object.img_url
+                                    var _theme_name = object.theme_name
+                                    var url = '../painter/painter?step_id='+_step_id+'&img_url='+_img_url+'&theme_name='+_theme_name +'&join_status='+_join_status
+                                    wx.redirectTo({
+                                         url: url
+                                    })
+                                }
+                            }
+                        })
+                    }
+                    else if( object.is_success== "true")
                     {
                         wx.showModal({
                             title: object.title,
                             content:object.content,
                             showCancel:false,
                         })
-                        
-                        //TODO 改变用户状态
-                        wx.setStorageSync(KEY.PAINTER_USER_IS_FREE,false)
-                        
                         GLOBAL_PAGE.setData({
                             joinStatus:PAINTER_STEP_BUSY,
                             themeName:object.theme_name ,
@@ -316,7 +330,12 @@ Page({
     // 5 返回一起画主页
     navigateToSwitch: function() {
         wx.switchTab({
-            url: "../together/together"
+            url: "../together/together",
+            success: function (e) {  
+                var page = getCurrentPages().pop();  
+                if (page == undefined || page == null) return;  
+                page.onShow();  
+            }  
         })
     },
 
