@@ -82,7 +82,7 @@ Page({
   },
   onPlayer:function(){
     animation = wx.createAnimation({
-      duration: 700,
+      duration: 300,
         timingFunction: 'ease',
     })
 
@@ -113,7 +113,7 @@ Page({
             i++
         }
         j++
-    }.bind(this), 1000)
+    }.bind(this), 300)
     //   lock = true
     // }
     

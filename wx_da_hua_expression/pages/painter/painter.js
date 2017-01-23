@@ -24,10 +24,10 @@ Page({
         colors: ['#666666','#000000', '#FF0000', '#FFA500', 
         '#FFFF00', '#008000', '#0000FF', '#ffffff',],
         //选中的颜色
-        paintColor: '#666666',
+        paintColor: '#000000',
         // sizes:[1,5,10,15,20,30,40],
         sizes:[1,2,3,4,6,8,10,15,20,30,40],
-        paintSize:1,
+        paintSize:4,
         
         eraserSizes:[1,2,3,4,6,8,10,15,20,30,40],
         eraserColor: '#ffffff', //切换橡皮擦，临时保存颜色
@@ -43,7 +43,7 @@ Page({
 
         themeName:"一起画表情",
         // imgUpload:"", 
-        imgUpload:"", 
+        // imgUpload:"", 
         // imgUpload:"http://image.12xiong.top/1_20170114161832.jpg", 
         // imgUpload:"http://image.12xiong.top/1_20170114161832.png", 
 
@@ -627,6 +627,7 @@ Page({
                 console.log(GLOBAL_PAGE.data.canvasHeight)
                 ctx.drawImage(res.tempFilePath, 0, 0,GLOBAL_PAGE.data.canvasWidth, GLOBAL_PAGE.data.canvasHeight)
                 ctx.draw()
+                console.log("ctx:",ctx)
             },
             fail:function(res){
                 wx.hideToast()
@@ -803,10 +804,11 @@ Page({
                 var object = res.data
                 if (object.status == "true")
                 {
-                    console.log(object)
+                    console.log("snatch success",object)
                     //设置播放step
                     // 已经抢过画了，不能抢，要继续画
                      if(object.is_success== "no_snatch"){
+                        console.log("snatch success no_snatch")
                         wx.showModal({
                             title: object.title,
                             content:object.content,
@@ -828,16 +830,50 @@ Page({
                     // 抢画成功
                     else  if( object.is_success== "true")
                     {
+                        console.log("snatch success true")
+                        // GLOBAL_PAGE.setData({
+                        //     joinStatus: PAINTER_STEP_BUSY,
+                        // })
                         wx.showModal({
                             title: object.title,
                             content:object.content,
                             showCancel:false,
+                            confirmText:"现在画",
+                            success: function(res) {
+                                if (res.confirm) {
+                                    var _join_status = PAINTER_STEP_BUSY
+                                    var _step_id = object.step_id
+                                    var _img_url = object.img_url
+                                    var _theme_name = object.theme_name
+                                    var url = '../painter/painter?step_id='+_step_id+'&img_url='+_img_url+'&theme_name='+_theme_name +'&join_status='+_join_status
+                                    wx.redirectTo({
+                                         url: url
+                                    })
+                                }
+                            }
                         })
-                        GLOBAL_PAGE.setData({
-                            joinStatus: PAINTER_STEP_BUSY,
-                        })
+                        // wx.showModal({
+                        //     title: object.title,
+                        //     content:object.content,
+                        //     showCancel:false,
+                        // })
+                        
+                        // setTimeout(function() {
+                        //     GLOBAL_PAGE.down()
+                        // }, 1000)
+    //                     console.log(GLOBAL_PAGE.data.stepId)
+    //                     console.log(GLOBAL_PAGE.data.imgUrl)
+    //                     console.log(GLOBAL_PAGE.data.themeName)
+    //                     console.log(PAINTER_STEP_BUSY)
+    //                      var url = '../painter/painter?step_id='+GLOBAL_PAGE.data.stepId+'&img_url='+GLOBAL_PAGE.data.imgUrl+'&theme_name='+GLOBAL_PAGE.data.themeName +'&join_status='+PAINTER_STEP_BUSY
+    // wx.redirectTo({
+    //   url: url
+    // })
+                        
                     }
                     else  //抢画失败，继续
+                    {
+                        console.log("snatch success false")
                         wx.showModal({
                             title: object.title,
                             content:object.content,
@@ -851,6 +887,7 @@ Page({
                                 }
                             }
                         })
+                    }
                 }
                 else
                 wx.showModal({
@@ -916,7 +953,7 @@ Page({
                     title: '您的大作正在上传...',
                     icon: 'loading',
                     duration: 10000,
-                    mask:true,
+                    // mask:true,
                 })
                 //上传云后台
                 GLOBAL_PAGE.saveYun(res.tempFilePath)
@@ -984,9 +1021,9 @@ Page({
                             console.log(data)
                             if(data.status == "true")
                             {   
-                                wx.hideToast()
+                                // wx.hideToast()
                                 wx.showToast({
-                                    title: '完成，分享朋友帮画两笔',
+                                    title: '完成，让朋友来画两笔',
                                     icon: 'success',
                                     duration: 2000
                                 })
@@ -999,7 +1036,7 @@ Page({
                                 }
                                   
                                 GLOBAL_PAGE.setData({
-                                    imgUpload:data.img.yun_url,
+                                    imgUrl:data.img.yun_url,
                                     uploadStatus:1, //上传成功
                                     isDraw:false  //,用户又回到没画过的状态
                                 })    
@@ -1058,14 +1095,14 @@ Page({
     // 3.1 创建新画
     saveStart:function(){
         
-        console.log(GLOBAL_PAGE.data.imgUpload)
+        console.log(GLOBAL_PAGE.data.imgUrl)
         wx.request({
         url: API.PAINTER_START(), 
         method:"GET",
         data: {
             session: wx.getStorageSync(KEY.session),
             theme_name:GLOBAL_PAGE.data.themeName,
-            img_url:GLOBAL_PAGE.data.imgUpload,
+            img_url:GLOBAL_PAGE.data.imgUrl,
             // img_url:"http://image.12xiong.top/1_20170118133253.png",
         },
         success: function(res) {
@@ -1117,7 +1154,7 @@ Page({
             session: wx.getStorageSync(KEY.session),
             // theme_name:GLOBAL_PAGE.data.themeName,
             step_id:GLOBAL_PAGE.data.stepId,
-            img_url:GLOBAL_PAGE.data.imgUpload,
+            img_url:GLOBAL_PAGE.data.imgUrl,
             // img_url:"http://image.12xiong.top/1_20170114161832.jpg", //图图2
         },
         success: function(res) {
