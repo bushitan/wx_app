@@ -5,10 +5,10 @@
  */ 
 
 // var host_url = 'http://127.0.0.1:8000/'; 
-var host_url = 'http://192.168.199.203:8000/'; 
+// var host_url = 'http://192.168.199.203:8000/'; 
 // var host_url = 'http://192.168.200.21:8000/'; 
 // var host_url = 'https://www.12xiong.top/wx_app/';
-// var host_url = 'https://www.12xiong.top/';
+var host_url = 'https://www.12xiong.top/';
 // var host_url = 'http://www.12xiong.top/';
 
 /*
@@ -299,6 +299,10 @@ function _painterJoinLatest(){
 }	
 
 //5、判断用户是否正在参加活动
+function _painterColor(){
+	return host_url+'painter/color/';
+}	
+//5、判断用户是否正在参加活动
 function _userInfo(){
 	return host_url+'user/info/';
 }	
@@ -314,7 +318,7 @@ module.exports = {
 	PAINTER_THEME_QUERY:_painterThemeQuery,
 	PAINTER_STEP_QUERY:_painterStepQuery,
 	PAINTER_JOIN_LATEST:_painterJoinLatest,
-
+	PAINTER_COLOR:_painterColor,
 
 	//上传接口
 	uploadImg:_uploadImg,

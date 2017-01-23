@@ -115,6 +115,14 @@ Page({
 
       })
   },
+
+  onShareAppMessage: function () { 
+      return {
+          title: '一起画吉吧',
+          desc: '邀你来添两笔吉祥如意',
+          path: '/pages/together/together'
+      }
+  },
   onLoad:function(option){
     // 页面初始化 options为页面跳转所带来的参数
       GLOBAL_PAGE = this

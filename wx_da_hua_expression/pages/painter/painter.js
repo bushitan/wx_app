@@ -21,8 +21,7 @@ var MODE_ERASER = 2;
 Page({
     data: {
         //调色盘列表
-        colors: ['#666666', '#FF0000', '#FFA500', 
-        '#FFFF00', '#008000', '#0000FF', '#ffffff','#666666', '#FF0000', '#FFA500', 
+        colors: ['#666666','#000000', '#FF0000', '#FFA500', 
         '#FFFF00', '#008000', '#0000FF', '#ffffff',],
         //选中的颜色
         paintColor: '#666666',
@@ -94,6 +93,9 @@ Page({
         tempHeight:0,
 
         isDraw:false, //是否画过，没画过无法保存
+
+        lockSnatch:false,
+        lockComplete:false,
     },
 
    
@@ -599,45 +601,45 @@ Page({
         // var https_url = "https://oje4rojkn.qnssl.com/" + url.split("/").pop()
         var https_url = "https://image.12xiong.top/" + url.split("/").pop()
          
-        console.log(url)
+        console.log("in down:",url,https_url)
         //下载
         wx.showToast({
             title: '图片正在下载...',
             icon: 'loading',
-            duration: 2000
+            duration: 10000,
+            mask:true,
         })
         wx.downloadFile({
             url: https_url, //仅为示例，并非真实的资源
             success: function(res) {
+                console.log("down downloadFile success:")
                 console.log(res)
+                wx.hideToast()
                 wx.showToast({
                     title: '图片下载成功',
                     icon: 'success',
                     duration: 2000
                 })
+                
+                console.log(https_url)
+                console.log(res.tempFilePath)
+                console.log(GLOBAL_PAGE.data.canvasWidth)
+                console.log(GLOBAL_PAGE.data.canvasHeight)
                 ctx.drawImage(res.tempFilePath, 0, 0,GLOBAL_PAGE.data.canvasWidth, GLOBAL_PAGE.data.canvasHeight)
                 ctx.draw()
             },
             fail:function(res){
+                wx.hideToast()
                 wx.showModal({
                     title: '下载图片失败',
-                    content:'请点击“继续画”，重新进入',
+                    content:'请点击左上角“<-”退出再继续画',
                     showCancel:false,
-                    success:function(){
-                        wx.switchTab({
-                            url: "../together/together",
-                            success: function (e) {  
-                                var page = getCurrentPages().pop();  
-                                if (page == undefined || page == null) return;  
-                                page.onShow();  
-                            }  
-                        })
-                    },
                 }) 
                 
             },
             complete:function(res){
                 console.log(res)
+                
             },
         })
     },
@@ -648,16 +650,22 @@ Page({
         //抢画分享，stepId已改变，进入新的step直接抢 ；
         //画到一半，未保存分享，stepId为改变，进入之前抢的界面；用户抢失败
         if( status == PAINTER_STEP_SHARE || status == PAINTER_STEP_BUSY) {
+            console.log(
+                GLOBAL_PAGE.data.stepId,
+                GLOBAL_PAGE.data.imgUrl,
+                GLOBAL_PAGE.data.themeName,
+                PAINTER_STEP_SHARE
+                )
             return {
-                title: '大家一起画',
-                desc: '你的好友邀请你来画画',
+                title: '一起画吉吧',
+                desc: '邀你来添两笔吉祥如意',
                 path: '/pages/painter/painter?step_id='+GLOBAL_PAGE.data.stepId+'&img_url='+GLOBAL_PAGE.data.imgUrl+'&theme_name='+GLOBAL_PAGE.data.themeName +'&join_status='+PAINTER_STEP_SHARE
             }
         }
         else {
             return {
-                title: '大家一起画',
-                desc: '你的好友邀请你来画画',
+                title: '一起画吉吧',
+                desc: '邀你来添两笔吉祥如意',
                 path: '/pages/painter/painter'
             }
         }
@@ -720,6 +728,7 @@ Page({
                     themeName:option.theme_name,
                 })
                 //下载画
+                console.log("下载画画：",GLOBAL_PAGE.data.stepId,GLOBAL_PAGE.data.imgUrl)
                 GLOBAL_PAGE.down()
                 //Todo 查询这幅画是可抢，还是继续画
             }
@@ -727,7 +736,9 @@ Page({
                 GLOBAL_PAGE.setData({ joinStatus:PAINTER_STEP_FREE, })
             }   
             
-            
+            //更新画笔颜色
+            GLOBAL_PAGE.getNewColor()
+
             //必须要登陆以后再做的事情
             if(APP.globalData.isLogin == true)
                 GLOBAL_PAGE.onInit(option)
@@ -743,9 +754,43 @@ Page({
        
     },
 
+    getNewColor:function(){ //在线获取颜色列表
+        wx.request({
+            url: API.PAINTER_COLOR(), 
+            method:"GET",
+            success: function(res) {
+                       
+        //      colors: ['#666666','#000000', '#FF0000', '#FFA500', 
+        // '#FFFF00', '#008000', '#0000FF', '#ffffff',],
+        // //选中的颜色
+        // paintColor: '#666666',
+                var object = res.data
+                GLOBAL_PAGE.setData({
+                    colors:object.colors,
+                    paintColor:object.paint_color
+                })
+            },
+        })
+    },
 
     //111 抢画 
     snatch:function(){
+        //防止多次点抢
+        if (GLOBAL_PAGE.data.lockSnatch){
+            wx.showModal({
+                title: "抢太快了",
+                content:"请休息几秒再抢抢~",
+                confirmText:"知道了",
+                showCancel:false,
+            })
+            return
+        }
+        GLOBAL_PAGE.setData({ lockSnatch:true})
+        setTimeout(function() {
+             GLOBAL_PAGE.setData({ lockSnatch:false})
+        }, 5000)
+
+
         wx.request({
             url: API.PAINTER_SNATCH(), 
             method:"GET",
@@ -835,7 +880,21 @@ Page({
             })
             return
         }
-            
+         //防止多次点抢
+        if (GLOBAL_PAGE.data.lockComplete){
+            wx.showModal({
+                title: "点太快了",
+                content:"请休息几秒再提交~",
+                confirmText:"知道了",
+                showCancel:false,
+            })
+            return
+        }
+        GLOBAL_PAGE.setData({ lockComplete:true})
+        setTimeout(function() {
+             GLOBAL_PAGE.setData({ lockComplete:false})
+        }, 5000)
+
         //测试函数
         // if(GLOBAL_PAGE.data.joinStatus == PAINTER_STEP_FREE)
         //     // console.log("未参与")
@@ -856,7 +915,8 @@ Page({
                 wx.showToast({
                     title: '您的大作正在上传...',
                     icon: 'loading',
-                    duration: 1000
+                    duration: 10000,
+                    mask:true,
                 })
                 //上传云后台
                 GLOBAL_PAGE.saveYun(res.tempFilePath)
@@ -924,6 +984,7 @@ Page({
                             console.log(data)
                             if(data.status == "true")
                             {   
+                                wx.hideToast()
                                 wx.showToast({
                                     title: '完成，分享朋友帮画两笔',
                                     icon: 'success',

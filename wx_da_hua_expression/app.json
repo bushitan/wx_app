@@ -1,8 +1,8 @@
 {
   "pages":[
-    "pages/together/together",
-    "pages/painter/painter", 
     "pages/private/private",
+    "pages/painter/painter", 
+    "pages/together/together",
     "pages/watermark/watermark",
     "pages/public/public",
     "pages/gallery/gallery",
@@ -42,9 +42,9 @@
     
   },
   "networkTimeout": {
-    "request": 300000,
-    "uploadFile":300000,
-    "downloadFile": 300000
+    "request": 30000,
+    "uploadFile":30000,
+    "downloadFile": 15000
   },
   "debug": true
 }

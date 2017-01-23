@@ -37,6 +37,9 @@ Page({
     playerWidth:0,  //播放器左边偏移量
     playerHeight:0,  //播放器左边偏移量
     playerLeft:0,  //播放器左边偏移量
+
+
+    lockSnatch:false, //snatch锁锁，防止点太多
   },
   show:function (){
       animation.opacity(1).step()
@@ -182,6 +185,13 @@ Page({
 
       })
   },
+  onShareAppMessage: function () { 
+        return {
+            title: '一起画吉吧',
+            desc: '邀你来添两笔吉祥如意',
+            path: '/pages/player/player?theme_id='+GLOBAL_PAGE.data.themeId
+        }
+    },
 
   onLoad:function(option){
     GLOBAL_PAGE = this
@@ -227,6 +237,21 @@ Page({
 
     //111 抢画 
     snatch:function(){
+        if (GLOBAL_PAGE.data.lockSnatch){
+            wx.showModal({
+                title: "抢太快了",
+                content:"请休息几秒再抢抢~",
+                confirmText:"知道了",
+                showCancel:false,
+            })
+            return
+        }
+        GLOBAL_PAGE.setData({ lockSnatch:true})
+        setTimeout(function() {
+             GLOBAL_PAGE.setData({ lockSnatch:false})
+        }, 5000)
+
+
         wx.request({
             url: API.PAINTER_SNATCH(), 
             method:"GET",
@@ -292,7 +317,7 @@ Page({
                         })
                 }
                 else{
-                      console.log("snatch  status false")
+                    console.log("snatch  status false")
                        wx.showModal({
                     title: '网络连接失败，请重试',
                     showCancel:false,
