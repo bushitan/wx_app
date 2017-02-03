@@ -235,3 +235,10 @@ App({
 //       "iconPath":"images/icon_smile.png",
 //       "selectedIconPath":"images/icon_big_hot.png"
 //     }
+
+// ,{
+//       "pagePath": "pages/together/together",
+//       "text": "一起画",
+//       "iconPath":"images/icon_smile.png",
+//       "selectedIconPath":"images/icon_big_hot.png"
+//     }

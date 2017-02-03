@@ -19,7 +19,7 @@ Page({
     //显示控制
     isUpload:false,
     selectCategoryShow:false,
-    joinShow:true, //显示拼接框
+    joinShow:false, //显示拼接框
 
     // 上传图片数量
     uploadNum:{count:9,finish:0},
@@ -52,6 +52,7 @@ Page({
     // 手机设备信息，均已rpx为标准
     windowWidth:0,
     windowHeight:0,
+    joinHeight:0,
 
     //页面渲染数据
     emoticon:[],
@@ -343,10 +344,11 @@ Page({
   },
 
   /** 5 菜单-分享 */
-  menuShare:function(){
+  menuShare:function(e){
     // Menu.Option.Share( GLOBAL_PAGE.data.selectEmoticon )
 
-      var current = GLOBAL_PAGE.data.selectEmoticon.yun_url
+      // var current = GLOBAL_PAGE.data.selectEmoticon.yun_url
+      var current = e.currentTarget.dataset.yun_url
       var urls = []
       var e = GLOBAL_PAGE.data.emoticon
       for ( var i = 0;i<e.length;i++)
@@ -444,7 +446,7 @@ Page({
     //删除后，menu框隐藏
   },
 
-  /** 8 菜单-分组 */
+   /** 8 菜单-分组 */
   menuMoveCategory:function(){
     var list = []
     for (var i=0;i<GLOBAL_PAGE.data.category.length;i++)
@@ -632,8 +634,9 @@ Page({
   },
    
   //10 设置join的的1，2幅图片
-  joinSet:function(e){
-      var action  = e.currentTarget.dataset.action
+  joinSet:function(action){
+      // var action  = e.currentTarget.dataset.action
+      var action  = action
       var joinImg = GLOBAL_PAGE.data.joinImg 
       var select = GLOBAL_PAGE.data.selectEmoticon 
 
@@ -678,7 +681,7 @@ Page({
   },
 
   joinCancel:function(){
-      GLOBAL_PAGE.setData({joinShow:false})
+      GLOBAL_PAGE.setData({joinShow:false,joinHeight:0})
   },
 
 
@@ -1050,8 +1053,10 @@ Page({
     console.log("height:" , APP.globalData.windowHeight)
     GLOBAL_PAGE.setData({
       windowWidth:APP.globalData.windowWidth,
-      windowHeight:APP.globalData.windowHeight - 42,  //category框高度42px
+      windowHeight:APP.globalData.windowHeight - 42,  //category框高度42px ,join框高度160 || 0
       categoryScrollWidth:APP.globalData.windowWidth - 102,
+
+      // joinHeight
       // windowHeight:APP.globalData.windowHeight - 84,  //category框高度42px
       // windowHeight:app.globalData.windowHeight - 48,
     })
@@ -1274,6 +1279,55 @@ Page({
     })
       
   },
+
+  getEmoticon:function(img_id){
+      var emoticon = GLOBAL_PAGE.data.emoticon
+      for( var i =0 ; i<emoticon.length ; i++)
+        if(img_id == emoticon[i].img_id)
+          return emoticon[i]
+  },
+
+  actionWatermark: function(yun_url,width,height) {
+    var url = '../watermark/watermark?imgurl='+yun_url+"&width="+width +"&height=" + height 
+
+    wx.navigateTo({
+      url: url
+    })
+  },
+
+  followEvent:function(e){
+      var select_id = e.currentTarget.dataset.img_id
+
+      var _e = GLOBAL_PAGE.getEmoticon(select_id)
+      GLOBAL_PAGE.setData({selectEmoticon:_e})
+
+      console.log(_e.yun_url)
+      wx.showActionSheet({
+        itemList: ['拼接','水印', '分组','删除'],
+        // itemList: ['图片'],
+        success: function(res) {
+          if (!res.cancel) {
+            if(res.tapIndex == 0 || res.tapIndex =='0'){ //拼接
+                GLOBAL_PAGE.setData({joinShow:true,joinHeight:164})
+                GLOBAL_PAGE.joinSet(1)
+            }
+            if(res.tapIndex == 1 || res.tapIndex =='1'){ //水印
+                GLOBAL_PAGE.actionWatermark(_e.yun_url,_e.width,_e.height)
+            }
+            if(res.tapIndex == 2 || res.tapIndex =='2'){ //分组
+                GLOBAL_PAGE.menuMoveCategory()
+            }
+            if(res.tapIndex == 3 || res.tapIndex =='3'){ //删除
+                GLOBAL_PAGE.menuDelete()
+            }
+              
+          }
+        }
+      })
+  },
+
+
+ 
 
 
 })

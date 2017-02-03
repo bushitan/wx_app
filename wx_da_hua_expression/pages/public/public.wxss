@@ -76,3 +76,42 @@
 .scroll-load .nav__index {
     color:#576b95
 }
+
+.emoticon-wall__public{
+    width:100%;
+}
+.emoticon-grids__public{
+    overflow: hidden;
+}
+.emoticon-grid-3__public {
+  position: relative;
+  float: left;
+  padding:  10px;
+  width: 33.333333333%;
+  box-sizing: border-box;
+}
+.emoticon-grid__icon-3__public {
+  display: block;
+  width: 200rpx;
+  height: 200rpx;
+  margin: 0 auto;
+  box-shadow: 0px 3px 6px -2px rgba(0,0,0,0.3);
+  background-color: #EBEBEB;
+  padding:4px;
+}
+.emoticon-wall__public .emoticon-image__public{
+    background-color: #EBEBEB;
+}
+.follow__btn {
+    float: right;
+    margin: 0px;
+    /*padding: 6px 0px 0px;*/
+}
+
+.follow__btn .favorit{
+    display:block;
+
+    width: 23px;
+    height: 23px; 
+    background-color: #EBEBEB;
+}

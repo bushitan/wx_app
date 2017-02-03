@@ -20,7 +20,7 @@ function emoticon(page,emoticon,add){
             //临时将地址指向image.12xiong.top
             _list[i]["yun_url"] = "http://image.12xiong.top/" + _list[i]["yun_url"].split("/").pop()
             //静态压缩图
-            _list[i]["static_url"] = _list[i]["yun_url"] + "?imageMogr2/thumbnail/72x72/format/jpg" 
+            _list[i]["static_url"] = _list[i]["yun_url"] + "?imageMogr2/thumbnail/96x96/format/jpg" 
 
             //Todo 根据size 拿缩略图
             var _size =  _list[i]["size"]

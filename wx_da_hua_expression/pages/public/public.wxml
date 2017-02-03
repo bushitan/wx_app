@@ -118,8 +118,8 @@
     </view>
 
     <!--emoticon表情显示列表-->
-    <scroll-view class="emoticon-wall" scroll-y="true" style="height:{{windowHeight}}px;"                             scroll-top="{{emoticonScrollTop}}" bindscrolltolower="scrollTolower" data-action="scrollTolower"  hidden="{{!emoticonShow}}" >
-        <view class="emoticon-grids">
+    <scroll-view class="emoticon-wall__public" scroll-y="true" style="height:{{windowHeight}}px;"                             scroll-top="{{emoticonScrollTop}}" bindscrolltolower="scrollTolower" data-action="scrollTolower"  hidden="{{!emoticonShow}}" >
+        <view class="emoticon-grids__public">
             <!--页眉-->
             <view class="weui-footer footer__bottom"> 
                 <view class="weui-footer__links">      
@@ -128,13 +128,15 @@
                 <view class="weui-footer__text"></view>
             </view>
             <block wx:for-items="{{emoticon}}"  wx:for-item="emoticon">
-                <navigator url="" class="emoticon-grid-3" hover-class="weui-grid_active"
-                catchtap="onMenu"  mode="aspectFit" data-id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}" data-category_id="{{emoticon.category_id}}"  data-size="{{emoticon.size}}" data-static_url="{{emoticon.static_url}}"   data-yun_url="{{emoticon.yun_url}}" data-menu_type="{{emoticon.menu_type}}" >
-                <image class="emoticon-grid__icon-3 emoticon-image" src="{{emoticon.thumbnail_url}}" background-size="cover" mode="aspectFit" />
-                    <!--<view class="weui-grid__label">Grid</view>-->
-                    <image wx:if="{{ emoticon.menu_type == 4 ? true :false}}" class="emoticon-grid__mark " src="../../images/mp4.png"></image>
-                <image wx:if="{{ emoticon.menu_type == 1 ? true :false}}" class="emoticon-grid__mark " src="../../images/gif.png"></image>
-                </navigator>
+                <view  class="emoticon-grid-3__public"  >
+                    <view class="follow__btn" catchtap="menuCollect" data-img_id="{{emoticon.img_id}}">
+                        <image class="favorit" src="../../images/ic_action_favorite.png"></image>
+                    </view>
+                    <view   hover-class="weui-grid_active"
+                    catchtap="menuShare"  mode="aspectFit"  data-yun_url="{{emoticon.yun_url}}" >
+                        <image class="emoticon-grid__icon-3__public emoticon-image__public" src="{{emoticon.thumbnail_url}}" background-size="cover" mode="aspectFit" />
+                    </view>
+                </view>
             </block>
         </view>
         <!--<view class="space-64"></view>-->

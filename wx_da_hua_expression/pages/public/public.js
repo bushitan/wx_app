@@ -85,9 +85,9 @@ Page({
   },
 
   // 4 图片分享
-  menuShare:function(){
-
-        var current = GLOBAL_PAGE.data.selectEmoticon.yun_url
+  menuShare:function(e){
+        var current = e.currentTarget.dataset.yun_url
+        // var current = GLOBAL_PAGE.data.selectEmoticon.yun_url
         var urls = []
         var e = GLOBAL_PAGE.data.emoticon
         for ( var i = 0;i<e.length;i++)
@@ -115,7 +115,7 @@ Page({
   },
 
   // 5 菜单收藏按钮，可以收藏多张 
-  menuCollect:function(){
+  menuCollect:function(e){
     
     if( wx.getStorageSync('session') == ""  )
     {
@@ -127,7 +127,11 @@ Page({
     }
 
     // 5.1 去除重复搜藏
-    var select_id = GLOBAL_PAGE.data.selectEmoticon.id
+    
+    var select_id = e.currentTarget.dataset.img_id
+
+    // var select_id = GLOBAL_PAGE.data.selectEmoticon.id
+
     var emoticon = wx.getStorageSync(KEY.emoticon)
     for(var i=0;i<emoticon.length;i++)
     {
@@ -146,7 +150,7 @@ Page({
           method:"GET",
           data: {
             session: wx.getStorageSync(KEY.session),
-            img_id: GLOBAL_PAGE.data.selectEmoticon.id,
+            img_id: select_id,
           },
           success: function(res) {
              console.log("collect success:",res.data)

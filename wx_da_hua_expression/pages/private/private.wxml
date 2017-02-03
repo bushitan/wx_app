@@ -3,38 +3,16 @@
 <view class="page"  >
 
     <!--目录-->
-    <!--<view class="weui-flex page__bd_spacing category">
-        <view class=""> 
-            <label catchtap="selectCategory" data-select_category_id="" class=" {{selectCategory.category_id == null ? 'select' : 'unselect'}} ">
-             <label class=" font">全选</label>
-            </label> 
-        </view>    
-        <view class="weui-flex__item"> 
-            <scroll-view  scroll-x="true"  >
-                <block wx:for="{{category}}" 
-                    wx:for-item="c_name">
-                    <label catchtap="selectCategory"  data-select_category_id="{{c_name.category_id}}" class="{{selectCategory.category_id == c_name.category_id ? 'select' : 'unselect'}} ">
-                        <label class=" font">{{c_name.name}}</label>
-                    </label>
-                </block>
-            </scroll-view>
-        </view>
-        <view class=""> 
-            <image src="../../images/ic_action_add.png" catchtap="navigateToCategory"  ></image>
-        </view> 
-    </view>-->
     <view class=" category">
         <view class="all"> 
             <label catchtap="selectCategory" data-select_category_id="" class=" {{selectCategory.category_id == null ? 'select' : 'unselect'}} font">全选</label> 
         </view>    
-        <!--<view class=""> -->
             <scroll-view  scroll-x="true" style="width:{{categoryScrollWidth}}px;"  >
                 <block wx:for="{{category}}" 
                     wx:for-item="c_name">
                     <label catchtap="selectCategory"  data-select_category_id="{{c_name.category_id}}" class="{{selectCategory.category_id == c_name.category_id ? 'select' : 'unselect'}} font">{{c_name.name}}</label>
                 </block>
             </scroll-view>
-        <!--</view>-->
         <view class="add"> 
             <image src="../../images/ic_action_add.png" catchtap="navigateToCategory"  ></image>
         </view> 
@@ -129,38 +107,7 @@
 
 
 
-            <!--按钮栏  join拼接 临时取消  disabled="{{joinImg.status == 2?false:true}}" -->
-            <!--<view class="join-new "  hidden="{{!joinShow}}">
-                <view class="space-6">  </view>
-                <view class="weui-flex ">
-                    <view class="weui-flex__item">
-                        <button size="mini" catchtap="joinSet" data-action="1">表情一</button>
-                    </view>
-                    <view class="weui-flex__item"> 
-                        <button size="mini" catchtap="joinSet" data-action="2">表情二</button>
-                    </view>
-                    <view class="weui-flex__item">
-                        <button size="mini" loading="{{isUpload}}" catchtap="joinConfirm" data-action="" type="primary" >拼接</button>
-                    </view>
-                </view>
-                
-                <view class="weui-flex ">
-                    <view class="weui-flex__item">  
-                        <image  class= "image" src="{{joinImg.first}}" catchtap="joinPreview" data-img_url="{{joinImg.first}}" mode="aspectFit" ></image> 
-                    </view>
-                    <view class="weui-flex__item"> 
-                        <image  class= "image" src="{{joinImg.seconde}}" catchtap="joinPreview" data-img_url="{{joinImg.seconde}}" mode="aspectFit" ></image>
-                    </view>
-                    <view class="weui-flex__item"> 
-                        <image  class= "image" src="{{joinImg.resualt}}" catchtap="joinPreview" data-img_url="{{joinImg.resualt}}"></image></view>
-                </view>
-                <view class="weui-flex">
-                    <view class="weui-flex__item"></view>
-                    <view >
-                        <image catchtap="joinCancel" class="back"  src="../../images/up.png" />
-                    </view>
-                </view>
-            </view>-->
+           
         </view>
 
         <!--按钮栏  mp4-->
@@ -192,20 +139,56 @@
  
     </view>  
 
+     <!--按钮栏  join拼接 临时取消  disabled="{{joinImg.status == 2?false:true}}" -->
+    <view class="join-new "  hidden="{{!joinShow}}">
+        <!--<view class="space-6">  </view>-->
+        <view class="weui-flex">
+            <view class="weui-flex__item"></view>
+            <view >
+                <icon type="cancel" catchtap="joinCancel" class="back"  ></icon>
+                <!--<image catchtap="joinCancel" class="back"  src="../../images/up.png" />-->
+            </view>
+        </view>
+        <view class="weui-flex ">
+            <view class="weui-flex__item">  
+                <image  class= "image" src="{{joinImg.first}}" catchtap="joinPreview" data-img_url="{{joinImg.first}}" mode="aspectFit" ></image> 
+            </view>
+            <view class="weui-flex__item"> 
+                <image  class= "image" src="{{joinImg.seconde}}" catchtap="joinPreview" data-img_url="{{joinImg.seconde}}" mode="aspectFit" ></image>
+            </view>
+            <view class="weui-flex__item"> 
+                <image  class= "image" src="{{joinImg.resualt}}" catchtap="joinPreview" data-img_url="{{joinImg.resualt}}"></image></view>
+        </view>
+         <view class="weui-flex ">
+            <view class="weui-flex__item">
+                表情一
+                <!--<button size="mini" catchtap="joinSet" data-action="1">表情一</button>-->
+            </view>
+            <view class="weui-flex__item"> 
+                表情二
+                <!--<button size="mini" catchtap="joinSet" data-action="2">表情二</button>-->
+            </view>
+            <view class="weui-flex__item">
+                <button size="mini" loading="{{isUpload}}" catchtap="joinConfirm" data-action="" type="primary" >拼接</button>
+            </view>
+        </view>
+        
+        
+
+    </view>
 
     <!--emoticon表情显示列表-->
-    <scroll-view class="emoticon-wall" scroll-y="true" style="height:{{windowHeight}}px;" bindscrolltolower="emoticonScrollTolower" >
-        <view class="weui-grids">
-            <block wx:for-items="{{emoticon}}"  wx:for-item="emoticon">
-                <navigator url="" class="emoticon-grid" hover-class="weui-grid_active"
-                catchtap="onMenu" data-img_id="{{emoticon.img_id}}" data-img_url="{{emoticon.thumbnail_url}}" data-category_id="{{emoticon.category_id}}"  data-size="{{emoticon.size}}" data-static_url="{{emoticon.static_url}}"   data-yun_url="{{emoticon.yun_url}}" data-menu_type="{{emoticon.menu_type}}
-                data-width="{{emoticon.width}}" data-height="{{emoticon.height}}"  data-duration="{{emoticon.duration}}"  >
-                <image class="emoticon-grid__icon emoticon-image" src="{{emoticon.static_url}}" background-size="cover" mode="aspectFit"  />
+    <scroll-view class="emoticon-wall" scroll-y="true" style="height:{{windowHeight - joinHeight}}px;" bindscrolltolower="emoticonScrollTolower" >
+        <block wx:for-items="{{emoticon}}"  wx:for-item="emoticon">
+            <view class="emoticon-grid">
+                <view  class="follow__btn" catchtap="followEvent" data-img_id="{{emoticon.img_id}}">...</view>
+                <view hover-class="weui-grid_active" catchtap="menuShare" data-yun_url="{{emoticon.yun_url}}"  >
+                    <image class="emoticon-grid__icon emoticon-image" src="{{emoticon.static_url}}" background-size="cover" mode="aspectFit"  />
                     <image wx:if="{{ emoticon.menu_type == 4 ? true :false}}" class="emoticon-grid__mark " src="../../images/mp4.png"></image>
-                <image wx:if="{{ emoticon.menu_type == 1 ? true :false}}" class="emoticon-grid__mark " src="../../images/gif.png"></image>
-                </navigator>
-            </block>
-        </view>
+                    <image wx:if="{{ emoticon.menu_type == 1 ? true :false}}" class="emoticon-grid__mark " src="../../images/gif.png"></image>
+                </view>
+            </view>
+        </block>
         <view class="space-64"></view>
     </scroll-view>
 
