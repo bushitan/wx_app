@@ -277,7 +277,8 @@ Page({
                             page_num:object.page_num //更新page_num 查询页
                         })
                     }
-                    GLOBAL_PAGE.renderEmoticon(object.img_list,true)
+                    var _img_list = GLOBAL_PAGE.isCollect(object.img_list)
+                    GLOBAL_PAGE.renderEmoticon(_img_list,true)
                        
                 }
                 else
@@ -336,6 +337,22 @@ Page({
     GLOBAL_PAGE.TagImgQueryRequst()
   },
 
+  isCollect:function(img_list){
+      //对比storage,若已经收藏，标红心
+    var _storage = wx.getStorageSync(KEY.emoticon)
+    var _img_list = img_list
+    for(var i=0;i<_img_list.length;i++ )
+        for(var j=0;j<_storage.length;j++){
+            if( _img_list[i].img_id == _storage[j].img_id ){
+                _img_list[i].is_collect = true //已经被收藏
+                break
+            }
+            else 
+                _img_list[i].is_collect = false //未收藏
+
+        }
+    return _img_list
+  },
   //图片tag查询
   TagImgQueryRequst:function(){
 
@@ -365,7 +382,9 @@ Page({
             
             if (object.status == "true")
             {
-                GLOBAL_PAGE.renderEmoticon(object.img_list)
+                
+                var _img_list = GLOBAL_PAGE.isCollect(object.img_list)
+                GLOBAL_PAGE.renderEmoticon(_img_list)
 
                 GLOBAL_PAGE.setData({
                     page_num:object.page_num //更新page_num 查询页

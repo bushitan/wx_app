@@ -386,19 +386,3 @@ input{
 .space-35{
     height: 35px;
 }
-.btn_bar button{
-    margin-left :4px;
-    margin-right:4px; 
-    /*padding: 4px;*/
-}
-
-
-/*button[size="mini"] {
-display:inline-block;
-line-height:2.3;
-font-size:13px;
-padding:0 1.34em;
-
-}*/
-
-

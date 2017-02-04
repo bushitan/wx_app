@@ -293,78 +293,69 @@
 .video2gif__des{text-align: center;}
 
 
-.join__v2{
-    position: absolute;
-    bottom: 0px;
-    width:750rpx;
-    height: 72px;
-    background-color: gainsboro;
-
-   
-}
-
-.join__v2 .center{
-      display: flex;
-    justify-content: center;
-}
-
-.join__v2 image{
-    width:48px;
-    height: 48px;
-    background-color: greenyellow; 
-}
-
-
-.join__v2 .resualt{
-    width:98px;
-    height: 48px;
-    background-color: red; 
-}
 
 
 .emoticon-wall{
-    /*position:absolute;*/
     width:100%;
 }
-.emoticon-wall .emoticon-image{
-    background-color: #EBEBEB;
-}
-
 /*自定义css*/
 .emoticon-grid {
   position: relative;
   float: left;
-  padding:  10rpx;
+  padding: 30rpx 10rpx 10rpx;
   width: 25%;
   box-sizing: border-box;
   /*border-right: 1rpx solid #D9D9D9;
   border-bottom: 1rpx solid #D9D9D9;*/
 }
 
-.emoticon-grid__icon {
-  display: block;
-  /*width: 64px;
-  height: 64px;*/
-   width: 151.5rpx;
+
+
+.emoticon-grid .icon {
+  width: 151.5rpx;
   height: 151.5rpx;
-  margin: 0 auto;
-  border-radius: 0% 5% 5% 5%;
+  border-radius: 0% 0% 5% 5%;
   box-shadow: 0px 3px 6px -2px rgba(0,0,0,0.3);
-  padding: 8rpx;
+
 }
+
 .emoticon-grid__mark {
     position: absolute;
     font:bold 18rpx "Microsoft YaHei";
-    top:10px;
+    top:70rpx;
+}
+
+.emoticon-grid__mark .mark {
     width:32rpx;
     height:32rpx;
 }
 
 .follow__btn {
+    
+  margin: 0 auto;
+    width:151.5rpx;
+    height: 40rpx;
+    /*margin-left:4rpx; */
+}
+
+.emoticon-preview{
+  display: block;
+  width: 151.5rpx;
+  height: 151.5rpx;
+  margin: 0 auto;
+    background-color: #EBEBEB;
+}
+
+.set {
     float: right;
     font-size: 14px;
-    background-color: #EBEBEB;
-    /*padding: 2px 8px;*/
-    width:24px;
-    /*margin-left:4rpx; */
+    line-height: 40rpx;
+    background-color: #EBEBEB ;
+    /*background-color: #abc;*/
+    /*background-color: #000000;*/
+    padding: 0px 8px;
+}
+
+.btn_active_gray{
+    background-color: rgba(0, 0, 0, 0.1)
 }

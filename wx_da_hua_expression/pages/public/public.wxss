@@ -78,10 +78,10 @@
 }
 
 .emoticon-wall__public{
-    width:100%;
+    /*width:100%;*/
 }
 .emoticon-grids__public{
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 .emoticon-grid-3__public {
   position: relative;
@@ -96,22 +96,29 @@
   height: 200rpx;
   margin: 0 auto;
   box-shadow: 0px 3px 6px -2px rgba(0,0,0,0.3);
-  background-color: #EBEBEB;
-  padding:4px;
+  /*padding:4px;*/
 }
-.emoticon-wall__public .emoticon-image__public{
+.emoticon-preview{
     background-color: #EBEBEB;
 }
 .follow__btn {
-    float: right;
-    margin: 0px;
-    /*padding: 6px 0px 0px;*/
+    width: 200rpx;
+    height: 19px;
+    margin: 0 auto;
 }
-
-.follow__btn .favorit{
+.favorit{
+    float: right;
     display:block;
-
-    width: 23px;
-    height: 23px; 
+    width: 19px;
+    height: 19px; 
     background-color: #EBEBEB;
+}
+.favorit image{
+    
+    padding: 3px ;
+    width: 13px;
+    height: 13px; 
+}
+.btn_active_gray{
+    background-color: rgba(0, 0, 0, 0.1)
 }

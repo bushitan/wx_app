@@ -127,15 +127,19 @@
                 <view class="weui-footer__text">{{titleText}}</view>
                 <view class="weui-footer__text"></view>
             </view>
+            <!--表情-->
             <block wx:for-items="{{emoticon}}"  wx:for-item="emoticon">
                 <view  class="emoticon-grid-3__public"  >
                     <view class="follow__btn" catchtap="menuCollect" data-img_id="{{emoticon.img_id}}">
-                        <image class="favorit" src="../../images/ic_action_favorite.png"></image>
+                        <navigator  class="favorit" hover-class="btn_active_gray">
+                            <image  src="../../images/love.png" wx:if="{{emoticon.is_collect}}"></image>
+                            <image  src="../../images/love_white.png" wx:else></image>
+                        </navigator>
                     </view>
-                    <view   hover-class="weui-grid_active"
-                    catchtap="menuShare"  mode="aspectFit"  data-yun_url="{{emoticon.yun_url}}" >
-                        <image class="emoticon-grid__icon-3__public emoticon-image__public" src="{{emoticon.thumbnail_url}}" background-size="cover" mode="aspectFit" />
-                    </view>
+                    <navigator class="emoticon-preview"   hover-class="btn_active_gray"
+                    catchtap="menuShare"   data-yun_url="{{emoticon.yun_url}}" >
+                        <image class="emoticon-grid__icon-3__public " src="{{emoticon.thumbnail_url}}" background-size="cover" mode="aspectFit" />
+                    </navigator>
                 </view>
             </block>
         </view>

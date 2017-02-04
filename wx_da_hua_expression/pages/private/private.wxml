@@ -181,12 +181,16 @@
     <scroll-view class="emoticon-wall" scroll-y="true" style="height:{{windowHeight - joinHeight}}px;" bindscrolltolower="emoticonScrollTolower" >
         <block wx:for-items="{{emoticon}}"  wx:for-item="emoticon">
             <view class="emoticon-grid">
-                <view  class="follow__btn" catchtap="followEvent" data-img_id="{{emoticon.img_id}}">...</view>
-                <view hover-class="weui-grid_active" catchtap="menuShare" data-yun_url="{{emoticon.yun_url}}"  >
-                    <image class="emoticon-grid__icon emoticon-image" src="{{emoticon.static_url}}" background-size="cover" mode="aspectFit"  />
-                    <image wx:if="{{ emoticon.menu_type == 4 ? true :false}}" class="emoticon-grid__mark " src="../../images/mp4.png"></image>
-                    <image wx:if="{{ emoticon.menu_type == 1 ? true :false}}" class="emoticon-grid__mark " src="../../images/gif.png"></image>
+                <view  class="follow__btn"  catchtap="followEvent" data-img_id="{{emoticon.img_id}}">
+                    <navigator class="set" hover-class="btn_active_gray">⋮</navigator>
                 </view>
+                <navigator hover-class="btn_active_gray" class="emoticon-preview" catchtap="menuShare" data-yun_url="{{emoticon.yun_url}}">
+                    <image class="icon" src="{{emoticon.static_url}}" background-size="cover" mode="aspectFit"  />
+                    <view class="emoticon-grid__mark ">
+                        <image class="mark" wx:if="{{ emoticon.menu_type == 4 ? true :false}}"  src="../../images/mp4.png"></image>
+                        <image class="mark" wx:if="{{ emoticon.menu_type == 1 ? true :false}}"  src="../../images/gif.png"></image>
+                    </view>
+                </navigator>
             </view>
         </block>
         <view class="space-64"></view>
@@ -264,6 +268,4 @@
             <button  catchtap="buttonMove"  data-index="{{index}}">{{item.name}}</button>
         </block>
     </scroll-view>
-
-
 </view>
