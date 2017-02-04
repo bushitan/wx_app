@@ -142,13 +142,13 @@
     background-color: #fff;
 }
 .join-new .back{
+    float: right;
     width:23px;
     height:23px;
-    /*padding:6px;*/
-    /*margin-left:10px;*/
-     /*margin: 6px 10px 0px 8px; */
-     margin: 8px;
-
+    margin: 8px;
+    justify-content: center;
+    align-items:center;
+    text-align: center;
 }
 .join-new .image{
     width:72px;
@@ -158,7 +158,8 @@
 }
 
 .join-new view{
-     justify-content: center;align-items:center;
+     justify-content: center;
+     align-items:center;
      text-align: center;
 }
 
@@ -176,10 +177,7 @@
 }
 .category .font {
     opacity: 0.9;
-    /*margin: 10px;*/
-    padding:5px 10px;
-    /*margin-left:5px;
-    margin-right:5px;*/
+    padding:8px 10px;
 }
 .category .all{
     text-align: center;
@@ -206,12 +204,12 @@
 }
 
 .category .select{
-    border-radius: 5rpx;
-    border: 1px solid #ffffff;
+    /*border-radius: 5rpx;*/
+    border-bottom: 1px solid #ffffff;
 }
 .category .unselect{
-    border-radius: 5rpx;
-    border: 1px solid #24292c;
+    /*border-radius: 5rpx;*/
+    border-bottom: 1px solid #24292c;
 }
 
 .emoticon-menu .base_btn{

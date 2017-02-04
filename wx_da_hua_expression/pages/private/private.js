@@ -30,9 +30,9 @@ Page({
     joinImg:{
       step:1,
       status:1, // 1 准备状态 2 用户已操作 3 正在上传 
-      first:"http://image.12xiong.top/12_20161226084253.gif",
-      seconde:"http://image.12xiong.top/12_20161226084358.gif",
-      resualt:"http://image.12xiong.top/12_20161226084407.gif?imageMogr2/thumbnail/170x170",
+      first:"http://image.12xiong.top/12_20161226084253.gif?imageMogr2/thumbnail/96x96",
+      seconde:"http://image.12xiong.top/12_20161226084358.gif?imageMogr2/thumbnail/96x96",
+      resualt:"http://image.12xiong.top/12_20161226084407.gif?imageMogr2/thumbnail/96x96",
       // first:"http://image.12xiong.top/12_20161226084253.gif?imageMogr2/thumbnail/170x170",
       // seconde:"http://image.12xiong.top/12_20161226084358.gif?imageMogr2/thumbnail/170x170",
       // resualt:"http://image.12xiong.top/12_20161226084407.gif?imageMogr2/thumbnail/170x170",
@@ -60,7 +60,7 @@ Page({
 
     //touch选择对象
     selectEmoticon:{id:"",name:"",img_url:"",size:""}, //预备编辑的图片
-    selectCategory:{category_id:null,name:""},
+    selectCategory:{category_id:-1,name:""},
     
 
     //临时表情
@@ -729,7 +729,8 @@ Page({
           })
           wx.showModal({
               title: '拼接成功',
-              content:'现在预览表情么？（点击右上角"⋮"，分享给朋友）',
+              // content:'现在预览表情么？（点击右上角"⋮"，分享给朋友）',
+              confirmText:"预览",
               success: function(res) {
                   if (res.confirm) {
                       wx.previewImage({
@@ -785,7 +786,8 @@ Page({
                 
                    wx.showModal({
                       title: '拼接成功',
-                      content:'现在预览表情么？（点击右上角"⋮"，分享给朋友）',
+                      // content:'现在预览表情么？（点击右上角"⋮"，分享给朋友）',
+                      confirmText:"预览",
                       success: function(res) {
                           if (res.confirm) {
                               wx.previewImage({
@@ -1141,13 +1143,21 @@ Page({
         success: function(res) {
           var object = res.data
           if (object.status == "true")
-          {
-            //设置selecCategory == 默认目录。
+          {      
+              var _category_list = object.category_list      
+              //目录保存本地
               wx.setStorageSync(
                   Key.category,
-                  object.category_list
+                  _category_list
               )
-          GLOBAL_PAGE.renderCategory()
+              //设置selecCategory == 默认目录。
+              for(var i=0;i<_category_list.length;i++)
+                  if( _category_list[i].is_default == 1 )
+                    GLOBAL_PAGE.setData({
+                      selectCategory:_category_list[i]
+                    })
+              //渲染目录
+              GLOBAL_PAGE.renderCategory()
           }
           else
             wx.showModal({
@@ -1309,7 +1319,17 @@ Page({
           if (!res.cancel) {
             if(res.tapIndex == 0 || res.tapIndex =='0'){ //拼接
                 GLOBAL_PAGE.setData({joinShow:true,joinHeight:164})
-                GLOBAL_PAGE.joinSet(1)
+                
+                wx.showActionSheet({
+                  itemList: ['表情一','表情二'],
+                  // itemList: ['图片'],
+                  success: function(res) {
+                    if(res.tapIndex == 0 || res.tapIndex =='0') //拼接
+                      GLOBAL_PAGE.joinSet(1)
+                    if(res.tapIndex == 1 || res.tapIndex =='1')
+                      GLOBAL_PAGE.joinSet(2)
+                  }
+                })
             }
             if(res.tapIndex == 1 || res.tapIndex =='1'){ //水印
                 GLOBAL_PAGE.actionWatermark(_e.yun_url,_e.width,_e.height)

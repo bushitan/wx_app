@@ -5,11 +5,10 @@
     <!--目录-->
     <view class=" category">
         <view class="all"> 
-            <label catchtap="selectCategory" data-select_category_id="" class=" {{selectCategory.category_id == null ? 'select' : 'unselect'}} font">全选</label> 
+            <label catchtap="selectCategory" data-select_category_id="" class=" {{selectCategory.category_id == null ? 'select' : 'unselect'}} font">全选</label>
         </view>    
             <scroll-view  scroll-x="true" style="width:{{categoryScrollWidth}}px;"  >
-                <block wx:for="{{category}}" 
-                    wx:for-item="c_name">
+                <block wx:for="{{category}}"  wx:for-item="c_name">
                     <label catchtap="selectCategory"  data-select_category_id="{{c_name.category_id}}" class="{{selectCategory.category_id == c_name.category_id ? 'select' : 'unselect'}} font">{{c_name.name}}</label>
                 </block>
             </scroll-view>
@@ -142,11 +141,15 @@
      <!--按钮栏  join拼接 临时取消  disabled="{{joinImg.status == 2?false:true}}" -->
     <view class="join-new "  hidden="{{!joinShow}}">
         <!--<view class="space-6">  </view>-->
-        <view class="weui-flex">
-            <view class="weui-flex__item"></view>
-            <view >
+        <view class="weui-flex">            
+            <view class="weui-flex__item">
+                表情一
+            </view>
+            <view class="weui-flex__item"> 
+                表情二
+            </view>
+            <view class="weui-flex__item">
                 <icon type="cancel" catchtap="joinCancel" class="back"  ></icon>
-                <!--<image catchtap="joinCancel" class="back"  src="../../images/up.png" />-->
             </view>
         </view>
         <view class="weui-flex ">
@@ -160,14 +163,8 @@
                 <image  class= "image" src="{{joinImg.resualt}}" catchtap="joinPreview" data-img_url="{{joinImg.resualt}}"></image></view>
         </view>
          <view class="weui-flex ">
-            <view class="weui-flex__item">
-                表情一
-                <!--<button size="mini" catchtap="joinSet" data-action="1">表情一</button>-->
-            </view>
-            <view class="weui-flex__item"> 
-                表情二
-                <!--<button size="mini" catchtap="joinSet" data-action="2">表情二</button>-->
-            </view>
+            <view class="weui-flex__item"></view>
+            <view class="weui-flex__item"></view>
             <view class="weui-flex__item">
                 <button size="mini" loading="{{isUpload}}" catchtap="joinConfirm" data-action="" type="primary" >拼接</button>
             </view>

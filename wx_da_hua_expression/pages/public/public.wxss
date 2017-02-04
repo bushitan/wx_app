@@ -72,16 +72,18 @@
   right: 0;
   margin: .52em;
 }
-
+.scroll-load {
+    position: relative;
+}
 .scroll-load .nav__index {
-    color:#576b95
+    color:#576b95;
 }
 
 .emoticon-wall__public{
-    /*width:100%;*/
+    width:100%;
 }
 .emoticon-grids__public{
-    /*overflow: hidden;*/
+    overflow: hidden;
 }
 .emoticon-grid-3__public {
   position: relative;
@@ -90,34 +92,35 @@
   width: 33.333333333%;
   box-sizing: border-box;
 }
+
+.emoticon-preview{
+    display: block;
+    width: 200rpx;
+    height: 200rpx;
+    margin: 0 auto;
+    background-color: #EBEBEB;
+    box-shadow: 0px 3px 6px -2px rgba(0,0,0,0.3);
+}
 .emoticon-grid__icon-3__public {
-  display: block;
   width: 200rpx;
   height: 200rpx;
-  margin: 0 auto;
-  box-shadow: 0px 3px 6px -2px rgba(0,0,0,0.3);
-  /*padding:4px;*/
-}
-.emoticon-preview{
-    background-color: #EBEBEB;
 }
 .follow__btn {
     width: 200rpx;
-    height: 19px;
+    height: 23px;
     margin: 0 auto;
 }
 .favorit{
     float: right;
     display:block;
-    width: 19px;
-    height: 19px; 
+    width: 23px;
+    height: 23px; 
     background-color: #EBEBEB;
 }
 .favorit image{
-    
-    padding: 3px ;
-    width: 13px;
-    height: 13px; 
+    padding: 4px ;
+    width: 15px;
+    height: 15px; 
 }
 .btn_active_gray{
     background-color: rgba(0, 0, 0, 0.1)

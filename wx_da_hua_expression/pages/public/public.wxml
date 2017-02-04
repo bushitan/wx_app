@@ -136,33 +136,28 @@
                             <image  src="../../images/love_white.png" wx:else></image>
                         </navigator>
                     </view>
-                    <navigator class="emoticon-preview"   hover-class="btn_active_gray"
-                    catchtap="menuShare"   data-yun_url="{{emoticon.yun_url}}" >
+                    <navigator class="emoticon-preview"   hover-class="btn_active_gray" catchtap="menuShare"   data-yun_url="{{emoticon.yun_url}}" >
                         <image class="emoticon-grid__icon-3__public " src="{{emoticon.thumbnail_url}}" background-size="cover" mode="aspectFit" />
                     </navigator>
                 </view>
             </block>
         </view>
-        <!--<view class="space-64"></view>-->
-
-    <!--下拉加载数据-->
-    <view class="scroll-load" >
-        <view class="weui-loadmore" wx:if="{{scrollTolowerStatus == 2}}">
-            <view class="weui-loading"></view>
-            <view class="weui-loadmore__tips">正在加载</view>
-        </view>
-        <view wx:if="{{scrollTolowerStatus == 3}}">
-            <view class="weui-loadmore weui-loadmore_line" >
-                <view class="weui-loadmore__tips weui-loadmore__tips_in-line">加载完毕，逛逛<label class="nav__index"  catchtap="searchShortcut"  data-keyword="目录导航">目录导航</label></view>
-                
+        <!--下拉加载数据-->
+            <view class="scroll-load" >
+                <view class="weui-loadmore" wx:if="{{scrollTolowerStatus == 2}}">
+                    <view class="weui-loading"></view>
+                    <view class="weui-loadmore__tips">正在加载</view>
+                </view>
+                <view wx:if="{{scrollTolowerStatus == 3}}">
+                    <view class="weui-loadmore weui-loadmore_line" >
+                        <view class="weui-loadmore__tips weui-loadmore__tips_in-line">加载完毕，逛逛<label class="nav__index"  catchtap="searchShortcut"  data-keyword="目录导航">目录导航</label></view>
+                        
+                    </view>
+                    <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot">
+                        <view class="weui-loadmore__tips weui-loadmore__tips_in-line weui-loadmore__tips_in-dot"></view>
+                    </view>
+                </view>
             </view>
-            <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot">
-                <view class="weui-loadmore__tips weui-loadmore__tips_in-line weui-loadmore__tips_in-dot"></view>
-            </view>
-        </view>
-    </view>
-
-
     </scroll-view>
 
     <view class="page__bd" hidden="{{!loadShow}}">

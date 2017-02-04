@@ -336,7 +336,11 @@ Page({
 
     GLOBAL_PAGE.TagImgQueryRequst()
   },
-
+  //从private删除表情，进入public，要刷新
+  onReady:function(){
+    var _img_list = GLOBAL_PAGE.isCollect(GLOBAL_PAGE.data.emoticon)
+    GLOBAL_PAGE.renderEmoticon(_img_list)
+  },
   isCollect:function(img_list){
       //对比storage,若已经收藏，标红心
     var _storage = wx.getStorageSync(KEY.emoticon)
