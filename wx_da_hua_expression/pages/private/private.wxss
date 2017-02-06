@@ -176,7 +176,7 @@
     
 }
 .category .font {
-    opacity: 0.9;
+    /*opacity: 0.9;*/
     padding:8px 10px;
 }
 .category .all{
@@ -188,19 +188,30 @@
     /*width:500rpx;*/
     white-space: nowrap; 
     display: flex;
-    box-shadow: 2px 0  6px -4px rgba(255,255,255,1) ;
+    /*box-shadow: 2px 0  6px -4px rgba(255,255,255,1) ;*/
 }
 
 /*增加目录icon*/
-.category .add{
-     width:42px;
+.category .relogin{
+     width:44px;
      padding: auto;
      
 }
+.category .line-half{
+    display: inline-block;
+    width: 1px;
+    height: 42px;
+    -webkit-transform:scale(0.6);
+    transform:scale(0.6);
+    border-left: 1px solid rgba(255,255,255,0.4)
+     
+}
 .category image{
-    width: 28px;
-    height:28px;
-    margin: 7px  7px;
+    width: 26px;
+    height:26px;
+    margin: 8px  0px;
+    /*padding: 0px  9px 0px 7px;*/
+    padding: 0px 7px;
 }
 
 .category .select{

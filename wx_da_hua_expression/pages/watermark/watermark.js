@@ -89,35 +89,37 @@ Page({
       imgHistory:imgHistory
     })
 
-     if( wx.getStorageSync('is_water_share_info') == "")
+   
+    //  if( wx.getStorageSync('is_water_share_info') == "")
+    //   {
+    //       wx.showModal({
+    //           title: '分享提示',
+    //           content:'点击右上角"⋮"，发送给朋友',
+    //           showCancel:false,
+    //           confirmText:"知道了",
+    //           success: function(res) {
+    //               wx.previewImage({
+    //                 current: GLOBAL_PAGE.data.imgSuccess, // 当前显示图片的http链接
+    //                 urls: GLOBAL_PAGE.data.imgHistory // 需要预览的图片http链接列表
+    //               })
+    //               wx.setStorageSync('is_water_share_info',1)
+    //           }
+    //       }) 
+    //   }
+      // else if( wx.getStorageSync('is_water_share_info') == 1 && GLOBAL_PAGE.data.imgHistory.length > 1)
+    if(wx.getStorageSync('is_water_share_info') == "" && GLOBAL_PAGE.data.imgHistory.length > 1)
       {
-          wx.showModal({
-              title: '分享提示',
-              content:'点击右上角"⋮"，发送给朋友',
-              showCancel:false,
-              confirmText:"知道了",
+           wx.showModal({
+              title: '提示',
+              content:'左右滑动查看临时记录，喜欢的请及时保存',
+              // showCancel:false,
+              confirmText:"预览",
               success: function(res) {
                   wx.previewImage({
                     current: GLOBAL_PAGE.data.imgSuccess, // 当前显示图片的http链接
                     urls: GLOBAL_PAGE.data.imgHistory // 需要预览的图片http链接列表
                   })
                   wx.setStorageSync('is_water_share_info',1)
-              }
-          }) 
-      }
-      else if( wx.getStorageSync('is_water_share_info') == 1 && GLOBAL_PAGE.data.imgHistory.length > 1)
-      {
-           wx.showModal({
-              title: '提示',
-              content:'可左右滑动，查看临时记录，中意请及时保存',
-              showCancel:false,
-              confirmText:"知道了",
-              success: function(res) {
-                  wx.previewImage({
-                    current: GLOBAL_PAGE.data.imgSuccess, // 当前显示图片的http链接
-                    urls: GLOBAL_PAGE.data.imgHistory // 需要预览的图片http链接列表
-                  })
-                  wx.setStorageSync('is_water_share_info',2)
               }
           }) 
       }

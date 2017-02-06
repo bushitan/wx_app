@@ -99,10 +99,10 @@ Page({
         if( wx.getStorageSync('is_share_info') == "")
         {
             wx.showModal({
-                title: '分享提示',
-                content:'点击右上角"⋮"，发送给朋友',
+                title: '保存提示',
+                content:'点击右上角"⋮"，可保存图片',
                 showCancel:false,
-                confirmText:"知道了",
+                confirmText:"继续预览",
                 success: function(res) {
                     Render.share(current,urls)
                     wx.setStorageSync('is_share_info',true)
@@ -157,9 +157,20 @@ Page({
               var object = res.data
               if (object.status == "true")
               {
+                  //设置改图片为已收藏状态
+                  var _img = object.img
+                  
+                  var _e = GLOBAL_PAGE.data.emoticon
+                  for (var i=0;i<_e.length;i++)
+                      if(_img.img_id == _e[i].img_id){
+                          _e[i].is_collect = true
+                          break
+                      }
+                  GLOBAL_PAGE.setData({emoticon:_e})
+                          
                   //收藏成功
                   var e = wx.getStorageSync(KEY.emoticon)
-                  e.push(object.img)
+                  e.push(_img)
                   wx.setStorageSync(KEY.emoticon,e)
                 
                     if( wx.getStorageSync('is_collect_info') == "")
@@ -550,6 +561,11 @@ Page({
     })
   },
 
+  onShow:function(){
+    
+    var _img_list = GLOBAL_PAGE.isCollect(GLOBAL_PAGE.data.emoticon)
+    GLOBAL_PAGE.renderEmoticon(_img_list)
+  },
   onLoad: function (option) {
     GLOBAL_PAGE = this
     //1 page初始化高宽

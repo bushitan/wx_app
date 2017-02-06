@@ -72,7 +72,7 @@ Page({
         emoticon:[], //临时表情列表  // "http://image.12xiong.top/12_20161226084253.gif",
     },
     
-
+    lockReLogin:false,
   },
 
 
@@ -110,14 +110,16 @@ Page({
   btnUpload:function() {
      GLOBAL_PAGE.hiddenAll() //关闭表情框
      wx.showActionSheet({
-      itemList: ['图片', '小视频'],
+      // itemList: ['图片', '小视频'],
+      itemList: ['图片', '添加目录'],
       // itemList: ['图片'],
       success: function(res) {
         if (!res.cancel) {
           if(res.tapIndex == 0 || res.tapIndex =='0')
             GLOBAL_PAGE.uploadQiniuImage()
           if(res.tapIndex == 1 || res.tapIndex =='1')
-            GLOBAL_PAGE.uploadQiniuVideo()  
+            GLOBAL_PAGE.navigateToCategory()
+            // GLOBAL_PAGE.uploadQiniuVideo()  
         }
       }
     })
@@ -361,10 +363,10 @@ Page({
       if( wx.getStorageSync('is_share_info') == "")
       {
           wx.showModal({
-              title: '分享提示',
-              content:'点击右上角"⋮"，发送给朋友',
+              title: '保存提示',
+              content:'点击右上角"⋮"，可保存图片',
               showCancel:false,
-              confirmText:"知道了",
+              confirmText:"继续预览",
               success: function(res) {
                   Render.share(current,urls)
                   wx.setStorageSync('is_share_info',true)
@@ -455,7 +457,7 @@ Page({
     if (list.length ==  1) //只有1个组，提示增加分组
     {
         wx.showToast({
-            title: '请按右上角 + 添加分组',
+            title: '请按右下角 + 添加目录',
             icon: 'loading',
             duration: 1000
         })
@@ -1056,7 +1058,7 @@ Page({
     GLOBAL_PAGE.setData({
       windowWidth:APP.globalData.windowWidth,
       windowHeight:APP.globalData.windowHeight - 42,  //category框高度42px ,join框高度160 || 0
-      categoryScrollWidth:APP.globalData.windowWidth - 102,
+      categoryScrollWidth:APP.globalData.windowWidth - 104, //全选60 + 刷新42 + 竖直线2 
 
       // joinHeight
       // windowHeight:APP.globalData.windowHeight - 84,  //category框高度42px
@@ -1150,14 +1152,23 @@ Page({
                   Key.category,
                   _category_list
               )
-              //设置selecCategory == 默认目录。
-              for(var i=0;i<_category_list.length;i++)
-                  if( _category_list[i].is_default == 1 )
-                    GLOBAL_PAGE.setData({
-                      selectCategory:_category_list[i]
-                    })
               //渲染目录
               GLOBAL_PAGE.renderCategory()
+              //设置selecCategory == 默认目录。
+              for(var i=0;i<_category_list.length;i++)
+                  if( _category_list[i].is_default == 1 ){
+                      GLOBAL_PAGE.setData({
+                        selectCategory:_category_list[i]
+                      })
+                      var e = {currentTarget:{dataset:{select_category_id:_category_list[i].category_id}}}
+                      // e.currentTarget.dataset.select_category_id = _category_list[i].category_id
+                      GLOBAL_PAGE.selectCategory(e)
+                  }
+                    
+              
+
+             
+              
           }
           else
             wx.showModal({
@@ -1346,8 +1357,50 @@ Page({
       })
   },
 
+  //重新登录
+  reLogin:function(){
 
- 
+      if (GLOBAL_PAGE.data.lockReLogin){
+          wx.showModal({
+              title: "同步太快了",
+              content:"请休息几秒~",
+              // confirmText:"知道了",
+              showCancel:false,
+          })
+          return
+      }
+      
+
+      wx.showModal({
+          title: '是否同步最新数据',
+          // content:'现在预览表情么？（点击右上角"⋮"，分享给朋友）',
+          // confirmText:"预览",
+          success: function(res) {
+              if (res.confirm) {
+                  GLOBAL_PAGE.setData({ lockReLogin:true})
+                  setTimeout(function() {
+                        GLOBAL_PAGE.setData({ lockReLogin:false})
+                  }, 10000)
+                  APP.login()
+                  wx.showToast({
+                    title: '同步中',
+                    icon: 'loading',
+                    duration: 2000,
+                    success:function(){
+                        setTimeout(function(){
+                            wx.showToast({
+                            title: '已同步至最新数据',
+                            icon: 'success',
+                            duration: 2000
+                          })},
+                          2000
+                        )
+                    }
+                  })
+              }
+          }
+      })
+  },
 
 
 })
