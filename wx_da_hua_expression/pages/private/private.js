@@ -30,9 +30,12 @@ Page({
     joinImg:{
       step:1,
       status:1, // 1 准备状态 2 用户已操作 3 正在上传 
-      first:"http://image.12xiong.top/12_20161226084253.gif?imageMogr2/thumbnail/96x96",
-      seconde:"http://image.12xiong.top/12_20161226084358.gif?imageMogr2/thumbnail/96x96",
-      resualt:"http://image.12xiong.top/12_20161226084407.gif?imageMogr2/thumbnail/96x96",
+      first:"http://image.12xiong.top/wx_app/join1.gif",
+      seconde:"http://image.12xiong.top/wx_app/join2.gif",
+      resualt:"http://image.12xiong.top/wx_app/resualt.gif",
+      // first:"http://image.12xiong.top/12_20161226084253.gif",
+      // seconde:"http://image.12xiong.top/12_20161226084358.gif",
+      // resualt:"http://image.12xiong.top/12_20161226084407.gif?imageMogr2/thumbnail/96x96",
       // first:"http://image.12xiong.top/12_20161226084253.gif?imageMogr2/thumbnail/170x170",
       // seconde:"http://image.12xiong.top/12_20161226084358.gif?imageMogr2/thumbnail/170x170",
       // resualt:"http://image.12xiong.top/12_20161226084407.gif?imageMogr2/thumbnail/170x170",
@@ -69,7 +72,8 @@ Page({
         log:[]  ,
         // show:true,   
         // num:0,
-        emoticon:[], //临时表情列表  // "http://image.12xiong.top/12_20161226084253.gif",
+        emoticon:[], //临时表情列表  
+        // emoticon:["http://image.12xiong.top/12_20161226084253.gif","http://image.12xiong.top/12_20161226084253.gif",], //临时表情列表  
     },
     
     lockReLogin:false,
@@ -636,12 +640,13 @@ Page({
   },
    
   //10 设置join的的1，2幅图片
-  joinSet:function(action){
+  joinSet:function(action,yun_url){
       // var action  = e.currentTarget.dataset.action
       var action  = action
       var joinImg = GLOBAL_PAGE.data.joinImg 
       var select = GLOBAL_PAGE.data.selectEmoticon 
-
+      if(yun_url)
+        select = {yun_url:yun_url}
 
 
       if (joinImg.status == 1)
@@ -1316,6 +1321,10 @@ Page({
     })
   },
 
+  showJoinTab:function(){
+      GLOBAL_PAGE.setData({joinShow:true,joinHeight:164})
+  },
+
   followEvent:function(e){
       var select_id = e.currentTarget.dataset.img_id
 
@@ -1329,7 +1338,7 @@ Page({
         success: function(res) {
           if (!res.cancel) {
             if(res.tapIndex == 0 || res.tapIndex =='0'){ //拼接
-                GLOBAL_PAGE.setData({joinShow:true,joinHeight:164})
+                GLOBAL_PAGE.showJoinTab()
                 
                 wx.showActionSheet({
                   itemList: ['表情一','表情二'],
@@ -1353,6 +1362,23 @@ Page({
             }
               
           }
+        }
+      })
+  },
+
+  tempJoinEvent:function(e){
+      var _yun_url = e.currentTarget.dataset.yun_url
+
+      GLOBAL_PAGE.showJoinTab()
+      GLOBAL_PAGE.tempSwitch()
+      wx.showActionSheet({
+        itemList: ['表情一','表情二'],
+        // itemList: ['图片'],
+        success: function(res) {
+          if(res.tapIndex == 0 || res.tapIndex =='0') //拼接
+            GLOBAL_PAGE.joinSet(1,_yun_url)
+          if(res.tapIndex == 1 || res.tapIndex =='1')
+            GLOBAL_PAGE.joinSet(2,_yun_url)
         }
       })
   },

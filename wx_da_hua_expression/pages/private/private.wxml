@@ -235,11 +235,13 @@
         </view>
         <view class="weui-grids">
             <block wx:for="{{temp.emoticon}}" wx:for-index="index" wx:for-item="item">
-                <navigator url="" class="emoticon-grid-3" hover-class="weui-grid_active"
-                catchtap="tempPreview"  data-src="{{item}}" >
-                <image class="emoticon-grid__icon-3" src="{{item}}" background-size="cover" mode="aspectFit" />
-                </navigator>
-             </block>
+                <view class="temp-grid-3" >
+                    <image catchtap="tempPreview"  data-src="{{item}}" class="temp-grid__icon-3" src="{{item}}" background-size="cover" mode="aspectFit" />
+                    <view class="temp_join">
+                        <button class="weui-grid__label" size="mini" catchtap="tempJoinEvent" data-yun_url="{{item}}" >继续拼</button>
+                    </view>                        
+                </view>
+            </block>
         </view>
         <view class="temp__button_area">
             <button class="weui-btn temp__button" catchtap="tempClear">清除</button>

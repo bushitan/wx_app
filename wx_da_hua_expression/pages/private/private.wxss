@@ -56,6 +56,40 @@
     /*margin: 0px 0px;*/
     /*padding: 40px 0px;*/
 }
+.temp__join{
+    margin: auto;
+}
+
+.temp-grid-3 {
+  position: relative;
+  float: left;
+  padding:  10px;
+  width: 33.333333333%;
+  box-sizing: border-box;
+  /*border-right: 1rpx solid #D9D9D9;
+  border-bottom: 1rpx solid #D9D9D9;*/
+}
+.temp-grid__icon-3 {
+  display: block;
+  /*width: 100%;
+  height: 64px;*/
+   width: 180rpx;
+  height: 180rpx;
+  margin: auto;
+  /*border-radius: 0% 5% 5% 5%;*/
+  box-shadow: 0px 3px 6px -2px rgba(0,0,0,0.3);
+  background-color: #EBEBEB;
+  padding:4px;
+}
+
+.temp_join{
+    width: 180rpx;
+    margin: auto ;
+    /*margin-left: 10px;*/
+    /*padding: auto;*/
+    /*padding-left: 10px;*/
+    
+}
 
 
 .upload image {
