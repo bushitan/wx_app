@@ -1,6 +1,6 @@
 // private.js
 var Api = require('../../utils/api.js');
-var View = require('../../utils/view.js');
+// var View = require('../../utils/view.js');
 var Menu = require('../../utils/menu.js');
 var Render = require('../../utils/render.js');
 var Key = require('../../utils/storage_key.js');

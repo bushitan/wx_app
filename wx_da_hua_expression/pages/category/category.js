@@ -1,7 +1,7 @@
 
 // hotest.js
 var Api = require('../../utils/api.js');
-var View = require('../../utils/view.js');
+// var View = require('../../utils/view.js');
 var Menu = require('../../utils/menu.js');
 
 var KEY = require('../../utils/storage_key.js');
