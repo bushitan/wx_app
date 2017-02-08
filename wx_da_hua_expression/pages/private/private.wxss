@@ -1,4 +1,4 @@
-/*上传图片、视频*/
+/*1 上传图片、视频*/
 .upload{
     position:absolute;
     width:72rpx;
@@ -19,7 +19,7 @@
     margin-top: 5rpx;
 }
 
-/*上传图片、视频*/
+/*2 临时表情*/
 .temp{
     position:absolute;
     /*width:72rpx;
@@ -51,11 +51,7 @@
 .temp__button_area{
     margin: 1.17647059em 90px 0.3em;
 }
-.temp__button{
-    /*width: 150px;*/
-    /*margin: 0px 0px;*/
-    /*padding: 40px 0px;*/
-}
+
 .temp__join{
     margin: auto;
 }
@@ -91,23 +87,13 @@
     
 }
 
-
-.upload image {
-    width: 64rpx;
-    height: 64rpx;
-    margin-left: 5rpx;
-    margin-top: 5rpx;
-}
-
-
+/*3 选择目录*/
 .select-category {
     position: absolute;
     top: 42px;
     /*background-color: rgba(237,237,237,0.4);*/
     background-color: rgba(36,41,44,0.4);
-    z-index: 1000;
-    /*#ededed;*/
-    
+    z-index: 1000;   
 }
 
 .select-category button {
@@ -116,62 +102,7 @@
    /*margin-top:4rpx; */
 }
 
-
-
-/*gif拼接*/
-.join{
-    position:absolute;
-    width:450rpx;
-    height:170rpx;
-    bottom: 40rpx;
-    right:40rpx;
-    background-color: #ededed;
-    box-shadow: 0px 3px 20px 2px rgba(0,0,0,0.4);
-}
-
-.join .btn{
-    position:absolute;
-    width:72rpx;
-    height:72rpx;
-    right:20rpx;
-    /*border-radius: 50%;*/
-    /*box-shadow: 0px 2px 6px 1px rgba(0,0,0,0.2);*/
-    color: white;
-    /*font-size: 36rpx;*/
-    
-}
-
-.join .confirm{
-    bottom: 20rpx;
-    /*background-color: #ffffff;*/
-}
-.join .cancel{  
-    bottom: 96rpx;
-    /*background-color: #ffffff;*/
-}
-
-.join .img{
-    
-}
-
-.join  .first{
-    width:150rpx;
-    height:150rpx;
-    margin-left: 20rpx;
-    margin-top: 10rpx;
-    /*background-color: #24292c;*/
-    
-    background-color: gainsboro;
-}
-.join  .seconde{
-    width:150rpx;
-    height:150rpx;
-    margin-left: 20rpx;
-    margin-top: 10rpx;
-    background-color: gainsboro;
-    /*background-color: #24292c;*/
-}
-
+/*4 join拼接*/
 .join-new{
     background-color: #fff;
 }
@@ -196,7 +127,14 @@
      align-items:center;
      text-align: center;
 }
+.join-new  .cancel { 
+    width: 23px;
+    height:23px;
+    margin: 0px 10px 3px 8px; 
+}
 
+
+/*5 目录*/
 .category {
     display: -webkit-box;
     display: -webkit-flex;
@@ -257,87 +195,7 @@
     border-bottom: 1px solid #24292c;
 }
 
-.emoticon-menu .base_btn{
-    /*margin: 5px;
-    margin-top: 5px;*/
-    padding: 2px 4px;
-    border-radius:  5px;
-    color: white;
-    font-size: 13px
-}
-
-.emoticon-menu .delete{
-    background-color: #f76060;
-}
-
-.emoticon-menu .category__select{
-    /*background-color: #F8F8F8;
-    background-color: #10aeff;*/
-    position:relative;
-    display:block;
-    margin-left:4px;
-    margin-right:4px;
-    padding-left:14px;
-    padding-right:14px;
-    
-    box-sizing:border-box;
-    font-size:13px;
-    text-align:center;
-    text-decoration:none;
-    /*line-height:2.55555556;*/
-    border-radius:5px;
-    -webkit-tap-highlight-color:transparent;
-    overflow:hidden;
-    color:#000000;
-    background-color:#F8F8F8;
-
-}
-
-.emoticon-menu .category__select::after {
-    content:" ";
-    width:200%;
-    height:200%;
-    position:absolute;
-    top:0;
-    left:0;
-    border:1px solid rgba(0, 0, 0, 0.2);
-    -webkit-transform:scale(0.5);
-    transform:scale(0.5);
-    -webkit-transform-origin:0 0;
-    transform-origin:0 0;
-    box-sizing:border-box;
-    border-radius:10px;
-}
-
-
-.emoticon-menu .category__select{
-    display:inline-block;
-    line-height:2.3;
-    font-size:13px;
-    /*padding:0 1.34em;*/
-
-}
-.emoticon-menu .tool button{
-    margin: 6px 4px 0px;
-    padding: 0 15px;
-    /*padding: 0px 2px; */
-    overflow:auto;
-}
-
-
-.cancel { 
-    width: 23px;
-    height:23px;
-    margin: 0px 10px 3px 8px; 
-}
-
-
-
-.video2gif__des{text-align: center;}
-
-
-
-
+/*6 表情显示墙*/
 .emoticon-wall{
     width:100%;
 }

@@ -2,7 +2,7 @@
 
 <view class="page"  >
 
-    <!--目录-->
+    <!--1 目录-->
     <view class=" category">
         <view class="all"> 
             <label catchtap="selectCategory" data-select_category_id="" class=" {{selectCategory.category_id == null ? 'select' : 'unselect'}} font">全选</label>
@@ -16,135 +16,11 @@
             <view class="line-half">
             </view>
                 <image src="../../images/ic_action_refresh1.png" catchtap="reLogin"  ></image>
-            
-            
         </view> 
     </view>
 
-   
-    <!--public Menu菜单-->  
-    <view class="emoticon-menu"  hidden="{{menuType != '0' ? false:true}}">
-
-        <!--右上角菜单-->
-        <view class="weui-flex tool ">
-            <view class="weui-flex__item" ></view>
-            <view>
-                <button size="mini" catchtap="menuDelete"> 删除 </button>
-            </view>
-            <view> 
-                <button size="mini"  catchtap="menuMoveCategory"> 分组 </button>
-                 <image catchtap="hiddenAll" src="../../images/cancel.png" class="cancel" ></image>
-            </view>
-            <!--<view>
-                <button size="mini" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" catchtap="navigateToWatermark"> 水印 </button>
-            </view>-->
-            <!--<view >
-                <button size="mini" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" catchtap="menuShare">分享</button>
-               
-            </view>-->
-        </view>
-
-        <!--<view class="space-4">  </view>-->
-
-      <!--<view class="weui-flex"  catchtap="hiddenAll" style="background-color: #EBEBEB;">
-            <view class="weui-flex__item page__bd_spacing"> 
-                <view class="placeholder">
-                    <image  class="weui-media-box__thumb" mode="aspectFit" src="{{selectEmoticon.img_url}}"  bindload="bindload"/>
-                    <video hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}" class="weui-media-box__thumb" src="{{selectEmoticon.img_url}}" catchtap="null"></video> 
-                </view>
-            </view>
-        </view>-->
-
-        <!--emoticon框 显示JPG或-->
-        <view class="weui-flex" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}"  catchtap="menuShare" style="background-color: #EBEBEB;">
-            <view class="weui-flex__item page__bd_spacing"> 
-                <view class="placeholder">
-                    <image  class="weui-media-box__thumb " mode="aspectFit" src="{{selectEmoticon.yun_url}}"  bindload="bindload"/>
-                </view>
-            </view>
-        </view>
-
-         <!--emoticon框 显示MP4-->
-        <view class="weui-flex  "  hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}"  style="background-color: #EBEBEB;">
-            <view class="weui-flex__item page__bd_spacing"> 
-                <view class="placeholder">
-                    <video hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}" class="weui-media-box__thumb" src="{{selectEmoticon.img_url}}" catchtap="null"></video> <!--点击视频不关闭-->
-                </view>
-            </view>
-        </view>
-
-        <!--<view class="space-4">  </view>-->
-        <!--按钮栏  jpg/gif-->
-        <view  hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" >
-            <!--<view class="weui-flex page__bd_spacing btn_bar " hidden="{{joinShow}}" >
-                <view class="weui-flex__item"> </view>
-                <view > 
-                    <button size="mini" catchtap="navigateToWatermark" >水印</button>
-                    <button size="mini" catchtap="menuJoin" >GIF拼接</button>
-                    <button class="" type="primary" catchtap="menuShare" size="mini" >全屏预览</button>
-                </view>
-                <view class="weui-flex__item"> </view>
-            </view>-->
-
-            <view class="weui-flex join-new " hidden="{{joinShow}}" >
-                <view class="weui-flex__item"> </view>
-                <view > 
-                     <image catchtap="menuJoin" class="back" src="../../images/bottom.png" />
-                </view>
-            </view>
-            
-             <!--按钮栏  水印  分享 -->
-             <view class="space-4">  </view>
-            <!--菜单-->
-                <view class="weui-flex btn_bar" >
-                    <view class="weui-flex__item"></view>
-                    <view > 
-                        <button size="mini" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" catchtap="navigateToWatermark"> 水印 </button>
-                        <button size="mini" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" catchtap="menuShare" type="primary">分享</button>
-                        <!--<button class=""   catchtap="menuShare" size="mini" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}">全屏预览</button>-->
-                    </view>
-                    <view class="weui-flex__item"> </view>
-                </view>
-
-
-
-
-
-           
-        </view>
-
-        <!--按钮栏  mp4-->
-        <view class="video2gif" hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}">
-            <view class="space-35"></view>
-            <!--<view class="weui-flex">
-                <view class=""> 
-                    <view class="weui-cells__title">开始时间：</view>
-                </view>    
-                <view class="weui-flex__item"> 
-                    <slider bindchange="starTimeChange" show-value value="0" min="0" max="{{selectEmoticon.duration}}"/>
-                </view>
-            </view>
-            <view class="weui-flex">
-                <view class=""> 
-                    <view class="weui-cells__title">持续时间：</view>
-                </view>
-                <view class="weui-flex__item"> 
-                    <view><slider bindchange="durationTimeChange" show-value value="6" min="1" max="6"/></view>
-                </view>
-            </view>
-            <view class="weui-btn-area">
-                <button class="weui-btn" type="primary" loading="{{isUpload}}" catchtap="menuVideo2Gif" >制作GIF</button>
-            </view>
-            <view class="weui-flex">
-                <view class="weui-flex__item page__desc video2gif__des">视频片段制作GIF(需设置GIF开始、持续时间)</view>
-            </view>-->
-        </view>
- 
-    </view>  
-
-     <!--按钮栏  join拼接 临时取消  disabled="{{joinImg.status == 2?false:true}}" -->
+     <!--2 join拼接bar -->
     <view class="join-new "  hidden="{{!joinShow}}">
-        <!--<view class="space-6">  </view>-->
         <view class="weui-flex">            
             <view class="weui-flex__item">
                 表情一
@@ -173,12 +49,9 @@
                 <button size="mini" loading="{{isUpload}}" catchtap="joinConfirm" data-action="" type="primary" >拼接</button>
             </view>
         </view>
-        
-        
-
     </view>
 
-    <!--emoticon表情显示列表-->
+    <!-- 3 emoticon-wall表情显示列表-->
     <scroll-view class="emoticon-wall" scroll-y="true" style="height:{{windowHeight - joinHeight}}px;" bindscrolltolower="emoticonScrollTolower" >
         <block wx:for-items="{{emoticon}}"  wx:for-item="emoticon">
             <view class="emoticon-grid">
@@ -197,7 +70,7 @@
         <view class="space-64"></view>
     </scroll-view>
 
-    <!--loading框-->
+    <!-- 4 初始loading-->
     <view class="page__bd" hidden="{{!loadShow}}">
         <view class="weui-loadmore">
             <view class="weui-loading"></view>
@@ -211,7 +84,7 @@
         </view>
     </view>
 
-    <!--图片、视频上传-->
+    <!--5 右下角 + 号。图片、视频上传-->
     <view class="upload">
         <view wx:if="{{isUpload}}">
             <image  src="../../images/upload.gif" background-size="cover" catchtap="btnIsUpload"></image>
@@ -221,13 +94,10 @@
         </view>
     </view>
 
-<!--data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAiIGhlaWdodD0iMTIwIiB2aWV3Qm94PSIwIDAgMTAwIDEwMCI+PHBhdGggZmlsbD0ibm9uZSIgZD0iTTAgMGgxMDB2MTAwSDB6Ii8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjRTlFOUU5IiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0idHJhbnNsYXRlKDAgLTMwKSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iIzk4OTY5NyIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgzMCAxMDUuOTggNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjOUI5OTlBIiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKDYwIDc1Ljk4IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0EzQTFBMiIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSg5MCA2NSA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNBQkE5QUEiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoMTIwIDU4LjY2IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0IyQjJCMiIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgxNTAgNTQuMDIgNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjQkFCOEI5IiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKDE4MCA1MCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNDMkMwQzEiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTE1MCA0NS45OCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNDQkNCQ0IiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTEyMCA0MS4zNCA2NSkiLz48cmVjdCB3aWR0aD0iNyIgaGVpZ2h0PSIyMCIgeD0iNDYuNSIgeT0iNDAiIGZpbGw9IiNEMkQyRDIiIHJ4PSI1IiByeT0iNSIgdHJhbnNmb3JtPSJyb3RhdGUoLTkwIDM1IDY1KSIvPjxyZWN0IHdpZHRoPSI3IiBoZWlnaHQ9IjIwIiB4PSI0Ni41IiB5PSI0MCIgZmlsbD0iI0RBREFEQSIgcng9IjUiIHJ5PSI1IiB0cmFuc2Zvcm09InJvdGF0ZSgtNjAgMjQuMDIgNjUpIi8+PHJlY3Qgd2lkdGg9IjciIGhlaWdodD0iMjAiIHg9IjQ2LjUiIHk9IjQwIiBmaWxsPSIjRTJFMkUyIiByeD0iNSIgcnk9IjUiIHRyYW5zZm9ybT0icm90YXRlKC0zMCAtNS45OCA2NSkiLz48L3N2Zz4=-->
 
 
-    <!--临时文件  显示列表-->
-    <scroll-view class="temp__wall" hidden="{{!temp.show}}"
-    scroll-y="true" style="height:{{windowHeight+42}}px;"
-    >   
+    <!--6 显示临时表情-->
+    <scroll-view class="temp__wall" hidden="{{!temp.show}}"  scroll-y="true" style="height:{{windowHeight+42}}px;" >   
         <view class="page__hd">
             <view class="page__title">临时表情</view>
             <view class="page__desc">临时存放制作的表情，退出表情袋，请及时保存</view>
@@ -248,21 +118,14 @@
         </view>
         <view class="space-64"></view>
     </scroll-view>
-        <!--临时文件 按钮-->
+    <!--6.1 左下角色数字 打开临时列表 -->
     <view class="temp" catchtap="tempSwitch" wx:if="{{temp.emoticon.length>0}}">
         <label class="title" wx:if="{{temp.show}}">关闭</label>
         <label class="title" wx:else>{{temp.emoticon.length}}</label>
     </view>
 
 
-    <view class="weui-footer weui-footer_fixed-bottom" wx:if="{{!loginStatus}}"> 
-        <view class="weui-footer__links ">      
-        </view>
-        <view class="weui-footer__text"> <button size="mini" type="primary" catchtap="reLogin">重新登陆</button></view>
-    </view>
-
-
-    <!--目录选择列表-->
+    <!--7 目录 > 6，目录选择列表-->
     <scroll-view class="select-category" wx:if="{{selectCategoryShow}}"
     scroll-y="true" style="height:{{windowHeight}}px;"
     catchtap="closeMove"  >   

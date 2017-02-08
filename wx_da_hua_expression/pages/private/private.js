@@ -26,6 +26,7 @@ Page({
 
     // category scroll-view的宽度
     categoryScrollWidth : 10,
+
     //join数据
     joinImg:{
       step:1,
@@ -33,13 +34,6 @@ Page({
       first:"http://image.12xiong.top/wx_app/join1.gif",
       seconde:"http://image.12xiong.top/wx_app/join2.gif",
       resualt:"http://image.12xiong.top/wx_app/resualt.gif",
-      // first:"http://image.12xiong.top/12_20161226084253.gif",
-      // seconde:"http://image.12xiong.top/12_20161226084358.gif",
-      // resualt:"http://image.12xiong.top/12_20161226084407.gif?imageMogr2/thumbnail/96x96",
-      // first:"http://image.12xiong.top/12_20161226084253.gif?imageMogr2/thumbnail/170x170",
-      // seconde:"http://image.12xiong.top/12_20161226084358.gif?imageMogr2/thumbnail/170x170",
-      // resualt:"http://image.12xiong.top/12_20161226084407.gif?imageMogr2/thumbnail/170x170",
-      // resualt_alert:"http://image.12xiong.top/12_20161226084358.gif?imageMogr2/thumbnail/170x170",
     },
 
     //video 控制
@@ -76,18 +70,12 @@ Page({
         // emoticon:["http://image.12xiong.top/12_20161226084253.gif","http://image.12xiong.top/12_20161226084253.gif",], //临时表情列表  
     },
     
+    //右上角重新登录锁
     lockReLogin:false,
   },
 
-
-  //1 关闭所有悬浮框
-  hiddenAll:function(){GLOBAL_PAGE.setData({menuType:0})},
-
-
   /**2 选择指定目录 */
   selectCategory:function(e){
-    
-    GLOBAL_PAGE.hiddenAll()//清除屏幕框
     var c_id = e.currentTarget.dataset.select_category_id
     if (c_id == "") c_id = null  //c_id为空，全选
     GLOBAL_PAGE.setData({
@@ -112,7 +100,6 @@ Page({
 
   //上传大类 4-1
   btnUpload:function() {
-     GLOBAL_PAGE.hiddenAll() //关闭表情框
      wx.showActionSheet({
       // itemList: ['图片', '小视频'],
       itemList: ['图片', '添加目录'],
@@ -318,37 +305,6 @@ Page({
       })
   },
 
-  /** 4 打开菜单 */
-  onMenu: function(e) {
-    //准备当前预备编辑的图片地址
-    GLOBAL_PAGE.setData({
-      selectEmoticon:{
-        img_id: e.currentTarget.dataset.img_id, 
-        img_url:e.currentTarget.dataset.img_url,
-        category_id:e.currentTarget.dataset.category_id,
-        size:e.currentTarget.dataset.size,
-        static_url:e.currentTarget.dataset.static_url,
-        yun_url:e.currentTarget.dataset.yun_url,
-        width:e.currentTarget.dataset.width,
-        height:e.currentTarget.dataset.height,
-        duration:e.currentTarget.dataset.duration,
-        },
-      menuType: e.currentTarget.dataset.menu_type
-    })
-    // if( wx.getStorageSync('is_onmenu_info') == "")
-    // {
-    //     wx.showModal({
-    //         title: '拼接提示',
-    //         content:'点击“表情二”，可制作GIF图',
-    //         showCancel:false,
-    //         confirmText:"知道了",
-    //         success: function(res) {
-    //             wx.setStorageSync('is_onmenu_info',true)
-    //         }
-    //     }) 
-    // }
-  },
-
   /** 5 菜单-分享 */
   menuShare:function(e){
     // Menu.Option.Share( GLOBAL_PAGE.data.selectEmoticon )
@@ -441,9 +397,6 @@ Page({
                     },
                 })
             }
-            /**
-             * Todo 与后台确认删除表情
-             */
         },
         complete:function(res) { 
           
@@ -486,17 +439,17 @@ Page({
     }
    
   },
-  
+  // 8.1 点击空白处关闭
   closeMove:function(){
     GLOBAL_PAGE.setData({selectCategoryShow:false}) 
   },
-
+  // 8.2 确认移动
   buttonMove:function(e){
     var index = parseInt( e.currentTarget.dataset.index )
     GLOBAL_PAGE.moveCategory(index)
     GLOBAL_PAGE.setData({selectCategoryShow:false}) 
   },
-
+  // 8.3
   moveCategory:function(tapIndex){
     //移动表情
           wx.request({
@@ -549,82 +502,13 @@ Page({
   },
 
 
-  starTimeChange:function(e){
-    GLOBAL_PAGE.setData({
-      startTime:e.detail.value 
-    })
-  },
-
-  durationTimeChange:function(e){
-     GLOBAL_PAGE.setData({
-      durationTime:e.detail.value 
-    })
-  },
-   
-  /** 8 菜单-视频转GIF */
-  menuVideo2Gif:function(){
-      if(GLOBAL_PAGE.data.isUpload == true)
-      {
-        wx.showToast({
-            title: '正在执行上传任务，请稍等',
-            icon: 'loading',
-            duration: 700
-        })
-        return
-      }
-      //改变上传btn状态为
-      GLOBAL_PAGE.setData({isUpload:true})
-  
-      wx.request({
-          url: Api.imgVideo2gif(), 
-          data:{
-            'session': wx.getStorageSync(Key.session),
-            "video_url":GLOBAL_PAGE.data.selectEmoticon.img_url,
-            "start_time":GLOBAL_PAGE.data.startTime,
-            "duration_time":GLOBAL_PAGE.data.durationTime,
-            "width":GLOBAL_PAGE.data.selectEmoticon.width,
-            "height":GLOBAL_PAGE.data.selectEmoticon.height,
-          },
-          success: function(res){
-              var data = res.data
-              console.log(data)
-              if(data.status == "true")
-              {
-
-                var temp = GLOBAL_PAGE.data.temp
-                temp.emoticon.push(data.local_url)
-                GLOBAL_PAGE.setData({temp:temp})
-
-                wx.showToast({
-                    title: '制作成功，左下方蓝色数字按钮打开',
-                    icon: 'success',
-                    duration: 1000
-                })
-              } 
-              else{
-                wx.showModal({
-                title: '网络连接失败，请重试',
-                showCancel:false,
-              })
-              }
-          },
-          fail:function(res){
-              wx.showModal({
-                title: '网络连接失败，请重试',
-                showCancel:false,
-              })
-          },
-          complete:function(res) { 
-            GLOBAL_PAGE.setData({isUpload:false})
-          },
-      })
-  },
-
   /** 9 join 拼接 */
-  menuJoin:function(){
-      GLOBAL_PAGE.setData({joinShow:true})
+  showJoinTab:function(){
+      GLOBAL_PAGE.setData({joinShow:true,joinHeight:164})
   },
-  
+  joinCancel:function(){
+      GLOBAL_PAGE.setData({joinShow:false,joinHeight:0})
+  },
   //拼接3幅图预览
   joinPreview:function(e){
       wx.previewImage({
@@ -685,21 +569,12 @@ Page({
       }
   },
 
-  joinCancel:function(){
-      GLOBAL_PAGE.setData({joinShow:false,joinHeight:0})
-  },
-
-
- 
-  
-
   //join按钮
   // 1 正在上中,return
   // 2 status == 1 ，请增加图片
   // 3 重复点击，提示图片加载成功，
   // 4 增加新图片，上传完成，提示成功；失败，提示网络失败
   joinConfirm:function(){
-    
       //1 正上传
       if(GLOBAL_PAGE.data.isUpload == true)
       {
@@ -834,153 +709,8 @@ Page({
           },
       })
   },
-  // joinConfirm:function(){
-    
-  //   //正上传
-  //   if(GLOBAL_PAGE.data.isUpload == true)
-  //   {
-  //     wx.showToast({
-  //         title: '正在执行上传任务，请稍等',
-  //         icon: 'loading',
-  //         duration: 700
-  //     })
-  //     return
-  //   }
-  //   var joinImg = GLOBAL_PAGE.data.joinImg
 
-  //     //2 验证在临时文件夹temp中是否存在，存在读取，完成
-  //     var isInLog = GLOBAL_PAGE.tempLogExists(joinImg.first,joinImg.seconde)
-  //     if( isInLog.status){
-  //       joinImg.resualt = isInLog.resualt
-  //       GLOBAL_PAGE.setData({
-  //         joinImg:joinImg,  //设置上传loading图片
-  //         isUpload:false  //关闭开上传
-  //       })
-  //       wx.showToast({
-  //           title: '图片已拼接，请点击预览',
-  //           icon: 'success',
-  //           duration: 1000
-  //       })
-  //       return 
-  //     }
-
-  //     //3 设置上传图片
-  //     var origin_resualt = joinImg.resualt
-  //     joinImg.resualt = "../../images/upload.gif"
-  //     GLOBAL_PAGE.setData({
-  //       joinImg:joinImg,  //设置上传loading图片
-  //       isUpload:true  //打开上传
-  //     })
-  //     if (joinImg.status == 1) //初始状态，还未拼接
-  //     {
-  //         setTimeout(function() {
-  //               var joinImg = GLOBAL_PAGE.data.joinImg
-  //               joinImg.resualt = origin_resualt
-                
-  //               //保存至临时文件夹
-  //               GLOBAL_PAGE.tempAdd(joinImg.first,joinImg.seconde,joinImg.resualt)
-  //               //更新join图片，关闭上传限制
-  //               GLOBAL_PAGE.setData({
-  //                 joinImg:joinImg,  //设置上传loading图片
-  //                 isUpload:false  //打开上传
-  //               })
-               
-  //               wx.showToast({
-  //                   title: '拼接成功，点击图片预览',
-  //                   icon: 'success',
-  //                   duration: 1000
-  //               })
-  //         }, 500)
-          
-  //         return
-  //     }
-
-
-  //   //4  临时文件temp没有，也不是默认的，发起join请求
-  //   var first = GLOBAL_PAGE.data.joinImg.first
-  //   var seconde = GLOBAL_PAGE.data.joinImg.seconde
-  //   wx.request({
-  //       url: Api.editorJoin(), 
-  //       data:{
-  //         'session': wx.getStorageSync(Key.session),
-  //         "first":first,
-  //         "seconde":seconde,
-  //       },
-  //       success: function(res){
-  //           var data = res.data
-  //           console.log(data)
-  //           if(data.status == "true")
-  //           {
-  //              //预览图
-  //               var joinImg = GLOBAL_PAGE.data.joinImg
-  //               joinImg.resualt = data.local_url
-
-  //               //保存至临时文件夹
-  //               GLOBAL_PAGE.tempAdd(first,seconde,data.local_url)
-  //               //更新join图片，关闭上传限制
-  //               GLOBAL_PAGE.setData({
-  //                 joinImg:joinImg,  //设置上传loading图片
-  //                 isUpload:false  //打开上传
-  //               })
-               
-  //               wx.showToast({
-  //                   title: '拼接成功，点击图片预览',
-  //                   icon: 'success',
-  //                   duration: 1000
-  //               })
-
-  //               // //临时保存
-  //               // var temp = GLOBAL_PAGE.data.temp
-  //               // temp.emoticon.push(data.local_url)
-
-  //               // GLOBAL_PAGE.setData({
-  //               //   temp:temp,
-  //               //   joinImg:joinImg
-  //               // })
-
-  //               // wx.showToast({
-  //               //     title: '拼接成功，请点击预览',
-  //               //     icon: 'success',
-  //               //     duration: 1000
-  //               // })
-  //           } 
-  //           else{
-  //             wx.showModal({
-  //               title: '网络连接失败，请重试',
-  //               showCancel:false,
-  //             })
-  //           }
-  //       },
-  //       fail:function(res){
-  //           console.log("chooseImage fail")
-  //           var data = res.data
-  //           console.log(res)
-
-  //           wx.showModal({
-  //             title: '网络连接失败，请重试',
-  //             showCancel:false,
-  //           })         
-  //       },
-  //       complete:function(res) { 
-  //           GLOBAL_PAGE.setData({isUpload:false})
-  //       },
-  //   })
-  // },
-
-
-  onHide:function(){
-    View.Switch.OffAll()
-    View.Switch.Work()
-  },
-
-  // Render:function(){
-  //    //2 初始化本地表情表
-  //    Render.emoticon(this,wx.getStorageSync("emoticon"))
-  //   //3 初始化目录
-  //    Render.category(this,wx.getStorageSync("category"))
-  // },
-
-  /**渲染表情 */
+  /** 10 渲染表情 */
   renderEmoticon:function(){
     //根据条件选择emoticon，重新渲染
     var c_id = GLOBAL_PAGE.data.selectCategory.category_id 
@@ -1001,32 +731,19 @@ Page({
     Render.emoticon(this,e_render)
   },
  
-  /**渲染表情 */
+  /** 11 渲染目录 */
   renderCategory:function(){
     Render.category(this,wx.getStorageSync("category"))
   },
 
   onShow: function() {
     //菜单显示框
-    var _view = {
-      displayMenu:false,
-    }
-    View.Switch.Init(this,_view)
-    View.Switch.Work()
 
-    //渲染表情和目录
+    //public 收藏后后，再进入private，要渲染表情和目录
     GLOBAL_PAGE.renderEmoticon()
     GLOBAL_PAGE.renderCategory()
   },
 
-  
-  /**
-   * 加载完毕，更新图片
-   */
-  onReady:function(){
-    // Menu.Option.GetPictureMy(GLOBAL_PAGE.callBack)  //临时删除
-    
-  },
 
   // 分享页面
   onShareAppMessage: function () { 
@@ -1043,12 +760,6 @@ Page({
       }
   },
 
-  // onShow: function (param) {  
-  //    wx.previewImage({
-  //       current: "http://image.12xiong.top/wx_app/1.gif", // 当前显示图片的http链接
-  //       urls:["http://image.12xiong.top/wx_app/1.gif"] // 需要预览的图片http链接列表
-  //     })
-  //  },
   /**
    *  页面加载
    */
@@ -1094,6 +805,7 @@ Page({
       //Todo 登陆过后做的请求
       GLOBAL_PAGE.init()
   },
+
   //Page：private  初始化页面的钩子
   init:function( ){
     //数据初始化 图片
@@ -1166,12 +878,7 @@ Page({
                       var e = {currentTarget:{dataset:{select_category_id:_category_list[i].category_id}}}
                       // e.currentTarget.dataset.select_category_id = _category_list[i].category_id
                       GLOBAL_PAGE.selectCategory(e)
-                  }
-                    
-              
-
-             
-              
+                  }              
           }
           else
             wx.showModal({
@@ -1188,24 +895,6 @@ Page({
       })
   },
 
-   //导航：水印页面
-  navigateToWatermark: function(e) {
-    var url = '../watermark/watermark?imgurl=' + GLOBAL_PAGE.data.selectEmoticon.yun_url 
-    + "&width=" + GLOBAL_PAGE.data.selectEmoticon.width 
-    + "&height=" + GLOBAL_PAGE.data.selectEmoticon.height 
-
-    wx.navigateTo({
-      url: url
-    })
-  },
-
-  //导航：gif拼接页面
-  navigateToJoin: function(e) {
-    var url = '../join/join?imgurl=' + GLOBAL_PAGE.data.selectEmoticon;
-    wx.navigateTo({
-      url: url
-    })
-  },
   
   //导航：目录设置页面
   //param 当前目录
@@ -1217,13 +906,6 @@ Page({
     })
   },
 
-  //导航：目录设置页面
-  navigateToPainter: function(e) {
-    var url = '../painter/painter'
-    wx.navigateTo({
-      url: url
-    })
-  },
 
   //临时文件是否存在join的log记录
   tempLogExists:function(first,seconde){
@@ -1261,7 +943,6 @@ Page({
   },
 
   tempSwitch:function(){
-      GLOBAL_PAGE.hiddenAll() //关闭表情框
       var temp = GLOBAL_PAGE.data.temp
       if(temp.show == true)
         temp.show = false
@@ -1319,9 +1000,7 @@ Page({
     })
   },
 
-  showJoinTab:function(){
-      GLOBAL_PAGE.setData({joinShow:true,joinHeight:164})
-  },
+
 
   followEvent:function(e){
       var select_id = e.currentTarget.dataset.img_id
