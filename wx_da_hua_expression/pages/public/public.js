@@ -59,32 +59,8 @@ Page({
      emoticonScrollTop:0 , //表情滚条位置
   },
 
-  //1 关闭所有悬浮框
-  hiddenAll:function(){GLOBAL_PAGE.setData({menuType:0})},
 
-
-
-  /** 3 点击表情，悬浮菜单
-   */
-  onMenu: function(e) {
-      GLOBAL_PAGE.setData({
-        selectEmoticon:{
-          id: e.currentTarget.dataset.id, 
-          img_url:e.currentTarget.dataset.img_url,
-          category_id:e.currentTarget.dataset.category_id,
-          size:e.currentTarget.dataset.size,
-          static_url:e.currentTarget.dataset.static_url,
-          yun_url:e.currentTarget.dataset.yun_url,
-          }
-      })
-      
-      // 显示缩略图
-      GLOBAL_PAGE.setData({
-          menuType: e.currentTarget.dataset.menu_type
-      })
-  },
-
-  // 4 图片分享
+  // 1 图片分享
   menuShare:function(e){
         var current = e.currentTarget.dataset.yun_url
         // var current = GLOBAL_PAGE.data.selectEmoticon.yun_url
@@ -114,7 +90,7 @@ Page({
         }
   },
 
-  // 5 菜单收藏按钮，可以收藏多张 
+  // 2 菜单收藏按钮，可以收藏多张 
   menuCollect:function(e){
     
     if( wx.getStorageSync('session') == ""  )
@@ -210,7 +186,7 @@ Page({
   },
 
 
-  //创建Tag
+  // 3 创建Tag
   createTag:function(category){
       var _cat = category
       var tag = []
@@ -235,7 +211,7 @@ Page({
       })
   },
 
- 
+  // 4 渲染表情
   renderEmoticon:function(emoticon,add){
     Render.emoticon(GLOBAL_PAGE,emoticon,add)
   },
@@ -314,13 +290,12 @@ Page({
 
   },
   
-  //搜索栏
+  //5 搜索栏
   /**
   * 1 根据keyword，搜索
   */
   searchBtn:function(){
       
-    GLOBAL_PAGE.hiddenAll() //隐藏表情框
     //开启loading
    
     GLOBAL_PAGE.setData({
@@ -347,11 +322,9 @@ Page({
 
     GLOBAL_PAGE.TagImgQueryRequst()
   },
-  //从private删除表情，进入public，要刷新
-  onReady:function(){
-    var _img_list = GLOBAL_PAGE.isCollect(GLOBAL_PAGE.data.emoticon)
-    GLOBAL_PAGE.renderEmoticon(_img_list)
-  },
+
+ 
+  
   isCollect:function(img_list){
       //对比storage,若已经收藏，标红心
     var _storage = wx.getStorageSync(KEY.emoticon)
@@ -431,72 +404,69 @@ Page({
    * 更新keyword
    */
   searchShortcut:function(e){
-     
-    GLOBAL_PAGE.hiddenAll() //隐藏表情框
-    
-    GLOBAL_PAGE.setData({
-      keyword:e.currentTarget.dataset.keyword,
-      // inputVal:e.currentTarget.dataset.keyword,
-      inputShowed:true,
-      searchResultShowed:false,
-    })
-
-    //index目录列表
-    //临时建立tagListDisplay中间选项，首页查询，所有tag一起展示，
-    if(e.currentTarget.dataset.keyword == "目录导航")
-    {
-        var tagListDisplay = GLOBAL_PAGE.data.tagList   
         GLOBAL_PAGE.setData({
-          indexShow:true,
-          shortcutShow:false,
-          emoticonShow:false,
-          loadShow:false,
-          tagListDisplay:tagListDisplay
-        }) 
-        return
-    }
-    // 单项父类查询，展示长度为1的tag数组，仅有父类一个元素
-    var tagList = GLOBAL_PAGE.data.tagList
-    for(var i = 0 ; i<tagList.length;i++)
-    {
-        if( e.currentTarget.dataset.keyword == tagList[i].parent.name)
+        keyword:e.currentTarget.dataset.keyword,
+        // inputVal:e.currentTarget.dataset.keyword,
+        inputShowed:true,
+        searchResultShowed:false,
+        })
+
+        //index目录列表
+        //临时建立tagListDisplay中间选项，首页查询，所有tag一起展示，
+        if(e.currentTarget.dataset.keyword == "目录导航")
         {
-            var tagListDisplay = [ GLOBAL_PAGE.data.tagList[i] ]
+            var tagListDisplay = GLOBAL_PAGE.data.tagList   
             GLOBAL_PAGE.setData({
-              indexShow:true,
-              shortcutShow:false,
-              emoticonShow:false,
-              loadShow:false,
-              tagListDisplay:tagListDisplay
+            indexShow:true,
+            shortcutShow:false,
+            emoticonShow:false,
+            loadShow:false,
+            tagListDisplay:tagListDisplay
             }) 
             return
         }
-    }
-    // else
-    //正常搜索
-    GLOBAL_PAGE.searchBtn();
-
+        // 单项父类查询，展示长度为1的tag数组，仅有父类一个元素
+        var tagList = GLOBAL_PAGE.data.tagList
+        for(var i = 0 ; i<tagList.length;i++)
+        {
+            if( e.currentTarget.dataset.keyword == tagList[i].parent.name)
+            {
+                var tagListDisplay = [ GLOBAL_PAGE.data.tagList[i] ]
+                GLOBAL_PAGE.setData({
+                indexShow:true,
+                shortcutShow:false,
+                emoticonShow:false,
+                loadShow:false,
+                tagListDisplay:tagListDisplay
+                }) 
+                return
+            }
+        }
+        // else
+        //正常搜索
+        GLOBAL_PAGE.searchBtn();
   },
-  //3
+
+  //6 搜索栏交互
   showInput: function () {
       this.setData({
           inputShowed: true
       });
   },
-  //4
+  //
   hideInput: function () {
       this.setData({
         //   keyword: "",
           searchResultShowed: false
       });
   },
-  //5
+  //
   clearInput: function () {
       this.setData({
           keyword: ""
       });
   },
-  //6
+  //
   inputTyping: function (e) {
       GLOBAL_PAGE.setData({
           keyword: e.detail.value
@@ -519,13 +489,13 @@ Page({
 
   },
 
-  //7 输入框聚焦
+  // 输入框聚焦
   inpuFocus:function(e){
       GLOBAL_PAGE.setData({
         searchResultShowed:true,
     })
   },
-  //8 输入变化显示提示栏
+  // 输入变化显示提示栏
   inpuBlur:function(e){
       GLOBAL_PAGE.setData({
         searchResultShowed:false,
@@ -561,11 +531,17 @@ Page({
     })
   },
 
-  onShow:function(){
-    
-    var _img_list = GLOBAL_PAGE.isCollect(GLOBAL_PAGE.data.emoticon)
-    GLOBAL_PAGE.renderEmoticon(_img_list)
-  },
+    //从private删除表情，进入public，要刷新
+    onShow:function(){
+        var _img_list = GLOBAL_PAGE.isCollect(GLOBAL_PAGE.data.emoticon)
+        GLOBAL_PAGE.renderEmoticon(_img_list)
+    },
+//   onReady:function(){
+//     var _img_list = GLOBAL_PAGE.isCollect(GLOBAL_PAGE.data.emoticon)
+//     GLOBAL_PAGE.renderEmoticon(_img_list)
+//   },
+
+
   onLoad: function (option) {
     GLOBAL_PAGE = this
     //1 page初始化高宽

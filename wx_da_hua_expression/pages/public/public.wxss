@@ -1,7 +1,7 @@
 /*public.wxss*/
 
 
-
+/*1 搜索栏*/
 .search {
     
     /*position:absolute;*/
@@ -27,7 +27,7 @@
     float:left ;
 }
 
-
+/*2 快捷短语*/
 .shortcut {
     /*border-bottom: 1rpx solid #D9D9D9;*/
     background-color:#ffffff; 
@@ -58,25 +58,21 @@
 }
 
 
-
-.cancel {
-    width: 23px;
-    height:23px;
-    margin: 6px 10px 0px 8px; 
+/*3 下拉底部loading*/
+.scroll-load {
+    position: relative;
+}
+.scroll-load .nav__index {
+    color:#576b95;
 }
 
+/*表情墙*/
 .footer__bottom {
   /*position: fixed;*/
   bottom: .52em;
   left: 0;
   right: 0;
   margin: .52em;
-}
-.scroll-load {
-    position: relative;
-}
-.scroll-load .nav__index {
-    color:#576b95;
 }
 
 .emoticon-wall__public{

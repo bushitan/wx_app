@@ -1,7 +1,7 @@
 <!--public.wxml-->
 <view class="page"  >
     <view class="">
-        <!--搜索栏-->
+        <!--1 搜索栏-->
         <view class="weui-search-bar">
             <view class="weui-search-bar__form">
                 <view class="weui-search-bar__box">
@@ -15,7 +15,7 @@
             <view class="weui-search-bar__cancel-btn" hidden="{{!searchResultShowed}}" bindtap="hideInput">取消</view>
         </view>
 
-        <!--关键字推荐栏目-->
+        <!--1.1 关键字推荐栏目-->
         <view class="weui-cells searchbar-result" hidden="{{!searchResultShowed}}">
             <block wx:for="{{searchKey}}">
                 <navigator url="" class="weui-cell" hover-class="weui-cell_active"
@@ -34,7 +34,7 @@
         </view>
     </view>
 
-    <!--首页全选项-->
+    <!--2 首页全选项-->
     <view class="main" hidden="{{!indexShow}}">
         <block wx:for-items="{{tagListDisplay}}"  wx:for-item="tag">
             <view class="page__hd">
@@ -51,64 +51,7 @@
         </block>
     </view>
 
-   
-   
-    <!--public Menu菜单-->
-    <view class="emoticon-menu" hidden="{{menuType != '0' ? false:true}}">
-        <!--右上角菜单-->
-        <view class="weui-flex  ">
-            <view class="weui-flex__item"></view>
-            <view >
-                <image src="../../images/ic_action_cancel_black.png" class="cancel" catchtap="hiddenAll"></image>
-            </view>
-        </view>
-        
-        <!--<view class="weui-flex page__bd_spacing" catchtap="hiddenAll" style="background-color: #EBEBEB;">
-            <view></view>
-            <view class="weui-flex__item"> 
-                <view class="placeholder">  
-                    <image hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}" class="weui-media-box__thumb" mode="aspectFit" src="{{selectEmoticon.img_url}}"  bindload="bindload"/>
-                    <video hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}" class="weui-media-box__thumb" src="{{selectEmoticon.img_url}}" catchtap="eventBase"></video>
-                </view>
-            </view>
-            <view></view>
-        </view>-->
-
-        <!--emoticon框 显示JPG或-->
-        <view class="weui-flex" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}"  catchtap="menuShare" style="background-color: #EBEBEB;">
-            <view class="weui-flex__item page__bd_spacing"> 
-                <view class="placeholder">
-                    <image  class="weui-media-box__thumb" mode="aspectFit" src="{{selectEmoticon.yun_url}}"  bindload="bindload"/>
-                    <video hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}" class="weui-media-box__thumb" src="{{selectEmoticon.img_url}}" catchtap="null"></video> <!--点击视频不关闭-->
-                </view>
-            </view>
-        </view>
-
-         <!--emoticon框 显示MP4-->
-        <view class="weui-flex  "  hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}"  style="background-color: #EBEBEB;">
-            <view class="weui-flex__item page__bd_spacing"> 
-                <view class="placeholder">
-                    <video hidden="{{menuType == MENU_TYPE.VIDEO ? false:true}}" class="weui-media-box__thumb" src="{{selectEmoticon.img_url}}" catchtap="null"></video> <!--点击视频不关闭-->
-                </view>
-            </view>
-        </view>
-
-
-        <view class="space-4">  </view>
-       <!--菜单-->
-        <view class="weui-flex btn_bar" >
-            <view class="weui-flex__item"></view>
-            <view > 
-
-                <button  catchtap="menuCollect"  size="mini"  hidden="">收藏</button> 
-                <button  catchtap="menuShare" type="primary" size="mini"  hidden="">分享</button>
-                <!--<button class=""   catchtap="menuShare" size="mini" hidden="{{menuType == MENU_TYPE.VIDEO ? true:false}}">全屏预览</button>-->
-            </view>
-            <view class="weui-flex__item"> </view>
-        </view>
-    </view>
-
-    <!--短语快捷键-->
+    <!--3 短语快捷键-->
     <view class="shortcut" hidden="{{!shortcutShow}}">
         <scroll-view scroll-x="true">
             <block wx:for="{{hotLabel}}">
@@ -117,7 +60,7 @@
         </scroll-view>
     </view>
 
-    <!--emoticon表情显示列表-->
+    <!--4 emoticon表情显示列表-->
     <scroll-view class="emoticon-wall__public" scroll-y="true" style="height:{{windowHeight}}px;"                             scroll-top="{{emoticonScrollTop}}" bindscrolltolower="scrollTolower" data-action="scrollTolower"  hidden="{{!emoticonShow}}" >
         <view class="emoticon-grids__public">
             <!--页眉-->
@@ -160,6 +103,7 @@
             </view>
     </scroll-view>
 
+    <!--5 页脚-->
     <view class="page__bd" hidden="{{!loadShow}}">
         <view class="weui-loadmore">
             <view class="weui-loading"></view>
@@ -172,11 +116,5 @@
             <view class="weui-loadmore__tips weui-loadmore__tips_in-line weui-loadmore__tips_in-dot"></view>
         </view>
     </view>
-     <!--weui-footer_fixed-bottom-->
-     <!--<navigator url="" class="weui-footer__link">WeUI首页</navigator>-->
-        <!--<view class="weui-footer weui-footer_fixed-bottom"> 
-            <view class="weui-footer__links">      
-            </view>
-            <view class="weui-footer__text">素材可投稿（管理员微信号：bushitan）</view>
-        </view>-->
+ 
 </view>
