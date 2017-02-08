@@ -460,10 +460,9 @@ Page({
 
     if (list.length ==  1) //只有1个组，提示增加分组
     {
-        wx.showToast({
-            title: '请按右下角 + 添加目录',
-            icon: 'loading',
-            duration: 1000
+        wx.showModal({
+          title: '请按右下角 + ,添加目录',
+          showCancel:false,
         })
         return 
     }
@@ -533,10 +532,9 @@ Page({
                   })
                 }
                 else{
-                  wx.showToast({
-                      title: '图片已在该目录',
-                      icon: 'success',
-                      duration: 700
+                  wx.showModal({
+                    title: '图片已在该目录',
+                    showCancel:false,
                   })
                 }
                

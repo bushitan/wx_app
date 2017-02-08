@@ -391,6 +391,7 @@
 
 .set {
     float: right;
+    color: #fff;
     font-size: 14px;
     line-height: 40rpx;
     background-color: #EBEBEB ;
@@ -399,6 +400,9 @@
     padding: 0px 8px;
 }
 
+.font-color {
+    color: #000;
+}
 .btn_active_gray{
     background-color: rgba(0, 0, 0, 0.1)
 }

@@ -183,7 +183,7 @@
         <block wx:for-items="{{emoticon}}"  wx:for-item="emoticon">
             <view class="emoticon-grid">
                 <view  class="follow__btn"  catchtap="followEvent" data-img_id="{{emoticon.img_id}}">
-                    <navigator class="set" hover-class="btn_active_gray">⋮</navigator>
+                    <navigator class="set" hover-class="btn_active_gray font-color">⋮</navigator>
                 </view>
                 <navigator hover-class="btn_active_gray" class="emoticon-preview" catchtap="menuShare" data-yun_url="{{emoticon.yun_url}}">
                     <image class="icon" src="{{emoticon.static_url}}" background-size="cover" mode="aspectFit"  />
