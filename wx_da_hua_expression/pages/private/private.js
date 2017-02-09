@@ -57,6 +57,7 @@ Page({
 
     //touch选择对象
     selectEmoticon:{id:"",name:"",img_url:"",size:""}, //预备编辑的图片
+    // selectCategory:{category_id:null,name:""}, // 
     selectCategory:{category_id:-1,name:""},
     
 
@@ -115,6 +116,26 @@ Page({
       }
     })
   },
+
+  previewUpload:function(){
+       wx.chooseImage({
+            count: 9, 
+            sizeType: ['compressed'], 
+            success: function(res) {
+                var tempFilePath = res.tempFilePaths[0] //图片            
+                // GLOBAL_PAGE.uploadFile(tempFilePath)
+                console.log( res.tempFilePaths)
+                wx.previewImage({
+                    current: tempFilePath,
+                    urls: res.tempFilePaths
+                })
+            },
+            fail:function(res){
+            console.log(res)
+            }
+      })
+  },
+
 //正在上传 4-2
   btnIsUpload:function() {
     wx.showToast({
@@ -130,7 +151,8 @@ Page({
         sizeType: ['compressed'], 
         success: function(res) {
             GLOBAL_PAGE.uploadPrepare(1,res.tempFilePaths)
-            var tempFilePath = res.tempFilePaths[0] //图片            
+            var tempFilePath = res.tempFilePaths[0] //图片 
+            console.log( res.tempFilePaths)           
             GLOBAL_PAGE.uploadFile(tempFilePath)
         },
         fail:function(res){

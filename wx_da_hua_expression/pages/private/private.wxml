@@ -92,6 +92,7 @@
         <view wx:else>
             <image  src="../../images/ic_action_add.png" background-size="cover" catchtap="btnUpload"></image>
         </view>
+        <!--<button catchtap="previewUpload">预览</button>-->
     </view>
 
 

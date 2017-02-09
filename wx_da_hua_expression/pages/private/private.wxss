@@ -86,6 +86,11 @@
     /*padding-left: 10px;*/
     
 }
+.temp_join button{
+    display:block;
+
+    margin: tpx auto;
+}
 
 /*3 选择目录*/
 .select-category {

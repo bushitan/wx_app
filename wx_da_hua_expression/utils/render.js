@@ -18,7 +18,8 @@ function emoticon(page,emoticon,add){
         for (var i=0;i<_list.length;i++)
         {
             //临时将地址指向image.12xiong.top
-            _list[i]["yun_url"] = "http://image.12xiong.top/" + _list[i]["yun_url"].split("/").pop()
+            // _list[i]["yun_url"] = "http://image.12xiong.top/" + _list[i]["yun_url"].split("/").pop()
+            _list[i]["yun_url"] = "http://img.12xiong.top/" + _list[i]["yun_url"].split("/").pop()
             //静态压缩图
             _list[i]["static_url"] = _list[i]["yun_url"] + "?imageMogr2/thumbnail/96x96/format/jpg" 
 

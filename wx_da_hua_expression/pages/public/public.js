@@ -146,7 +146,8 @@ Page({
                           
                   //收藏成功
                   var e = wx.getStorageSync(KEY.emoticon)
-                  e.push(_img)
+                  e.splice(0, 0, _img); //从第一位插入
+                //   e.push(_img)
                   wx.setStorageSync(KEY.emoticon,e)
                 
                     if( wx.getStorageSync('is_collect_info') == "")
@@ -325,22 +326,7 @@ Page({
 
  
   
-  isCollect:function(img_list){
-      //对比storage,若已经收藏，标红心
-    var _storage = wx.getStorageSync(KEY.emoticon)
-    var _img_list = img_list
-    for(var i=0;i<_img_list.length;i++ )
-        for(var j=0;j<_storage.length;j++){
-            if( _img_list[i].img_id == _storage[j].img_id ){
-                _img_list[i].is_collect = true //已经被收藏
-                break
-            }
-            else 
-                _img_list[i].is_collect = false //未收藏
-
-        }
-    return _img_list
-  },
+  
   //图片tag查询
   TagImgQueryRequst:function(){
 
@@ -506,7 +492,8 @@ Page({
       return {
         title: '表情袋',
         desc: '这有很多《'+GLOBAL_PAGE.data.keyword+'》的表情唷,(~˘▾˘)~',
-        path: '/pages/public/public?keyword='+GLOBAL_PAGE.data.keyword
+        path: '/pages/private/private',
+        // path: '/pages/public/public?keyword='+GLOBAL_PAGE.data.keyword
       }
   },
   
@@ -531,9 +518,31 @@ Page({
     })
   },
 
+  isCollect:function(img_list){
+      //对比storage,若已经收藏，标红心
+    var _storage = wx.getStorageSync(KEY.emoticon)
+    var _img_list = img_list
+    for(var i=0;i<_img_list.length;i++ )
+        for(var j=0;j<_storage.length;j++){
+            if( _img_list[i].img_id == _storage[j].img_id ){
+                _img_list[i].is_collect = true //已经被收藏
+                break
+            }
+            else 
+                _img_list[i].is_collect = false //未收藏
+
+        }
+    return _img_list
+  },
+
     //从private删除表情，进入public，要刷新
     onShow:function(){
-        var _img_list = GLOBAL_PAGE.isCollect(GLOBAL_PAGE.data.emoticon)
+        //is_collect = false
+        var _emoticon = GLOBAL_PAGE.data.emoticon
+        for(var i=0;i<_emoticon.length;i++)
+            _emoticon[i].is_collect = false
+        
+        var _img_list = GLOBAL_PAGE.isCollect(_emoticon)
         GLOBAL_PAGE.renderEmoticon(_img_list)
     },
 //   onReady:function(){
