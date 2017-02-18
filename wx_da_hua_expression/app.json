@@ -1,8 +1,8 @@
 {
   "pages":[
+    "pages/public/public",
     "pages/private/private",
     "pages/together/together",
-    "pages/public/public",
     "pages/painter/painter", 
     "pages/watermark/watermark",
     "pages/gallery/gallery",
@@ -23,15 +23,15 @@
     "selectedColor":"#56abe4",
     "borderStyle":"black",
     "list": [{
-      "pagePath": "pages/private/private",
-      "text": "我的",
-      "iconPath":"images/icon_smile.png",
-      "selectedIconPath":"images/icon_big_my.png"
-    },{
       "pagePath": "pages/public/public",
-      "text": "更多热图",
+      "text": "热图",
       "iconPath":"images/icon_smile.png",
       "selectedIconPath":"images/icon_big_hot.png"
+    },{
+      "pagePath": "pages/private/private",
+      "text": "我",
+      "iconPath":"images/icon_smile.png",
+      "selectedIconPath":"images/icon_big_my.png"
     }]
   },
   "networkTimeout": {

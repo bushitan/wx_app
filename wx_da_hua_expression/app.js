@@ -71,20 +71,36 @@ App({
                   }
                   else
                     wx.showModal({
-                      title: '网络连接失败，是否重新登陆？',
-                      content:"请确认网络是否正常",
-                      confirmText:"重新登陆",
+                      title: '数据同步未成功，点击"我"右上角按钮重新同步',
+                    //   content:"请确认网络是否正常",
+                        showCancel:false,
+                      confirmText:"知道啦",
                       success: function(res) {
-                          if (res.confirm) {
-                              GLOBAL_PAGE.login()
-                          }
-                          else{
-                              GLOBAL_PAGE.setData({
-                                  loginStatus:false
-                              }) 
-                          }
+                        //   if (res.confirm) {
+                        //       GLOBAL_PAGE.login()
+                        //   }
+                        //   else{
+                        //       GLOBAL_PAGE.setData({
+                        //           loginStatus:false
+                        //       }) 
                       }
-                    })                
+                    })       
+                //   else
+                //     wx.showModal({
+                //       title: '网络连接失败，是否重新登陆？',
+                //       content:"请确认网络是否正常",
+                //       confirmText:"重新登陆",
+                //       success: function(res) {
+                //           if (res.confirm) {
+                //               GLOBAL_PAGE.login()
+                //           }
+                //           else{
+                //               GLOBAL_PAGE.setData({
+                //                   loginStatus:false
+                //               }) 
+                //           }
+                //       }
+                //     })                
                 },
                 fail:function(res) { 
                     wx.showModal({

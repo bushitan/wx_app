@@ -96,8 +96,9 @@ Page({
     if( wx.getStorageSync('session') == ""  )
     {
         wx.showModal({
-            title: "登录失败，请先登录“我的”标签，再回来收藏",
+            title: '数据同步未成功，点击"我"右上角按钮重新同步',
             showCancel:false,
+             confirmText:"知道啦",
         })
         return
     }
@@ -144,17 +145,13 @@ Page({
                       }
                   GLOBAL_PAGE.setData({emoticon:_e})
                           
-                  //收藏成功
-                  var e = wx.getStorageSync(KEY.emoticon)
-                  e.splice(0, 0, _img); //从第一位插入
-                //   e.push(_img)
-                  wx.setStorageSync(KEY.emoticon,e)
+                 
                 
                     if( wx.getStorageSync('is_collect_info') == "")
                     {
                         wx.showModal({
                             title: '收藏成功',
-                            content:'点击左下角“我的”，进入专属表情袋',
+                            content:'点击右下角“我”，进入专属表情袋',
                             showCancel:false,
                             confirmText:"知道了",
                             success: function(res) {
@@ -169,6 +166,12 @@ Page({
                             duration: 700
                         })
                     }
+
+                     //收藏成功
+                  var e = wx.getStorageSync(KEY.emoticon)
+                  e.splice(0, 0, _img); //从第一位插入
+                //   e.push(_img)
+                  wx.setStorageSync(KEY.emoticon,e)
                   
               }
               else
@@ -610,7 +613,6 @@ Page({
                     title: '网络连接失败，请重试',
                     showCancel:false,
                 })
-            
             },
             fail:function(res){
                 wx.showModal({
@@ -628,6 +630,5 @@ Page({
             }
         })
     },
-
     
 })
