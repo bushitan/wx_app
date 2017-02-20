@@ -103,7 +103,7 @@ Page({
   btnUpload:function() {
      wx.showActionSheet({
       // itemList: ['图片', '小视频'],
-      itemList: ['图片', '添加目录'],
+      itemList: ['图片', '添加目录','同步数据'],
       // itemList: ['图片'],
       success: function(res) {
         if (!res.cancel) {
@@ -111,7 +111,9 @@ Page({
             GLOBAL_PAGE.uploadQiniuImage()
           if(res.tapIndex == 1 || res.tapIndex =='1')
             GLOBAL_PAGE.navigateToCategory()
-            // GLOBAL_PAGE.uploadQiniuVideo()  
+            // GLOBAL_PAGE.uploadQiniuVideo()            
+          if(res.tapIndex == 2 || res.tapIndex =='2')
+            GLOBAL_PAGE.reLogin()
         }
       }
     })
@@ -796,7 +798,7 @@ Page({
       windowHeight:APP.globalData.windowHeight - 42,  //category框高度42px ,join框高度160 || 0
     //   categoryScrollWidth:APP.globalData.windowWidth - 104, //全选60 + 刷新42 + 竖直线2 
     //   categoryScrollWidth:APP.globalData.windowWidth - 86, // 客服42 + 刷新42 + 竖直线2 
-      categoryScrollWidth:APP.globalData.windowWidth - 112, // 客服50 + 刷新50 
+      categoryScrollWidth:APP.globalData.windowWidth - 64, // 客服50 
 
       // joinHeight
       // windowHeight:APP.globalData.windowHeight - 84,  //category框高度42px

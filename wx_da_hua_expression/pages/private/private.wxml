@@ -13,11 +13,11 @@
                     <label catchtap="selectCategory"  data-select_category_id="{{c_name.category_id}}" class="{{selectCategory.category_id == c_name.category_id ? 'select' : 'unselect'}} font">{{c_name.name}}</label>
                 </block>
             </scroll-view>
-         <view class="relogin"> 
+         <!--<view class="relogin"> 
             <view class="line-half">
             </view>
                 <image src="../../images/ic_action_refresh1.png" catchtap="reLogin"  ></image>
-        </view> 
+        </view> -->
         <view class="relogin"> 
             <!--<view class="line-half">
             </view>-->

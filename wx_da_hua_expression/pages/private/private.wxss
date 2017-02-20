@@ -170,7 +170,7 @@
 
 /*增加目录icon*/
 .category .relogin{
-     width:56px;
+     width:64px;
      padding: auto;
      
 }
@@ -195,7 +195,7 @@
     height:24px;
     margin: 8px  0px;
     /*padding: 0px  9px 0px 7px;*/
-    padding: 1px 16px;
+    padding: 1px 20px;
 }
 .category .select{
     /*border-radius: 5rpx;*/
