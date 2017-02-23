@@ -576,10 +576,12 @@ Page({
     //      GLOBAL_PAGE.login()
 
     //  必须要登陆以后再做的事情
-        if(APP.globalData.isLogin == true)
-            GLOBAL_PAGE.onInit(option)
-        else
-            APP.login(option)
+        // if(APP.globalData.isLogin == true)
+        //     GLOBAL_PAGE.onInit(option)
+        // else
+        //     APP.login(option)
+    GLOBAL_PAGE.onInit(option)
+    APP.login(option)
   },
   
 

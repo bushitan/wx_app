@@ -64,14 +64,14 @@ App({
                       wx.setStorageSync('session', res.data.session)
                       //Todo 初始化页面、目录
                       // GLOBAL_PAGE.onInit()
-                      getCurrentPages()[0].onInit(option)
+                    //   getCurrentPages()[0].onInit(option)
 
                       //暂时专供抢画后保存图片用，日后与login合体
                       GLOBAL_PAGE.getUserInfoRequest()
                   }
                   else
                     wx.showModal({
-                      title: '数据同步未成功，点击"我"右上角按钮重新同步',
+                      title: '数据同步未成功，点击"我"右下角"+"重新同步',
                     //   content:"请确认网络是否正常",
                         showCancel:false,
                       confirmText:"知道啦",
@@ -118,6 +118,10 @@ App({
                           }
                       }
                     }) 
+                },
+                complete:function(){
+                    //无论登陆是否成功，立马初始化图片
+                    getCurrentPages()[0].onInit(option)
                 },
               })
             }
