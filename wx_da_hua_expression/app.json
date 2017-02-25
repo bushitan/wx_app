@@ -2,13 +2,8 @@
   "pages":[
     "pages/public/public",
     "pages/private/private",
-    "pages/together/together",
-    "pages/painter/painter", 
     "pages/watermark/watermark",
-    "pages/gallery/gallery",
-    "pages/category/category",
-    "pages/player/player",
-    "pages/manage/manage"
+    "pages/category/category"
   ],
   "window":{
     "backgroundTextStyle":"light",
