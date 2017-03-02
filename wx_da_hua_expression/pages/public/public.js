@@ -90,6 +90,25 @@ Page({
         }
   },
 
+  //2 增加水印
+  menuAddWatermark:function(e){
+      var select_id = e.currentTarget.dataset.img_id
+      var _e = GLOBAL_PAGE.getEmoticon(select_id)
+      var url = '../watermark/watermark?imgurl='+_e.yun_url+"&width="+_e.width +"&height=" + _e.height 
+
+      wx.navigateTo({
+          url: url
+      })
+  },
+
+  getEmoticon:function(img_id){
+      var emoticon = GLOBAL_PAGE.data.emoticon
+      for( var i =0 ; i<emoticon.length ; i++)
+        if(img_id == emoticon[i].img_id)
+          return emoticon[i]
+  },
+
+
   // 2 菜单收藏按钮，可以收藏多张 
   menuCollect:function(e){
     
@@ -495,7 +514,7 @@ Page({
       return {
         title: '表情袋',
         desc: '这有很多《'+GLOBAL_PAGE.data.keyword+'》的表情唷,(~˘▾˘)~',
-        path: '/pages/private/private',
+        path: '/pages/public/public',
         // path: '/pages/public/public?keyword='+GLOBAL_PAGE.data.keyword
       }
   },

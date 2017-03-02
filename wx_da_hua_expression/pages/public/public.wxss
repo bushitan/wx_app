@@ -106,6 +106,19 @@
     height: 23px;
     margin: 0 auto;
 }
+
+.watermark{
+    float: left;
+    display:block;
+    /*width: 42px;*/
+    height: 23px; 
+    padding: 0px 6px;
+    color: #fff;
+    font-size: 10px;
+    line-height: 23px;
+    background-color: #EBEBEB;
+}
+
 .favorit{
     float: right;
     display:block;
