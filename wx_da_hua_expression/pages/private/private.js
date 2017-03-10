@@ -766,6 +766,7 @@ Page({
     //public 收藏后后，再进入private，要渲染表情和目录
     GLOBAL_PAGE.renderEmoticon()
     GLOBAL_PAGE.renderCategory()
+    GLOBAL_PAGE.publicJoin()
   },
 
 
@@ -1027,7 +1028,35 @@ Page({
   },
 
 
+  
 
+  //对应public  94 行
+  publicJoin:function(){
+
+    var public_join = wx.getStorageSync('public_join',)
+    if( public_join.is_join == true)
+    {
+        console.log("publicJoin",public_join)
+        GLOBAL_PAGE.showJoinTab()
+                
+        wx.showActionSheet({
+            itemList: ['表情一','表情二'],
+            // itemList: ['图片'],
+            success: function(res) {
+            if(res.tapIndex == 0 || res.tapIndex =='0') //拼接
+                GLOBAL_PAGE.joinSet(1,public_join.yun_url)
+            if(res.tapIndex == 1 || res.tapIndex =='1')
+                GLOBAL_PAGE.joinSet(2,public_join.yun_url)
+            }
+        })
+         wx.setStorageSync('public_join', {is_join:false}) //关闭public的拼接提示
+    }
+    else
+         console.log("publicJoin, 没有东西")
+  },
+
+  
+ //右上角按钮
   followEvent:function(e){
       var select_id = e.currentTarget.dataset.img_id
 

@@ -90,15 +90,30 @@ Page({
         }
   },
 
+  //对应private  1020 行
   //2 增加水印
   menuAddWatermark:function(e){
       var select_id = e.currentTarget.dataset.img_id
       var _e = GLOBAL_PAGE.getEmoticon(select_id)
-      var url = '../watermark/watermark?imgurl='+_e.yun_url+"&width="+_e.width +"&height=" + _e.height 
 
-      wx.navigateTo({
+      var public_join = {
+          is_join : true,
+          yun_url : _e.yun_url
+        }
+      wx.setStorageSync('public_join', public_join)
+      
+      var url = '/pages/private/private'
+      wx.switchTab({
           url: url
       })
+
+    //   var select_id = e.currentTarget.dataset.img_id
+    //   var _e = GLOBAL_PAGE.getEmoticon(select_id)
+    //   var url = '../watermark/watermark?imgurl='+_e.yun_url+"&width="+_e.width +"&height=" + _e.height 
+
+    //   wx.navigateTo({
+    //       url: url
+    //   })
   },
 
   getEmoticon:function(img_id){
