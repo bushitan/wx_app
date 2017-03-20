@@ -67,12 +67,18 @@
 }
 
 /*表情墙*/
-.footer__bottom {
-  /*position: fixed;*/
+/*.footer__bottom {
   bottom: .52em;
   left: 0;
   right: 0;
   margin: .52em;
+}*/
+.footer__bottom {
+  bottom: .52em;
+  left: 0;
+  right: 0;
+  margin: .52em;
+  height: 20px;
 }
 
 .emoticon-wall__public{

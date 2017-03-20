@@ -60,16 +60,17 @@
         </scroll-view>
     </view>
 
+     <!--页眉-->
+    <view class="weui-footer footer__bottom"> 
+        <view class="weui-footer__links">      
+        </view>
+        <view class="weui-footer__text">{{titleText}}</view>
+        <view class="weui-footer__text"></view>
+    </view>
     <!--4 emoticon表情显示列表-->
     <scroll-view class="emoticon-wall__public" scroll-y="true" style="height:{{windowHeight}}px;"                             scroll-top="{{emoticonScrollTop}}" bindscrolltolower="scrollTolower" data-action="scrollTolower"  hidden="{{!emoticonShow}}" >
         <view class="emoticon-grids__public">
-            <!--页眉-->
-            <view class="weui-footer footer__bottom"> 
-                <view class="weui-footer__links">      
-                </view>
-                <view class="weui-footer__text">{{titleText}}</view>
-                <view class="weui-footer__text"></view>
-            </view>
+            
             <!--表情-->
             <block wx:for-items="{{emoticon}}"  wx:for-item="emoticon">
                 <view  class="emoticon-grid-3__public"  >

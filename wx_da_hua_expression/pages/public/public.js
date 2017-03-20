@@ -358,6 +358,15 @@ Page({
 
     GLOBAL_PAGE.setData({hotLabel:hotLabel})
 
+    var _category = GLOBAL_PAGE.data.category
+    for (var i=0 ; i< _category.length; i++)
+        if ( keyword == _category[i].name){
+            GLOBAL_PAGE.setData({
+                titleText:_category[i].des,
+            })
+            break
+        }
+                
     GLOBAL_PAGE.TagImgQueryRequst()
   },
 
@@ -595,7 +604,8 @@ Page({
     console.log("height:" , APP.globalData.windowHeight - 84)
     GLOBAL_PAGE.setData({
       windowWidth:APP.globalData.windowWidth,
-      windowHeight:APP.globalData.windowHeight - 90, //搜索框高度48px,短语框高度42px
+    //   windowHeight:APP.globalData.windowHeight - 90, //搜索框高度48px,短语框高度42px
+      windowHeight:APP.globalData.windowHeight - 110, //搜索框高度48px,短语框高度42px,页眉20
     })
 
     if( option.keyword != null && option.keyword != "" && option.keyword != undefined )
@@ -635,11 +645,11 @@ Page({
             if(object.status == "true"){
                 GLOBAL_PAGE.setData({category:res.data.category_list})
                 GLOBAL_PAGE.createTag(res.data.category_list)
-                var c_list = []
-                for (var i=0;i< res.data.category_list.length;i++)
-                {
-                    c_list.push(res.data.category_list[i].name)  
-                }
+                // var c_list = []
+                // for (var i=0;i< res.data.category_list.length;i++)
+                // {
+                //     c_list.push(res.data.category_list[i].name)  
+                // }
                 
                 GLOBAL_PAGE.adTitleText() //获取广告信息
                 
