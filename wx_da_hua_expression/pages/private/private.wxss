@@ -19,6 +19,29 @@
     margin-top: 5rpx;
 }
 
+.contact{
+    position:absolute;
+    width:750rpx;
+    bottom: 36rpx;
+}
+.contact .title{
+    text-align:center;
+    margin-bottom: 5px;
+}
+.contact label{
+    background-color:#EBEBEB;
+    color:#fff;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 2px;
+    
+}
+.contact .button {
+    width:24px;
+    height: 24px;
+    margin: auto;
+}
+
 /*2 临时表情*/
 .temp{
     position:absolute;
@@ -170,7 +193,8 @@
 
 /*增加目录icon*/
 .category .relogin{
-     width:64px;
+     width:124px;
+     /*width:64px;*/
      padding: auto;
      
 }

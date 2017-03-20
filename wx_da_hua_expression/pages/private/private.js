@@ -799,7 +799,8 @@ Page({
       windowHeight:APP.globalData.windowHeight - 42,  //category框高度42px ,join框高度160 || 0
     //   categoryScrollWidth:APP.globalData.windowWidth - 104, //全选60 + 刷新42 + 竖直线2 
     //   categoryScrollWidth:APP.globalData.windowWidth - 86, // 客服42 + 刷新42 + 竖直线2 
-      categoryScrollWidth:APP.globalData.windowWidth - 64, // 客服50 
+    //   categoryScrollWidth:APP.globalData.windowWidth - 64, // 客服50 
+      categoryScrollWidth:APP.globalData.windowWidth, // 客服50 
 
       // joinHeight
       // windowHeight:APP.globalData.windowHeight - 84,  //category框高度42px
