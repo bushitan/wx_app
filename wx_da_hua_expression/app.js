@@ -265,3 +265,22 @@ App({
 //       "iconPath":"images/icon_smile.png",
 //       "selectedIconPath":"images/icon_big_hot.png"
 //     }
+
+
+//   "tabBar": {
+//     "backgroundColor":"#fcfcfc",
+//     "color":"#000",
+//     "selectedColor":"#56abe4",
+//     "borderStyle":"black",
+//     "list": [{
+//       "pagePath": "pages/public/public",
+//       "text": "热图",
+//       "iconPath":"images/icon_smile.png",
+//       "selectedIconPath":"images/icon_big_hot.png"
+//     },{
+//       "pagePath": "pages/private/private",
+//       "text": "我",
+//       "iconPath":"images/icon_smile.png",
+//       "selectedIconPath":"images/icon_big_my.png"
+//     }]
+//   },

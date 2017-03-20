@@ -74,10 +74,7 @@
   margin: .52em;
 }*/
 .footer__bottom {
-  bottom: .52em;
-  left: 0;
-  right: 0;
-  margin: .52em;
+  margin: 8px;
   height: 20px;
 }
 

@@ -601,11 +601,11 @@ Page({
     GLOBAL_PAGE = this
     //1 page初始化高宽
     console.log("width:" , APP.globalData.windowWidth)
-    console.log("height:" , APP.globalData.windowHeight - 84)
+    console.log("height:" , APP.globalData.windowHeight)
     GLOBAL_PAGE.setData({
       windowWidth:APP.globalData.windowWidth,
     //   windowHeight:APP.globalData.windowHeight - 90, //搜索框高度48px,短语框高度42px
-      windowHeight:APP.globalData.windowHeight - 110, //搜索框高度48px,短语框高度42px,页眉20
+      windowHeight:APP.globalData.windowHeight - 126, //搜索框高度48px,短语框高度42px,页眉36
     })
 
     if( option.keyword != null && option.keyword != "" && option.keyword != undefined )
@@ -624,13 +624,14 @@ Page({
         //     GLOBAL_PAGE.onInit(option)
         // else
         //     APP.login(option)
-    GLOBAL_PAGE.onInit(option)
+    GLOBAL_PAGE.init(option)
     APP.login(option)
   },
   
+   onInit:function(option){},
 
   //必须要登陆以后发起的请求，在这里完成
-    onInit:function(option){
+   init:function(option){
        //Todo 登陆过后做的请求
        
         //获取表情列表
