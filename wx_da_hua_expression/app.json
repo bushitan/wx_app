@@ -1,5 +1,7 @@
 {
   "pages":[
+    "pages/relate/relate",
+    "pages/detail/detail",
     "pages/public/public",
     "pages/private/private",
     "pages/watermark/watermark",
@@ -22,7 +24,14 @@
       "text": "热图",
       "iconPath":"images/icon_smile.png",
       "selectedIconPath":"images/icon_big_hot.png"
-    },{
+    },  
+    {
+      "pagePath": "pages/relate/relate",
+      "text": "周边",
+      "iconPath": "images/nav-list.png",
+      "selectedIconPath": "images/nav-listHL.png"
+    },
+    {
       "pagePath": "pages/private/private",
       "text": "我",
       "iconPath":"images/icon_smile.png",

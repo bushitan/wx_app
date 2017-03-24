@@ -1,0 +1,116 @@
+<view class="page">
+  <view>
+    <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
+      <block wx:for="{{goodsPicsInfo}}">
+        <swiper-item>
+          <image src="{{item.picurl}}" class="slide-image" />
+        </swiper-item>
+      </block>
+    </swiper>
+  </view>
+
+
+
+    <view class="page__title">
+        <view class="title">你想和彭于晏一样么？买装备上！</view>
+    </view>
+    <view class="page__bd">
+        <view class="weui-article">
+            <!--<view class="weui-article__h1">大标题</view>-->
+            <view class="weui-article__section">
+                <!--<view class="weui-article__title">章标题</view>-->
+                <view class="weui-article__section">
+                    <!--<view class="weui-article__h3">1.1 节标题</view>-->
+                    <view class="weui-article__p">
+                       一个老鲜肉了~~彭于晏，拍激战，其实都没穿衣服，我也不懂为啥要推荐衣服~~~~
+                       哦，应该说是先锻炼肌肉，再穿衣服，谁让小编是个胖比呢T_T
+                    </view>
+                    <view class="weui-article__p">
+                        <image class="weui-article__img" src="http://odhng6tv1.bkt.clouddn.com/swiper25.png" mode="aspectFit" style="height: 180px" />
+                        <image class="weui-article__img" src="http://odhng6tv1.bkt.clouddn.com/swiper5.png" mode="aspectFit" style="height: 180px" />
+                    </view>
+                </view>
+                <view class="weui-article__section">
+                    <!--<view class="weui-article__h3">1.2 节标题</view>-->
+                    <view class="weui-article__p">
+                        接下来上锻炼教程：
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        看不懂吧？看不懂还不锻炼去！
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+
+
+<!--底部添加购物车按钮-->
+<!--<view class="cart_footer">
+  <view class="pay_data">
+    <view class="cart_icon_view">
+      <image class="cart_icon" src="../../images/cartHL.png"></image>
+    </view>
+    <view class="pay_button" bindtap="cascadePopup">马上购买</view>
+    <view class="cart_button" data-id="{{shoppingDetails.id}}" data-title="{{shoppingDetails.title}}" data-price="{{shoppingDetails.price}}" data-pic="{{0}}" bindtap="toCart">加入购物车</view>
+  </view>
+</view>-->
+
+<!--马上购买弹窗，sku商品组合弹窗-->
+<view class="modal">
+  <view class="modal-mask {{maskVisual}}" bindtap="cascadeDismiss"></view>
+  <view animation="{{animationData}}" class="pay-now">
+    <view class="pay-now-detail">
+      <view><image class="pay-now-detail-img" mode="aspectFill" src="{{goodsPicsInfo[0].picurl}}"></image></view>
+      <view  class="pay-now-detail-tp">
+        <text class="pay-now-detail-title">商品标题商品标题商品标题商品标题商品标题</text>
+        <text class="pay-now-detail-price">￥ 499.00</text>
+      </view>
+      <view bindtap="cascadeDismiss" class="modal-close"><icon type="clear" size="12" class="modal-close-" /></view>
+    </view>
+    <view class="pay-now-quantity">
+      <view>数量</view>
+      <view class="pay-now-quantity-am">
+        <view class="pay-now-quantity-minus pay-now-quantity-bg">-</view>
+        <view class="pay-now-quantity-bg">1</view>
+        <view class="pay-now-quantity-add pay-now-quantity-bg">+</view>
+      </view>
+    </view>
+    <view class="pay-now-footer">
+      <text class="pay-now-footer-total">总价：￥{{258}}</text>
+      <text class="pay-now-footer-pay">马上购买</text>
+    </view>
+  </view>
+</view>
+
+<!--加入购物车弹窗-->
+<!--此处代码与马上购买按钮处重复，后期考虑改成模板-->
+<view class="modal">
+  <view class="modal-mask {{maskVisual}}" bindtap="cascadeDismiss"></view>
+  <view animation="{{animationData}}" class="to-cart">
+    <view class="to-cart-detail">
+      <view><image class="to-cart-detail-img" mode="aspectFill" src="{{goodsPicsInfo[0].picurl}}"></image></view>
+      <view  class="to-cart-detail-tp">
+        <text class="to-cart-detail-title">商品标题商品标题商品标题商品标题商品标题</text>
+        <text class="to-cart-detail-price">￥ 499.00</text>
+      </view>
+      <view bindtap="cascadeDismiss" class="modal-close"><icon type="clear" size="12" class="modal-close-" /></view>
+    </view>
+    <view class="to-cart-quantity">
+      <view>数量</view>
+      <view class="to-cart-quantity-am">
+        <view class="to-cart-quantity-minus to-cart-quantity-bg">-</view>
+        <view class="to-cart-quantity-bg">1</view>
+        <view class="to-cart-quantity-to to-cart-quantity-bg">+</view>
+      </view>
+    </view>
+    <view class="to-cart-footer">
+      <text class="to-cart-footer-total">总价：￥{{258}}</text>
+      <text class="to-cart-footer-pay">加入购物车</text>
+    </view>
+  </view>
+</view>
+
+
+</view>
