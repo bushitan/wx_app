@@ -1,5 +1,8 @@
 //index.js
 //获取应用实例
+
+var GLOBAL_PAGE
+var APP = getApp()
 var app = getApp()
 
 Page({
@@ -23,64 +26,96 @@ Page({
   onLoad: function (options) {
     // 生命周期函数--监听页面加载
     var that = this;
+    GLOBAL_PAGE = this
     //首页，轮播图
-    wx.request({
-      url: 'https://api.leancloud.cn/1.1/classes/Swiper/587d6cd75c497d0058b0ea7c',
-      data: {},
-      method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-      header: {
-        // 设置请求的 header，content-type 默认为 'application/json'
-        'X-LC-Id': 'NifgaRbeW9zYQU8pP4zxPC9S-gzGzoHsz',
-        'X-LC-Key': 'Ygv6uGw1TQmpB2Kk18m5TgvX'
-      },
-      success: function (res) {
-        // success
-        that.setData({
-          imgUrls: res.data.data
-        })
-      }
-    });
+    // wx.request({
+    //   url: 'https://api.leancloud.cn/1.1/classes/Swiper/587d6cd75c497d0058b0ea7c',
+    //   data: {},
+    //   method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+    //   header: {
+    //     // 设置请求的 header，content-type 默认为 'application/json'
+    //     'X-LC-Id': 'NifgaRbeW9zYQU8pP4zxPC9S-gzGzoHsz',
+    //     'X-LC-Key': 'Ygv6uGw1TQmpB2Kk18m5TgvX'
+    //   },
+    //   success: function (res) {
+    //     // success
+    //     that.setData({
+    //       imgUrls: res.data.data
+    //     })
+    //   }
+    // });
 
-    //货架分类
-    wx.request({
-      url: 'https://api.leancloud.cn/1.1/classes/Classify/587ed398128fe100570ad98d',
-      data: {},
-      method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-      header: {
-        // 设置请求的 header，content-type 默认为 'application/json'
-        'X-LC-Id': 'NifgaRbeW9zYQU8pP4zxPC9S-gzGzoHsz',
-        'X-LC-Key': 'Ygv6uGw1TQmpB2Kk18m5TgvX'
-      },
-      success: function (res) {
-        // success
-        console.log(res)
-        var classesPic = res.data.data;
-        that.setData({
-          classesPic: classesPic
-        })
-      }
-    });
-    //货架列表
-    wx.request({
-      url: 'https://api.leancloud.cn/1.1/classes/ProductDetail',
-      data: {},
-      method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
-      header: {
-        // 设置请求的 header，content-type 默认为 'application/json'
-        'X-LC-Id': 'NifgaRbeW9zYQU8pP4zxPC9S-gzGzoHsz',
-        'X-LC-Key': 'Ygv6uGw1TQmpB2Kk18m5TgvX'
-      },
-      success: function (res) {
-        // success
-        console.log(res.data.results)
-        let productNewList = res.data.results
-        that.setData({
-          productNewList: productNewList
-        })
-      }
-    });
+    // //货架分类
+    // wx.request({
+    //   url: 'https://api.leancloud.cn/1.1/classes/Classify/587ed398128fe100570ad98d',
+    //   data: {},
+    //   method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+    //   header: {
+    //     // 设置请求的 header，content-type 默认为 'application/json'
+    //     'X-LC-Id': 'NifgaRbeW9zYQU8pP4zxPC9S-gzGzoHsz',
+    //     'X-LC-Key': 'Ygv6uGw1TQmpB2Kk18m5TgvX'
+    //   },
+    //   success: function (res) {
+    //     // success
+    //     console.log(res)
+    //     var classesPic = res.data.data;
+    //     that.setData({
+    //       classesPic: classesPic
+    //     })
+    //   }
+    // });
+    // //货架列表
+    // wx.request({
+    //   url: 'https://api.leancloud.cn/1.1/classes/ProductDetail',
+    //   data: {},
+    //   method: 'GET', // OPTIONS, GET, HEAD, POST, PUT, DELETE, TRACE, CONNECT
+    //   header: {
+    //     // 设置请求的 header，content-type 默认为 'application/json'
+    //     'X-LC-Id': 'NifgaRbeW9zYQU8pP4zxPC9S-gzGzoHsz',
+    //     'X-LC-Key': 'Ygv6uGw1TQmpB2Kk18m5TgvX'
+    //   },
+    //   success: function (res) {
+    //     // success
+    //     console.log(res.data.results)
+    //     let productNewList = res.data.results
+    //     that.setData({
+    //       productNewList: productNewList
+    //     })
+    //   }
+    // });
 
+    GLOBAL_PAGE.test()
   },
+
+  test: function (options) {
+      wx.request({
+          url: "http://192.168.199.203:8001/blog/article/list/" , 
+          method:"GET",
+          data: {
+            // session: wx.getStorageSync(KEY.session),
+            // img_id: select_id,
+          },
+          success: function(res) {
+              console.log("collect success:",res.data)
+              var object = res.data
+              if (object.status == "true")
+              {
+                  GLOBAL_PAGE.setData({
+                     productNewList: res.data.art_list
+                  })
+              }
+          },
+          fail:function(res){
+            wx.showModal({
+                title: '网络连接失败，请重试',
+                showCancel:false,
+            })
+          }
+      })
+  },
+
+
+
   onReady: function () {
     // 生命周期函数--监听页面初次渲染完成
 

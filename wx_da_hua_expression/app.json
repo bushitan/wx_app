@@ -1,8 +1,8 @@
 {
   "pages":[
     "pages/relate/relate",
-    "pages/detail/detail",
     "pages/public/public",
+    "pages/detail/detail",
     "pages/private/private",
     "pages/watermark/watermark",
     "pages/category/category"
@@ -27,7 +27,7 @@
     },  
     {
       "pagePath": "pages/relate/relate",
-      "text": "周边",
+      "text": "表情绘",
       "iconPath": "images/nav-list.png",
       "selectedIconPath": "images/nav-listHL.png"
     },
