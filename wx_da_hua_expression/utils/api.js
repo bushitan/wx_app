@@ -309,8 +309,22 @@ function _painterColor(){
 function _userInfo(){
 	return host_url+'user/info/';
 }	
+
+/**灵魂画师 */
+//1、判断用户是否正在参加活动
+function articaleList(){
+	return host_url+'blog/article/list/';
+}	
+
+//2、判断用户是否正在参加活动
+function articale(){
+	return host_url+'blog/article/';
+}	
+
 module.exports = {
 	
+	ARTICALE:articale,
+	ARTICALE_LIST:articaleList,
 	//获取用户信息
 	USER_INFO:_userInfo,
 

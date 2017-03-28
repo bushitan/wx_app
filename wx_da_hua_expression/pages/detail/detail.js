@@ -1,6 +1,7 @@
 
 var GLOBAL_PAGE
 var APP = getApp()
+var API = require('../../utils/api.js');
 Page({
   data: {
     indicatorDots: true,
@@ -23,6 +24,7 @@ Page({
   //     {sn:"1",style:"text",msg:"第一篇文章"},
   //     {sn:"1",style:"text",msg:"第一篇文章"},
   //   ]
+    artId:1,
     art:[],
   },
   
@@ -63,13 +65,16 @@ Page({
     //   }
     // });
 
+    GLOBAL_PAGE.setData({
+      artId:options.art_id
+    })
     GLOBAL_PAGE.test(options)
   },
 
   test: function (options) {
       console.log(options)
       wx.request({
-          url: "http://192.168.199.203:8001/blog/article/" , 
+          url: API.ARTICALE() , 
           method:"GET",
           data: {
             "art_id":options.art_id
@@ -136,6 +141,17 @@ Page({
   },
 
 
+  onShareAppMessage: function () { 
+      return {
+        title: GLOBAL_PAGE.data.title,
+        desc: GLOBAL_PAGE.data.art[0].msg + '...',
+        path: '/pages/detail/detail?art_id='+GLOBAL_PAGE.data.artId,
+        }
+   },
+
+
+
+
   onReady: function () {
     // 生命周期函数--监听页面初次渲染完成
 
@@ -160,14 +176,7 @@ Page({
     // 页面上拉触底事件的处理函数
 
   },
-  onShareAppMessage: function () {
-    // 用户点击右上角分享
-    return {
-      title: 'title', // 分享标题
-      desc: 'desc', // 分享描述
-      path: 'path' // 分享路径
-    }
-  },
+
   // 细节描述
   toDetail: function () {
     this.setData({

@@ -98,6 +98,7 @@ swiper {
   height: 300rpx;
   width: 300rpx;
 }
+
 .product-title,
 .product-price
 {
@@ -111,7 +112,8 @@ swiper {
 }
 
 .product-title {
-  font-size: 9pt;
+  font-size: 10pt;
+  font-weight:bold;
 }
 .product-price {
   font-size: 10pt;
