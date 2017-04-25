@@ -8,6 +8,10 @@ var API = require('../../utils/api.js');
 
 Page({
   data: {
+
+    hotLabel:["表情同款"],//顶部按钮
+
+
     imgUrls: [],
     indicatorDots: true,
     autoplay: true,
@@ -28,7 +32,12 @@ Page({
     // 生命周期函数--监听页面加载
     var that = this;
     GLOBAL_PAGE = this
-    GLOBAL_PAGE.test()
+
+    // GLOBAL_PAGE.test()
+     GLOBAL_PAGE.setData({
+          productNewList: [{art_id:"1",title:"监听页面加载听页面加载听页面加载听页",summary:"生命周期函数生命周期函数生命周期函数生命周期函数"},{art_id:"1",title:"监听页面加载听页面加载听页面加载听页",summary:"生命周期函数生命周期函数生命周期函数生命周期函数"}]
+      })
+
   },
 
   test: function (options) {
