@@ -25,11 +25,10 @@ Page({
   //     {sn:"1",style:"text",msg:"第一篇文章"},
   //   ]
     artId:1,
-    art:[],  
-    tao_bao:[],
+    art:[],
   },
   
- 
+
   onLoad: function (options) {
     // 生命周期函数--监听页面加载
     console.log(options)
@@ -88,12 +87,10 @@ Page({
                   // var art = GLOBAL_PAGE.data.art
                   // var new_art = art.concat( res.data.content_list );
                   // art.push({sn:"1",style:"text",msg:res.data.a})
-                  console.log(res.data.tao_bao)
                   GLOBAL_PAGE.setData({
                       swiper:res.data.swiper,
                       title:res.data.title,
-                      art: res.data.art,
-                      tao_bao:res.data.tao_bao,
+                      art: res.data.art
                   })
               }
           },
@@ -118,14 +115,6 @@ Page({
       wx.previewImage({
           current: current, // 当前显示图片的http链接
           urls: urls, // 需要预览的图片http链接列表
-      })
-  },
-
-  qrPreview:function(e){
-    
-    wx.previewImage({
-          current: e.currentTarget.dataset.url, // 当前显示图片的http链接
-          urls: [e.currentTarget.dataset.url], // 需要预览的图片http链接列表
       })
   },
 

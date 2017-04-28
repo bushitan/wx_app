@@ -4,13 +4,13 @@
     <view class="shortcut">
         <scroll-view scroll-x="true">
             <block wx:for="{{hotLabel}}">
-                <label class="word select" catchtap="searchShortcut" data-keyword="{{item}}" >{{item}}</label>
-                 <!--<label class="word {{keyword==item? 'select':'unselect'}}" catchtap="searchShortcut" data-keyword="{{item}}" >{{item}}</label>-->
+                <!--<label class="word select" catchtap="searchShortcut" data-keyword="{{item}}" >{{item}}</label>-->
+                 <label class="word {{keyword==item? 'select':'unselect'}}" catchtap="switchLabel" data-keyword="{{item}}" >{{item}}</label>
             </block>
         </scroll-view>
     </view>
 
-
+  <!--表情同款-->
   <view hidden="{{hiddenIndex}}" >
           <block wx:for="{{ productNewList }}">
               <view class="product-card">
@@ -28,4 +28,19 @@
               </view>
           </block>
   </view>
+
+  <!--意见反馈-->
+  <view hidden="{{hiddenUserBack}}" class="user_back">    
+        <view class="user_message">
+            <textarea class="" placeholder="客官的意见写这里"/>
+        </view>
+        <view class="user_button">
+            <button>提交</button>
+        </view>
+        <view class="user_footer">
+            真诚感谢您的反馈建议~
+        </view>
+  </view>
+
+
 </view>

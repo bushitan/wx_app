@@ -1,4 +1,5 @@
 <view class="page">
+
   <view>
     <swiper indicator-dots="{{indicatorDots}}" autoplay="{{autoplay}}" interval="{{interval}}" duration="{{duration}}">
       <block wx:for="{{swiper}}">
@@ -25,7 +26,41 @@
     </view>
 
 
-    <textarea value="https://s.click.taobao.com/t?e=m%3D2%26s%3D28CukBQO59gcQipKwQzePOeEDrYVVa64LKpWJ%2Bin0XLjf2vlNIV67vRf78spT8d2ahEP0ZrOLIozT6KW6cjni%2F6eK7KDU234fd5%2BUICMglktzvwhG%2F8FU8D%2BLnS9BbwB%2FIbpvXjT2z8itqfBwm8C%2FYBDUTSE73OzcSpj5qSCmbA%3D&pvid=16_103.228.209.141_411_1493168978479" />
+    <view >
+        <view class="weui-loadmore weui-loadmore_line">
+            <view class="weui-loadmore__tips weui-loadmore__tips_in-line">老司机千辛万苦扒出的同款链接</view>
+        </view>
+    </view>
+    <block wx:for="{{tao_bao}}" >
+        <view class="tb" >
+            <view class="tb__info">
+                <view class="tb__img">
+                    <image class="" src="{{item.img}}"></image>
+                </view>
+                <view class="tb__good">
+                    <view class="g_title">{{item.title}}</view>
+                    <!--<view class="title">包邮</view>-->
+                    <view class="g_price1">现价：￥{{item.price}}</view>
+                    <view class="g_price1">月销：{{item.sale}}</view>
+                    <view class="g_price2">
+                        <label class="mark">用券后</label>： <label class="num">￥{{item.discount_price}}</label> 
+                    </view>
+                </view>
+            </view>
+        </view>
+
+        <view class="des">
+            <view class="des__title">小店跳转方式</view>
+            <view class="des__word">
+                <view>方式1：店铺地址（长按复制红色【下单链接】，在【手机淘宝】或浏览器中打开</view>
+                <textarea value="{{item.store_url}}" />
+                
+                <view>方式2：点击下方图片，右上角"⋮"，可保存二维码；打开淘宝左上方扫一扫按钮；从相册中选取二维码图片</view>
+                
+                <view class="des__qr"><image src="{{item.store_qr}}" catchtap="qrPreview" data-url="{{item.store_qr}}"></image></view>
+            </view>
+        </view>
+    </block>
 
 
 </view>

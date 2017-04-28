@@ -1,8 +1,9 @@
 {
   "pages":[
-    "pages/public/public",
-    "pages/detail/detail",
     "pages/relate/relate",
+    "pages/public/public",
+    "pages/coupon/coupon",
+    "pages/detail/detail",
     "pages/private/private",
     "pages/watermark/watermark",
     "pages/category/category"
@@ -27,9 +28,9 @@
     },  
     {
       "pagePath": "pages/relate/relate",
-      "text": "同款优惠",
+      "text": "同款",
       "iconPath": "images/icon_smile.png",
-      "selectedIconPath": "images/icon_big_draw.png"
+      "selectedIconPath": "images/icon_big_same.png"
     },
     {
       "pagePath": "pages/private/private",

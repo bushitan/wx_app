@@ -69,3 +69,30 @@
 margin-bottom: 10px;
   padding: 0px 50px;
 }
+
+
+
+
+.user_back{
+
+}
+.user_button {
+  padding: 20px 25px;
+}
+.user_message{
+  padding: 25px 25px 10px;
+  
+  /*background-color: #fff;*/
+}
+
+.user_message textarea{
+  width: 100%;
+  border: 1px solid rgba(187,187,187,0.75);
+  background-color: #fff;
+}
+
+.user_footer{
+  text-align: center;
+  font-size: 11pt;
+  color: #888888;
+}

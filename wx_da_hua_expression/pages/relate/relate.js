@@ -9,8 +9,8 @@ var API = require('../../utils/api.js');
 Page({
   data: {
 
-    hotLabel:["表情同款"],//顶部按钮
-
+    hotLabel:["表情同款","意见反馈"],//顶部按钮
+    keyword:"表情同款",
 
     imgUrls: [],
     indicatorDots: true,
@@ -24,10 +24,32 @@ Page({
     },
     productNewList: [],
     bindtapName: "index",
-    hiddenNew: true,
-    hiddenHot: true,
-    hiddenIndex: false
+
+    hiddenIndex: false,
+    hiddenUserBack: true,
   },
+
+  switchLabel:function(e){
+    var keyword = e.currentTarget.dataset.keyword
+    var hotLabel = GLOBAL_PAGE.data.hotLabel
+    switch(keyword){
+        case hotLabel[0]: 
+          GLOBAL_PAGE.setData({
+            hiddenIndex:false,
+            hiddenUserBack:true
+          });break;
+        case hotLabel[1]: 
+          GLOBAL_PAGE.setData({
+            hiddenIndex:true,
+            hiddenUserBack:false
+          });break;
+    }
+    GLOBAL_PAGE.setData({
+      keyword:keyword
+    })
+  },
+
+
   onLoad: function (options) {
     // 生命周期函数--监听页面加载
     var that = this;

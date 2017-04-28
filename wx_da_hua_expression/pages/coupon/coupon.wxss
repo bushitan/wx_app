@@ -251,7 +251,6 @@ swiper {
 .tb__good{
   flex:1;
   text-align: left;
-  margin-top:  30rpx;
 }
 .tb__good .g_title{
   font-size: 28rpx;
@@ -287,22 +286,4 @@ swiper {
 }
 .des__word{
   font-size: 11pt;
-}
-
-.des textarea{
-  margin: auto;
-  height: 60px;
-  color: red;
-  border: 1px red dashed;
-}
-.des__qr{
-  margin: auto;
-  width: 128px;
-  height:128px;
-}
-
-.des image{
-  margin: 5px 16px;
-  width: 96px;
-  height:96px;
 }
