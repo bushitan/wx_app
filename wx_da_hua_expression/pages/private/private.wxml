@@ -89,7 +89,8 @@
         </view>
     </view>
 
-    <view class="contact"> 
+    <!--客服按钮-->
+    <!--<view class="contact"> 
         <view class="title">
             <label>求图 (↓_↓) 客服</label>
         </view>
@@ -101,7 +102,7 @@
             </contact-button>
         </view>
         
-    </view> 
+    </view> -->
 
     <!--5 右下角 + 号。图片、视频上传-->
     <view class="upload">

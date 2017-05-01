@@ -310,6 +310,12 @@ function _userInfo(){
 	return host_url+'user/info/';
 }	
 
+// 获取用户反馈的意见
+function userBack(){
+	return host_url+'user/back/';
+}	
+
+
 /**灵魂画师 */
 //1、判断用户是否正在参加活动
 function articaleList(){
@@ -327,6 +333,8 @@ module.exports = {
 	ARTICALE_LIST:articaleList,
 	//获取用户信息
 	USER_INFO:_userInfo,
+	USER_BACK:userBack,
+
 
 	//一起画
 	PAINTER_START:_painterStart,

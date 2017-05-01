@@ -73,7 +73,7 @@
             <block wx:for-items="{{emoticon}}"  wx:for-item="emoticon">
                 <view  class="emoticon-grid-3__public"  >
                     <view class="follow__btn" >
-                         <navigator  class="watermark" catchtap="menuAddWatermark" data-img_id="{{emoticon.img_id}}"hover-class="btn_active_gray">拼接
+                         <navigator  class="watermark" catchtap="menuAddWatermark" data-img_id="{{emoticon.img_id}}"hover-class="btn_active_gray">+文字
                         </navigator>
                         <navigator catchtap="menuCollect" data-img_id="{{emoticon.img_id}}"  class="favorit"  hover-class="btn_active_gray">
                             <image  src="../../images/love.png" wx:if="{{emoticon.is_collect}}"></image>

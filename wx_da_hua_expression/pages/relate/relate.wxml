@@ -16,8 +16,8 @@
               <view class="product-card">
                 <navigator class="nav-product-card" url="../detail/detail?art_id={{ item.art_id }}">
                     <!--<view>-->
-                        <!--<image class="product-cover" src="{{item.swiper[0]}}" mode="aspectFill"></image>-->
-                            <image class="product-cover" src="../../images/menu_1.jpg" mode="aspectFill"></image>
+                        <image class="product-cover" src="{{item.swiper[0]}}" mode="aspectFill"></image>
+                            <!--<image class="product-cover" src="../../images/menu_1.jpg" mode="aspectFill"></image>-->
                         
                     <!--</view>-->
                   
@@ -32,10 +32,10 @@
   <!--意见反馈-->
   <view hidden="{{hiddenUserBack}}" class="user_back">    
         <view class="user_message">
-            <textarea class="" placeholder="客官的意见写这里"/>
+            <textarea class="" placeholder="客官的意见写这里" value="{{userBackValue}}" bindinput="getUserBack"/>
         </view>
         <view class="user_button">
-            <button>提交</button>
+            <button catchtap="userBack">提交</button>
         </view>
         <view class="user_footer">
             真诚感谢您的反馈建议~

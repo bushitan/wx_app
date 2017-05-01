@@ -5,6 +5,7 @@ var GLOBAL_PAGE
 var APP = getApp()
 var app = getApp()
 var API = require('../../utils/api.js');
+var KEY = require('../../utils/storage_key.js');
 
 Page({
   data: {
@@ -27,6 +28,9 @@ Page({
 
     hiddenIndex: false,
     hiddenUserBack: true,
+
+
+    userBackValue:"",//用户的意见反馈
   },
 
   switchLabel:function(e){
@@ -50,25 +54,27 @@ Page({
   },
 
 
-  onLoad: function (options) {
+  onLoad: function (option) {
     // 生命周期函数--监听页面加载
     var that = this;
     GLOBAL_PAGE = this
 
+    if(APP.globalData.isLogin == true)
+        GLOBAL_PAGE.onInit(option)
+    else
+        APP.login(option)
     // GLOBAL_PAGE.test()
-     GLOBAL_PAGE.setData({
-          productNewList: [{art_id:"1",title:"监听页面加载听页面加载听页面加载听页",summary:"生命周期函数生命周期函数生命周期函数生命周期函数"},{art_id:"1",title:"监听页面加载听页面加载听页面加载听页",summary:"生命周期函数生命周期函数生命周期函数生命周期函数"}]
-      })
+    //  GLOBAL_PAGE.setData({
+    //       productNewList: [{art_id:"1",title:"监听页面加载听页面加载听页面加载听页",summary:"生命周期函数生命周期函数生命周期函数生命周期函数"},{art_id:"1",title:"监听页面加载听页面加载听页面加载听页",summary:"生命周期函数生命周期函数生命周期函数生命周期函数"}]
+      // })
 
   },
 
-  test: function (options) {
+  onInit: function () {
       wx.request({
           url: API.ARTICALE_LIST() , 
           method:"GET",
           data: {
-            // session: wx.getStorageSync(KEY.session),
-            // img_id: select_id,
           },
           success: function(res) {
               console.log("collect success:",res.data)
@@ -92,13 +98,72 @@ Page({
 
   onShareAppMessage: function () { 
       return {
-        title: '灵魂画师开车了',
-        desc: '惊呆了，表情离开了微信居然是这样',
+        title: '表情的同款商品大搜集',
+        desc: '震惊，同款商品竟然长这样！！',
         path: '/pages/relate/relate',
         // path: '/pages/public/public?keyword='+GLOBAL_PAGE.data.keyword
       }
   },
 
+  getUserBack:function(e){
+    var value = e.detail.value
+    console.log(value)
+    GLOBAL_PAGE.setData({
+      userBackValue:value
+    })  
+  },
+
+  userBack: function (e) {
+      if (GLOBAL_PAGE.data.userBackValue == ""){
+          wx.showModal({
+                title: '客官，请随便写点意见吧',
+                confirmText:"写一写",
+                showCancel:false,
+          })
+          return
+      }
+
+      wx.request({
+          url: API.USER_BACK() , 
+          method:"GET",
+          data: {
+            session: wx.getStorageSync(KEY.session),
+            back: GLOBAL_PAGE.data.userBackValue,
+          },
+          success: function(res) {
+              console.log("collect success:",res.data)
+              var object = res.data
+              if (object.status == "true")
+              {
+                   wx.showToast({
+                      title: object.msg,
+                      icon: 'success',
+                      duration: 2000
+                  })
+              }
+              else {
+                  wx.showToast({
+                      title: "感谢您提供的宝贵意见",
+                      icon: 'success',
+                      duration: 2000
+                  })
+              }
+          },
+          fail:function(res){
+              wx.showToast({
+                  title: "感谢您提供的宝贵意见",
+                  icon: 'success',
+                  duration: 2000
+              })
+          },
+          complete:function(){
+            GLOBAL_PAGE.setData({
+              userBackValue:"",
+            })
+          }
+      })
+  },
+  
 
 
 

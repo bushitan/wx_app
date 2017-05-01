@@ -1,7 +1,7 @@
 {
   "pages":[
-    "pages/relate/relate",
     "pages/public/public",
+    "pages/relate/relate",
     "pages/coupon/coupon",
     "pages/detail/detail",
     "pages/private/private",
