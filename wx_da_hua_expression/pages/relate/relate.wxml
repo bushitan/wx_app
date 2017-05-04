@@ -16,7 +16,7 @@
               <view class="product-card">
                 <navigator class="nav-product-card" url="../detail/detail?art_id={{ item.art_id }}">
                     <!--<view>-->
-                        <image class="product-cover" src="{{item.swiper[0]}}" mode="aspectFill"></image>
+                        <image class="product-cover" src="{{item.cover}}" mode="aspectFill"></image>
                             <!--<image class="product-cover" src="../../images/menu_1.jpg" mode="aspectFill"></image>-->
                         
                     <!--</view>-->

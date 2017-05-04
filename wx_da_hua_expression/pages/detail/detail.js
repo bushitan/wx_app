@@ -152,6 +152,27 @@ Page({
   },
 
 
+
+  clipBoard:function(e){
+      var text =  e.currentTarget.dataset.text
+      wx.setClipboardData({
+        data: text,
+        success: function(res) {
+          wx.getClipboardData({
+            success: function(res) {
+              // console.log(res.data) // data
+                wx.showToast({
+                  title: '下单链接复制成功',
+                  icon: 'success',
+                  duration: 2000
+                })
+            }
+          })
+        }
+      })
+  },
+
+
   onShareAppMessage: function () { 
       return {
         title: GLOBAL_PAGE.data.title,

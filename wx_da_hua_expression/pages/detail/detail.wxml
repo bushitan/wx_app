@@ -28,11 +28,73 @@
 
     <view >
         <view class="weui-loadmore weui-loadmore_line">
-            <view class="weui-loadmore__tips weui-loadmore__tips_in-line">老司机千辛万苦扒出的同款链接</view>
+            <view class="weui-loadmore__tips weui-loadmore__tips_in-line">老司机扒出的同款链接</view>
         </view>
     </view>
     <block wx:for="{{tao_bao}}" >
-        <view class="tb" >
+        <view class="" style="border-top:1px solid #000" wx:if="{{item.type == 'good'}}">
+            <view class="tb" >
+                <view class="tb__info">
+                    <view class="tb__img">
+                        <image class="" src="{{item.img}}"></image>
+                    </view>
+                    <view class="tb__good">
+                        <view class="g_title">{{item.title}}</view>
+                        <!--<view class="title">包邮</view>-->
+                        <view class="g_price1">原价：￥{{item.price}}</view>
+                        <view class="g_price2">
+                            <label class="mark">促销价</label>： <label class="num">￥{{item.discount_price}}</label> 
+                        </view>
+                        <view class="g_price3">月销：<label>{{item.sale}}</label></view>
+                    </view>
+                </view>
+            </view>
+
+            <view class="des">
+                <view class="des__title">小店跳转方式</view>
+                <view class="des__word">
+                    <view>方式1：店铺链接（长按复制红色【下单链接】，在【手机淘宝】或浏览器中打开</view>
+                    <!--<textarea value="{{item.store_url}}" />-->
+                    <view class="clip_textarea" catchtap="clipBoard" data-text="{{item.store_url}}">
+                        {{item.store_url}}
+                    </view>
+                    
+                    <view>方式2：点击下方图片，右上角"⋮"，可保存二维码；打开淘宝左上方扫一扫按钮；从相册中选取二维码图片</view>
+                    
+                    <view class="des__qr"><image src="{{item.store_qr}}" catchtap="qrPreview" data-url="{{item.store_qr}}"></image></view>
+                </view>
+            </view>
+        </view>
+
+
+    <view class="tb" style="border-top:1px solid #000" wx:else >
+            <view class="tb__bg">
+                <image class="" src="http://img.12xiong.top/taobao_bg.png"></image>
+            </view>
+
+            <view class="tb__logo">
+                <image class="" src="{{item.logo}}"></image>
+            </view>
+
+            <view class="tb__seller">
+            {{item.store_name}}
+            </view>
+
+            <view class="tb__card_info">
+                <view class="tb__card">
+                    <image class="" src="http://img.12xiong.top/taobao_card.png"></image>
+                </view>
+                <view class="left">
+                    <view class="now_price">￥{{item.discount}}</view>
+                    <view class="now_date">使用期限</view>
+                    <view class="now_time">{{item.discount_date}}</view>
+                </view>
+                <view class="right">
+                下方领券
+                    
+                </view>
+            </view>
+
             <view class="tb__info">
                 <view class="tb__img">
                     <image class="" src="{{item.img}}"></image>
@@ -41,26 +103,27 @@
                     <view class="g_title">{{item.title}}</view>
                     <!--<view class="title">包邮</view>-->
                     <view class="g_price1">现价：￥{{item.price}}</view>
-                    <view class="g_price1">月销：{{item.sale}}</view>
                     <view class="g_price2">
                         <label class="mark">用券后</label>： <label class="num">￥{{item.discount_price}}</label> 
                     </view>
                 </view>
             </view>
-        </view>
 
-        <view class="des">
-            <view class="des__title">小店跳转方式</view>
-            <view class="des__word">
-                <view>方式1：店铺地址（长按复制红色【下单链接】，在【手机淘宝】或浏览器中打开</view>
-                <textarea value="{{item.store_url}}" />
-                
-                <view>方式2：点击下方图片，右上角"⋮"，可保存二维码；打开淘宝左上方扫一扫按钮；从相册中选取二维码图片</view>
-                
-                <view class="des__qr"><image src="{{item.store_qr}}" catchtap="qrPreview" data-url="{{item.store_qr}}"></image></view>
+            <view class="des">
+                <view class="des__title">优惠券领取使用方式</view>
+                <view class="des__word">
+                    <view>方式1：优惠券链接（长按复制红色【下单链接】，在【手机淘宝】或浏览器中打开</view>
+                    <!--<textarea value="{{item.discount_url}}" />-->
+                     <view class="clip_textarea" catchtap="clipBoard" data-text="{{item.discount_url}}">
+                        {{item.discount_url}}
+                    </view>
+                    <view>方式2：点击下方图片，右上角"⋮"，可保存二维码；打开淘宝左上方扫一扫按钮；从相册中选取二维码图片</view>
+                    
+                    <view class="des__qr"><image src="{{item.discount_qr}}" catchtap="qrPreview" data-url="{{item.discount_qr}}"></image></view>
+                </view>
             </view>
         </view>
-    </block>
 
+    </block>
 
 </view>

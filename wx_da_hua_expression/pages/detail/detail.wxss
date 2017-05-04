@@ -258,9 +258,17 @@ swiper {
 } 
 .tb__good .g_price1{
   font-size: 28rpx;
+  text-decoration:line-through;
 } 
 .tb__good .g_price2 {
 
+}
+.tb__good .g_price3 {
+  font-size: 20rpx;
+  color:#999;
+}
+.tb__good .g_price3 label{
+  color:#c40000;
 }
 .tb__good .g_price2 .mark{
   
@@ -289,7 +297,7 @@ swiper {
   font-size: 11pt;
 }
 
-.des textarea{
+.clip_textarea{
   margin: auto;
   height: 60px;
   color: red;

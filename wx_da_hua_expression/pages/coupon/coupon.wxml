@@ -26,7 +26,7 @@
 
     <view class="tb" >
         <view class="tb__bg">
-            <image class="" src="../../images/tb_bg.png"></image>
+            <image class="" src="http://img.12xiong.top/taobao_bg.png"></image>
         </view>
 
         <view class="tb__logo">
@@ -39,7 +39,7 @@
 
         <view class="tb__card_info">
             <view class="tb__card">
-                <image class="" src="../../images/tb_card.png"></image>
+                <image class="" src="http://img.12xiong.top/taobao_card.png"></image>
             </view>
             <view class="left">
                 <view class="now_price">￥50</view>
