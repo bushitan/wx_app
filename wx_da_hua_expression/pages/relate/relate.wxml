@@ -44,3 +44,55 @@
 
 
 </view>
+
+<!--<view class="top-nav">
+  <view class="top-nav-bar">
+    <view bindtap="toIndex" id="top-nav-bar-{{!hiddenIndex ? true : 0}}">首页</view>
+    <view bindtap="toNew" id="top-nav-bar-{{!hiddenNew ? true : 0}}">最新</view>
+    <view bindtap="toHot" id="top-nav-bar-{{!hiddenHot ? true : 0}}">最热</view>
+  </view>
+</view>-->
+
+<!--内部优惠券-->
+<view  hidden="{{hiddenTaoBao}}" >
+
+
+  
+        <view class=" page__bd_spacing" >
+            <view class="weui-flex wrap">
+              <block wx:for-items="{{tagListDisplay}}"  wx:for-item="tag">
+                    <view  class="placeholder-1" catchtap="searchShortcut"
+                data-keyword="{{tag}}">{{tag}}</view>
+             
+    </block>
+            </view>
+          </view>
+
+
+  <view class="product__half">
+    <block wx:for="{{ taobaoList }}">
+      <view class="product-card__half">
+        <view class="nav-product-card" >
+
+          <!--<view style="background-image:url({{picurl}})" class="product-cover"></view>-->
+          <view>
+            <image class="product-cover__half" src="{{item.cover}}" mode="aspectFill"></image>
+          </view>
+          <view>
+            <view class="product-title__half">鳄鱼恤男鞋休闲鞋 2017新款透气鞋男皮鞋男士系带真皮驾车单鞋</view>
+          
+            <view class="product-now_price__half">现价 ￥19.5</view>
+            <view class="product-price__half">
+                <label class="use_card">用券后</label>： <label class="discount_price">￥5{{item.discount_price}}</label> 
+            </view>
+            <button size="mini" catchtap="getDiscount" data-discount_url="{{item.discount_url}}">领券省5元</button>
+          </view>
+        </view>
+      </view>
+    </block>
+  </view>
+</view>
+
+<view class="help_info">
+    <icon type="info" size="36" catchtap="getHelpInfo"/>
+</view>

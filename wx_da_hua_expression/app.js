@@ -11,12 +11,22 @@ App({
     windowHeight:null,
     isLogin:false,
   }, 
-  onLaunch: function () {
+  onLaunch: function (option) {
     //调用API从本地缓存中获取数据
     // var logs = wx.getStorageSync('logs') || []
     // logs.unshift(Date.now())
     // wx.setStorageSync('logs', logs)
     // this.getUserInfo()
+      
+      console.log("onLaunch", option.scene,option.shareTicket)
+      wx.getShareInfo({ 
+          shareTicket: option.shareTicket,
+          success:function(res){
+              console.log(res)
+          },
+        })
+     
+
 
         var that =this
         GLOBAL_PAGE = this

@@ -326,11 +326,16 @@ function articaleList(){
 function articale(){
 	return host_url+'blog/article/';
 }	
+//3、获取淘宝优惠券
+function taobao(){
+	return host_url+'blog/taobao/';
+}	
 
 module.exports = {
 	
 	ARTICALE:articale,
 	ARTICALE_LIST:articaleList,
+	TAOBAO:taobao,
 	//获取用户信息
 	USER_INFO:_userInfo,
 	USER_BACK:userBack,

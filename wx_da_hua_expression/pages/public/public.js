@@ -535,10 +535,15 @@ Page({
   },
 
   onShareAppMessage: function () { 
+     
       return {
         title: '表情袋',
         desc: '这有很多《'+GLOBAL_PAGE.data.keyword+'》的表情唷,(~˘▾˘)~',
         path: '/pages/public/public',
+        success: function (res) {
+            console.log("onshare",res)
+
+        }
         // path: '/pages/public/public?keyword='+GLOBAL_PAGE.data.keyword
       }
   },
@@ -596,8 +601,18 @@ Page({
 //     GLOBAL_PAGE.renderEmoticon(_img_list)
 //   },
 
-
+  
   onLoad: function (option) {
+
+    console.log("onLoad")
+    wx.showShareMenu({
+        withShareTicket: true,
+        //   success:function(){
+        //       console.log(wx.getShareInfo())
+
+        //   }
+    })
+
     GLOBAL_PAGE = this
     //1 page初始化高宽
     console.log("width:" , APP.globalData.windowWidth)
