@@ -1,0 +1,81 @@
+<!--latest.wxml-->
+
+<view class="page"  >
+
+    <!--1 目录-->
+    <!--<view class=" category">
+            <scroll-view  scroll-x="true" style="width:{{categoryScrollWidth}}px;"  >
+                 <label catchtap="selectCategory" data-select_category_id="" class=" {{selectCategory.category_id == null ? 'select' : 'unselect'}} font">全选</label>
+                <block wx:for="{{category}}"  wx:for-item="c_name">
+                    <label catchtap="selectCategory"  data-select_category_id="{{c_name.category_id}}" class="{{selectCategory.category_id == c_name.category_id ? 'select' : 'unselect'}} font">{{c_name.name}}</label>
+                </block>
+            </scroll-view>
+    </view>-->
+
+    
+
+    <view class="classname" wx:if="{{isGatherOpen==true}}" >
+        <view class="head_title">
+            <view class="title">
+                <label catchtap="toPainter">我的标题</label>
+                <icon type="info" size="23" catchtap="toGatherList" />
+            </view>
+        </view>
+        <view class="head_info" >
+            <view class="head_logo">
+                <image src="../../images/emoji_log.jpg"></image>
+                <view class="des">头像</view>
+            </view>
+            <view class="head_logo">
+                <image src="../../images/emoji_log.jpg"></image>
+                <view class="des">奖励</view>
+            </view>
+            <view class="head_logo">
+                <image src="../../images/emoji_log.jpg"></image>
+                <view class="des">求图入口</view>
+            </view>
+        </view>
+    </view>
+    <view class="head_title" wx:else>
+        <view class="title">
+            <label catchtap="toPainter">您已关闭英雄帖，请在右侧按钮中打开</label>
+            <icon type="info" size="23" catchtap="toGatherList" />
+        </view>
+    </view>
+
+     <view class="weui-cells__title">好心人的反馈图</view>
+
+    <!-- 3 emoticon-wall表情显示列表-->
+    <scroll-view class="emoticon-wall" scroll-y="true" style="height:{{windowHeight - joinHeight}}px;" bindscrolltolower="emoticonScrollTolower" >
+        <block wx:for-items="{{emoticon}}"  wx:for-item="emoticon">
+            <view class="emoticon-grid">
+                <view  class="follow__btn"  catchtap="followEvent" data-img_id="{{emoticon.img_id}}">
+                    <navigator class="set" hover-class="btn_active_gray font-color">⋮</navigator>
+                </view>
+                <navigator hover-class="btn_active_gray" class="emoticon-preview" catchtap="menuShare" data-yun_url="{{emoticon.yun_url}}">
+                    <image class="icon" src="{{emoticon.static_url}}" background-size="cover" mode="aspectFit"  />
+                    <view class="emoticon-grid__mark ">
+                        <image class="mark" wx:if="{{ emoticon.menu_type == 4 ? true :false}}"  src="../../images/mp4.png"></image>
+                        <image class="mark" wx:if="{{ emoticon.menu_type == 1 ? true :false}}"  src="../../images/gif.png"></image>
+                    </view>
+                </navigator>
+            </view>
+        </block>
+        <view class="space-64"></view>
+    </scroll-view>
+
+    <!-- 4 初始loading-->
+    <view class="page__bd" hidden="{{!loadShow}}">
+        <view class="weui-loadmore">
+            <view class="weui-loading"></view>
+            <view class="weui-loadmore__tips">正在加载</view>
+        </view>
+        <view class="weui-loadmore weui-loadmore_line">
+            <view class="weui-loadmore__tips weui-loadmore__tips_in-line">暂无数据</view>
+        </view>
+        <view class="weui-loadmore weui-loadmore_line weui-loadmore_dot">
+            <view class="weui-loadmore__tips weui-loadmore__tips_in-line weui-loadmore__tips_in-dot"></view>
+        </view>
+    </view>
+
+</view>

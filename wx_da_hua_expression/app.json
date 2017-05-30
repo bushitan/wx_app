@@ -1,5 +1,10 @@
 {
   "pages":[
+    
+    "pages/gather/gather",
+    "pages/gather_list/gather_list",
+    "pages/painter/painter",
+    "pages/gallery/gallery",
     "pages/public/public",
     "pages/relate/relate",
     "pages/coupon/coupon",
@@ -25,18 +30,18 @@
       "text": "热图",
       "iconPath":"images/icon_smile.png",
       "selectedIconPath":"images/icon_big_hot.png"
-    },  
-    {
-      "pagePath": "pages/relate/relate",
-      "text": "同款",
-      "iconPath": "images/icon_smile.png",
-      "selectedIconPath": "images/icon_big_same.png"
     },
     {
       "pagePath": "pages/private/private",
       "text": "我",
       "iconPath":"images/icon_smile.png",
       "selectedIconPath":"images/icon_big_my.png"
+    },  
+    {
+      "pagePath": "pages/gather/gather",
+      "text": "求图",
+      "iconPath": "images/icon_smile.png",
+      "selectedIconPath": "images/icon_big_same.png"
     }]
   },
   "networkTimeout": {
