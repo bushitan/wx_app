@@ -1,39 +1,51 @@
 <view class="page">
-    <view class="page__hd">
-        <view class="page__title">List</view>
+    <!--<view class="page__hd">
+        <view class="page__title">英雄帖</view>
         <view class="page__desc">发布一次英雄帖最高收获15张图，</view>
-    </view>
+    </view>-->
     <view class="page__bd">
-        <!--<view class="weui-cells__title">带说明的列表项</view>-->
+        <view class="weui-cells__title">登陆自动获取头像</view>
         <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell">
-                <view class="weui-cell__bd">头像</view>
-                <view class="weui-cell__ft">说明文字</view>
+                <view class="weui-cell__hd">
+                    <image src="{{logo}}" style="margin-right: 5px;vertical-align: middle;width:40px; height: 40px;"></image>
+                </view>
+                <view class="weui-cell__bd">未登陆</view>
+                <view class="weui-cell__ft">
+                    <switch type="switch"  bindchange="logoSwitchChange" />
+                </view>
             </view>
+        </view>
+
+        <view class="weui-cells__title">标题</view>
+        <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__bd">
+                    <input class="weui-input" placeholder="请输入文本" value="{{title}}"  bindblur="inputChange"/>
+                </view>
+            </view>
+        </view>
+
+        <view class="weui-cells__title">奖励图（点击图片上传）</view>
+        <view class="weui-cells weui-cells_after-title">
+            <view class="weui-cell weui-cell_input">
+                <view class="weui-cell__bd prize_image" catchtap="prizeImgChange">
+                    <image class="" src="{{prizeUrl}}" mode="aspectFit"></image>
+                </view>
+            </view>
+        </view>
+
+        <view class="weui-cells__title">打开英雄帖才能收图，关闭防骚扰</view>
+        <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell">
-                <view class="weui-cell__bd">标题</view>
-                <view class="weui-cell__ft">说明文字</view>
-            </view>
-            <view class="weui-cell">
-                <view class="weui-cell__bd">奖励</view>
-                <view class="weui-cell__ft">说明文字</view>
-            </view>
-           <view class="weui-cell">
                 <view class="weui-cell__bd">开关</view>
                 <view class="weui-cell__ft">
-                    <switch type="switch" checked="{{isGatherOpen==true}}"   bindchange="gatherSwitchChange" />
+                    <switch type="switch" checked="{{isGatherOpen== 1 }}"   bindchange="gatherSwitchChange" />
                 </view>
             </view>
         </view>
     </view>
-    <view class="page__bd" >
-        <button catchtap="back">确认返回</button>
+    <view class="page__bd"  >
+        <button class="button_ok" catchtap="back" type="primary">确认返回</button>
     </view>
-    <!--<view class="weui-cells__title">最近已经参加
-    （点击图片，右上角"⋮"，扫描二维码可继续参加活动）</view>
-    
-    <view class="history_img">
-        <image src="{{historyImg}}" mode="aspectFit" catchtap="previewToPainter"></image>
-    </view>-->
-     
 </view>

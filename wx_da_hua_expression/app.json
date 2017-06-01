@@ -1,6 +1,5 @@
 {
   "pages":[
-    
     "pages/gather/gather",
     "pages/gather_list/gather_list",
     "pages/painter/painter",

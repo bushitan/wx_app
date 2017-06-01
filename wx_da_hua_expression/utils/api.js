@@ -5,13 +5,13 @@
  */ 
 
 // var host_url = 'http://127.0.0.1:8000/'; 
-// var host_url = 'http://192.168.199.203:8000/'; 
+var host_url = 'http://192.168.199.203:8000/'; 
 // var host_url = 'http://127.0.0.1:8000/'; 
 // var host_url = 'http://192.168.200.21:8000/'; 
 // var host_url = 'http://192.168.200.20:8000/'; 
 // var host_url = 'http://192.168.200.27:8000/'; 
 // var host_url = 'https://www.12xiong.top/wx_app/';
-var host_url = 'https://www.12xiong.top/';
+// var host_url = 'https://www.12xiong.top/';
 // var host_url = 'http://www.12xiong.top/';
 
 /*
@@ -331,8 +331,34 @@ function taobao(){
 	return host_url+'blog/taobao/';
 }	
 
+
+// gather 求图
+//用户获取自己英雄帖的信息
+function getGatherUserInfo() {
+    return host_url + 'gather/get_user_info/';
+}
+//用户设置英雄帖信息
+function setGatherUserInfo() {
+    return host_url + 'gather/set_user_info/';
+}	
+
+//获取发帖者的信息
+function getGatherMasterInfo() {
+    return host_url + 'gather/get_master_info/';
+}
+//获取发帖者的信息
+function gatherHelpMaster() {
+    return host_url + 'gather/help_master/';
+}
+
 module.exports = {
 	
+    //gather 求图
+    GET_GATHER_USER_INFO: getGatherUserInfo,
+    SET_GATHER_USER_INFO: setGatherUserInfo,
+    GET_GATHER_Master_INFO: getGatherMasterInfo,
+    GATHER_HELP_Master: gatherHelpMaster,
+    
 	ARTICALE:articale,
 	ARTICALE_LIST:articaleList,
 	TAOBAO:taobao,

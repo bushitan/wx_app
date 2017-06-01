@@ -1,231 +1,74 @@
-<!--<image catchtap="navigateToSwitch" class="back__switch"  src="/images/left.png"></image>-->
-
-
-
 <view class="page"  >
-    <!--<view class="title" >
-        <view class="weui-flex">
-            <view class="weui-flex__item"></view>
-            <view >主题：</view>
-            <view >
-                <label>{{themeName}}</label>
-            </view>          
-        </view>  
-    </view>-->
-      <view class="head_info">
-        <view class="head_logo">
-            <image src="../../images/emoji_log.jpg"></image>
-            <view class="des">头像</view>
-        </view>
-         <view class="head_logo">
-            <!--<image src="../../images/emoji_log.jpg"></image>-->
-            <view class="des">我想要一张搞笑</view>
-        </view>
-         <view class="head_logo">
-            <image src="{{prizeImgURL}}" catchtap="prizeSave"></image>
-            <view class="des">奖励</view>
-        </view>
-      
-    </view>
-
-
-    <view class="preview_img">
-        <image src="{{previewImgUrl}}" mode="aspectFit"  catchtap="localImgChoose"></image>
-    </view>
-    <view class="choose_img">
-        <!--<view class="">
-            <button catchtap="localImgChoose" size="mini">本地上传</button>
-        </view>
-        <view class="">
-            <button catchtap="imgSelect" size="mini">表情袋选取</button>
-        </view>-->
-       
-
-        <!--<view class="">
-            <button catchtap="toPrivate">去我的收藏夹</button>
-        </view>-->
-    </view>
-     <!--<view class="">
-            <button catchtap="toGather">我也要求图</button>
-        </view>-->
-    <view class="send_img">
-        <button catchtap="sendHelp" type="primary">发送图片，获得奖励</button>
-    </view>
-    <view class="to_gather">
-        <button catchtap="toGather" >我也发英雄帖</button>
-    </view>
-       
-</view>
-<view class="classname">如果房主关闭状态，直接提示</view>
-
-
-<view class="page" hidden="true" >
-    <view class="title" >
-        <view class="weui-flex">
-            <view class="weui-flex__item"></view>
-            <view >主题：</view>
-            <view >
-                <label>{{themeName}}</label>
+    <!--正常接收英雄帖-->
+    <view wx:if="{{gatherStatus == 1}}">
+        <view class="head_info">
+            <view class="head_logo">
+                <image src="{{logo}}"></image>
+                <view class="des">头像</view>
             </view>
-            <!--上传图片-->
-            <view  class="weui-flex__item complete" catchtap="saveToShare" >
-                完成
+            <view class="head_logo">
+                <view class="des">{{title}}</view>
             </view>
-          
-        </view>  
-    </view>
-
- 
-        <!--2层画板-->
-     <view wx:if="{{joinStatus==3?true:false}}">
-        <image class="paper paper-background" src="{{imgUrl}}" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;left:{{canvasLeft}}px;"  ></image>
-    </view>
-   
-    <view class="canvas-index" hidden="{{isAddPaintImg}}"  wx:else>
-        <canvas class="paper paper-background" canvas-id="paper" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;left:{{canvasLeft}}px;"  >  
-        </canvas>
-       
-        <canvas class="paper" canvas-id="paper-lancet"   style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;left:{{canvasLeft}}px;" 
-            bindtouchstart="onLancetStart"  
-            bindtouchmove="onLancetMove"   
-            bindtouchend="onLancetEnd">    
-        </canvas>
-    </view>
-
-    <view class="add-paint-img" hidden="{{!isAddPaintImg}}">
-
-        <!--背景图     -->
-        <image class="bg-cache" src="{{paintImgCache}}" style="width:{{canvasWidth}}px;height:{{canvasHeight}}px;left:{{canvasLeft}}px;"  ></image>
-        加载能移动的图片
-        <view id="input_view" style="position:absolute;left:{{selectOject.left}}px;top:{{selectOject.top}}px; border:1px dashed white;" >
-            <image class="img-select" src="{{paintImgSelectUrl}}" style="width:{{paintImgSelectWidth}}px;height:{{paintImgSelectHeight}}px;left:{{canvasLeft}}px;" mode="scaleToFill" 
-                catchtouchstart="touchstart" 
-                catchtouchmove="touchmove"></image>
-            <view class="weui-flex"> 
-                <view class="weui-flex__item">
-                     <icon type="cancel" catchtap="imgSelectCancle"></icon>
-                </view>
-                <view class="weui-flex__item">
-                   
-                    <icon type="success" catchtap="imgSelectDraw"></icon>
-                </view>
-                <view class="">
-                    <image  src="../../images/resize.png" class="resize" 
-                        catchtouchstart="resizeStart" 
-                        catchtouchmove="resizeMove"
-                    ></image>
-                </view>
+            <view class="head_logo">
+                <image src="{{prizeUrl}}" catchtap="prizeSave"></image>
+                <view class="des">奖励</view>
             </view>
         </view>
 
-             
-     
-    </view>
-   
-   
-    <view hidden="true" class="paint-tool" >
-        <view class="color-picker">
-            <view
-                wx:for-items="{{colors}}"
-                wx:for-item="color"
-                class="color-item {{paintColor == color ? 'selected' : ''}}"
-                data-color="{{color}}"
-                style="background-color: {{color}}"  
-                bindtap="chooseColor">     <!--选择颜色 事件-->
-            </view>
-            
+
+        <view class="preview_img">
+            <image src="{{previewImgUrl}}" mode="aspectFit"  catchtap="localImgChoose"></image>
         </view>
         
-        <view class="tool-picker" >
-                <view class="tool-item selected" style="background-color: red"   >颜色</view>
-            <view class="tool-item selected"  catchtap="eventBase"  data-action="modeChange"  data-mode="pecile">铅笔</view>
-            <!--<view class="tool-item selected" catchtap="eventBase"  data-action="modeChange"  data-mode="lancet">柳叶刀</view>-->
-            <view class="tool-item selected" catchtap="eventBase" data-action="modeChange"  data-mode="eraser">橡皮</view>
-            <view class="tool-item selected" catchtap="saveToShare" style="background-color: #FF0000" >
-                    help
-            </view>
-            <view class="tool-item selected" style="background-color: #FF0000" >
-                <navigator url="../together/together" open-type="switchTab" hover-class="other-navigator-hover">
-                    主页
-                </navigator>
-            </view>
-            <view class="tool-item selected" catchtap="size" >大小</view>
-            <view class="tool-item selected" catchtap="clear" >还原</view>
-            
+        <view class="send_img">
+            <button catchtap="sendHelp" type="primary">发送图片，获得奖励</button>
         </view>
-
+        <view class="to_gather">
+            <button catchtap="toGather" >我也发英雄帖</button>
+        </view>
     </view>
-    <!--joinStatus遮罩层-->
-    <!--<view class="btn-share" >
-         <button catchtap="shareInfo" >分享</button>
-    </view>-->
-        <!--画布工具区域-->
-    <!--<view class="color-picker">
-        <scroll-view>
-            <view
-                wx:for-items="{{colors}}"
-                wx:for-item="color"
-                class="color-item {{paintColor == color ? 'selected' : ''}}"
-                data-color="{{color}}"
-                style="background-color: {{color}}"  
-                bindtap="chooseColor">    
+
+    <!--上传完成-->
+    <view wx:elif="{{gatherStatus == 2}}">
+        <view class="head_info">
+            <view class="head_logo">
+                <image src="../../images/emoji_log.jpg"></image>
+                <view class="des">头像</view>
             </view>
-        </scroll-view>
-    </view>-->
-
-    <!--颜色版-->
-    <view class="color-select weui-flex" hidden="{{!colorShow}}"  >
-        <view class="cancel" catchtap="switchColor"> x</view>
-        <scroll-view  scroll-x="true" class="weui-flex__item">
-            <block wx:for="{{colors}}"  wx:for-item="color">
-                 <view
-                    class="color-box {{paintColor == color ? 'selected' : ''}}"
-                    data-color="{{color}}"
-                    style="background-color: {{color}}"  
-                    bindtap="chooseColor">  
-                </view>
-            </block>
-        </scroll-view>
+            <view class="head_logo">
+                <view class="des">我想要一张搞笑</view>
+            </view>
+            <view class="head_logo">
+                <image src="{{prizeUrl}}" catchtap="prizeSave"></image>
+                <view class="des">奖励</view>
+            </view>
+        </view>
+        <view class="weui-cells__title prize_des">点击图片预览，右上角"⋮"可保存本地</view>
+        <view class="prize_img">
+            <image src="{{previewImgUrl}}" mode="aspectFit"  catchtap="prizeSave"></image>
+        </view>
+        
+        <view class="to_gather">
+            <button catchtap="toGather" >我也发英雄帖</button>
+        </view>
+    </view>
+    
+    <!--英雄帖关闭-->
+    <view wx:else="{{gatherStatus}}">
+        <view class="head_close">
+            <view class="head_logo">
+                <image src="../../images/emoji_log.jpg"></image>
+                <view class="des">头像</view>
+            </view>
+        </view>
+        <view class="weui-cells__title head_close_alert">英雄帖已经关闭</view>
+        <view class="to_gather">
+            <button catchtap="toGather" >我也发英雄帖</button>
+        </view>
     </view>
 
-    <!--画笔大小-->
-    <view class="color-select weui-flex" hidden="{{!pencilShow}}"  >
-        <view class="cancel" catchtap="switchPencil"> x</view>
-        <scroll-view  scroll-x="true" class="weui-flex__item">
-            <block wx:for="{{sizes}}"  wx:for-item="size">
-                 <view class="size-box {{paintSize == size ? 'size-selected' : ''}}" catchtap="chooseSize" data-size="{{size}}">
-                    <view class="size-mark" style="width:{{size}}px; height:{{size}}px;margin:{{(40 - size)/2}}px auto;"></view>
-                </view>
-            </block>
-        </scroll-view>
-    </view>
-
-    <!--橡皮擦-->
-    <view class="color-select weui-flex" hidden="{{!eraserShow}}"  >
-        <view class="cancel" catchtap="switchEraser"> x</view>
-        <scroll-view  scroll-x="true" class="weui-flex__item">
-            <block wx:for="{{eraserSizes}}"  wx:for-item="esize">
-                 <view class="eraer-box {{eraserSize == esize ? 'eraer-selected' : ''}}" catchtap="chooseEraer" data-size="{{esize}}">
-                    <view class="eraer-mark" style="width:{{esize}}px; height:{{esize}}px;margin:{{(40 - esize)/2}}px auto;"></view>
-                </view>
-            </block>
-        </scroll-view>
-    </view>
-
-
-    <!--绘画工具栏-->
-    <view class="canvas_tools" wx:if="{{joinStatus != 3 }}">
-        <!--<view class="box box1" bindtap="penSelect" data-param="5"></view>
-        <view class="box box1" bindtap="penSelect" data-param="5"></view>-->
-        <view class="box box-color " catchtap="switchColor"  style="background-color: {{ paintColor}}"  data-param="#cc0033"></view>
-        <view class="box box-pencil {{mode==1? 'box-select':''}}" catchtap="switchPencil" data-param="15"></view>
-        <view class="box box-earser {{mode==2? 'box-select':''}}" bindtap="switchEraser"></view>
-        <view class="box box-image" bindtap="imgSelect" data-param="#ff9900"></view>
-        <view class="box box-reset" bindtap="resetCanvas" data-param="#ff9900"></view>
-        <!--<view class="box-large box-complete" catchtap="saveToShare" data-param="#ff9900">完成</view>-->
-    </view>
 </view>
+<!--<view class="classname">如果房主关闭状态，直接提示</view>-->
 
 
-<!--<button catchtap="save">save</button>
-    <button catchtap="reDraw">reDraw</button>-->
+

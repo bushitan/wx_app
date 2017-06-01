@@ -2,19 +2,7 @@
 
 <view class="page"  >
 
-    <!--1 目录-->
-    <!--<view class=" category">
-            <scroll-view  scroll-x="true" style="width:{{categoryScrollWidth}}px;"  >
-                 <label catchtap="selectCategory" data-select_category_id="" class=" {{selectCategory.category_id == null ? 'select' : 'unselect'}} font">全选</label>
-                <block wx:for="{{category}}"  wx:for-item="c_name">
-                    <label catchtap="selectCategory"  data-select_category_id="{{c_name.category_id}}" class="{{selectCategory.category_id == c_name.category_id ? 'select' : 'unselect'}} font">{{c_name.name}}</label>
-                </block>
-            </scroll-view>
-    </view>-->
-
-    
-
-    <view class="classname" wx:if="{{isGatherOpen==true}}" >
+    <!--<view class="classname" wx:if="{{isGatherOpen==true}}" >
         <view class="head_title">
             <view class="title">
                 <label catchtap="toPainter">我的标题</label>
@@ -31,8 +19,37 @@
                 <view class="des">奖励</view>
             </view>
             <view class="head_logo">
-                <image src="../../images/emoji_log.jpg"></image>
-                <view class="des">求图入口</view>
+                <image src="http://img.12xiong.top/help_tie_bg1.jpg?watermark/3/image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9xci5qcGc=/dissolve/50/gravity/SouthEast/dx/20/dy/20/image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9sb2dvLmpwZz9pbWFnZU1vZ3IyL3RodW1ibmFpbC84eDgvZm9ybWF0L2pwZw==/dissolve/50/gravity/NorthWest/dx/280/dy/20/ws/0.4/text/5aSn5ZCJ5ouc5bm0/font/5b6u6L2v6ZuF6buR/fontsize/1000/fill/YmxhY2s=/dissolve/85/gravity/NorthWest/dx/285/dy/591"></image>
+                <view class="des">我的英雄帖</view>
+            </view>
+        </view>
+    </view>
+    <view class="head_title" wx:else>
+        <view class="title">
+            <label catchtap="toPainter">您已关闭英雄帖，请在右侧按钮中打开</label>
+            <icon type="info" size="23" catchtap="toGatherList" />
+        </view>
+    </view>-->
+     <view class="classname" wx:if="{{isGatherOpen== 1}}" >
+        <!--<view class="head_title">
+            <view class="title">
+                <label catchtap="toPainter">我的标题</label>
+                <icon type="info" size="23" catchtap="toGatherList" />
+            </view>
+        </view>-->
+        <view class="head_info" >
+            <view class="head_logo">
+                <image src="{{gatherImg}}" catchtap="previewGatherImg" ></image>
+                <!--<view class="des">我的英雄帖</view>-->
+                <view class="" catchtap="toPainter">
+                    <view> 主题：我的英雄帖</view>
+                    <view> 描述：我的英雄帖</view>
+                </view>
+            </view>
+            
+            <view class="">
+                <button size="mini" catchtap="toGatherList" >设置</button>
+                <!--<button size="mini" catchtap="toPainter" >参与页面</button>-->
             </view>
         </view>
     </view>
@@ -42,6 +59,8 @@
             <icon type="info" size="23" catchtap="toGatherList" />
         </view>
     </view>
+
+
 
      <view class="weui-cells__title">好心人的反馈图</view>
 

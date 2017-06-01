@@ -4,6 +4,7 @@ var Api = require('../../utils/api.js');
 var Menu = require('../../utils/menu.js');
 var Render = require('../../utils/render.js');
 var Key = require('../../utils/storage_key.js');
+var BASE64 = require('../../utils/base64.js');
 
 var APP = getApp()
 var GLOBAL_PAGE
@@ -49,7 +50,7 @@ Page({
     // 手机设备信息，均已rpx为标准
     windowWidth:0,
     windowHeight:0,
-    joinHeight:0,
+    joinHeight:203,
 
     //页面渲染数据
     emoticon:[],
@@ -77,7 +78,9 @@ Page({
 
 
     //斗图英雄帖
-    isGatherOpen:true,
+    isGatherOpen:1,
+    //英雄帖
+    gatherImg:"http://img.12xiong.top/help_tie_bg1.jpg?watermark/3/image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9xci5qcGc=/dissolve/50/gravity/SouthEast/dx/20/dy/20/image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9sb2dvLmpwZz9pbWFnZU1vZ3IyL3RodW1ibmFpbC84eDgvZm9ybWF0L2pwZw==/dissolve/50/gravity/NorthWest/dx/280/dy/20/ws/0.4/text/5aSn5ZCJ5ouc5bm0/font/5b6u6L2v6ZuF6buR/fontsize/1000/fill/YmxhY2s=/dissolve/85/gravity/NorthWest/dx/285/dy/591",
   },
 
   onShow:function(){
@@ -88,7 +91,13 @@ Page({
 
   },
 
-    
+
+  previewGatherImg: function () {
+      wx.previewImage({
+          urls: [GLOBAL_PAGE.data.gatherImg],
+      })
+  },
+
   toPainter:function(){
       wx.navigateTo({
         url: '../painter/painter',
@@ -100,6 +109,19 @@ Page({
         url: '../gather_list/gather_list',
       })
   },
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -817,6 +839,27 @@ Page({
    *  页面加载
    */
   onLoad: function (option) {   
+      var water_img = "http://img.12xiong.top/help_tie_bg1.jpg?watermark/1/image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9xci5qcGc=/50/gravity/SouthEast/dx/20/dy/20"
+
+      var water_text = "http://img.12xiong.top/help_tie_bg1.jpg?watermark/2/text/5aSn5ZCJ5ouc5bm0/font/5b6u6L2v6ZuF6buR/fontsize/3498/fill/YmxhY2s=/dissolve/85/gravity/NorthWest/dx/285/dy/591"
+
+      var water_3 = "http://img.12xiong.top/help_tie_bg1.jpg?watermark/3/image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9xci5qcGc=/50/gravity/SouthEast/dx/20/dy/20/text/5aSn5ZCJ5ouc5bm0/font/5b6u6L2v6ZuF6buR/fontsize/1000/fill/YmxhY2s=/dissolve/85/gravity/NorthWest/dx/285/dy/591/image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9sb2dvLmpwZz9pbWFnZU1vZ3IyL3RodW1ibmFpbC8xNzB4MjQwL2Zvcm1hdC9qcGc=/50/gravity/NorthWest/dx/20/dy/20"
+
+      var water_4 = 'http://img.12xiong.top/help_tie_bg1.jpg?watermark/3/'+
+'image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9xci5qcGc=/dissolve/50/gravity/SouthEast/dx/20/dy/20/' +
+'image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9sb2dvLmpwZz9pbWFnZU1vZ3IyL3RodW1ibmFpbC8xNzB4MjQwL2Zvcm1hdC9qcGc=/dissolve/50/gravity/NorthWest/dx/280/dy/20/ws/1' +
+'text/5aSn5ZCJ5ouc5bm0/font/5b6u6L2v6ZuF6buR/fontsize/1000/fill/YmxhY2s=/dissolve/85/gravity/NorthWest/dx/285/dy/591'
+
+      var water_5 = 'http://img.12xiong.top/help_tie_bg1.jpg?watermark/3/' +
+          'image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9xci5qcGc=/dissolve/100/gravity/SouthEast/dx/20/dy/20/' +    'image/aHR0cDovL3d4LnFsb2dvLmNuL21tb3Blbi92aV8zMi9RMGo0VHdHVGZUS1ZqT3VjbzM5aWF5QnlKRGFndmRIWGoxSnNyNmpHZUYwYUhrV015Z3ZWeXBtU2RFeVZtWmhydWFaZU82YTdsZTU0ZklYZnl1cGliaWNkZy8w/dissolve/50/gravity/NorthWest/dx/280/dy/20/ws/0.4/' +
+          'text/5aSn5ZCJ5ouc5bm0/font/5b6u6L2v6ZuF6buR/fontsize/1000/fill/YmxhY2s=/dissolve/85/gravity/NorthWest/dx/285/dy/591'
+    console.log(water_5)
+    var url = "http://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKVjOuco39iayByJDagvdHXj1Jsr6jGeF0aHkWMygvVypmSdEyVmZhruaZeO6a7le54fIXfyupibicdg/0"
+    // var url = "https://olhvkds73.qnssl.com/logo.png"
+    var r = BASE64.encode(url)
+    console.log(r)
+    console.log(BASE64.decode(r))
+    
 
     GLOBAL_PAGE = this
     //1 page初始化高宽
