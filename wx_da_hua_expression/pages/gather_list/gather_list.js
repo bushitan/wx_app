@@ -7,7 +7,7 @@ Page({
     data:{
         // historyImg: "../../images/emoji_log.jpg",
         logo: "../../images/emoji_log.jpg",
-        nickName:"this.丰兄",
+        nickName:"昵称",
         title:"没有文本",
         prizeUrl:"../../images/emoji_log.jpg",
         isGatherOpen:1, //英雄帖接收锁
@@ -24,6 +24,7 @@ Page({
             data: {
                 'session': wx.getStorageSync(KEY.session),
                 'logo': GLOBAL_PAGE.data.logo,
+                'nick_name': GLOBAL_PAGE.data.nickName,
                 'title': GLOBAL_PAGE.data.title,
                 'prize_url': GLOBAL_PAGE.data.prizeUrl,
                 'is_gather_open': GLOBAL_PAGE.data.isGatherOpen,
