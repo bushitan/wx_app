@@ -10,9 +10,10 @@
                 <view class="weui-cell__hd">
                     <image src="{{logo}}" style="margin-right: 5px;vertical-align: middle;width:40px; height: 40px;"></image>
                 </view>
-                <view class="weui-cell__bd">未登陆</view>
+                <view class="weui-cell__bd">{{nickName}}</view>
                 <view class="weui-cell__ft">
-                    <switch type="switch"  bindchange="logoSwitchChange" />
+                    <!--<switch type="switch"  bindchange="logoSwitchChange" />-->
+                    <button size="mini" catchtap="logoSwitchChange">获取头像</button>
                 </view>
             </view>
         </view>
@@ -38,7 +39,7 @@
         <view class="weui-cells__title">打开英雄帖才能收图，关闭防骚扰</view>
         <view class="weui-cells weui-cells_after-title">
             <view class="weui-cell">
-                <view class="weui-cell__bd">开关</view>
+                <view class="weui-cell__bd">{{switchWord}}</view>
                 <view class="weui-cell__ft">
                     <switch type="switch" checked="{{isGatherOpen== 1 }}"   bindchange="gatherSwitchChange" />
                 </view>

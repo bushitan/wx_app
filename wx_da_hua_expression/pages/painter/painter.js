@@ -1,34 +1,26 @@
 /** painter.js */  
 var API = require('../../utils/api.js');
 var KEY = require('../../utils/storage_key.js');
+var QINIU = require('../../utils/qiniu.js');
 // var View = require('../../utils/view.js');
 // var Menu = require('../../utils/menu.js');
 var GLOBAL_PAGE
 var global_page
-// var context
-var context_lancet
-var context_1
-var point_lancet = []
 
 var APP = getApp()
-var PAINTER_STEP_LOAD = 0;
-var PAINTER_STEP_FREE = 1; //未参与，创建新的
-var PAINTER_STEP_BUSY = 2; //正在参与，down上step的
-var PAINTER_STEP_SHARE = 3; //待分享
 
-var MODE_PENCIL = 1;
-var MODE_ERASER = 2;
 Page({
     data: {
         gatherStatus:1, // 0 关闭 ， 1 打开， 2 上传完成
+        master_session:"", //master发帖人session
+        masterId:1, //发帖人的master_id
 
+        nickName:"",
         logo: "../../images/emoji_log.jpg",
         title: "没有文本",
         prizeUrl: "../../images/emoji_log.jpg",
         isGatherOpen: 1, //英雄帖接收锁
-
         previewImgUrl:"",
-        // prizeImgURL:,
     },
 
    
@@ -38,16 +30,10 @@ Page({
             count: 1, 
             sizeType: ['compressed'], 
             success: function(res) {
-
                 var tempFilePath = res.tempFilePaths[0]
                 GLOBAL_PAGE.setData({
                     previewImgUrl:tempFilePath
                 })
-                // GLOBAL_PAGE.uploadPrepare(1,res.tempFilePaths)
-                // var tempFilePath = res.tempFilePaths[0] //图片 
-                // console.log( res.tempFilePaths)           
-                // GLOBAL_PAGE.uploadFile(tempFilePath)
-
             },
             fail:function(res){
                 console.log(res)
@@ -55,6 +41,7 @@ Page({
         })
     },
 
+    //返回英雄帖，发帖
     toGather:function(){
         wx.switchTab({
            url: '../gather/gather',
@@ -63,49 +50,59 @@ Page({
 
     //帮助按钮，发送图片
     sendHelp:function(){
+        var upload_info = { 
+            "type": 1, 
+            "master_session": wx.getStorageSync(KEY.session)
+        }
         //Todo 上传图片
+        QINIU.UPLOAD( 
+            API.QINIU_UPLOAD(),
+            wx.getStorageSync(KEY.session),
+            GLOBAL_PAGE.data.previewImgUrl,
+            upload_info,
+        )     
 
         //图片绑定到master名下
-        wx.request({
-            url: API.GATHER_HELP_Master(),
-            method: "GET",
-            data: {
-                'master_session': wx.getStorageSync(KEY.session),
-                'img_url': wx.getStorageSync(KEY.session),
-            },
-            success: function (res) {
-                var object = res.data
-                console.log(object)
-                if (object.status == "true") {
-                    //上传成功
-                    GLOBAL_PAGE.setData({
-                        prizeUrl: GLOBAL_PAGE.data.previewImgUrl,
-                        gatherStatus: 2,
-                    })
-                    wx.showModal({
-                        title: "帮助成功",
-                        content: '点击右上角"⋮"，可保存图片',
-                        confirmText: "看奖励",
-                        cancelText: "稍后再看",
-                        success: function (res) {
-                            if (res.confirm) { //发图成功，预览奖励
-                                wx.previewImage({
-                                    urls: [GLOBAL_PAGE.data.previewImgUrl]
-                                })
-                            } else if (res.cancel) { //点击取消，
+        // wx.request({
+        //     url: API.GATHER_HELP_Master(),
+        //     method: "GET",
+        //     data: {
+        //         'master_session': wx.getStorageSync(KEY.session),
+        //         'img_url': wx.getStorageSync(KEY.session),
+        //     },
+        //     success: function (res) {
+        //         var object = res.data
+        //         console.log(object)
+        //         if (object.status == "true") {
+        //             //上传成功
+        //             GLOBAL_PAGE.setData({
+        //                 prizeUrl: GLOBAL_PAGE.data.previewImgUrl,
+        //                 gatherStatus: 2,
+        //             })
+        //             wx.showModal({
+        //                 title: "帮助成功",
+        //                 content: '点击右上角"⋮"，可保存图片',
+        //                 confirmText: "看奖励",
+        //                 cancelText: "稍后再看",
+        //                 success: function (res) {
+        //                     if (res.confirm) { //发图成功，预览奖励
+        //                         wx.previewImage({
+        //                             urls: [GLOBAL_PAGE.data.previewImgUrl]
+        //                         })
+        //                     } else if (res.cancel) { //点击取消，
 
-                            }
-                        }
-                    })
-                }
-            },
-            fail: function (res) {
-                wx.showModal({
-                    title: '网络连接失败，请重试',
-                    showCancel: false,
-                })
-            }
-        })
+        //                     }
+        //                 }
+        //             })
+        //         }
+        //     },
+        //     fail: function (res) {
+        //         wx.showModal({
+        //             title: '网络连接失败，请重试',
+        //             showCancel: false,
+        //         })
+        //     }
+        // })
 
         
     },
@@ -117,23 +114,10 @@ Page({
         })
     },
    
-    toPrivate:function(){
-        wx.switchTab({
-           url: '../private/private',
-        })
-    },
-    
-
-
+   
 
     onShow:function(){
-        var _img_select = wx.getStorageSync(KEY.PAINTER_IMAGE_SELECT) 
-        if( _img_select == "" ) //没有选择图片
-            return
-        else{
-            wx.setStorageSync(KEY.PAINTER_IMAGE_SELECT,"")  //立马清除缓存~~避免出错
-            GLOBAL_PAGE.imgSelectMode(_img_select)
-        }
+      
        
     },
 
@@ -143,17 +127,18 @@ Page({
             url: API.GET_GATHER_Master_INFO(),
             method: "GET",
             data: {
-                'master_session': wx.getStorageSync(KEY.session),
+                'master_id': GLOBAL_PAGE.data.masterId,
             },
             success: function (res) {
                 var object = res.data
                 console.log(object)
                 if (object.status == "true") {
                     GLOBAL_PAGE.setData({
-                        logo: object.user_info.logo,
-                        title: object.user_info.title,
-                        prizeUrl: object.user_info.prize_url,
-                        isGatherOpen: object.user_info.is_gather_open,
+                        nickName: object.master_info.nick_name,
+                        logo: object.master_info.logo,
+                        title: object.master_info.title,
+                        prizeUrl: object.master_info.prize_url,
+                        isGatherOpen: object.master_info.is_gather_open,
                     })
                 }
             },

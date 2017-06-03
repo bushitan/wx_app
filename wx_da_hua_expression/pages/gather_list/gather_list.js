@@ -6,12 +6,18 @@ var GLOBAL_PAGE;
 Page({
     data:{
         // historyImg: "../../images/emoji_log.jpg",
-        logo:"../../images/emoji_log.jpg",
+        logo: "../../images/emoji_log.jpg",
+        nickName:"this.丰兄",
         title:"没有文本",
         prizeUrl:"../../images/emoji_log.jpg",
         isGatherOpen:1, //英雄帖接收锁
+        switchWord:"接收"
     },
     back:function(){
+        //TODO
+        //2种上传方法
+        //1,图片不更新，直接上传
+        //2、图片更新，在上传图片后七牛callback实现
         wx.request({
             url: API.SET_GATHER_USER_INFO(),
             method: "GET",
@@ -26,9 +32,7 @@ Page({
                 var object = res.data
                 console.log(object)
                 if (object.status == "true") {
-                    wx.switchTab({
-                        url: '../gather/gather',
-                    })
+                    
                 }
             },
             fail: function (res) {
@@ -56,6 +60,10 @@ Page({
                             var city = userInfo.city
                             var country = userInfo.country
                             console.log(userInfo)
+                            GLOBAL_PAGE.setData({
+                                logo: avatarUrl,
+                                nickName: nickName,
+                            })
                         }
                     })
                 } else {
@@ -96,7 +104,8 @@ Page({
     gatherSwitchChange: function (e){
         console.log('switch1 发生 change 事件，携带值为', e.detail.value)
         GLOBAL_PAGE.setData({
-            isGatherOpen:e.detail.value?1:0
+            isGatherOpen:e.detail.value?1:0,
+            switchWord: e.detail.value?'接收':"关闭",
         })
         wx.setStorageSync('GATHER_OPEN',e.detail.value)
     },
@@ -117,10 +126,10 @@ Page({
                 console.log(object)
                 if (object.status == "true") {
                     GLOBAL_PAGE.setData({
-                        logo: object.user_info.logo,
-                        title: object.user_info.title,
-                        prizeUrl: object.user_info.prize_url,
-                        isGatherOpen: object.user_info.is_gather_open,
+                        logo: object.master_info.logo,
+                        title: object.master_info.title,
+                        prizeUrl: object.master_info.prize_url,
+                        isGatherOpen: object.master_info.is_gather_open,
                     })
                 }
             },

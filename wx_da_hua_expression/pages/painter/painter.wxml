@@ -4,7 +4,7 @@
         <view class="head_info">
             <view class="head_logo">
                 <image src="{{logo}}"></image>
-                <view class="des">头像</view>
+                <view class="des">{{nickName}}</view>
             </view>
             <view class="head_logo">
                 <view class="des">{{title}}</view>
@@ -33,7 +33,7 @@
         <view class="head_info">
             <view class="head_logo">
                 <image src="../../images/emoji_log.jpg"></image>
-                <view class="des">头像</view>
+                <view class="des">{{nickName}}</view>
             </view>
             <view class="head_logo">
                 <view class="des">我想要一张搞笑</view>
@@ -54,11 +54,11 @@
     </view>
     
     <!--英雄帖关闭-->
-    <view wx:else="{{gatherStatus}}">
+    <view wx:else>
         <view class="head_close">
             <view class="head_logo">
                 <image src="../../images/emoji_log.jpg"></image>
-                <view class="des">头像</view>
+                <view class="des">{{nickName}}</view>
             </view>
         </view>
         <view class="weui-cells__title head_close_alert">英雄帖已经关闭</view>
