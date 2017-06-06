@@ -10,14 +10,15 @@
                 <view class="des">{{title}}</view>
             </view>
             <view class="head_logo">
-                <image src="{{prizeUrl}}" catchtap="prizeSave"></image>
-                <view class="des">奖励</view>
+                <image src="{{prizeUrl}}"></image>
+                <view class="des">奖↑励</view>
             </view>
         </view>
 
+          <view class="weui-cells__title">好心人的反馈图</view>
 
         <view class="preview_img">
-            <image src="{{previewImgUrl}}" mode="aspectFit"  catchtap="localImgChoose"></image>
+            <image src="{{uploadImgUrl}}" mode="aspectFit"  catchtap="localImgChoose"></image>
         </view>
         
         <view class="send_img">
@@ -36,16 +37,16 @@
                 <view class="des">{{nickName}}</view>
             </view>
             <view class="head_logo">
-                <view class="des">我想要一张搞笑</view>
+                <view class="des">谢谢老板，奖励图请笑纳</view>
             </view>
             <view class="head_logo">
                 <image src="{{prizeUrl}}" catchtap="prizeSave"></image>
-                <view class="des">奖励</view>
+                <view class="des">奖↑励</view>
             </view>
         </view>
         <view class="weui-cells__title prize_des">点击图片预览，右上角"⋮"可保存本地</view>
         <view class="prize_img">
-            <image src="{{previewImgUrl}}" mode="aspectFit"  catchtap="prizeSave"></image>
+            <image src="{{prizeUrl}}" mode="aspectFit"  catchtap="prizeSave"></image>
         </view>
         
         <view class="to_gather">

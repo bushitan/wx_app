@@ -638,9 +638,17 @@ Page({
         // if(APP.globalData.isLogin == true)
         //     GLOBAL_PAGE.onInit(option)
         // else
-        //     APP.login(option)
+    //     APP.login(option)
     GLOBAL_PAGE.init(option)
     APP.login(option)
+
+    //小程序码扫描进入
+    var scene = option.scene
+    if (scene)
+        wx.redirectTo({
+            url: '../painter/painter?master_id=' + scene,
+        })
+    
   },
   
    onInit:function(option){},

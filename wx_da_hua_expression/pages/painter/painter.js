@@ -20,7 +20,8 @@ Page({
         title: "没有文本",
         prizeUrl: "../../images/emoji_log.jpg",
         isGatherOpen: 1, //英雄帖接收锁
-        previewImgUrl:"",
+
+        uploadImgUrl:"", //上传图片路径
     },
 
    
@@ -32,7 +33,7 @@ Page({
             success: function(res) {
                 var tempFilePath = res.tempFilePaths[0]
                 GLOBAL_PAGE.setData({
-                    previewImgUrl:tempFilePath
+                    uploadImgUrl:tempFilePath
                 })
             },
             fail:function(res){
@@ -50,62 +51,63 @@ Page({
 
     //帮助按钮，发送图片
     sendHelp:function(){
-        var upload_info = { 
-            "type": 1, 
-            "master_session": wx.getStorageSync(KEY.session)
-        }
+        // var upload_info = { 
+        //     "type": 1, 
+        //     "master_session": wx.getStorageSync(KEY.session)
+        // }
         //Todo 上传图片
         QINIU.UPLOAD( 
             API.QINIU_UPLOAD(),
             wx.getStorageSync(KEY.session),
-            GLOBAL_PAGE.data.previewImgUrl,
-            upload_info,
-        )     
-
-        //图片绑定到master名下
-        // wx.request({
-        //     url: API.GATHER_HELP_Master(),
-        //     method: "GET",
-        //     data: {
-        //         'master_session': wx.getStorageSync(KEY.session),
-        //         'img_url': wx.getStorageSync(KEY.session),
-        //     },
-        //     success: function (res) {
-        //         var object = res.data
-        //         console.log(object)
-        //         if (object.status == "true") {
-        //             //上传成功
-        //             GLOBAL_PAGE.setData({
-        //                 prizeUrl: GLOBAL_PAGE.data.previewImgUrl,
-        //                 gatherStatus: 2,
-        //             })
-        //             wx.showModal({
-        //                 title: "帮助成功",
-        //                 content: '点击右上角"⋮"，可保存图片',
-        //                 confirmText: "看奖励",
-        //                 cancelText: "稍后再看",
-        //                 success: function (res) {
-        //                     if (res.confirm) { //发图成功，预览奖励
-        //                         wx.previewImage({
-        //                             urls: [GLOBAL_PAGE.data.previewImgUrl]
-        //                         })
-        //                     } else if (res.cancel) { //点击取消，
-
-        //                     }
-        //                 }
-        //             })
-        //         }
-        //     },
-        //     fail: function (res) {
-        //         wx.showModal({
-        //             title: '网络连接失败，请重试',
-        //             showCancel: false,
-        //         })
-        //     }
-        // })
-
-        
+            GLOBAL_PAGE.data.uploadImgUrl,
+            "",
+            GLOBAL_PAGE.BindMasterImg
+        )            
     },
+    // 图片绑定到master名下
+    BindMasterImg: function (img) {
+        wx.request({
+            url: API.GATHER_HELP_Master(),
+            method: "GET",
+            data: {
+                'master_id': GLOBAL_PAGE.data.masterId,
+                'img_id': img.img_id,
+            },
+            success: function (res) {
+                var object = res.data
+                console.log(object)
+                if (object.status == "true") {
+                    //上传成功
+                    GLOBAL_PAGE.setData({
+                        prizeUrl: GLOBAL_PAGE.data.prizeUrl,
+                        gatherStatus: 2,
+                    })
+                    wx.showModal({
+                        title: "帮助成功",
+                        content: '点击右上角"⋮"，可保存图片',
+                        confirmText: "看奖励",
+                        cancelText: "稍后再看",
+                        success: function (res) {
+                            if (res.confirm) { //发图成功，预览奖励
+                                wx.previewImage({
+                                    urls: [GLOBAL_PAGE.data.prizeUrl]
+                                })
+                            } else if (res.cancel) { //点击取消，
+
+                            }
+                        }
+                    })
+                }
+            },
+            fail: function (res) {
+                wx.showModal({
+                    title: '网络连接失败，请重试',
+                    showCancel: false,
+                })
+            }
+        })
+    },
+
     //保存奖励图片
     prizeSave:function(){
         wx.previewImage({
@@ -155,6 +157,10 @@ Page({
         global_page = this
         GLOBAL_PAGE = this
 
+        GLOBAL_PAGE.setData({
+            masterId: option.master_id
+        })
+        
         GLOBAL_PAGE.getGatherMasterInfo()
     },
 
@@ -162,6 +168,15 @@ Page({
     onInit:function(option){
        //Todo 登陆过后做的请求
        
+    },
+
+    // 分享页面
+    onShareAppMessage: function () {
+        return {
+            title: '求图',
+            desc: '我想要"' + GLOBAL_PAGE.data.title + '"的图，求助',
+            path: '/pages/painter/painter?master_id=' + masterId 
+        }
     },
     
 });

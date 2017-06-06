@@ -3,21 +3,55 @@ var API = require('../../utils/api.js');
 var KEY = require('../../utils/storage_key.js');
 var QINIU = require('../../utils/qiniu.js');
 var GLOBAL_PAGE;
+
+var MASTER_USER_INFO, GATHER_OPEN
 Page({
     data:{
-        // historyImg: "../../images/emoji_log.jpg",
+        masterId: 1, //master的id
         logo: "../../images/emoji_log.jpg",
         nickName:"昵称",
         title:"没有文本",
         prizeUrl:"../../images/emoji_log.jpg",
         isGatherOpen:1, //英雄帖接收锁
+
         switchWord:"接收"
     },
     back:function(){
-        //TODO
-        //2种上传方法
-        //1,图片不更新，直接上传
-        //2、图片更新，在上传图片后七牛callback实现
+        //1 检查用户信息，未改动返回
+        var master_info = wx.getStorageSync(MASTER_USER_INFO)
+        //2图片不一样，上传图片，返回
+        if (master_info.prize_url != GLOBAL_PAGE.data.prizeUrl){ 
+            QINIU.UPLOAD(
+                API.QINIU_UPLOAD(), //上传url
+                wx.getStorageSync(KEY.session), //用户session
+                GLOBAL_PAGE.data.prizeUrl,  //图片本地地址
+                "",
+                GLOBAL_PAGE.setMasterUserInfo
+            )  
+            return 
+        }
+
+        //3其他信息改动，更新
+        var isChange = false
+        if (master_info.logo != GLOBAL_PAGE.data.logo)
+            isChange = true
+        if (master_info.nick_name != GLOBAL_PAGE.data.nickName)
+            isChange = true
+        if (master_info.title != GLOBAL_PAGE.data.title)
+            isChange = true
+        if (master_info.is_gather_open != GLOBAL_PAGE.data.isGatherOpen)
+            isChange = true
+        if (isChange) {
+            GLOBAL_PAGE.setMasterUserInfo()
+            return
+        }
+        else 
+            wx.switchTab({
+                url: '../gather/gather',
+            })
+    },
+
+    setMasterUserInfo: function (img) {
         wx.request({
             url: API.SET_GATHER_USER_INFO(),
             method: "GET",
@@ -26,14 +60,16 @@ Page({
                 'logo': GLOBAL_PAGE.data.logo,
                 'nick_name': GLOBAL_PAGE.data.nickName,
                 'title': GLOBAL_PAGE.data.title,
-                'prize_url': GLOBAL_PAGE.data.prizeUrl,
+                'prize_url': img.yun_url,
                 'is_gather_open': GLOBAL_PAGE.data.isGatherOpen,
             },
             success: function (res) {
                 var object = res.data
                 console.log(object)
                 if (object.status == "true") {
-                    
+                    wx.switchTab({
+                        url: '../gather/gather',
+                    })
                 }
             },
             fail: function (res) {
@@ -43,7 +79,6 @@ Page({
                 })
             }
         })
-        
     },
 
     //logo开关
@@ -93,6 +128,7 @@ Page({
                 GLOBAL_PAGE.setData({
                     prizeUrl: tempFilePath
                 })
+                
             },
             fail: function (res) {
                 console.log(res)
@@ -127,11 +163,15 @@ Page({
                 console.log(object)
                 if (object.status == "true") {
                     GLOBAL_PAGE.setData({
+                        masterId: object.master_info._master,
                         logo: object.master_info.logo,
+                        nickName: object.master_info.nick_name,
                         title: object.master_info.title,
                         prizeUrl: object.master_info.prize_url,
                         isGatherOpen: object.master_info.is_gather_open,
                     })
+                    wx.setStorageSync(MASTER_USER_INFO, object.master_info )
+             
                 }
             },
             fail: function (res) {
@@ -139,24 +179,53 @@ Page({
                     title: '网络连接失败，请重试',
                     showCancel: false,
                 })
+            },
+            complete:function(){
+                //将用户数据存到本地
             }
         })
+    },
+    setMasterStorage:function(){
+
+        wx.setStorageSync('MASTER_USER_INFO', )
     },
 
     onLoad: function(){
         GLOBAL_PAGE = this 
-        // this.setData({
-        //     icon: base64.icon20
-        // });
 
+        MASTER_USER_INFO = 'MASTER_USER_INFO'
+        GATHER_OPEN = 'GATHER_OPEN'
 
-        var gather_lock = wx.getStorageSync('GATHER_OPEN')
+        var gather_lock = wx.getStorageSync(GATHER_OPEN)
         if (gather_lock != false)
-            wx.setStorageSync('GATHER_OPEN',true)
+            wx.setStorageSync(GATHER_OPEN,true)
         GLOBAL_PAGE.setData({
             isGatherOpen:gather_lock
         })
 
-        GLOBAL_PAGE.getGatherUserInfo()
-    }
+        var master_info = wx.getStorageSync(MASTER_USER_INFO)
+        if (master_info == "") //若本地还未加载master信息，请求更新
+            GLOBAL_PAGE.getGatherUserInfo()
+        else //master信息已经存储
+            GLOBAL_PAGE.setData({
+                logo: master_info.logo,
+                nickName: master_info.nick_name,
+                title: master_info.title,
+                prizeUrl: master_info.prize_url,
+                isGatherOpen: master_info.is_gather_open,
+            })
+       
+        
+        // GLOBAL_PAGE.getGatherUserInfo()
+    },
+
+
+    // 分享页面
+    onShareAppMessage: function () {
+        return {
+            title: '求图',
+            desc: '我想要"' + GLOBAL_PAGE.data.title + '"的图，求助',
+            path: '/pages/painter/painter?master_id=' + masterId
+        }
+    },
 });

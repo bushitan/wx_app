@@ -21,72 +21,86 @@ function uploadQiniuImage () {
  * file_path, 上传文件路径
  * upload_info 附带执行信息
  */
-function uploadFile(requst_url,user_session,file_path,upload_info) {
+function uploadFile(
+    requst_url,
+    user_session, 
+    file_path, 
+    category_id ,
+    callback
+    ) {
     var _type = file_path.split(".").pop()
-    console.log(file_path)
+    console.log(file_path, category_id)
 
-    var _upload_info = upload_info
+    //为默认目录
+    if ( category_id == undefined)
+        category_id = ""
+
     wx.request({
         url: requst_url,
         data: {
             'session': user_session,
             "type": _type,
-            "upload_info": _upload_info,
+            // "upload_info": _upload_info,
+            "category_id": category_id,
         },
         success: function (res) {
             var data = res.data
             console.log(data)
             if (data.status == "true") {
-            //     wx.uploadFile({
-            //         url: 'https://up.qbox.me',
-            //         // filePath: tempFilePaths[0],//图片
-            //         filePath: file_path,//小视频
-            //         name: 'file',
-            //         formData: {
-            //             'key': data.key,
-            //             'token': data.token,
-            //         },
-            //         success: function (res) {
-            //             console.log("上传成功")
-            //             var data = JSON.parse(res.data);
-            //             console.log(data)
-            //             if (data.status == "true") {
-            //                 var e = wx.getStorageSync(Key.emoticon)
-            //                 e.splice(0, 0, data.img); //从第一位插入
-            //                 // e.push(data.img)
-            //                 wx.setStorageSync(Key.emoticon, e)
-            //                 GLOBAL_PAGE.renderEmoticon()
+               
+                // callback("../../images/icon_big_hot.png")
+                wx.uploadFile({
+                    url: 'https://up.qbox.me',
+                    // filePath: tempFilePaths[0],//图片
+                    filePath: file_path,//小视频
+                    name: 'file',
+                    formData: {
+                        'key': data.key,
+                        'token': data.token,
+                    },
+                    success: function (res) {
+                        console.log("上传成功")
+                        var data = JSON.parse(res.data);
+                        console.log(data)
+                        if (data.status == "true") {
+                            if (callback)
+                                callback(data.img)
+                            // var e = wx.getStorageSync(Key.emoticon)
+                            // e.splice(0, 0, data.img); //从第一位插入
+                            // // e.push(data.img)
+                            // wx.setStorageSync(Key.emoticon, e)
+                            // GLOBAL_PAGE.renderEmoticon()
 
-            //                 GLOBAL_PAGE.uploadCompelte()//上传成功，继续上传
-            //             }
-            //             else {
-            //                 wx.showModal({
-            //                     title: '网络连接失败，请重试',
-            //                     showCancel: false,
-            //                 })
-            //                 GLOBAL_PAGE.setData({ isUpload: false })
-            //             }
-            //         },
-            //         fail(error) {
-            //             console.log(error)
-            //             wx.showModal({
-            //                 title: '网络连接失败，请重试',
-            //                 showCancel: false,
-            //             })
-            //             GLOBAL_PAGE.setData({ isUpload: false })
-            //         },
-            //         complete(res) {
-            //             console.log(res)
+                            // GLOBAL_PAGE.uploadCompelte()//上传成功，继续上传
+                        }
+                        else {
+                            wx.showModal({
+                                title: '网络连接失败，请重试',
+                                showCancel: false,
+                            })
+                            GLOBAL_PAGE.setData({ isUpload: false })
+                        }
+                    },
+                    fail(error) {
+                        console.log(error)
+                        wx.showModal({
+                            title: '网络连接失败，请重试',
+                            showCancel: false,
+                        })
+                        GLOBAL_PAGE.setData({ isUpload: false })
+                    },
+                    complete(res) {
+                        console.log(res)
 
-            //         }
-            //     })
-            // }
-            // else {
-            //     wx.showModal({
-            //         title: '网络连接失败，请重试',
-            //         showCancel: false,
-            //     })
-            //     GLOBAL_PAGE.setData({ isUpload: false })
+                    }
+                })
+            }
+            else {
+                wx.showModal({
+                    title: '网络连接失败，请重试',
+                    showCancel: false,
+                })
+                GLOBAL_PAGE.setData({ isUpload: false })
             }
         },
         fail: function (res) {

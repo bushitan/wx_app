@@ -10,6 +10,8 @@ var APP = getApp()
 var GLOBAL_PAGE
 var appInstance
 var i = 0
+
+var MASTER_USER_INFO, GATHER_OPEN
 Page({
   data: {
     // 手机设备信息，均已rpx为标准
@@ -19,9 +21,16 @@ Page({
 
     //页面渲染数据
     emoticon:[],
-
+    
     //斗图英雄帖
-    isGatherOpen:1,
+    masterId: 1,//master的id
+    logo: "../../images/emoji_log.jpg",
+    nickName: "昵称",
+    title: "没有文本",
+    qrUrl:"",
+    prizeUrl: "../../images/emoji_log.jpg",
+    isGatherOpen: 1, //英雄帖接收锁
+
     //英雄帖
     gatherImg:"http://img.12xiong.top/help_tie_bg1.jpg?watermark/3/image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9xci5qcGc=/dissolve/50/gravity/SouthEast/dx/20/dy/20/image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9sb2dvLmpwZz9pbWFnZU1vZ3IyL3RodW1ibmFpbC84eDgvZm9ybWF0L2pwZw==/dissolve/50/gravity/NorthWest/dx/280/dy/20/ws/0.4/text/5aSn5ZCJ5ouc5bm0/font/5b6u6L2v6ZuF6buR/fontsize/1000/fill/YmxhY2s=/dissolve/85/gravity/NorthWest/dx/285/dy/591",
   },
@@ -53,6 +62,7 @@ Page({
       })
   },
 
+
   GetMasterData:function(){
       wx.request({
           url: API.GET_GATHER_USER_INFO(),
@@ -65,14 +75,19 @@ Page({
               console.log(object)
               if (object.status == "true") {
                   GLOBAL_PAGE.setData({
+                      masterId: object.master_info._master,
                       nickName: object.master_info.nick_name,
                       logo: object.master_info.logo,
                       title: object.master_info.title,
+                      qrUrl: object.master_info.qr_url,
                       prizeUrl: object.master_info.prize_url,
                       isGatherOpen: object.master_info.is_gather_open,
                     //   emoticon: object.img_list,
                   })
-                  Render.emoticon(GLOBAL_PAGE, object.img_list)
+                  Render.emoticon(GLOBAL_PAGE, object.img_list) //加载获取表情
+                  wx.setStorageSync(MASTER_USER_INFO, object.master_info) //本地记录
+                  GLOBAL_PAGE.createQR()// 生成二维码
+
               }
           },
           fail: function (res) {
@@ -82,6 +97,33 @@ Page({
               })
           }
       })
+  },
+
+  createQR: function () {
+      var logo = BASE64.encode(GLOBAL_PAGE.data.logo)
+      var qr = BASE64.encode(GLOBAL_PAGE.data.qrUrl)
+      var title = BASE64.encode(GLOBAL_PAGE.data.title)
+
+      var water_5 = 'http://img.12xiong.top/help_tie_bg1.jpg?watermark/3/' 
+      + 'image/' + qr+'/100/gravity/SouthEast/dx/20/dy/20/' 
+      + 'image/'+ logo+'/dissolve/50/gravity/NorthWest/dx/280/dy/20/ws/0.4/' 
+      + 'text/' + title+'/font/5b6u6L2v6ZuF6buR/fontsize/1000/fill/YmxhY2s=/dissolve/85/gravity/NorthWest/dx/285/dy/591'
+      console.log(water_5)
+
+
+
+
+    //   var url = "http://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKVjOuco39iayByJDagvdHXj1Jsr6jGeF0aHkWMygvVypmSdEyVmZhruaZeO6a7le54fIXfyupibicdg/0"
+    //   // var url = "https://olhvkds73.qnssl.com/logo.png"
+    //   var r = BASE64.encode(url)
+    //   console.log(r)
+    //   console.log(BASE64.decode(r))
+
+
+
+    GLOBAL_PAGE.setData({ 
+        gatherImg: water_5
+    })
   },
 
 
@@ -142,20 +184,7 @@ Page({
     Render.category(this,wx.getStorageSync("category"))
   },
 
-  // 分享页面
-  onShareAppMessage: function () { 
-      // wx.showModal({
-      //   title: '请点点"帮抢"，保存',
-      //   showCancel:false,
-      // }) 
-      // return
 
-      return {
-        title: '表情袋',
-        desc: '海量表情天天让你惊喜，斗图乐趣无限，ヽ(°◇° )ノ',
-        path: '/pages/public/public'
-      }
-  },
 
   /**
    *  页面加载
@@ -184,24 +213,14 @@ Page({
     
 
     GLOBAL_PAGE = this
+    MASTER_USER_INFO = 'MASTER_USER_INFO'
     //1 page初始化高宽
-    console.log("width:" , APP.globalData.windowWidth)
-    console.log("height:" , APP.globalData.windowHeight)
     GLOBAL_PAGE.setData({
       windowWidth:APP.globalData.windowWidth,
       windowHeight:APP.globalData.windowHeight - 42,  //category框高度42px ,join框高度160 || 0
-    //   categoryScrollWidth:APP.globalData.windowWidth - 104, //全选60 + 刷新42 + 竖直线2 
-    //   categoryScrollWidth:APP.globalData.windowWidth - 86, // 客服42 + 刷新42 + 竖直线2 
-    //   categoryScrollWidth:APP.globalData.windowWidth - 64, // 客服50 
       categoryScrollWidth:APP.globalData.windowWidth, // 客服50 
-
-      // joinHeight
-      // windowHeight:APP.globalData.windowHeight - 84,  //category框高度42px
-      // windowHeight:app.globalData.windowHeight - 48,
     })
     //测试session
-    // wx.setStorageSync('session',"ds9") 
-    // wx.setStorageSync('session',"") 
     console.log("session:", wx.getStorageSync('session') )
 
     //正式登陆
@@ -213,110 +232,24 @@ Page({
       else
           APP.login(option)
     
-    // // 300ms后，隐藏loading
-    setTimeout(function() {
-          GLOBAL_PAGE.setData({
-            loadShow: false
-          })
-    }, 500)
+        
   },
 
   //必须要登陆以后发起的请求，在这里完成
   onInit:function(option){
       //Todo 登陆过后做的请求
-    //   GLOBAL_PAGE.init()
+      
   },
 
-  //Page：private  初始化页面的钩子
-  init:function( ){
-    //数据初始化 图片
-    var that = this;
-    var url = Api.imgQuery() 
 
-    var session = wx.getStorageSync(Key.session) 
-    if (! session  ) //检查session,不存在，为false
-      session = "false"
-
-    //获取表情列表
-     wx.request({
-        url: url, //仅为示例，并非真实的接口地址
-        method:"GET",
-        data: {
-          session: session,
-          category_id: 'null',
-        },
-        success: function(res) {
-          var object = res.data
-          if (object.status == "true")
-          {
-              wx.setStorageSync(
-                  Key.emoticon,
-                  object.img_list
-              )
-              GLOBAL_PAGE.renderEmoticon()
-          }
-          else
-            wx.showModal({
-                title: '网络连接失败，请重试',
-                showCancel:false,
-            })
-        },
-        fail:function(res){
-            wx.showModal({
-                title: '网络连接失败，请重试',
-                showCancel:false,
-            })
-        },
-
-      })
-
-     //数据初始化 目录
-      url = Api.categoryQuery() 
-      wx.request({
-        url: url, //仅为示例，并非真实的接口地址
-        method:"GET",
-        data: {
-          session: session,
-        },
-        success: function(res) {
-          var object = res.data
-          if (object.status == "true")
-          {      
-              var _category_list = object.category_list      
-              //目录保存本地
-              wx.setStorageSync(
-                  Key.category,
-                  _category_list
-              )
-              //渲染目录
-              GLOBAL_PAGE.renderCategory()
-              //设置selecCategory == 默认目录。
-              for(var i=0;i<_category_list.length;i++)
-                  if( _category_list[i].is_default == 1 ){
-                      GLOBAL_PAGE.setData({
-                        selectCategory:_category_list[i]
-                      })
-                      var e = {currentTarget:{dataset:{select_category_id:_category_list[i].category_id}}}
-                      // e.currentTarget.dataset.select_category_id = _category_list[i].category_id
-                      GLOBAL_PAGE.selectCategory(e)
-                  }              
-          }
-          else
-            wx.showModal({
-                title: '网络连接失败，请重试',
-                showCancel:false,
-            })
-        },
-        fail:function(res){
-            wx.showModal({
-                title: '网络连接失败，请重试',
-                showCancel:false,
-            })
-        },
-      })
+  // 分享页面
+  onShareAppMessage: function () {
+      return {
+          title: '求图',
+          desc: '我想要"' + GLOBAL_PAGE.data.title + '"的图，求助',
+          path: '/pages/painter/painter?master_id=' + masterId
+      }
   },
-
-  
 
 })
 

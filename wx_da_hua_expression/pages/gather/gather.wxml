@@ -13,7 +13,7 @@
                 <image src="{{gatherImg}}" catchtap="previewGatherImg" ></image>
                 <!--<view class="des">我的英雄帖</view>-->
                 <view class="" catchtap="toPainter">
-                    <view> 主题：我的英雄帖</view>
+                    <view> 主题：{{title}}</view>
                     <view> 描述：我的英雄帖</view>
                 </view>
             </view>
