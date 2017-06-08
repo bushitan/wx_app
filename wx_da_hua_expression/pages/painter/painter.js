@@ -173,8 +173,8 @@ Page({
     // 分享页面
     onShareAppMessage: function () {
         return {
-            title: '求图',
-            desc: '我想要"' + GLOBAL_PAGE.data.title + '"的图，求助',
+            title: '求图英雄帖',
+            desc: '我想要:' + GLOBAL_PAGE.data.title ,
             path: '/pages/painter/painter?master_id=' + masterId 
         }
     },

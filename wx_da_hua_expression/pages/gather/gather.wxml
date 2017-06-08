@@ -12,9 +12,10 @@
             <view class="head_logo">
                 <image src="{{gatherImg}}" catchtap="previewGatherImg" ></image>
                 <!--<view class="des">我的英雄帖</view>-->
-                <view class="" catchtap="toPainter">
-                    <view> 主题：{{title}}</view>
-                    <view> 描述：我的英雄帖</view>
+                <view class="head_title_want" catchtap="toPainter">
+                    我想要：{{title}}
+                    <!--<view> 我想要：{{title}}</view>-->
+                    <!--<view> 描述：我的英雄帖</view>-->
                 </view>
             </view>
             

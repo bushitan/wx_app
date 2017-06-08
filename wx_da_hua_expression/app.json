@@ -1,7 +1,7 @@
 {
   "pages":[
-    "pages/public/public",
     "pages/gather/gather",
+    "pages/public/public",
     "pages/gather_list/gather_list",
     "pages/painter/painter",
     "pages/gallery/gallery",

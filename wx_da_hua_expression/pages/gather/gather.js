@@ -36,11 +36,8 @@ Page({
   },
 
   onShow:function(){
-     var gather_lock = wx.getStorageSync('GATHER_OPEN')
-     GLOBAL_PAGE.setData({
-         isGatherOpen:gather_lock
-     })
-     GLOBAL_PAGE.GetMasterData()
+      if (APP.globalData.isLogin)
+            GLOBAL_PAGE.onInit()
   },
 
   //预览分享图
@@ -103,24 +100,30 @@ Page({
       var logo = BASE64.encode(GLOBAL_PAGE.data.logo)
       var qr = BASE64.encode(GLOBAL_PAGE.data.qrUrl)
       var title = BASE64.encode(GLOBAL_PAGE.data.title)
+      var prize_url = BASE64.encode(GLOBAL_PAGE.data.prizeUrl)
+      var want = BASE64.encode('我想要')
+      var want1 = BASE64.encode('想要')
+      var mark = BASE64.encode('背景是福利')
+      var red = BASE64.encode('red')
+      console.log(red)
+      //没有头像
+    //   var water_5 = 'http://img.12xiong.top/help_tie_bg2.jpg?watermark/3/'
+    //       + 'image/' + prize_url + '/dissolve/10/gravity/South/dx/0/dy/0/ws/1/'
+    //       + 'image/' + qr + '/dissolve/100/gravity/SouthWest/dx/20/dy/20/ws/0.3/'
+    //       + 'text/' + want + '/font/5b6u6L2v6ZuF6buR/fontsize/800/fill/YmxhY2s=/dissolve/85/gravity/Center/dx/-60/dy/-60/'
+    //       + 'text/' + title + '/font/5b6u6L2v6ZuF6buR/fontsize/600/fill/YmxhY2s=/dissolve/85/gravity/Center/dx/-60/dy/-5/'
+    //       + 'text/' + mark + '/font/5b6u6L2v6ZuF6buR/fontsize/300/fill/d2hpdGU=/dissolve/85/gravity/South/dx/0/dy/20/'
 
-      var water_5 = 'http://img.12xiong.top/help_tie_bg1.jpg?watermark/3/' 
-      + 'image/' + qr+'/100/gravity/SouthEast/dx/20/dy/20/' 
-      + 'image/'+ logo+'/dissolve/50/gravity/NorthWest/dx/280/dy/20/ws/0.4/' 
-      + 'text/' + title+'/font/5b6u6L2v6ZuF6buR/fontsize/1000/fill/YmxhY2s=/dissolve/85/gravity/NorthWest/dx/285/dy/591'
-      console.log(water_5)
-
-
-
-
-    //   var url = "http://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKVjOuco39iayByJDagvdHXj1Jsr6jGeF0aHkWMygvVypmSdEyVmZhruaZeO6a7le54fIXfyupibicdg/0"
-    //   // var url = "https://olhvkds73.qnssl.com/logo.png"
-    //   var r = BASE64.encode(url)
-    //   console.log(r)
-    //   console.log(BASE64.decode(r))
-
-
-
+        //有头像
+      var water_5 = 'http://img.12xiong.top/help_tie_bg2.jpg?watermark/3/'
+          + 'image/' + prize_url + '/dissolve/10/gravity/South/dx/0/dy/0/ws/1/'
+          + 'image/' + qr + '/dissolve/100/gravity/SouthWest/dx/0/dy/20/ws/0.45/'
+          + 'text/' + want1 + '/font/5b6u6L2v6ZuF6buR/fontsize/800/fill/YmxhY2s=/dissolve/85/gravity/Center/dx/-15/dy/-80/'
+          + 'image/' + logo + '/dissolve/100/gravity/Center/dx/-110/dy/-80/ws/0.2/'
+          + 'text/' + title + '/font/5b6u6L2v6ZuF6buR/fontsize/600/fill/YmxhY2s=/dissolve/85/gravity/Center/dx/-60/dy/-25/'
+          + 'text/' + mark + '/font/5b6u6L2v6ZuF6buR/fontsize/300/fill/cmVk/dissolve/85/gravity/South/dx/0/dy/20/'
+      
+      // white  d2hpdGU=
     GLOBAL_PAGE.setData({ 
         gatherImg: water_5
     })
@@ -190,26 +193,6 @@ Page({
    *  页面加载
    */
   onLoad: function (option) {   
-      var water_img = "http://img.12xiong.top/help_tie_bg1.jpg?watermark/1/image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9xci5qcGc=/50/gravity/SouthEast/dx/20/dy/20"
-
-      var water_text = "http://img.12xiong.top/help_tie_bg1.jpg?watermark/2/text/5aSn5ZCJ5ouc5bm0/font/5b6u6L2v6ZuF6buR/fontsize/3498/fill/YmxhY2s=/dissolve/85/gravity/NorthWest/dx/285/dy/591"
-
-      var water_3 = "http://img.12xiong.top/help_tie_bg1.jpg?watermark/3/image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9xci5qcGc=/50/gravity/SouthEast/dx/20/dy/20/text/5aSn5ZCJ5ouc5bm0/font/5b6u6L2v6ZuF6buR/fontsize/1000/fill/YmxhY2s=/dissolve/85/gravity/NorthWest/dx/285/dy/591/image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9sb2dvLmpwZz9pbWFnZU1vZ3IyL3RodW1ibmFpbC8xNzB4MjQwL2Zvcm1hdC9qcGc=/50/gravity/NorthWest/dx/20/dy/20"
-
-      var water_4 = 'http://img.12xiong.top/help_tie_bg1.jpg?watermark/3/'+
-'image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9xci5qcGc=/dissolve/50/gravity/SouthEast/dx/20/dy/20/' +
-'image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9sb2dvLmpwZz9pbWFnZU1vZ3IyL3RodW1ibmFpbC8xNzB4MjQwL2Zvcm1hdC9qcGc=/dissolve/50/gravity/NorthWest/dx/280/dy/20/ws/1' +
-'text/5aSn5ZCJ5ouc5bm0/font/5b6u6L2v6ZuF6buR/fontsize/1000/fill/YmxhY2s=/dissolve/85/gravity/NorthWest/dx/285/dy/591'
-
-      var water_5 = 'http://img.12xiong.top/help_tie_bg1.jpg?watermark/3/' +
-          'image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9xci5qcGc=/dissolve/100/gravity/SouthEast/dx/20/dy/20/' +    'image/aHR0cDovL3d4LnFsb2dvLmNuL21tb3Blbi92aV8zMi9RMGo0VHdHVGZUS1ZqT3VjbzM5aWF5QnlKRGFndmRIWGoxSnNyNmpHZUYwYUhrV015Z3ZWeXBtU2RFeVZtWmhydWFaZU82YTdsZTU0ZklYZnl1cGliaWNkZy8w/dissolve/50/gravity/NorthWest/dx/280/dy/20/ws/0.4/' +
-          'text/5aSn5ZCJ5ouc5bm0/font/5b6u6L2v6ZuF6buR/fontsize/1000/fill/YmxhY2s=/dissolve/85/gravity/NorthWest/dx/285/dy/591'
-    console.log(water_5)
-    var url = "http://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKVjOuco39iayByJDagvdHXj1Jsr6jGeF0aHkWMygvVypmSdEyVmZhruaZeO6a7le54fIXfyupibicdg/0"
-    // var url = "https://olhvkds73.qnssl.com/logo.png"
-    var r = BASE64.encode(url)
-    console.log(r)
-    console.log(BASE64.decode(r))
     
 
     GLOBAL_PAGE = this
@@ -238,15 +221,18 @@ Page({
   //必须要登陆以后发起的请求，在这里完成
   onInit:function(option){
       //Todo 登陆过后做的请求
-      
+      var gather_lock = wx.getStorageSync('GATHER_OPEN')
+      GLOBAL_PAGE.setData({
+          isGatherOpen: gather_lock
+      })
+      GLOBAL_PAGE.GetMasterData()
   },
 
 
-  // 分享页面
   onShareAppMessage: function () {
       return {
-          title: '求图',
-          desc: '我想要"' + GLOBAL_PAGE.data.title + '"的图，求助',
+          title: '求图英雄帖',
+          desc: '我想要:' + GLOBAL_PAGE.data.title,
           path: '/pages/painter/painter?master_id=' + masterId
       }
   },
@@ -256,3 +242,25 @@ Page({
 
 
 
+
+
+
+// var water_img = "http://img.12xiong.top/help_tie_bg1.jpg?watermark/1/image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9xci5qcGc=/50/gravity/SouthEast/dx/20/dy/20"
+
+// var water_text = "http://img.12xiong.top/help_tie_bg1.jpg?watermark/2/text/5aSn5ZCJ5ouc5bm0/font/5b6u6L2v6ZuF6buR/fontsize/3498/fill/YmxhY2s=/dissolve/85/gravity/NorthWest/dx/285/dy/591"
+
+// var water_3 = "http://img.12xiong.top/help_tie_bg1.jpg?watermark/3/image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9xci5qcGc=/50/gravity/SouthEast/dx/20/dy/20/text/5aSn5ZCJ5ouc5bm0/font/5b6u6L2v6ZuF6buR/fontsize/1000/fill/YmxhY2s=/dissolve/85/gravity/NorthWest/dx/285/dy/591/image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9sb2dvLmpwZz9pbWFnZU1vZ3IyL3RodW1ibmFpbC8xNzB4MjQwL2Zvcm1hdC9qcGc=/50/gravity/NorthWest/dx/20/dy/20"
+
+// var water_4 = 'http://img.12xiong.top/help_tie_bg1.jpg?watermark/3/' +
+//     'image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9xci5qcGc=/dissolve/50/gravity/SouthEast/dx/20/dy/20/' +
+//     'image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9sb2dvLmpwZz9pbWFnZU1vZ3IyL3RodW1ibmFpbC8xNzB4MjQwL2Zvcm1hdC9qcGc=/dissolve/50/gravity/NorthWest/dx/280/dy/20/ws/1' +
+//     'text/5aSn5ZCJ5ouc5bm0/font/5b6u6L2v6ZuF6buR/fontsize/1000/fill/YmxhY2s=/dissolve/85/gravity/NorthWest/dx/285/dy/591'
+
+// var water_5 = 'http://img.12xiong.top/help_tie_bg1.jpg?watermark/3/' +
+//     'image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9xci5qcGc=/dissolve/100/gravity/SouthEast/dx/20/dy/20/' + 'image/aHR0cDovL3d4LnFsb2dvLmNuL21tb3Blbi92aV8zMi9RMGo0VHdHVGZUS1ZqT3VjbzM5aWF5QnlKRGFndmRIWGoxSnNyNmpHZUYwYUhrV015Z3ZWeXBtU2RFeVZtWmhydWFaZU82YTdsZTU0ZklYZnl1cGliaWNkZy8w/dissolve/50/gravity/NorthWest/dx/280/dy/20/ws/0.4/' +
+//     'text/5aSn5ZCJ5ouc5bm0/font/5b6u6L2v6ZuF6buR/fontsize/1000/fill/YmxhY2s=/dissolve/85/gravity/NorthWest/dx/285/dy/591'
+// console.log(water_5)
+// var url = "http://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKVjOuco39iayByJDagvdHXj1Jsr6jGeF0aHkWMygvVypmSdEyVmZhruaZeO6a7le54fIXfyupibicdg/0"
+// var r = BASE64.encode(url)
+// console.log(r)
+// console.log(BASE64.decode(r))

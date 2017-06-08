@@ -30,11 +30,15 @@
     align-items:center ;
 }
 .head_logo image{
-     width: 64px;
-    height: 64px;
+     width: 200rpx;
+    height: 137rpx;
+    margin-right: 10px; 
     /*border-radius: 50%;*/
 }
-
+.head_title_want{
+    width: 300rpx;
+    overflow:hidden;
+}
 .head_logo .des{
     text-align: center;
 }

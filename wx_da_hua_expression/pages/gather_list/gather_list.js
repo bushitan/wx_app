@@ -42,7 +42,7 @@ Page({
         if (master_info.is_gather_open != GLOBAL_PAGE.data.isGatherOpen)
             isChange = true
         if (isChange) {
-            GLOBAL_PAGE.setMasterUserInfo()
+            GLOBAL_PAGE.setMasterUserInfo({ yun_url: GLOBAL_PAGE.data.prizeUrl})
             return
         }
         else 
@@ -196,12 +196,12 @@ Page({
         MASTER_USER_INFO = 'MASTER_USER_INFO'
         GATHER_OPEN = 'GATHER_OPEN'
 
-        var gather_lock = wx.getStorageSync(GATHER_OPEN)
-        if (gather_lock != false)
-            wx.setStorageSync(GATHER_OPEN,true)
-        GLOBAL_PAGE.setData({
-            isGatherOpen:gather_lock
-        })
+        // var gather_lock = wx.getStorageSync(GATHER_OPEN)
+        // if (gather_lock != false)
+        //     wx.setStorageSync(GATHER_OPEN,true)
+        // GLOBAL_PAGE.setData({
+        //     isGatherOpen:gather_lock
+        // })
 
         var master_info = wx.getStorageSync(MASTER_USER_INFO)
         if (master_info == "") //若本地还未加载master信息，请求更新

@@ -71,65 +71,22 @@ App({
                   console.log(res)
                   if (res.data.status == "true") //登陆成功
                   {
+                      GLOBAL_PAGE.globalData.isLogin = true
                       wx.setStorageSync('session', res.data.session)
                       //Todo 初始化页面、目录
                       // GLOBAL_PAGE.onInit()
                     //   getCurrentPages()[0].onInit(option)
 
                       //暂时专供抢画后保存图片用，日后与login合体
-                      GLOBAL_PAGE.getUserInfoRequest()
+                    //   GLOBAL_PAGE.getUserInfoRequest()
                   }
-                //   else
-                //     wx.showModal({
-                //       title: '数据同步未成功，点击"我"右下角"+"重新同步',
-                //     //   content:"请确认网络是否正常",
-                //         showCancel:false,
-                //       confirmText:"知道啦",
-                //       success: function(res) {
-                //         //   if (res.confirm) {
-                //         //       GLOBAL_PAGE.login()
-                //         //   }
-                //         //   else{
-                //         //       GLOBAL_PAGE.setData({
-                //         //           loginStatus:false
-                //         //       }) 
-                //       }
-                    // })       
-                //   else
-                //     wx.showModal({
-                //       title: '网络连接失败，是否重新登陆？',
-                //       content:"请确认网络是否正常",
-                //       confirmText:"重新登陆",
-                //       success: function(res) {
-                //           if (res.confirm) {
-                //               GLOBAL_PAGE.login()
-                //           }
-                //           else{
-                //               GLOBAL_PAGE.setData({
-                //                   loginStatus:false
-                //               }) 
-                //           }
-                //       }
-                //     })                
+               
                 },
                 fail:function(res) { 
                     wx.showModal({
                         title: '数据同步未成功，点击"我"右下角"+"重新同步',
                         showCancel:false,
                         confirmText:"知道啦",
-                    //   title: '网络连接失败，是否重新登陆？',
-                    //   content:'请确认网络是否正常',
-                    //   confirmText:"重新登陆",
-                    //   success: function(res) {
-                    //       if (res.confirm) {
-                    //           GLOBAL_PAGE.login()
-                    //       }
-                    //       else{
-                    //           GLOBAL_PAGE.setData({
-                    //               loginStatus:false
-                    //           }) 
-                    //       }
-                    //   }
                     }) 
                 },
                 complete:function(){
