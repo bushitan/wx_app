@@ -11,7 +11,7 @@
             </view>
             <view class="head_logo">
                 <image src="{{prizeUrl}}"></image>
-                <view class="des">奖↑励</view>
+                <view class="des">福↑利</view>
             </view>
         </view>
 
@@ -22,7 +22,7 @@
         </view>
         
         <view class="send_img">
-            <button catchtap="sendHelp" type="primary">发送图片，获得奖励</button>
+            <button catchtap="sendHelp" type="primary" disabled="{{uploadImgUrl == ''?true:false }}" >发送图片，获得福利</button>
         </view>
         <view class="to_gather">
             <button catchtap="toGather" >我也发英雄帖</button>

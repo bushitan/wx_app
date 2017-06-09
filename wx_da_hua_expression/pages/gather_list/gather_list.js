@@ -163,7 +163,7 @@ Page({
                 console.log(object)
                 if (object.status == "true") {
                     GLOBAL_PAGE.setData({
-                        masterId: object.master_info._master,
+                        masterId: object.master_info.master_id,
                         logo: object.master_info.logo,
                         nickName: object.master_info.nick_name,
                         title: object.master_info.title,
@@ -225,7 +225,7 @@ Page({
         return {
             title: '求图',
             desc: '我想要"' + GLOBAL_PAGE.data.title + '"的图，求助',
-            path: '/pages/painter/painter?master_id=' + masterId
+            path: '/pages/painter/painter?master_id=' + GLOBAL_PAGE.data.masterId 
         }
     },
 });

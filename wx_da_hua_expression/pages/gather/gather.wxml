@@ -10,17 +10,24 @@
         </view>-->
         <view class="head_info" >
             <view class="head_logo">
-                <image src="{{gatherImg}}" catchtap="previewGatherImg" ></image>
-                <!--<view class="des">我的英雄帖</view>-->
-                <view class="head_title_want" catchtap="toPainter">
+                <image src="{{gatherImg}}" catchtap="previewGatherImg" mode="aspectFit"></image>
+               
+                <view class="head_title_want" >
                     我想要：{{title}}
                     <!--<view> 我想要：{{title}}</view>-->
                     <!--<view> 描述：我的英雄帖</view>-->
                 </view>
             </view>
             
-            <view class="">
-                <button size="mini" catchtap="toGatherList" >设置</button>
+            <view class="head_btn">
+                <view class=""> 
+                    <button size="mini" catchtap="toGatherList" >设置</button>
+                </view>
+                <view class="">
+                    <button size="mini"  catchtap="toPainter">我的</button>
+                </view>
+               
+                
                 <!--<button size="mini" catchtap="toPainter" >参与页面</button>-->
             </view>
         </view>

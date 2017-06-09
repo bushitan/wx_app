@@ -30,8 +30,8 @@
     align-items:center ;
 }
 .head_logo image{
-     width: 200rpx;
-    height: 137rpx;
+    width: 200rpx;
+    height: 200rpx;
     margin-right: 10px; 
     /*border-radius: 50%;*/
 }
@@ -43,6 +43,14 @@
     text-align: center;
 }
 
+
+.head_btn {
+    /*flex-direction: row;
+    justify-content: space-around;*/
+}
+.head_btn button{
+    /*margin: auto;*/
+}
 
 
 /*.user_share_switch{

@@ -1,8 +1,8 @@
 {
   "pages":[
     "pages/gather/gather",
-    "pages/public/public",
     "pages/gather_list/gather_list",
+    "pages/public/public",
     "pages/painter/painter",
     "pages/gallery/gallery",
     "pages/relate/relate",
@@ -38,7 +38,7 @@
     },  
     {
       "pagePath": "pages/gather/gather",
-      "text": "求图",
+      "text": "约图",
       "iconPath": "images/icon_smile.png",
       "selectedIconPath": "images/icon_big_same.png"
     }]

@@ -26,13 +26,13 @@ Page({
     masterId: 1,//master的id
     logo: "../../images/emoji_log.jpg",
     nickName: "昵称",
-    title: "没有文本",
+    title: "搞笑的图片",
     qrUrl:"",
     prizeUrl: "../../images/emoji_log.jpg",
     isGatherOpen: 1, //英雄帖接收锁
 
     //英雄帖
-    gatherImg:"http://img.12xiong.top/help_tie_bg1.jpg?watermark/3/image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9xci5qcGc=/dissolve/50/gravity/SouthEast/dx/20/dy/20/image/aHR0cDovL2ltZy4xMnhpb25nLnRvcC9oZWxwX3RpZV9sb2dvLmpwZz9pbWFnZU1vZ3IyL3RodW1ibmFpbC84eDgvZm9ybWF0L2pwZw==/dissolve/50/gravity/NorthWest/dx/280/dy/20/ws/0.4/text/5aSn5ZCJ5ouc5bm0/font/5b6u6L2v6ZuF6buR/fontsize/1000/fill/YmxhY2s=/dissolve/85/gravity/NorthWest/dx/285/dy/591",
+    gatherImg:"http://img.12xiong.top/help_tie_bg4.jpg",
   },
 
   onShow:function(){
@@ -49,7 +49,7 @@ Page({
 
   toPainter:function(){
       wx.navigateTo({
-        url: '../painter/painter',
+          url: '../painter/painter?master_id=' + GLOBAL_PAGE.data.masterId,
       })
   },
 
@@ -72,7 +72,7 @@ Page({
               console.log(object)
               if (object.status == "true") {
                   GLOBAL_PAGE.setData({
-                      masterId: object.master_info._master,
+                      masterId: object.master_info.master_id,
                       nickName: object.master_info.nick_name,
                       logo: object.master_info.logo,
                       title: object.master_info.title,
@@ -100,10 +100,18 @@ Page({
       var logo = BASE64.encode(GLOBAL_PAGE.data.logo)
       var qr = BASE64.encode(GLOBAL_PAGE.data.qrUrl)
       var title = BASE64.encode(GLOBAL_PAGE.data.title)
-      var prize_url = BASE64.encode(GLOBAL_PAGE.data.prizeUrl)
+
+      var temp_prize = GLOBAL_PAGE.data.prizeUrl.split(".")
+      var prize_url
+      if (temp_prize[temp_prize.length - 1] == "gif" || temp_prize[temp_prize.length - 1] == "GIF" || temp_prize[temp_prize.length - 1] == "Gif" )
+          prize_url = BASE64.encode(GLOBAL_PAGE.data.prizeUrl + "?imageMogr2/thumbnail/170x240/format/jpg")
+      else    
+          prize_url = BASE64.encode(GLOBAL_PAGE.data.prizeUrl)
+
       var want = BASE64.encode('我想要')
       var want1 = BASE64.encode('想要')
-      var mark = BASE64.encode('背景是福利')
+      var num = BASE64.encode('NO:' + GLOBAL_PAGE.data.masterId)
+      var mark = BASE64.encode('这是福利')
       var red = BASE64.encode('red')
       console.log(red)
       //没有头像
@@ -115,14 +123,22 @@ Page({
     //       + 'text/' + mark + '/font/5b6u6L2v6ZuF6buR/fontsize/300/fill/d2hpdGU=/dissolve/85/gravity/South/dx/0/dy/20/'
 
         //有头像
-      var water_5 = 'http://img.12xiong.top/help_tie_bg2.jpg?watermark/3/'
-          + 'image/' + prize_url + '/dissolve/10/gravity/South/dx/0/dy/0/ws/1/'
-          + 'image/' + qr + '/dissolve/100/gravity/SouthWest/dx/0/dy/20/ws/0.45/'
-          + 'text/' + want1 + '/font/5b6u6L2v6ZuF6buR/fontsize/800/fill/YmxhY2s=/dissolve/85/gravity/Center/dx/-15/dy/-80/'
-          + 'image/' + logo + '/dissolve/100/gravity/Center/dx/-110/dy/-80/ws/0.2/'
-          + 'text/' + title + '/font/5b6u6L2v6ZuF6buR/fontsize/600/fill/YmxhY2s=/dissolve/85/gravity/Center/dx/-60/dy/-25/'
-          + 'text/' + mark + '/font/5b6u6L2v6ZuF6buR/fontsize/300/fill/cmVk/dissolve/85/gravity/South/dx/0/dy/20/'
-      
+    //   var water_5 = 'http://img.12xiong.top/help_tie_bg3.jpg?watermark/3/'
+    //       + 'image/' + prize_url + '/dissolve/10/gravity/South/dx/0/dy/0/ws/0.2/'
+    //       + 'image/' + qr + '/dissolve/100/gravity/SouthWest/dx/0/dy/20/ws/0.45/'
+    //       + 'text/' + want1 + '/font/5b6u6L2v6ZuF6buR/fontsize/800/fill/YmxhY2s=/dissolve/85/gravity/Center/dx/-15/dy/-80/'
+    //       + 'image/' + logo + '/dissolve/100/gravity/Center/dx/-110/dy/-80/ws/0.2/'
+    //       + 'text/' + title + '/font/5b6u6L2v6ZuF6buR/fontsize/600/fill/YmxhY2s=/dissolve/85/gravity/Center/dx/-60/dy/-25/'
+    //       + 'text/' + mark + '/font/5b6u6L2v6ZuF6buR/fontsize/300/fill/cmVk/dissolve/85/gravity/South/dx/0/dy/20/'
+    //       + 'text/' + num + '/font/5b6u6L2v6ZuF6buR/fontsize/300/fill/cmVk/dissolve/85/gravity/South/dx/0/dy/40/'
+     var water_5 = 'http://img.12xiong.top/help_tie_bg4.jpg?watermark/3/'  
+  + 'image/' + logo + '/dissolve/100/gravity/North/dx/-40/dy/105/ws/0.15/'
+  + 'text/' + want1 + '/font/5b6u6L2v6ZuF6buR/fontsize/500/fill/YmxhY2s=/dissolve/85/gravity/North/dx/35/dy/115/'
+  + 'text/' + title + '/font/5b6u6L2v6ZuF6buR/fontsize/500/fill/YmxhY2s=/dissolve/85/gravity/North/dx/0/dy/165/'
+  + 'image/' + prize_url + '/dissolve/30/gravity/Center/dx/0/dy/0/ws/0.2/'
+  + 'text/' + mark + '/font/5b6u6L2v6ZuF6buR/fontsize/300/fill/cmVk/dissolve/85/gravity/Center/dx/0/dy/0/'
+  + 'image/' + qr + '/dissolve/100/gravity/South/dx/0/dy/20/ws/0.45/'
+  + 'text/' + num + '/font/5b6u6L2v6ZuF6buR/fontsize/300/fill/cmVk/dissolve/85/gravity/South/dx/0/dy/0/'
       // white  d2hpdGU=
     GLOBAL_PAGE.setData({ 
         gatherImg: water_5
@@ -233,7 +249,7 @@ Page({
       return {
           title: '求图英雄帖',
           desc: '我想要:' + GLOBAL_PAGE.data.title,
-          path: '/pages/painter/painter?master_id=' + masterId
+          path: '/pages/painter/painter?master_id=' + GLOBAL_PAGE.data.masterId
       }
   },
 

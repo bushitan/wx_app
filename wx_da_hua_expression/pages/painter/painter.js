@@ -16,9 +16,9 @@ Page({
         masterId:1, //发帖人的master_id
 
         nickName:"",
-        logo: "../../images/emoji_log.jpg",
+        logo: "http://img.12xiong.top/help_logo.png",
         title: "没有文本",
-        prizeUrl: "../../images/emoji_log.jpg",
+        prizeUrl: "http://img.12xiong.top/help_img.png",
         isGatherOpen: 1, //英雄帖接收锁
 
         uploadImgUrl:"", //上传图片路径
@@ -175,7 +175,7 @@ Page({
         return {
             title: '求图英雄帖',
             desc: '我想要:' + GLOBAL_PAGE.data.title ,
-            path: '/pages/painter/painter?master_id=' + masterId 
+            path: '/pages/painter/painter?master_id=' + GLOBAL_PAGE.data.masterId 
         }
     },
     
