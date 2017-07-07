@@ -22,8 +22,18 @@ Page({
         isGatherOpen: 1, //英雄帖接收锁
 
         uploadImgUrl:"", //上传图片路径
+
+        roomOpen:false,//false 输入房间放，true上传图片
     },
 
+    bindRoomNumInput: function (e) {
+        GLOBAL_PAGE.setData({
+            masterId: e.detail.value
+        })
+    },
+    inRoom:function(){
+        GLOBAL_PAGE.getGatherMasterInfo()
+    },
    
     //一次只能上传1张图
     localImgChoose:function(){
@@ -141,6 +151,18 @@ Page({
                         title: object.master_info.title,
                         prizeUrl: object.master_info.prize_url,
                         isGatherOpen: object.master_info.is_gather_open,
+                        roomOpen:true,
+                    })
+                    wx.showToast({
+                        title: '进入英雄帖：' + GLOBAL_PAGE.data.masterId + ' 成功',
+                    })
+                }
+                else {
+                    wx.showModal({
+                        title: '进入英雄帖失败',
+                        content: '输入贴号不存在',
+                        showCancel:false,
+                        confirmText:"重新输入",
                     })
                 }
             },
@@ -157,11 +179,13 @@ Page({
         global_page = this
         GLOBAL_PAGE = this
 
-        GLOBAL_PAGE.setData({
-            masterId: option.master_id
-        })
         
-        GLOBAL_PAGE.getGatherMasterInfo()
+        if (option.master_id){
+            GLOBAL_PAGE.setData({
+                masterId: option.master_id
+            })
+            GLOBAL_PAGE.getGatherMasterInfo()
+        }
     },
 
     //必须要登陆以后发起的请求，在这里完成
@@ -182,6 +206,17 @@ Page({
 });
 
 
+// 带参数二维码入口
+// onLoad(option) {
+//     global_page = this
+//     GLOBAL_PAGE = this
+
+//     GLOBAL_PAGE.setData({
+//         masterId: option.master_id
+//     })
+
+//     GLOBAL_PAGE.getGatherMasterInfo()
+// },
 
 
 

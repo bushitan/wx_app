@@ -1,4 +1,14 @@
-<view class="page"  >
+
+<view wx:if="{{roomOpen == false}}" class="welcome">
+    <view class="content">
+        <view class="classname">
+           贴号：
+            <input type="number" bindinput="bindRoomNumInput" placeholder="请输入贴号"  focus="true"/>
+        </view>
+        <button type="primary" catchtap="inRoom">进入英雄帖</button>
+    </view>
+</view>
+<view wx:else class="page"  >
     <!--正常接收英雄帖-->
     <view wx:if="{{gatherStatus == 1}}">
         <view class="head_info">
