@@ -1,11 +1,13 @@
 {
   "pages":[
+    
+    "pages/order/order",
+    "pages/relate/relate",
     "pages/gather/gather",
     "pages/gather_list/gather_list",
     "pages/public/public",
     "pages/painter/painter",
     "pages/gallery/gallery",
-    "pages/relate/relate",
     "pages/coupon/coupon",
     "pages/detail/detail",
     "pages/private/private",
@@ -29,18 +31,18 @@
       "text": "热图",
       "iconPath":"images/icon_smile.png",
       "selectedIconPath":"images/icon_big_hot.png"
+    },  
+    {
+      "pagePath": "pages/relate/relate",
+      "text": "手绘",
+      "iconPath": "images/icon_smile.png",
+      "selectedIconPath": "images/icon_big_same.png"
     },
     {
       "pagePath": "pages/private/private",
       "text": "我",
       "iconPath":"images/icon_smile.png",
       "selectedIconPath":"images/icon_big_my.png"
-    },  
-    {
-      "pagePath": "pages/gather/gather",
-      "text": "约图",
-      "iconPath": "images/icon_smile.png",
-      "selectedIconPath": "images/icon_big_same.png"
     }]
   },
   "networkTimeout": {

@@ -16,17 +16,39 @@
         <view class="title">{{title}}</view>
     </view>
 
-    <view class="page__bd">
+    <!--<view class="page__bd">
         <view class="art__content">
             <block wx:for="{{art}}" wx:for-item="page">
                 <text wx:if="{{page.style=='text'}}" class="weui-article__p" >{{page.msg}}</text>           
                 <image wx:elif="{{page.style=='image'}}" class="weui-article__img  art__image" src="{{page.msg}}" mode="aspectFit" style=" height: {{art[index].height}};" catchtap="preview" data-img_url="{{page.msg}}" bindload="bindload" data-index="{{index}}" ></image>
             </block>
         </view>
+    </view>-->
+
+  <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+    <button class="picker" size="mini">
+      品牌：{{array[index]}}
+    </button>
+  </picker>
+    <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
+    <button class="picker" size="mini">
+      品牌：{{array[index]}}
+    </button>
+  </picker>
+
+   <view class="des">
+    <view class="des__title">收货地址</view>
+    <view class="des__word">
+            <view class="clip_textarea" catchtap="clipBoard" data-text="{{item.discount_url}}">
+            {{item.discount_url}}
+        </view>
     </view>
+</view>
+
+  <button type="primary">确认付款:￥58.00</button>
 
 
-    <view >
+    <!--<view >
         <view class="weui-loadmore weui-loadmore_line">
             <view class="weui-loadmore__tips weui-loadmore__tips_in-line">老司机扒出的同款链接</view>
         </view>
@@ -40,7 +62,6 @@
                     </view>
                     <view class="tb__good">
                         <view class="g_title">{{item.title}}</view>
-                        <!--<view class="title">包邮</view>-->
                         <view class="g_price1">原价：￥{{item.price}}</view>
                         <view class="g_price2">
                             <label class="mark">促销价</label>： <label class="num">￥{{item.discount_price}}</label> 
@@ -54,7 +75,6 @@
                 <view class="des__title">小店跳转方式</view>
                 <view class="des__word">
                     <view>方式1：店铺链接（长按复制红色【下单链接】，在【手机淘宝】或浏览器中打开</view>
-                    <!--<textarea value="{{item.store_url}}" />-->
                     <view class="clip_textarea" catchtap="clipBoard" data-text="{{item.store_url}}">
                         {{item.store_url}}
                     </view>
@@ -101,7 +121,6 @@
                 </view>
                 <view class="tb__good">
                     <view class="g_title">{{item.title}}</view>
-                    <!--<view class="title">包邮</view>-->
                     <view class="g_price1">现价：￥{{item.price}}</view>
                     <view class="g_price2">
                         <label class="mark">用券后</label>： <label class="num">￥{{item.discount_price}}</label> 
@@ -113,7 +132,6 @@
                 <view class="des__title">优惠券领取使用方式</view>
                 <view class="des__word">
                     <view>方式1：优惠券链接（长按复制红色【下单链接】，在【手机淘宝】或浏览器中打开</view>
-                    <!--<textarea value="{{item.discount_url}}" />-->
                      <view class="clip_textarea" catchtap="clipBoard" data-text="{{item.discount_url}}">
                         {{item.discount_url}}
                     </view>
@@ -124,6 +142,6 @@
             </view>
         </view>
 
-    </block>
+    </block>-->
 
 </view>

@@ -2,6 +2,8 @@
 var GLOBAL_PAGE
 var APP = getApp()
 var API = require('../../utils/api.js');
+var sliderWidth = 96; // 需要设置slider的宽度，用于计算中间位置
+
 
 Page({
   data: {
@@ -32,8 +34,40 @@ Page({
 
 index: 0,
  array: ['美国', '中国', '巴西', '日本'],
+
+ radioItems: [
+            {name: '广西南宁市云景路景晖巷8号广西广电网络大楼', value: '0'},
+            {name: '广西南宁市竹园广园路口青年国际18栋1218室', value: '1', checked: true}
+        ],
+
+
+
+      tabs: ["图文信息", "详细参数", "注意事项"],
+        activeIndex: 1,
+        sliderOffset: 0,
+        sliderLeft: 0
   },
   
+   radioChange: function (e) {
+        console.log('radio发生change事件，携带value值为：', e.detail.value);
+
+        var radioItems = this.data.radioItems;
+        for (var i = 0, len = radioItems.length; i < len; ++i) {
+            radioItems[i].checked = radioItems[i].value == e.detail.value;
+        }
+
+        this.setData({
+            radioItems: radioItems
+        });
+    },
+    
+    tabClick: function (e) {
+        this.setData({
+            sliderOffset: e.currentTarget.offsetLeft,
+            activeIndex: e.currentTarget.id
+        });
+    },
+
   bindPickerChange: function(e) {
     console.log('picker发送选择改变，携带值为', e.detail.value)
     this.setData({
@@ -45,6 +79,17 @@ index: 0,
     console.log(options)
     var that = this
     GLOBAL_PAGE = this
+
+     var that = this;
+        wx.getSystemInfo({
+            success: function(res) {
+                that.setData({
+                    sliderLeft: (res.windowWidth / that.data.tabs.length - sliderWidth) / 2,
+                    sliderOffset: res.windowWidth / that.data.tabs.length * that.data.activeIndex
+                });
+            }
+        });
+
     //商品详情页
     // wx.request({
     //   url: 'https://api.leancloud.cn/1.1/classes/ProductDetail/' + options.id,
@@ -76,10 +121,10 @@ index: 0,
     //   }
     // });
 
-    GLOBAL_PAGE.setData({
-      artId:options.art_id
-    })
-    GLOBAL_PAGE.test(options)
+    // GLOBAL_PAGE.setData({
+    //   artId:options.art_id
+    // })
+    // GLOBAL_PAGE.test(options)
   },
 
   test: function (options) {
