@@ -1,14 +1,10 @@
 {
   "pages":[
     "pages/relate/relate",
+"pages/detail/detail",
+
     "pages/order/order",
-    "pages/gather/gather",
-    "pages/gather_list/gather_list",
     "pages/public/public",
-    "pages/painter/painter",
-    "pages/gallery/gallery",
-    "pages/coupon/coupon",
-    "pages/detail/detail",
     "pages/private/private",
     "pages/watermark/watermark",
     "pages/category/category"

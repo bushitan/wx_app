@@ -10,7 +10,7 @@ var KEY = require('../../utils/storage_key.js');
 Page({
   data: {
 
-      hotLabel: ["教程", '下单记录',"意见反馈",],//顶部按钮
+      hotLabel: ["教程","意见反馈",],//顶部按钮
       keyword:"教程",
 
     tagListDisplay: ["a", "211", "213", "a", "211", "213", "a", "211", "213", "a", "211", "213",], //优惠券目录

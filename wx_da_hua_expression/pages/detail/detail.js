@@ -3,6 +3,7 @@ var GLOBAL_PAGE
 var APP = getApp()
 var API = require('../../utils/api.js');
 
+var WxParse = require('../../wxParse/wxParse.js');
 Page({
   data: {
 
@@ -56,6 +57,9 @@ Page({
                       art: res.data.art,
                       tao_bao:res.data.tao_bao,
                   })
+
+                  var article = "<p>我爱你 </p>"
+                  WxParse.wxParse('article', 'html', article, GLOBAL_PAGE, 5);
               }
           },
           fail:function(res){

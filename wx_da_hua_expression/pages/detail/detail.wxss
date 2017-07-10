@@ -1,7 +1,6 @@
 /* pages/detail/detail.wxss */
 
 /*轮播图*/
-
 swiper {
   height: 380rpx;
 }
@@ -26,6 +25,9 @@ swiper {
   width :690rpx;
   margin: 2px auto 5px;
 }
+
+
+
 
 
 /*商品基本信息*/

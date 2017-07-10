@@ -29,7 +29,7 @@
             </block>
     </view>
 
-    <view wx:elif="{{tabShow==1}}">
+    <!--<view wx:elif="{{tabShow==1}}">
         <view class="weui-cells__title">2017-06-24 10:33:39</view>
         <view class="weui-form-preview" >
             <view class="weui-form-preview__hd">
@@ -55,7 +55,7 @@
                 <view  class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active" catchtap="toOrder">浏览商品</view>
             </view>
         </view>
-    </view>
+    </view>-->
 
 
     <!--意见反馈-->

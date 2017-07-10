@@ -1,3 +1,4 @@
+<import src="../../wxParse/wxParse.wxml"/>
 <view class="page">
 
   <view>
@@ -16,6 +17,11 @@
         <view class="title">{{title}}</view>
     </view>
 
+    <view class="page__bd">
+        <view class="art__content">
+            <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
+        </view>
+    </view>
     <!--<view class="page__bd">
         <view class="art__content">
             <block wx:for="{{art}}" wx:for-item="page">
