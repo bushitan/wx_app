@@ -1,5 +1,5 @@
 
-<view class="page"  >
+<view class="page" >
     <!--3 短语快捷键-->
     <view class="shortcut">
         <scroll-view scroll-x="true">
@@ -10,37 +10,66 @@
         </scroll-view>
     </view>
 
-  <!--表情同款-->
-  <view hidden="{{hiddenIndex}}" >
-          <block wx:for="{{ productNewList }}">
-              <view class="product-card">
-                <navigator class="nav-product-card" url="../detail/detail?art_id={{ item.art_id }}">
-                    <!--<view>-->
-                        <image class="product-cover" src="{{item.cover}}" mode="aspectFill"></image>
-                            <!--<image class="product-cover" src="../../images/menu_1.jpg" mode="aspectFill"></image>-->
-                        
-                    <!--</view>-->
-                  
-                    <view class="product-title">{{ item.title }}</view>
-                    <view class="product-price">{{ item.summary }}</view>
-                 
-                </navigator>
-              </view>
-          </block>
-  </view>
+    <!--表情同款-->
+    <view wx:if="{{tabShow==0}}">
+            <block wx:for="{{ productNewList }}">
+                <view class="product-card">
+                    <navigator class="nav-product-card" url="../detail/detail?art_id={{ item.art_id }}">
+                        <!--<view>-->
+                            <image class="product-cover" src="{{item.cover}}" mode="aspectFill"></image>
+                                <!--<image class="product-cover" src="../../images/menu_1.jpg" mode="aspectFill"></image>-->
+                            
+                        <!--</view>-->
+                    
+                        <view class="product-title">{{ item.title }}</view>
+                        <view class="product-price">{{ item.summary }}</view>
+                    
+                    </navigator>
+                </view>
+            </block>
+    </view>
 
-  <!--意见反馈-->
-  <view hidden="{{hiddenUserBack}}" class="user_back">    
-        <view class="user_message">
-            <textarea class="" placeholder="客官的意见写这里" value="{{userBackValue}}" bindinput="getUserBack"/>
+    <view wx:elif="{{tabShow==1}}">
+        <view class="weui-cells__title">2017-06-24 10:33:39</view>
+        <view class="weui-form-preview" >
+            <view class="weui-form-preview__hd">
+                <view class="weui-form-preview__label">付款金额</view>
+                <view class="weui-form-preview__value_in-hd">¥2400.00</view>
+            </view>
+            <view class="weui-form-preview__bd">
+                <view class="weui-form-preview__item">
+                    <view class="weui-form-preview__label">商品</view>
+                    <view class="weui-form-preview__value">电动打蛋机</view>
+                </view>
+                <view class="weui-form-preview__item">
+                    <view class="weui-form-preview__label">标题标题</view>
+                    <view class="weui-form-preview__value">名字名字名字</view>
+                </view>
+                <view class="weui-form-preview__item">
+                    <view class="weui-form-preview__label">标题标题</view>
+                    <view class="weui-form-preview__value">很长很长的名字很长很长的名字很长很长的名字很长很长的名字很长很长的名字</view>
+                </view>
+            </view>
+            <view class="weui-form-preview__ft">
+                <view class="weui-form-preview__btn weui-form-preview__btn_default" hover-class="weui-form-preview__btn_active" catchtap="toOperation">详细操作</view>
+                <view  class="weui-form-preview__btn weui-form-preview__btn_primary" hover-class="weui-form-preview__btn_active" catchtap="toOrder">浏览商品</view>
+            </view>
         </view>
-        <view class="user_button">
-            <button catchtap="userBack">提交</button>
-        </view>
-        <view class="user_footer">
-            真诚感谢您的反馈建议~
-        </view>
-  </view>
+    </view>
+
+
+    <!--意见反馈-->
+    <view  class="user_back" wx:else >    
+            <view class="user_message">
+                <textarea class="" placeholder="客官的意见写这里" value="{{userBackValue}}" bindinput="getUserBack"/>
+            </view>
+            <view class="user_button">
+                <button catchtap="userBack">提交</button>
+            </view>
+            <view class="user_footer">
+                真诚感谢您的反馈建议~
+            </view>
+    </view>
 
 
 </view>
@@ -53,46 +82,3 @@
   </view>
 </view>-->
 
-<!--内部优惠券-->
-<view  hidden="{{hiddenTaoBao}}" >
-
-
-  
-        <view class=" page__bd_spacing" >
-            <view class="weui-flex wrap">
-              <block wx:for-items="{{tagListDisplay}}"  wx:for-item="tag">
-                    <view  class="placeholder-1" catchtap="searchShortcut"
-                data-keyword="{{tag}}">{{tag}}</view>
-             
-    </block>
-            </view>
-          </view>
-
-
-  <view class="product__half">
-    <block wx:for="{{ taobaoList }}">
-      <view class="product-card__half">
-        <view class="nav-product-card" >
-
-          <!--<view style="background-image:url({{picurl}})" class="product-cover"></view>-->
-          <view>
-            <image class="product-cover__half" src="{{item.cover}}" mode="aspectFill"></image>
-          </view>
-          <view>
-            <view class="product-title__half">鳄鱼恤男鞋休闲鞋 2017新款透气鞋男皮鞋男士系带真皮驾车单鞋</view>
-          
-            <view class="product-now_price__half">现价 ￥19.5</view>
-            <view class="product-price__half">
-                <label class="use_card">用券后</label>： <label class="discount_price">￥5{{item.discount_price}}</label> 
-            </view>
-            <button size="mini" catchtap="getDiscount" data-discount_url="{{item.discount_url}}">领券省5元</button>
-          </view>
-        </view>
-      </view>
-    </block>
-  </view>
-</view>
-
-<view class="help_info">
-    <icon type="info" size="36" catchtap="getHelpInfo"/>
-</view>

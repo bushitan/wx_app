@@ -1,8 +1,7 @@
 {
   "pages":[
-    
-    "pages/order/order",
     "pages/relate/relate",
+    "pages/order/order",
     "pages/gather/gather",
     "pages/gather_list/gather_list",
     "pages/public/public",

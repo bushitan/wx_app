@@ -10,8 +10,8 @@ var KEY = require('../../utils/storage_key.js');
 Page({
   data: {
 
-    hotLabel:["内部优惠券","表情同款","意见反馈"],//顶部按钮
-    keyword:"表情同款",
+      hotLabel: ["教程", '下单记录',"意见反馈",],//顶部按钮
+      keyword:"教程",
 
     tagListDisplay: ["a", "211", "213", "a", "211", "213", "a", "211", "213", "a", "211", "213",], //优惠券目录
 
@@ -29,13 +29,27 @@ Page({
     taobaoList:[],
     bindtapName: "index",
     
-    hiddenTaoBao: false,
-    hiddenIndex: true,
+    // hiddenTaoBao: true,
+    hiddenIndex: false,
+    hiddenUserBack: true,
     hiddenUserBack: true,
 
-
+    tabShow: 0, //0 列表,1下单,2反馈
     userBackValue:"",//用户的意见反馈
   },
+  
+  toOperation:function() {
+        wx.showActionSheet({
+            itemList: ["退货","物流单号","状态"],
+        })
+  },
+
+  toOrder: function () {
+        wx.navigateTo({
+            url: '../order/order',
+        })
+  },
+
 
   switchLabel:function(e){
     var keyword = e.currentTarget.dataset.keyword
@@ -43,21 +57,15 @@ Page({
     switch(keyword){
         case hotLabel[0]: 
           GLOBAL_PAGE.setData({
-            hiddenTaoBao:false,
-            hiddenIndex:true,
-            hiddenUserBack:true
+              tabShow:0
           });break;
         case hotLabel[1]: 
-          GLOBAL_PAGE.setData({
-            hiddenTaoBao:true,
-            hiddenIndex:false,
-            hiddenUserBack:true
+            GLOBAL_PAGE.setData({
+                tabShow: 1
           });break;
         case hotLabel[2]: 
-          GLOBAL_PAGE.setData({
-            hiddenTaoBao:true,
-            hiddenIndex:true,
-            hiddenUserBack:false
+            GLOBAL_PAGE.setData({
+                tabShow: 2
           });break;
     }
     GLOBAL_PAGE.setData({

@@ -25,27 +25,10 @@
         </view>
     </view>-->
 
-  <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
-    <button class="picker" size="mini">
-      品牌：{{array[index]}}
-    </button>
-  </picker>
-    <picker bindchange="bindPickerChange" value="{{index}}" range="{{array}}">
-    <button class="picker" size="mini">
-      品牌：{{array[index]}}
-    </button>
-  </picker>
 
-   <view class="des">
-    <view class="des__title">收货地址</view>
-    <view class="des__word">
-            <view class="clip_textarea" catchtap="clipBoard" data-text="{{item.discount_url}}">
-            {{item.discount_url}}
-        </view>
-    </view>
-</view>
 
-  <button type="primary">确认付款:￥58.00</button>
+
+  <button type="primary" catchtap="toOrder">去购买</button>
 
 
     <!--<view >
