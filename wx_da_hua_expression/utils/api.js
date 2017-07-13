@@ -5,14 +5,14 @@
  */ 
 
 // var host_url = 'http://127.0.0.1:8000/'; 
-// var host_url = 'http://192.168.199.203:8000/';
+var host_url = 'http://192.168.199.203:8000/';
 // var host_url = 'http://192.168.199.203:8001/'; 
 // var host_url = 'http://127.0.0.1:8000/'; 
 // var host_url = 'http://192.168.200.21:8000/'; 
 // var host_url = 'http://192.168.200.20:8000/'; 
 // var host_url = 'http://192.168.200.27:8000/'; 
 // var host_url = 'https://www.12xiong.top/wx_app/';
-var host_url = 'https://www.12xiong.top/';
+// var host_url = 'https://www.12xiong.top/';
 // var host_url = 'http://www.12xiong.top/';
 
 /*

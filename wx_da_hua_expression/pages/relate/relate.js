@@ -37,7 +37,12 @@ Page({
     tabShow: 0, //0 列表,1下单,2反馈
     userBackValue:"",//用户的意见反馈
   },
-  
+  navArticle:function(e){
+      
+  },
+
+
+
   toOperation:function() {
         wx.showActionSheet({
             itemList: ["退货","物流单号","状态"],
@@ -91,19 +96,7 @@ Page({
   },
 
   onInit: function () {
-      GLOBAL_PAGE.setData({
-          taobaoList: [{
-            art_id: "1", title: "监页", summary: "生命周期函数", cover: "http://img.alicdn.com/bao/uploaded/i3/TB1j9z9QVXXXXcWXpXXXXXXXXXX_!!0-item_pic.jpg", discount_url:"https://taoquan.taobao.com/coupon/unify_apply.htm?sellerId=1720135465&activityId=e50c2735f5ce44b5985e4dddd616dfd0",
-          },{
-            art_id:"1",title:"监页",summary:"生命周期函数",cover:"http://img.alicdn.com/bao/uploaded/i3/TB1j9z9QVXXXXcWXpXXXXXXXXXX_!!0-item_pic.jpg",discount_url:"123",
-          },{
-              art_id: "1", title: "监页", summary: "生命周期函数", cover: "http://img.alicdn.com/bao/uploaded/i3/TB1j9z9QVXXXXcWXpXXXXXXXXXX_!!0-item_pic.jpg", discount_url: "abc",
-          },{
-            art_id:"1",title:"监页",summary:"生命周期函数",cover:"http://img.alicdn.com/bao/uploaded/i3/TB1j9z9QVXXXXcWXpXXXXXXXXXX_!!0-item_pic.jpg",
-          },
-          
-          {art_id:"1",title:"监听页面加载听页面加载听页面加载听页",summary:"生命周期函数生命周期函数生命周期函数生命周期函数"}]
-      })
+     
       // GLOBAL_PAGE.taobao()
       GLOBAL_PAGE.same()
   },

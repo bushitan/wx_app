@@ -1,7 +1,8 @@
 {
   "pages":[
+    "pages/detail/detail",
+    "pages/detail_1/detail_1",
     "pages/relate/relate",
-"pages/detail/detail",
 
     "pages/order/order",
     "pages/public/public",

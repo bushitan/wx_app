@@ -14,17 +14,20 @@
     <view wx:if="{{tabShow==0}}">
             <block wx:for="{{ productNewList }}">
                 <view class="product-card">
-                    <navigator class="nav-product-card" url="../detail/detail?art_id={{ item.art_id }}">
-                        <!--<view>-->
-                            <image class="product-cover" src="{{item.cover}}" mode="aspectFill"></image>
-                                <!--<image class="product-cover" src="../../images/menu_1.jpg" mode="aspectFill"></image>-->
-                            
-                        <!--</view>-->
-                    
+                    <!--图片封面-->
+                    <navigator wx:if="{{item.cover_style == 0 }}"  class="nav-product-card" url="../detail/detail?story_id={{ item.story_id }}">
+                        <image class="product-cover" src="{{item.cover}}" mode="aspectFill"></image>
                         <view class="product-title">{{ item.title }}</view>
                         <view class="product-price">{{ item.summary }}</view>
-                    
                     </navigator>
+                    <!--视频封面-->
+                    <view wx:else  class="nav-product-card" >
+                        <video class="product-cover" src="{{item.cover}}" ></video>
+                        <navigator  class="nav-product-card" url="../detail/detail?art_id={{ item.art_id }}">
+                        <view class="product-title">{{ item.title }}</view>
+                        <view class="product-price">{{ item.summary }}</view>
+                        </navigator>
+                    </view>
                 </view>
             </block>
     </view>
