@@ -6,140 +6,119 @@ var API = require('../../utils/api.js');
 var WxParse = require('../../wxParse/wxParse.js');
 var STORY_TRACE = "story_trace"
 Page({
-  data: {
+    data: {
 
-    artId:1,
-    storyId:"1",
-    stepCurrent:"",
-    hiddenBackBtn:true,
-    art:[],  
-    article:'',
-    tao_bao:[],
-
-    canIUseRichText:false,
-  },
+        storyId:"1", //故事id
+        stepCurrent:"", //当前步骤  1,2,3,4
+        hiddenBackBtn:true,  //隐藏返回按钮，第一篇文章生效
+        canIUseRichText:false, //判断是否使用富文本
+        article:"",
+        hiddenChoiceBtn:false, //防止双击
+    },
   
-  //To 订单页面
-  toOrder:function(){
-      wx.navigateTo({
-          url: '../order/order',
-      })
-  },
 
 
+    onLoad: function (options) {
 
+        var story_id = options.story_id
+        var that = this
+        GLOBAL_PAGE = this
 
-  onLoad: function (options) {
-    // 生命周期函数--监听页面加载
-    //   console.log(options, wx.getSystemInfoSync)
-
-    var story_id = options.story_id
-    // var story_id = 1
-    var that = this
-    GLOBAL_PAGE = this
-    GLOBAL_PAGE.setData({
-      artId:options.art_id,
-      storyId: story_id,
-    })
-    GLOBAL_PAGE.setData({
+        GLOBAL_PAGE.setData({ //设置引入的故事id
+        storyId: story_id,
         canIUseRichText: wx.canIUse('rich-text')
-    })
-    var story_trace = wx.getStorageSync(STORY_TRACE)
-    if (story_trace == "")
-    {
-        wx.setStorageSync(STORY_TRACE,{})
-        GLOBAL_PAGE.nextAndBack("")
-    }else if (story_trace[story_id]) {
-            GLOBAL_PAGE.setData({
-                stepCurrent: story_trace[story_id]
-            })
-            GLOBAL_PAGE.nextAndBack(story_trace[story_id])
-            // wx.setStorageSync(STORY_TRACE, {})
-    }
-    var article = '<p><h1>hahah sdsd</h1>fdsfd<strong>色粉望<span style="background-color: #17365d; "><span style="color: #fdeada;">风而逃给他人给他好听话遇贴</span>就回</span>有</strong></p>'
-    WxParse.wxParse('article', 'html', article, GLOBAL_PAGE, 5);
-     // GLOBAL_PAGE.test(options)
-    // wx.setNavigationBarColor({
-    //     frontColor: '#ffffff',
-    //     backgroundColor: '#ff0000',
-    //     animation: {
-    //         duration: 400,
-    //         timingFunc: 'easeIn'
-    //     }
-    // })
-  },
+        })
 
-  test: function (options) {
-    //   console.log(options)
-      wx.request({
-          url: API.ARTICALE() , 
-          method:"GET",
-          data: {
-            // "art_id":options.art_id,
-            "story_id": GLOBAL_PAGE.data.storyId,
-            "step_current": GLOBAL_PAGE.data.stepCurrent,
-          },
-          success: function(res) {
-              console.log("collect success:",res.data)
-              var object = res.data
-              if (object.status == "true")
-              {
-                  //设置基础信息
-                  GLOBAL_PAGE.setData({
-                      swiper:res.data.swiper,
-                      title:res.data.title,
+        var story_trace = wx.getStorageSync(STORY_TRACE)//用户浏览所有故事的本地存储
+        if (story_trace == "")//1、 第一次阅读故事，创建object
+        {
+            wx.setStorageSync(STORY_TRACE,{}) //创建object
+            GLOBAL_PAGE.nextAndBack("") //获取显示文章
+        }else if (story_trace[story_id]) {//2、已经阅读该文章，获取步骤
+                GLOBAL_PAGE.setData({
+                    stepCurrent: story_trace[story_id]
+                })
+                GLOBAL_PAGE.nextAndBack(story_trace[story_id])
+                wx.setStorageSync(STORY_TRACE, {})
+        }else{//3、第一次阅读本篇文章，步骤为“”
+            GLOBAL_PAGE.nextAndBack("")
+        }
+    },
 
-                      stepCurrent: res.data.step_current,
-                      stepNext: res.data.step_next,
-                    //   art: res.data.content,
-                    //   tao_bao:res.data.tao_bao,
-                  })
+    test: function (options) {
+        //   console.log(options)
+        wx.request({
+            url: API.ARTICALE() , 
+            method:"GET",
+            data: {
+                // "art_id":options.art_id,
+                "story_id": GLOBAL_PAGE.data.storyId,
+                "step_current": GLOBAL_PAGE.data.stepCurrent,
+            },
+            success: function(res) {
+                console.log("collect success:",res.data)
+                var object = res.data
+                if (object.status == "true")
+                {
+                        var step_current = res.data.step_current
+                        //设置基础信息
+                        GLOBAL_PAGE.setData({
+                            swiper:res.data.swiper,
+                            title:res.data.title,
+                            stepCurrent: step_current,
+                            stepNext: res.data.step_next,
+                        })
 
-                    //设置文章内容
-                  var article = res.data.content
-                //   if (GLOBAL_PAGE.data.canIUseRichText)
-                //       GLOBAL_PAGE.UseRichText(article)
-                //   else
-                      GLOBAL_PAGE.UseWxParse(article)
+                        //设置文章内容
+                        var article = res.data.content
+                        // if (GLOBAL_PAGE.data.canIUseRichText)
+                        //     GLOBAL_PAGE.UseRichText(article)
+                        // else
+                        GLOBAL_PAGE.UseWxParse(article)
 
-                    //浏览记录本地存储{ '故事id':'当前步骤step_current' }
-                  var trace = wx.getStorageSync(STORY_TRACE)
-                  trace[GLOBAL_PAGE.data.storyId.toString()] = res.data.step_current
-                  wx.setStorageSync(STORY_TRACE, trace)
-                //   var next = res.data.step_next
+                        //浏览记录本地存储{ '故事id':'当前步骤step_current' }
+                        var trace = wx.getStorageSync(STORY_TRACE)
+                        trace[GLOBAL_PAGE.data.storyId.toString()] = step_current
+                        wx.setStorageSync(STORY_TRACE, trace)
+                    //   var next = res.data.step_next
 
-                    //滚动到初始位置
-                  wx.pageScrollTo({
-                      scrollTop: 0
-                  })
-                }
-          },
-          fail:function(res){
-            wx.showModal({
-                title: '网络连接失败，请重试',
-                showCancel:false,
-            })
-          }
-      })
-  },
+                        //滚动到初始位置
+                        wx.pageScrollTo({
+                            scrollTop: 0
+                        })
+                    }
+            },
+            fail:function(res){
+                wx.showModal({
+                    title: '网络连接失败，请重试',
+                    showCancel:false,
+                })
+            },
+            complete:function(){
+                GLOBAL_PAGE.setData({
+                    hiddenChoiceBtn: false, //防止双击
+                })
+            }
+        })
+    },
 
-  UseRichText: function (article) {
-      GLOBAL_PAGE.setData({
-          article: article,
-      })
-   },
-  UseWxParse: function (article) { 
-        WxParse.wxParse('article', 'html', article, GLOBAL_PAGE, 5)
-  },
+    //微信自带富文本，有Bug不用
+    UseRichText: function (article) { 
+        GLOBAL_PAGE.setData({
+            article: article,
+        })
+    },
+
+    //使用wxparse，还行
+    UseWxParse: function (article) { 
+            WxParse.wxParse('article', 'html', article, GLOBAL_PAGE, 5)
+    },
 
     //进入下一篇
     nextArticle:function(e){
         var next_id = e.currentTarget.dataset.next_id
         var step_current = GLOBAL_PAGE.data.stepCurrent
         GLOBAL_PAGE.nextAndBack(step_current + "," + next_id)
-        // GLOBAL_PAGE.setData({
-        //     stepCurrent: step_current + "," + next_id,
-        // })
         // GLOBAL_PAGE.test()
 
     },
@@ -149,6 +128,7 @@ Page({
         temp = temp.split(",")
         temp.pop()
         var step_current = temp.join(",")
+
         GLOBAL_PAGE.nextAndBack(step_current)
 
     },
@@ -160,44 +140,42 @@ Page({
         GLOBAL_PAGE.setData({
             stepCurrent: step_current,
             hiddenBackBtn: hiddenBackBtn,
+            hiddenChoiceBtn:true, //防止双击
         })
         GLOBAL_PAGE.test()
     },
 
-  onShareAppMessage: function () { 
-      return {
-        title: GLOBAL_PAGE.data.title,
-        desc: GLOBAL_PAGE.data.art[0].msg + '...',
-        path: '/pages/detail/detail?art_id='+GLOBAL_PAGE.data.artId,
-        }
-   },
+    onShareAppMessage: function () { 
+        return {
+            title: '手绘故事',
+            desc: '历史有农药',
+            path: '/pages/detail/detail?story_id=' + GLOBAL_PAGE.data.storyId,
+            }
+    },
 
 
+    onReady: function () {
+        // 生命周期函数--监听页面初次渲染完成
 
+    },
+    onShow: function () {
+        // 生命周期函数--监听页面显示
 
-  onReady: function () {
-    // 生命周期函数--监听页面初次渲染完成
+    },
+    onHide: function () {
+        // 生命周期函数--监听页面隐藏
 
-  },
-  onShow: function () {
-    // 生命周期函数--监听页面显示
+    },
+    onUnload: function () {
+        // 生命周期函数--监听页面卸载
 
-  },
-  onHide: function () {
-    // 生命周期函数--监听页面隐藏
+    },
+    onPullDownRefresh: function () {
+        // 页面相关事件处理函数--监听用户下拉动作
 
-  },
-  onUnload: function () {
-    // 生命周期函数--监听页面卸载
+    },
+    onReachBottom: function () {
+        // 页面上拉触底事件的处理函数
 
-  },
-  onPullDownRefresh: function () {
-    // 页面相关事件处理函数--监听用户下拉动作
-
-  },
-  onReachBottom: function () {
-    // 页面上拉触底事件的处理函数
-
-  },
-
+    },
 })

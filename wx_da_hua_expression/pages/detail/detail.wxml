@@ -1,5 +1,4 @@
 <import src="../../wxParse/wxParse.wxml"/>
-    <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
 <view class="page">
         
   <!-- <view>
@@ -18,22 +17,22 @@
         <view class="title">{{title}}</view>
     </view> -->
 
-    <!-- <view class="page__bd">
+     <!-- <view class="page__bd">
          <view class="art__content"> 
               <rich-text wx:if="{{canIUseRichText}}" nodes="{{article}}" bindtap="tap"></rich-text>  
-             <template  is="wxParse" data="{{wxParseData:article.nodes}}"/>  
+              <template  is="wxParse" data="{{wxParseData:article.nodes}}"/>   
          </view> 
-    </view> -->
+    </view>  -->
      <view class="page__bd">
-        <view class="art__content">
-            </view>
+        <view class="art__content" >
+            <template is="wxParse" data="{{wxParseData:article.nodes}}"/>
+        </view>
     </view>
 
-    <view class="your_choice">
-        <button wx:if="{{stepNext.left_id}}" catchtap="nextArticle" data-next_id="{{stepNext.left_id}}"  size="mini" >{{stepNext.left_name}}</button>
-        <button hidden="{{hiddenBackBtn}}" catchtap="backArticle" data-next_id="{{stepNext.right_id}}"   size="mini" type="warn">返回上一步</button>
-        <button wx:if="{{stepNext.right_id}}" catchtap="nextArticle" data-next_id="{{stepNext.right_id}}"   size="mini" >{{stepNext.right_name}}</button>
-        
+    <view class="your_choice" hidden="{{hiddenChoiceBtn}}">
+        <button wx:if="{{stepNext.left_id}}" catchtap="nextArticle" data-next_id="{{stepNext.left_id}}"  size="mini" type="warn">{{stepNext.left_name}}</button>
+        <button hidden="{{hiddenBackBtn}}" catchtap="backArticle" data-next_id="{{stepNext.right_id}}"   size="mini" >上一步</button>
+        <button wx:if="{{stepNext.right_id}}" catchtap="nextArticle" data-next_id="{{stepNext.right_id}}"   size="mini" type="warn">{{stepNext.right_name}}</button>   
     </view>
 
 </view>

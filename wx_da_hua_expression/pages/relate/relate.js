@@ -10,8 +10,8 @@ var KEY = require('../../utils/storage_key.js');
 Page({
   data: {
 
-      hotLabel: ["教程","意见反馈",],//顶部按钮
-      keyword:"教程",
+      hotLabel: ["历史有农药","意见反馈",],//顶部按钮
+      keyword:"历史有农药",
 
     tagListDisplay: ["a", "211", "213", "a", "211", "213", "a", "211", "213", "a", "211", "213",], //优惠券目录
 
@@ -182,8 +182,8 @@ Page({
 
   onShareAppMessage: function () { 
       return {
-        title: '表情的同款商品大搜集',
-        desc: '震惊，同款商品竟然长这样！！',
+        title: '手绘故事',
+        desc: '历史有农药',
         path: '/pages/relate/relate',
         // path: '/pages/public/public?keyword='+GLOBAL_PAGE.data.keyword
       }
