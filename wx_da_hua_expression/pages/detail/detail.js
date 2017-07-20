@@ -15,7 +15,6 @@ Page({
         article:"",
         hiddenChoiceBtn:false, //防止双击
     },
-  
 
 
     onLoad: function (options) {

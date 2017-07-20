@@ -188,6 +188,7 @@ Page({
         // path: '/pages/public/public?keyword='+GLOBAL_PAGE.data.keyword
       }
   },
+  
 
   getUserBack:function(e){
     var value = e.detail.value

@@ -1,10 +1,10 @@
 {
   "pages":[
+    "pages/public/public",
     "pages/relate/relate",
     "pages/detail/detail",
 
     "pages/order/order",
-    "pages/public/public",
     "pages/private/private",
     "pages/watermark/watermark",
     "pages/category/category"
@@ -31,7 +31,7 @@
       "pagePath": "pages/relate/relate",
       "text": "手绘故事",
       "iconPath": "images/icon_smile.png",
-      "selectedIconPath": "images/icon_big_same.png"
+      "selectedIconPath": "images/icon_big_draw.png"
     },
     {
       "pagePath": "pages/private/private",
